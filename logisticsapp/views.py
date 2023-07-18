@@ -1628,7 +1628,7 @@ class CustomUserView(APIView):
             filename1 = "/Users/apple/Documents/Ekfrazo/Django/logistics/Logistics/Logistics/media/profile/"+user_name+guess_extension_data
             image_name = user_name+guess_extension_data
             ss=  open(filename1, 'wb')
-            print(ss)
+            # print(ss)
             ss.write(imgdata1)
             ss.close()
 
@@ -1741,7 +1741,7 @@ class PaymentDetailView(APIView):
         if id:
             owner_data = PaymentDetails.objects.filter(id=id).values()
             releated_drivers = Driver.objects.filter(owner_id=id).values()
-            print(owner_data,'AAAAAAAAAAAAAAAAAAAAAAAAAA')
+            # print(owner_data,'AAAAAAAAAAAAAAAAAAAAAAAAAA')
 
             if not owner_data:
                 return Response({
@@ -2011,7 +2011,7 @@ class DriverView(APIView):
                 filename1 = "/Users/apple/Documents/Ekfrazo/Django/logistics/Logistics/Logistics/media/driving_license/"+user_name+guess_extension_data
                 image_name = user_name+guess_extension_data
                 ss=  open(filename1, 'wb')
-                print(ss)
+                # print(ss)
                 ss.write(imgdata1)
                 ss.close()
 
@@ -2028,7 +2028,7 @@ class DriverView(APIView):
                 filename1 = "/Users/apple/Documents/Ekfrazo/Django/logistics/Logistics/Logistics/media/license_img/"+user_name+guess_extension_data
                 image_name = user_name+guess_extension_data
                 ss=  open(filename1, 'wb')
-                print(ss)
+                # print(ss)
                 ss.write(imgdata1)
                 ss.close()
 
@@ -2045,7 +2045,7 @@ class DriverView(APIView):
                 filename1 = "/Users/apple/Documents/Ekfrazo/Django/logistics/Logistics/Logistics/media/permit_img/"+user_name+guess_extension_data
                 image_name = user_name+guess_extension_data
                 ss=  open(filename1, 'wb')
-                print(ss)
+                # print(ss)
                 ss.write(imgdata1)
                 ss.close()
 
@@ -2063,7 +2063,7 @@ class DriverView(APIView):
                 filename1 = "/Users/apple/Documents/Ekfrazo/Django/logistics/Logistics/Logistics/media/fitness_certificate_img/"+user_name+guess_extension_data
                 image_name = user_name+guess_extension_data
                 ss=  open(filename1, 'wb')
-                print(ss)
+                # print(ss)
                 ss.write(imgdata1)
                 ss.close()
 
@@ -2081,7 +2081,7 @@ class DriverView(APIView):
                 filename1 = "/Users/apple/Documents/Ekfrazo/Django/logistics/Logistics/Logistics/media/emission_test_img/"+user_name+guess_extension_data
                 image_name = user_name+guess_extension_data
                 ss=  open(filename1, 'wb')
-                print(ss)
+                # print(ss)
                 ss.write(imgdata1)
                 ss.close()
 
@@ -2099,7 +2099,7 @@ class DriverView(APIView):
                 filename1 = "/Users/apple/Documents/Ekfrazo/Django/logistics/Logistics/Logistics/media/insurence_img/"+user_name+guess_extension_data
                 image_name = user_name+guess_extension_data
                 ss=  open(filename1, 'wb')
-                print(ss)
+                # print(ss)
                 ss.write(imgdata1)
                 ss.close()
 
@@ -2117,7 +2117,7 @@ class DriverView(APIView):
                 filename1 = "/Users/apple/Documents/Ekfrazo/Django/logistics/Logistics/Logistics/media/rc_img/"+user_name+guess_extension_data
                 image_name = user_name+guess_extension_data
                 ss=  open(filename1, 'wb')
-                print(ss)
+                # print(ss)
                 ss.write(imgdata1)
                 ss.close()
 
@@ -2135,7 +2135,7 @@ class DriverView(APIView):
                 filename1 = "/Users/apple/Documents/Ekfrazo/Django/logistics/Logistics/Logistics/media/passbook_img/"+user_name+guess_extension_data
                 image_name = user_name+guess_extension_data
                 ss=  open(filename1, 'wb')
-                print(ss)
+                # print(ss)
                 ss.write(imgdata1)
                 ss.close()
 
@@ -2247,7 +2247,7 @@ class DriverView(APIView):
                 filename1 = "/Users/apple/Documents/Ekfrazo/Django/logistics/Logistics/Logistics/media/driving_license/"+user_name+guess_extension_data
                 image_name = user_name+guess_extension_data
                 ss=  open(filename1, 'wb')
-                print(ss)
+                # print(ss)
                 ss.write(imgdata1)
                 ss.close()
 
@@ -2264,7 +2264,7 @@ class DriverView(APIView):
                 filename1 = "/Users/apple/Documents/Ekfrazo/Django/logistics/Logistics/Logistics/media/license_img/"+user_name+guess_extension_data
                 image_name = user_name+guess_extension_data
                 ss=  open(filename1, 'wb')
-                print(ss)
+                # print(ss)
                 ss.write(imgdata1)
                 ss.close()
 
@@ -2281,7 +2281,7 @@ class DriverView(APIView):
                 filename1 = "/Users/apple/Documents/Ekfrazo/Django/logistics/Logistics/Logistics/media/permit_img/"+user_name+guess_extension_data
                 image_name = user_name+guess_extension_data
                 ss=  open(filename1, 'wb')
-                print(ss)
+                # print(ss)
                 ss.write(imgdata1)
                 ss.close()
 
@@ -2299,7 +2299,7 @@ class DriverView(APIView):
                 filename1 = "/Users/apple/Documents/Ekfrazo/Django/logistics/Logistics/Logistics/media/fitness_certificate_img/"+user_name+guess_extension_data
                 image_name = user_name+guess_extension_data
                 ss=  open(filename1, 'wb')
-                print(ss)
+                # print(ss)
                 ss.write(imgdata1)
                 ss.close()
 
@@ -2317,7 +2317,7 @@ class DriverView(APIView):
                 filename1 = "/Users/apple/Documents/Ekfrazo/Django/logistics/Logistics/Logistics/media/emission_test_img/"+user_name+guess_extension_data
                 image_name = user_name+guess_extension_data
                 ss=  open(filename1, 'wb')
-                print(ss)
+                # print(ss)
                 ss.write(imgdata1)
                 ss.close()
 
@@ -2335,7 +2335,7 @@ class DriverView(APIView):
                 filename1 = "/Users/apple/Documents/Ekfrazo/Django/logistics/Logistics/Logistics/media/insurence_img/"+user_name+guess_extension_data
                 image_name = user_name+guess_extension_data
                 ss=  open(filename1, 'wb')
-                print(ss)
+                # print(ss)
                 ss.write(imgdata1)
                 ss.close()
 
@@ -2353,7 +2353,7 @@ class DriverView(APIView):
                 filename1 = "/Users/apple/Documents/Ekfrazo/Django/logistics/Logistics/Logistics/media/rc_img/"+user_name+guess_extension_data
                 image_name = user_name+guess_extension_data
                 ss=  open(filename1, 'wb')
-                print(ss)
+                # print(ss)
                 ss.write(imgdata1)
                 ss.close()
 
@@ -2371,7 +2371,7 @@ class DriverView(APIView):
                 filename1 = "/Users/apple/Documents/Ekfrazo/Django/logistics/Logistics/Logistics/media/passbook_img/"+user_name+guess_extension_data
                 image_name = user_name+guess_extension_data
                 ss=  open(filename1, 'wb')
-                print(ss)
+                # print(ss)
                 ss.write(imgdata1)
                 ss.close()
 
@@ -2416,7 +2416,7 @@ class ReviewApiView(APIView):
         id = request.query_params.get('id')
         if id:
             all_data = Review.objects.filter(id=id).values()
-            print(all_data,'AAAAAAAAAAAAAAAAAAAAAAAAAA')
+            # print(all_data,'AAAAAAAAAAAAAAAAAAAAAAAAAA')
 
             if not all_data:
                 return Response({
@@ -2433,7 +2433,7 @@ class ReviewApiView(APIView):
     def post(self,request):
         CheckAccess(request)
         data = request.data
-        print('data',data)
+        # print('data',data)
         review_stars=data.get('review_stars')
         comment=data.get('comment')
         review_type=data.get('review_type')
@@ -2529,7 +2529,7 @@ class CustomerAddressView(APIView):
         id = request.query_params.get('id')
         if id:
             all_data = CustomerAddress.objects.filter(id=id).values()
-            print(all_data,'AAAAAAAAAAAAAAAAAAAAAAAAAA')
+            # print(all_data,'AAAAAAAAAAAAAAAAAAAAAAAAAA')
 
             if not all_data:
                 return Response({
@@ -2668,7 +2668,7 @@ class PickupDetailsView(APIView):
         id = request.query_params.get('id')
         if id:
             all_data = PickupDetails.objects.filter(id=id).values()
-            print(all_data,'AAAAAAAAAAAAAAAAAAAAAAAAAA')
+            # print(all_data,'AAAAAAAAAAAAAAAAAAAAAAAAAA')
 
             if not all_data:
                 return Response({
@@ -2776,7 +2776,7 @@ class DropDetailsView(APIView):
         id = request.query_params.get('id')
         if id:
             all_data = DropDetails.objects.filter(id=id).values()
-            print(all_data,'AAAAAAAAAAAAAAAAAAAAAAAAAA')
+            # print(all_data,'AAAAAAAAAAAAAAAAAAAAAAAAAA')
 
             if not all_data:
                 return Response({
@@ -2914,7 +2914,7 @@ class PlacedOrderView(APIView):
         if id:
             if (get_sub_id.validity_end_date <= now & get_sub_id.license_status == '1' ):
                 all_data = PlacedOrder.objects.filter(id=id).values()
-                print(all_data,'AAAAAAAAAAAAAAAAAAAAAAAAAA')
+                # print(all_data,'AAAAAAAAAAAAAAAAAAAAAAAAAA')
 
                 if not all_data:
                     return Response({
@@ -2946,7 +2946,7 @@ class PlacedOrderView(APIView):
         pickup_id=data['pickup_id']
         drop_id_list=data['drop_id_list']#only 3
         vehicle_type_id=data['vehicle_type_id']
-        print(data,'dataaaa')
+        # print(data,'dataaaa')
         response = {}
         # time.mktime(datetime.datetime.strptime(pd, "%d/%m/%Y %I:%M %p").timetuple())
         if len(drop_id_list)>3:
@@ -2960,7 +2960,7 @@ class PlacedOrderView(APIView):
 
             for i in pickup_id:
                 try:
-                    print(i,'city')
+                    # print(i,'city')
                     pickup_address = CustomerAddress.objects.create(
                                                     user_id=user,
                                                     city_id=int(i['city_id']),
@@ -3128,7 +3128,7 @@ class CouponsView(APIView):
         id = request.query_params.get('id')
         if id:
             all_data = Coupons.objects.filter(id=id).values()
-            print(all_data,'AAAAAAAAAAAAAAAAAAAAAAAAAA')
+            # print(all_data,'AAAAAAAAAAAAAAAAAAAAAAAAAA')
 
             if not all_data:
                 return Response({
@@ -3234,7 +3234,7 @@ class StatusView(APIView):
         id = request.query_params.get('id')
         if id:
             all_data = Status.objects.filter(id=id).values()
-            print(all_data,'AAAAAAAAAAAAAAAAAAAAAAAAAA')
+            # print(all_data,'AAAAAAAAAAAAAAAAAAAAAAAAAA')
 
             if not all_data:
                 return Response({
@@ -3337,7 +3337,7 @@ class InOrderView(APIView):
         id = request.query_params.get('id')
         if id:
             all_data = InOrder.objects.filter(id=id).values()
-            print(all_data,'AAAAAAAAAAAAAAAAAAAAAAAAAA')
+            # print(all_data,'AAAAAAAAAAAAAAAAAAAAAAAAAA')
 
             if not all_data:
                 return Response({
@@ -3461,7 +3461,7 @@ class SubscriptionView(APIView):
         id = request.query_params.get('id')
         if id:
             all_data = Subscription.objects.filter(id=id).values()
-            print(all_data,'AAAAAAAAAAAAAAAAAAAAAAAAAA')
+            # print(all_data,'AAAAAAAAAAAAAAAAAAAAAAAAAA')
 
             if not all_data:
                 return Response({
@@ -3568,7 +3568,7 @@ class AccountView(APIView):
         id = request.query_params.get('id')
         if id:
             all_data = Account.objects.filter(id=id).values()
-            print(all_data,'AAAAAAAAAAAAAAAAAAAAAAAAAA')
+            # print(all_data,'AAAAAAAAAAAAAAAAAAAAAAAAAA')
 
             if not all_data:
                 return Response({
@@ -3694,7 +3694,7 @@ class UserDestinationsView(APIView):
         driver_reg_no = data.get('driver_reg_no')
         destination_array = data.get('destination_array')
 
-        print(destination_array,'destination_array')
+        # print(destination_array,'destination_array')
 
         # driver_log_lat = Driver.objects.filter(id=driver_id).update(
         #     live_lattitude=live_lattitude,live_longitude=live_longitude
@@ -4172,7 +4172,7 @@ class DriverSignup(APIView):
                 "passbook_img": base64.b64encode(requests.get(live_url + str(driver_image_obj_img.passbook_img)).content)
             }
 
-            print("owner id============>", driver_obj[0]['owner_id'])
+            # print("owner id============>", driver_obj[0]['owner_id'])
 
             if driver_obj[0]['owner_id'] == request.query_params['user_id']:
                 obj_with_owner_details = list(driver_obj)
@@ -4181,8 +4181,7 @@ class DriverSignup(APIView):
                 obj_with_owner_details[0]['owner_details'] = None
                 vehcile_id = driver_image_obj_img.vehicle_id
 
-                print("vehcile_id===> vehcile_id===> with subscription", vehcile_id,
-                    Vehicle_Subscription.objects.filter(vehicle_id_id=vehcile_id).last())
+                # print("vehcile_id===> vehcile_id===> with subscription", vehcile_id, Vehicle_Subscription.objects.filter(vehicle_id_id=vehcile_id).last())
 
                 if Vehicle_Subscription.objects.filter(vehicle_id_id=vehcile_id).last():
                     obj_with_owner_details[0]['is_subscribed'] = True
@@ -4191,7 +4190,7 @@ class DriverSignup(APIView):
 
                 return Response({'data': obj_with_owner_details, 'base64ImageData': imagesDict})
             else:
-                print("printing in else block")
+                # print("printing in else block")
 
                 obj_with_owner_details = list(driver_obj)
                 if obj_with_owner_details[0]['user__profile_image'] == "":
@@ -4199,7 +4198,7 @@ class DriverSignup(APIView):
 
                 owner_details = CustomUser.objects.filter(id=driver_obj[0]['owner_id']).values().first()
 
-                print("query==>", Driver.objects.filter(owner_id=driver_obj[0]['owner_id']).values('driver_driving_license'))
+                # print("query==>", Driver.objects.filter(owner_id=driver_obj[0]['owner_id']).values('driver_driving_license'))
 
                 owner_licence_number = Driver.objects.filter(owner_id=driver_obj[0]['owner_id']).values('driver_driving_license').first()
                 owner_licence_number = owner_licence_number['driver_driving_license'] 
@@ -4238,9 +4237,9 @@ class DriverSignup(APIView):
 
 
         if licence_image_front is not None or licence_image_back is not None:
-            print("base 64 byte==>", len(adhar_front_image) * 3 / 4 - adhar_front_image.count('='))
+            # print("base 64 byte==>", len(adhar_front_image) * 3 / 4 - adhar_front_image.count('='))
             file_size = file_size = len(adhar_front_image) * 3 / 4 - adhar_front_image.count('=')
-            print("total mb==>>", int(file_size) / 1000000)
+            # print("total mb==>>", int(file_size) / 1000000)
 
         if (
             adhar_front_image is not None
@@ -4345,7 +4344,7 @@ class DriverSignup(APIView):
                         'message': 'Driver profile image is updated',
                         'profile_image_path': driver.profile_image.url,
                     }
-                    print('response_data=============',response_data)
+                    # print('response_data=============',response_data)
                     return Response(response_data)  
                 else:
                     pass 
@@ -4754,7 +4753,7 @@ class OrderDeatilAPI(APIView):
             msg_obj = BookingDetail.objects.filter(Q(ordered_time__gte=start_date) &Q(ordered_time__lte=end_date) &Q(status__id__in=status_id_list) &Q(is_scheduled=is_scheduled)).values(
                 'id', 'order__user_id', 'order_id', 'driver_id', 'status','order__vehicle_number', 'total_amount','order__user_id__first_name', 'order__user_id__mobile_number',
                 'status__status_name', 'order__otp','driver__vehicle__vehicle_name', 'order__total_estimated_cost','last_update_timestamp', 'driver__first_name','status__colour','driver__mobile_number', 'ordered_time', 'is_scheduled','scheduledorder__scheduled_date_and_time','total_amount_without_actual_time_taken', 'driver__vehicle__vehicle_number')
-            print('msg=====',msg_obj)
+            # print('msg=====',msg_obj)
             reverse_obj=reversed(msg_obj)
             return Response(reverse_obj)
 
@@ -4766,7 +4765,7 @@ class OrderDeatilAPI(APIView):
             msg_obj = BookingDetail.objects.filter(Q(ordered_time__gte=start_date) &Q(ordered_time__lte=end_date) &Q(status__id__in=status_id_list)).values(
                 'id', 'order__user_id', 'order_id', 'driver_id', 'status','order__vehicle_number', 'total_amount','order__user_id__first_name', 'order__user_id__mobile_number',
                 'status__status_name', 'order__otp','driver__vehicle__vehicle_name', 'order__total_estimated_cost','last_update_timestamp', 'driver__first_name','status__colour','driver__mobile_number', 'ordered_time', 'is_scheduled','scheduledorder__scheduled_date_and_time','total_amount_without_actual_time_taken', 'driver__vehicle__vehicle_number')
-            print('msg=====',msg_obj)
+            # print('msg=====',msg_obj)
             reverse_obj=reversed(msg_obj)
             return Response(reverse_obj)
 
@@ -4777,7 +4776,7 @@ class OrderDeatilAPI(APIView):
             msg_obj = BookingDetail.objects.filter(Q(ordered_time__gte=start_date) &Q(ordered_time__lte=end_date) &Q(is_scheduled=is_scheduled)).values(
                 'id', 'order__user_id', 'order_id', 'driver_id', 'status','order__vehicle_number', 'total_amount','order__user_id__first_name', 'order__user_id__mobile_number',
                 'status__status_name', 'order__otp','driver__vehicle__vehicle_name', 'order__total_estimated_cost','last_update_timestamp', 'driver__first_name','status__colour','driver__mobile_number', 'ordered_time', 'is_scheduled','scheduledorder__scheduled_date_and_time','total_amount_without_actual_time_taken', 'driver__vehicle__vehicle_number')
-            print('msg=====',msg_obj)
+            # print('msg=====',msg_obj)
             reverse_obj=reversed(msg_obj)
             return Response(reverse_obj)
 
@@ -4787,7 +4786,7 @@ class OrderDeatilAPI(APIView):
             msg_obj = BookingDetail.objects.filter(Q(ordered_time__gte=start_date) &Q(ordered_time__lte=end_date)).values(
                 'id', 'order__user_id', 'order_id', 'driver_id', 'status','order__vehicle_number', 'total_amount','order__user_id__first_name', 'order__user_id__mobile_number',
                 'status__status_name', 'order__otp','driver__vehicle__vehicle_name', 'order__total_estimated_cost','last_update_timestamp', 'driver__first_name','status__colour','driver__mobile_number', 'ordered_time', 'is_scheduled','scheduledorder__scheduled_date_and_time','total_amount_without_actual_time_taken', 'driver__vehicle__vehicle_number')
-            print('msg=====',msg_obj)
+            # print('msg=====',msg_obj)
             reverse_obj=reversed(msg_obj)
             return Response(reverse_obj)
 
@@ -5012,7 +5011,7 @@ class CancellationApi(APIView):
         booking_id = data['booking_id']
         status_id = data['status_id']
         if BookingDetail.objects.filter(id=booking_id).exists():
-            print('aaaaaaaaaaaaaaa')
+            # print('aaaaaaaaaaaaaaa')
             BookingDetail.objects.get(id=booking_id).update(status_id_id=status_id)
             return Response({'message':"Your order is Cancelled!!"})
         else:
@@ -5026,10 +5025,10 @@ class User_feedback(APIView):
         rating = data.get('rating')
         review = data.get('review')
         order_id = data.get('order_id')
-        print('aaaaaaaaa')
+        # print('aaaaaaaaa')
 
         if OrderDetails.objects.filter(id=data['order_id']).exists():
-            print('SSSSSSSSSSSSSSSS')
+            # print('SSSSSSSSSSSSSSSS')
             user_feedback = UserFeedback.objects.create(user_id=data['user_id'],rating=data['rating'],review=data['review'],order_id=data['order_id'])
             return Response({'message': 'Thank you for the feedback'})
         else:
@@ -5051,10 +5050,10 @@ class QueriesApi(APIView):
         questions=data['questions']  
         answer = data['answer']  
         status=data['status']
-        print(status,'ddddddddd===??????')
+        # print(status,'ddddddddd===??????')
         if UserRoleRef.objects.filter(id=isfor).exists():
             obj=UserRoleRef.objects.get(id=data['isfor'])
-            print('obj=====>>',obj)
+            # print('obj=====>>',obj)
             Queries.objects.create(questions=questions,answer=answer,status=status,isfor_id=obj.id)
             return Response({'message': 'Query is created'})
         else:
@@ -5247,8 +5246,8 @@ class Customised_messageApi(APIView):
         message_type=data['message_type']
         driver__user__id=data.get('driver__user__id') 
         if Driver.objects.filter(user__id=driver_id).exists():
-            print("ssssssssssss",user__id)
-            print("ppppppppppppp",driver_id)
+            # print("ssssssssssss",user__id)
+            # print("ppppppppppppp",driver_id)
             msg_obj= Customised_message.objects.create(message_type=message_type,driver__user__id=driver_id)
             return Response({'data':'default_message Successfully Added!!'})
         else:
@@ -5281,7 +5280,7 @@ class accept_or_declineApi(APIView):
 
         if Driver.objects.filter(user_id=pk).exists():            
             driver_obj = Driver.objects.get(user_id=pk)
-            print('SSSSSSSSSSSS',driver_obj)
+            # print('SSSSSSSSSSSS',driver_obj)
             Driver.objects.filter(user_id=pk).update(driver_status=vehicle_status)
             Vehicle.objects.filter(id=driver_obj.vehicle_id).update(vehicle_status=vehicle_status)
             return Response({'message': 'message is updated'})
@@ -5401,7 +5400,7 @@ class Filter_OrdersApi(APIView):
         is_days = data['is_days']
         is_month = data['is_month']
         current_time = datetime.datetime.now()
-        print("current_time===>", current_time.day)
+        # print("current_time===>", current_time.day)
 
         tempDaysorMonth = []
         tempDaysDictorMonth = {}
@@ -5409,7 +5408,7 @@ class Filter_OrdersApi(APIView):
         order_obj = BookingDetail.objects.all().values('ordered_time').latest('id') #server    
         if is_days ==True:
             d = pd.Timestamp(date)
-            print("==<>>",d.date())
+            # print("==<>>",d.date())
             if int(d.day) == current_time.day:
                 tempDaysDictorMonth['day'] = current_time.day
                 tempDaysDictorMonth['count'] = BookingDetail.objects.filter(ordered_time__date=date).count()
@@ -5443,7 +5442,7 @@ class Filter_OrdersApi(APIView):
                         tempDaysorMonth.append(tempDaysDictorMonth)
                         tempDaysDictorMonth = {}
         else:
-                print("jhsajhd")
+                print()
         return Response(tempDaysorMonth)
     
 class DriverDocumentStatusApi(APIView):
@@ -5542,7 +5541,7 @@ def find_vehicle_estimation_cost(data, vehicle_type_id, location_details):
     min_charge = vehicle_type.min_charge
     free_min = vehicle_type.free_min
 
-    print("data is printing =>", data)
+    # print("data is printing =>", data)
 
     if type(data['location_details'])  == dict:
 
@@ -5582,8 +5581,8 @@ def find_vehicle_estimation_cost(data, vehicle_type_id, location_details):
 
                 # total_exact_amount = final_km_charage + final_minute_charge + float(min_charge)
 
-                print("final km charge=>", final_km_charage,"final_minute_charge=>", final_minute_charge, "min charge=>", min_charge)
-                print("with offer price", total_charge)
+                # print("final km charge=>", final_km_charage,"final_minute_charge=>", final_minute_charge, "min charge=>", min_charge)
+                # print("with offer price", total_charge)
 
                 # BookingDetail.objects.filter()
 
@@ -5604,7 +5603,7 @@ def find_vehicle_estimation_cost(data, vehicle_type_id, location_details):
         else:
             final_minute_charge = final_min['final_min'] * float(per_minute_price)
             total_charge = final_km_charage + final_minute_charge + float(min_charge) 
-            print("without", total_charge)
+            # print("without", total_charge)
 
             final_est_cost_output = {
                 'message':'calulated output without offer',
@@ -5626,16 +5625,16 @@ def find_vehicle_estimation_cost(data, vehicle_type_id, location_details):
 
         for i in location_details:
 
-            print("i value==>", i)
+            # print("i value==>", i)
 
-            print("printing i value==>>", i['distance']['text'])
+            # print("printing i value==>>", i['distance']['text'])
 
             distance_text = i['distance']['text']
 
             if "km" in distance_text or "m" in distance_text:
                 removed_km_text = distance_text.replace('km', '').replace('m', '')
 
-                print("removed ==>",removed_km_text)
+                # print("removed ==>",removed_km_text)
 
                 if "km" in distance_text:
                     final_km.append(float(removed_km_text))
@@ -5686,7 +5685,7 @@ def find_vehicle_estimation_cost(data, vehicle_type_id, location_details):
         else:
             final_minute_charge = abs(sum(final_min)) * float(per_minute_price)
             total_charge = final_km_charage + final_minute_charge + float(min_charge) 
-            print("without", total_charge)
+            # print("without", total_charge)
 
             final_est_cost_op = {
                 'message':'calulated output without offer', 
@@ -5709,7 +5708,7 @@ class vehicle_estimation_costApi(APIView):
         location_details=data.get('location_details')
 
         op = find_vehicle_estimation_cost(data, vehicle_type_id ,location_details)
-        print('op[====]',op)
+        # print('op[====]',op)
         return Response(op)
 
 
@@ -5881,7 +5880,7 @@ class FilesizeApi(APIView):
     def post(self,request):
         data = request.data
         file_type=data.get('file_type')
-        print('file_type',file_type)
+        # print('file_type',file_type)
         size=data.get('size')
         if Filesize.objects.filter(file_type__iexact=file_type).exists():
             return Response({'error':'File type already exists!!!'},status=status.HTTP_406_NOT_ACCEPTABLE)
@@ -5911,7 +5910,7 @@ class accept_statusApi(APIView):
     def get(self,request):
         status_name = request.query_params.get('status_name')
         order_accepted_time=request.query_params.get('order_accepted_time')
-        print('ppppppppppp===',order_accepted_time)
+        # print('ppppppppppp===',order_accepted_time)
         if status_name:
             if order_accepted_time:
                 count = 0
@@ -5969,7 +5968,7 @@ class Pending_statusApi(APIView):
     def get(self, request):
         date = request.query_params.get('date')
         status_name = request.query_params.get('status_name')
-        print('status_name==============',status_name)
+        # print('status_name==============',status_name)
         if status_name and date:
             count = 0
             matching_orders = []
@@ -6007,7 +6006,7 @@ class RemarksApi(APIView):
         text=data['text']
         if Driver.objects.filter(id=data['driver_id']).exists():
             driver=Driver.objects.get(id=data['driver_id'])
-            print('=====<><>AAAAAAa',driver)
+            # print('=====<><>AAAAAAa',driver)
             remark_obj= Remarks.objects.create(driver_id_id=driver_id,text=text,document_status_id=document_id)
             return Response({'data':'Remarks Successfully Added!!'})
         else:
@@ -6123,7 +6122,7 @@ class FilterCountApi(APIView):
                             ordered_time__gte=date, ordered_time__lt=next_date, status__id=status_id, ordered_time__year=year
                         )
                         count = bookings_filter.count()
-                        print(f'status_id={status_id}, date={date}, count={count}, filter={bookings_filter.query}')
+                        # print(f'status_id={status_id}, date={date}, count={count}, filter={bookings_filter.query}')
                         order_counts.append({'date': date, 'count': count})
                     status_record = Status.objects.filter(id=status_id).first()
                     if status_record:
@@ -6146,7 +6145,7 @@ class FilterCountApi(APIView):
                         ordered_time__gte=date, ordered_time__lt=next_date, ordered_time__year=year
                     )
                     count = bookings_filter.count()
-                    print(f'date={date}, count={count}, filter={bookings_filter.query}')
+                    # print(f'date={date}, count={count}, filter={bookings_filter.query}')
                     order_counts.append({'date': date, 'count': count})
                 response_data.append({
                     'status_name': 'All',
@@ -6500,10 +6499,10 @@ class Delete_vehicle_imageApi(APIView):
         else:
             val_obj=VehicleTypes.objects.get(id=vehicle_type_id)
             des_list=val_obj.vehicle_description
-            print('ggggggg=====>>>>',des_list)
+            # print('ggggggg=====>>>>',des_list)
             removed_value = des_list[0]['description'].pop(int(des_index_id))
-            print('fgffffffffffffff=====>>',removed_value)
-            print('ggggg',des_list[0]['description'])
+            # print('fgffffffffffffff=====>>',removed_value)
+            # print('ggggg',des_list[0]['description'])
             update_vehicle_type_sub_img= VehicleTypes.objects.filter(id=vehicle_type_id).update(vehicle_description=des_list)      
             return Response({'data':'description deleted sucessfully!!!'})
             
@@ -6534,7 +6533,7 @@ class dateOrderDetailsApi(APIView):
             'order__vehicle_number'
         )
         order_status_count_reversed = reversed(order_status_count)
-        print('order_status_count=======>>>>>>', order_status_count)
+        # print('order_status_count=======>>>>>>', order_status_count)
 
         return Response(order_status_count_reversed)
 
@@ -6576,11 +6575,11 @@ class SendmessageApi(APIView):
             tempList=[]
             msg_obj = Sendmessage.objects.filter(driver__user__id=driver_id).values('id','def_message','def_message__default_message','driver')
             tempList.append(msg_obj)
-            print('dsahj',tempList)
+            # print('dsahj',tempList)
             return Response({'data':tempList})
         if id:
             msg_obj = Sendmessage.objects.filter(id=id).values('id','def_message','def_message__default_message','driver')
-            print('dsahj',msg_obj)
+            # print('dsahj',msg_obj)
             return Response({'data':msg_obj})
         else:
             msg_obj = Sendmessage.objects.all().values('id','def_message','def_message__default_message','driver')
@@ -6591,11 +6590,11 @@ class SendmessageApi(APIView):
         def_message=data['def_message']
         # customise_msg=data['customise_msg']
         driver_id=data['driver_id']
-        print("driver_id=====>>>",driver_id)
+        # print("driver_id=====>>>",driver_id)
 
         if Driver.objects.filter(user_id=data['driver_id']).exists():
             driver=Driver.objects.get(user_id=data['driver_id'])
-            print('=====<><>AAAAAAa',driver)
+            # print('=====<><>AAAAAAa',driver)
             remark_obj= Sendmessage.objects.create(def_message_id=def_message,driver_id=driver.id)
             return Response({'data':'Sendmessage Successfully Added!!'})
         return Response({'message':'Driver_id not found!!!'})
@@ -6605,7 +6604,7 @@ class SendmessageApi(APIView):
         def_message=data['def_message']
         # customise_msg=data['customise_msg']
         driver_id=data['driver_id']
-        print("driver_id=====>>>",driver_id)
+        # print("driver_id=====>>>",driver_id)
 
         if Driver.objects.filter(user_id=data['driver_id']).exists():
             driver=Driver.objects.get(user_id=data['driver_id'])
@@ -6631,7 +6630,7 @@ class getdrivermsgApi(APIView):
         # msg_obj = Defaultmessage.objects.all().values()
         if driver_id:
             msg_obj = Sendmessage.objects.filter(driver__user__id=driver_id).values('id','def_message','def_message__default_message','driver','customise_msg')
-            print('dsahj',driver_id)
+            # print('dsahj',driver_id)
             return Response({'data':msg_obj})
         return Response({'message':'driver_id not found!!'})
 
@@ -6646,11 +6645,11 @@ class MessageCustomised(APIView):
             tempList=[]
             msg_obj = Messagecustomised.objects.filter(driver__user__id=driver_id).values('id','customise_msg','driver')
             tempList.append(msg_obj)
-            print('dsahj',tempList)
+            # print('dsahj',tempList)
             return Response({'data':tempList})
         if id:
             msg_obj = Messagecustomised.objects.filter(id=id).values('id','customise_msg','driver')
-            print('dsahj',msg_obj)
+            # print('dsahj',msg_obj)
             return Response({'data':msg_obj})
         else:
             msg_obj = Messagecustomised.objects.all().values('id','customise_msg','driver')
@@ -6661,11 +6660,11 @@ class MessageCustomised(APIView):
         data=request.data
         customise_msg=data['customise_msg']
         driver_id=data['driver_id']
-        print("driver_id=====>>>",driver_id)
+        # print("driver_id=====>>>",driver_id)
 
         if Driver.objects.filter(user_id=data['driver_id']).exists():
             driver=Driver.objects.get(user_id=data['driver_id'])
-            print('=====<><>AAAAAAa',driver)
+            # print('=====<><>AAAAAAa',driver)
             remark_obj= Messagecustomised.objects.create(customise_msg=customise_msg,driver_id=driver.id)
             return Response({'data':'customise_msg Successfully Added!!'})
         return Response({'message':'Driver_id not found!!!'})
@@ -6674,7 +6673,7 @@ class MessageCustomised(APIView):
         data = request.data
         customise_msg=data['customise_msg']
         driver_id=data['driver_id']
-        print("driver_id=====>>>",driver_id)
+        # print("driver_id=====>>>",driver_id)
 
         if Driver.objects.filter(user_id=data['driver_id']).exists():
             driver=Driver.objects.get(user_id=data['driver_id'])
@@ -6730,20 +6729,20 @@ class DefaultmessageApi(APIView):
 class DriveryearApi(APIView):
     def get(self,request):
         year = request.query_params.get('year')
-        print("year", year, type(year))
+        # print("year", year, type(year))
         month = request.query_params.get('month')
-        print("month",month)
+        # print("month",month)
         week = request.query_params.get('week')
-        print("week",week)
+        # print("week",week)
         day=request.query_params.get('day')
-        print("day")
+        # print("day")
         driver_id=request.query_params.get('driver_id')
         month_wise_order_count=Driver.objects.filter(user__id=driver_id).values('create_timestamp')
-        print('ffffff',month_wise_order_count)
+        # print('ffffff',month_wise_order_count)
         tempList=[]
         for i in month_wise_order_count:
             tempList.append(i['create_timestamp'].year)
-            print('dddddd',tempList)
+            # print('dddddd',tempList)
         return Response({'driver_year':tempList})
 
 class SubscriptionplanApi(APIView):
@@ -6840,7 +6839,7 @@ class VehicleSubscriptionApi(APIView):
 
         payment = client.order.create({"amount": int(amount),"currency": "INR","payment_capture": "1"})
 
-        print("payment response from razor pay", payment)
+        # print("payment response from razor pay", payment)
 
         if Vehicle.objects.filter(id=vehicle_id).exists():
             
