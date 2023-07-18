@@ -5443,7 +5443,7 @@ class Filter_OrdersApi(APIView):
                         tempDaysorMonth.append(tempDaysDictorMonth)
                         tempDaysDictorMonth = {}
         else:
-                # print("jhsajhd")
+                print()
         return Response(tempDaysorMonth)
     
 class DriverDocumentStatusApi(APIView):
