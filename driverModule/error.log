@@ -1,0 +1,4 @@
+[Tue Jan 17 11:36:12.715622 2023] [wsgi:error] [pid 20071:tid 140687398315776] [remote 103.104.223.117:13852] 279.35290160430094
+[Tue Jan 17 11:36:12.721241 2023] [wsgi:error] [pid 20071:tid 140687398315776] [remote 103.104.223.117:13852] total km 279.35290160430094
+[Tue Jan 17 11:36:13.092438 2023] [wsgi:error] [pid 20071:tid 140687398315776] [remote 103.104.223.117:13852] ====>> b'{"message":"Mobile no. already verified","type":"error"}'
+[Tue Jan 17 11:36:13.105354 2023] [wsgi:error] [pid 20071:tid 140687398315776] [remote 103.104.223.117:13852] Not Acceptable: /api/driver-order-detail
