@@ -1451,7 +1451,7 @@ class VehicleTypesView(APIView):
         # index=[]
         # if i in index:
         #     index_val=index.pop(i)
-        #     print(index_val)
+            # print(index_val)
         else:
             # all_values = EmployeeDetail.objects.filter(id=pk).delete()
             return Response({'result':{'status':'deleted'}})
@@ -7079,4 +7079,3 @@ class History_of_SubscriptionplanApi(APIView):
         #     return Response(response_data)
         # return Response([])  like ths i need to filter the dates             for booking in bookings:
         #         if booking['ordered_time'] and str(booking['ordered_time'].date()) == ordered_time:
-
