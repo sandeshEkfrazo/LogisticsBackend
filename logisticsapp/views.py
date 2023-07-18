@@ -4182,7 +4182,7 @@ class DriverSignup(APIView):
                 vehcile_id = driver_image_obj_img.vehicle_id
 
                 # print("vehcile_id===> vehcile_id===> with subscription", vehcile_id,
-                    Vehicle_Subscription.objects.filter(vehicle_id_id=vehcile_id).last())
+                Vehicle_Subscription.objects.filter(vehicle_id_id=vehcile_id).last()
 
                 if Vehicle_Subscription.objects.filter(vehicle_id_id=vehcile_id).last():
                     obj_with_owner_details[0]['is_subscribed'] = True
