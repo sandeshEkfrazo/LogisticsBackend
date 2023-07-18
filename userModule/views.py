@@ -18,7 +18,7 @@ from datetime import datetime
 coords_1 = (52.2296756, 21.0122287)
 coords_2 = (52.406374, 16.9251681)
 
-print(geopy.distance.geodesic(coords_1, coords_2).km)
+# print(geopy.distance.geodesic(coords_1, coords_2).km)
 
 
 class DeleteTasks(APIView):
@@ -75,7 +75,7 @@ def getMinDistancefromuserToDriver(finalArr):
 from dateutil import parser
 
 s = parser.isoparse("2023-03-10T07:58:10.585622Z")
-print("s==>", s)
+# print("s==>", s)
 
 from datetime import timedelta
 from django.shortcuts import render
@@ -102,7 +102,7 @@ class BookVehicleAPI(APIView):
             vehicle_type = Driver.objects.filter(user_id=i['driver_id']).values('vehicle__vehicletypes_id')
 
             driver_rating = UserFeedback.objects.filter(user_id = i['driver_id']).values('rating')
-            print("driver_rating==>>", driver_rating)
+            # print("driver_rating==>>", driver_rating)
             # if rating == None:
             #     rating=5
             #     return Response({'data':order_detail,'rating':rating}) 
@@ -130,7 +130,7 @@ class BookVehicleAPI(APIView):
 
             get_est_cost = views.find_vehicle_estimation_cost(data, vehicle_obj.vehicletypes_id, location_detail)
 
-            print("get_est_cost by vehicle number book by number ==>>", get_est_cost)
+            # print("get_est_cost by vehicle number book by number ==>>", get_est_cost)
 
             order_obj = OrderDetails.objects.create(user_id=user_id, vehicle_number=vehicle_number, location_detail=location_detail,total_estimated_cost = get_est_cost['total_fare_amount'])
 
@@ -187,7 +187,7 @@ class BookVehicleAPI(APIView):
                     start_location = (location_detail[0]['start_location']['lat'], location_detail[0]['start_location']['lng'])
                     
                 for i in driver_obj_location:
-                    print("i---------->>>>>---->>>>", i)
+                    # print("i---------->>>>>---->>>>", i)
                     end_location = (i['live_lattitude'], i['live_longitude'])
                     
                     final_obj['lat'] = i['live_lattitude']
@@ -200,9 +200,9 @@ class BookVehicleAPI(APIView):
                     # print("i==>", i['live_lattitude'], i['live_longitude'])
 
                     # print("total km==>",geopy.distance.geodesic(start_location, end_location).km)
-                    print("finalArr=========>>>>--->>", finalArr)
+                    # print("finalArr=========>>>>--->>", finalArr)
                     if BookingDetail.objects.filter(Q(driver_id=i['user_id']) & (Q(status_id=1) | Q(status_id=2) | Q(status_id=6) | Q(status_id=8) | Q(status_id=9) | Q(status_id=10))):
-                        print("dont assign", i['user_id'])
+                        # print("dont assign", i['user_id'])
                         for j in finalArr:
                             if j.get('driver_id') == i['user_id']:
                                 finalArr.remove(j)
@@ -212,7 +212,7 @@ class BookVehicleAPI(APIView):
                         randomly_assigning_driver.append(min_km)
 
 
-                print("randomly_assigning_driver", randomly_assigning_driver)
+                # print("randomly_assigning_driver", randomly_assigning_driver)
 
                 if (randomly_assigning_driver == [] or len(randomly_assigning_driver) == 0):
                     return Response({'err': "all vehicles are busy in state please try after some time", 'status': 'ALREADY RESERVED'},status=status.HTTP_306_RESERVED)
@@ -221,7 +221,7 @@ class BookVehicleAPI(APIView):
 
                     get_est_cost = views.find_vehicle_estimation_cost(data, data['vehicle_type'], location_detail)
 
-                    print("get_est_cost by vehicle number random vehicle ==>>", get_est_cost)
+                    # print("get_est_cost by vehicle number random vehicle ==>>", get_est_cost)
 
                     total_amount_without_actual_time_taken = get_est_cost['final_km_charge'] + get_est_cost['base_fee']
 
@@ -361,7 +361,7 @@ def sendMessage():
 
     response = requests.post(url, json=payload, headers=headers)
 
-    print("response text from send sms =>",response.text)
+    # print("response text from send sms =>",response.text)
 
 
 def resendOTP(mobile_number):
@@ -372,7 +372,7 @@ def resendOTP(mobile_number):
     res = conn.getresponse()
     data = res.read()
 
-    print(data.decode("utf-8"))
+    # print(data.decode("utf-8"))
     return data.decode("utf-8")
 
 def sendMobileOTp(mobile_number):
@@ -388,7 +388,7 @@ def sendMobileOTp(mobile_number):
     res = conn.getresponse()
     data = res.read()
 
-    print(data.decode("utf-8"))
+    # print(data.decode("utf-8"))
     return data.decode("utf-8")
 
 
@@ -400,7 +400,7 @@ def verifyOTP(mobile_number, otp):
     res = conn.getresponse()
     data = res.read()
 
-    print("verifying otp response ====>>",data)
+    # print("verifying otp response ====>>",data)
 
     return data.decode("utf-8")
 
@@ -429,7 +429,7 @@ class getUserPhoneNumber(APIView):
         otp = request.data['otp']
 
         verified_otp = verifyOTP(phone_number, otp)
-        print('verified otp', verified_otp)
+        # print('verified otp', verified_otp)
 
         # if json.loads(verified_otp)['type'] = 'error':
         #     return Response(json.loads(verified_otp), status=status.HTTP_406_NOT_ACCEPTABLE)
@@ -551,7 +551,7 @@ class AllScheduledOrder(APIView):
 
                 total_km = geopy.distance.geodesic(start_location, end_location).km
 
-                print("total km b/w driver and strt location", total_km)
+                # print("total km b/w driver and strt location", total_km)
 
                 # print(final_arr)
                 i['distance'] = round(total_km, 1)

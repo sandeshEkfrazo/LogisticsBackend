@@ -13,7 +13,7 @@ import datetime
 coords_1 = (52.2296756, 21.0122287)
 coords_2 = (52.406374, 16.9251681)
 
-print("total km",geopy.distance.geodesic(coords_1, coords_2).km)
+# print("total km",geopy.distance.geodesic(coords_1, coords_2).km)
 
 # import subprocess
 # # current_machine_id = subprocess.check_output('wmic bios get serialnumber').split('\n')[1].strip()
@@ -29,9 +29,9 @@ def estimationCostCalculation(order_id, update_status):
 	
 
 	for i in vehicle_price_per_km:
-		print("i==>>", i)
+		# print("i==>>", i)
 		price_per_km.append(float(i['driver__vehicle__vehicletypes__per_km_price']))
-		print("i['order__location_detail']==>", i['order__location_detail'], 'type==>', type(i['order__location_detail']))
+		# print("i['order__location_detail']==>", i['order__location_detail'], 'type==>', type(i['order__location_detail']))
 		if type(i['order__location_detail']) is not dict:
 			for k in i['order__location_detail']:
 				total_km.append(float(k['distance']['text'].replace('km', '')))                    
@@ -39,7 +39,7 @@ def estimationCostCalculation(order_id, update_status):
 			total_km.append(float(i['order__location_detail']['distance']['text'].replace('km', '')))
 			
 
-	print("total_km=>", total_km, sum(total_km))
+	# print("total_km=>", total_km, sum(total_km))
 
 	total_estimated_cost = price_per_km[0] * sum(total_km)
 
@@ -104,10 +104,10 @@ class DriverAPI(APIView):
 			end_time = str(order_dopped_time_end_time).split("+")[0].split(':')
 
 			t1 = datetime.datetime.strptime(start_time[0]+":"+start_time[1]+":"+str(00), "%H:%M:%S")
-			print('Start time:', t1.time())
+			# print('Start time:', t1.time())
 
 			t2 = datetime.datetime.strptime(end_time[0]+":"+end_time[1]+":"+str(00), "%H:%M:%S")
-			print('End time:', t2.time())
+			# print('End time:', t2.time())
 
 			actual_time_taken_by_driver = t2 - t1
 
@@ -188,7 +188,7 @@ class updateDriverLocation(APIView):
 
 			if BookingDetail.objects.filter(driver_id=request.data['driver_id']).exists():
 				latest_booking_id = BookingDetail.objects.filter(driver_id=request.data['driver_id']).values('order__location_detail').latest('id')
-				print('latest_booking_id==>>', latest_booking_id['order__location_detail'])
+				# print('latest_booking_id==>>', latest_booking_id['order__location_detail'])
 
 				if isinstance(latest_booking_id['order__location_detail'], dict):
 					start_location = latest_booking_id['order__location_detail']['start_location']
@@ -199,12 +199,12 @@ class updateDriverLocation(APIView):
 					coords_1 = (request.data['lat'], request.data['lng'])
 					coords_2 = (user_lat, user_lng)
 
-					print("total km",geopy.distance.geodesic(coords_1, coords_2).km)
+					# print("total km",geopy.distance.geodesic(coords_1, coords_2).km)
 
 					if geopy.distance.geodesic(coords_1, coords_2).km < 2:
 						return Response({'message': 'you are nearer to user'})
 				else:
-					print("not a dictionary")
+					# print("not a dictionary")
 
 			return Response({'message': 'location updated successfully'})
 		return Response({'err': 'driver not found'}) 
@@ -245,21 +245,21 @@ class DriverEarningsAndratingAPI(APIView):
 	def get(self, request):
 		data=request.data
 		driver_id = request.query_params.get('driver_id')
-		print("driver_id",driver_id)
+		# print("driver_id",driver_id)
 		user_id = request.query_params.get('user_id')
-		print("user_id",user_id)
+		# print("user_id",user_id)
 		id = request.query_params.get('id')
-		print("id",id)
+		# print("id",id)
 
 		if id:
 			id_obj=UserFeedback.objects.filter(id=id).values()
-			print("id_obj",id_obj)
+			# print("id_obj",id_obj)
 			return Response({'data':id_obj})
 		if driver_id:
 			driver_obj=UserFeedback.objects.filter(driver_id=driver_id).values('rating')
-			print("driver_obj",driver_obj)
+			# print("driver_obj",driver_obj)
 			average_rating=driver_obj.aggregate(Avg('rating'))
-			print("average_rating",average_rating)
+			# print("average_rating",average_rating)
 			for i in average_rating: 
 				if i==None:
 					i=5
@@ -267,9 +267,9 @@ class DriverEarningsAndratingAPI(APIView):
 			return Response (average_rating)
 		if user_id:
 			user_obj=UserFeedback.objects.filter(user_id=user_id).values('rating')
-			print("user_obj",user_obj)
+			# print("user_obj",user_obj)
 			average_rating=user_obj.aggregate(Avg('rating'))
-			print("average_rating",average_rating)
+			# print("average_rating",average_rating)
 			for i in average_rating: 
 				if i==None:
 					i=5
@@ -315,11 +315,11 @@ class NotifyDriverDocumentExpiry(APIView):
 		dateList = []
 		dateDict = {}
 		for k, v in dict(driver_obj[0]).items():
-			print("values===>>>",v, type(v))
+			# print("values===>>>",v, type(v))
 
 			remaining_days = v - datetime.datetime.now().date()
 
-			print("remaining_days==>", remaining_days)
+			# print("remaining_days==>", remaining_days)
 
 			days = str(remaining_days).replace("0:00:00", "").replace(",", "").replace("days", "").replace("day", "")
 			
@@ -383,7 +383,7 @@ class DriverEarningReport(APIView):
 		if driver_id and year is not None:
 			year_query = BookingDetail.objects.select_related('order').filter(order__vehicle_number=Vehicle_number, order_accepted_time__year=year).values('order__total_estimated_cost', 'order_accepted_time')
 			for i in year_query:
-				print("year=========,",i)
+				# print("year=========,",i)
 				if i['order_accepted_time'] == None:
 					pass
 				else:					
@@ -416,14 +416,14 @@ class DriverEarningReport(APIView):
 
 					finaloutput = []
 					finalDict = {}
-					print(result)
+					# print(result)
 					for z, y in result.items():
 						yeardict[z]=sum(y)
 			return Response (yeardict)
 			
 		else:
 			for i in query:
-				print(i)
+				# print(i)
 				if i['order_accepted_time'] == None:
 					pass
 				else:					
@@ -457,15 +457,15 @@ class DriverEarningReport(APIView):
 
 					finaloutput = []
 					finalDict = {}
-					print(result)
+					# print(result)
 					for z, y in result.items():
-						print(z, sum(y))
+						# print(z, sum(y))
 						finalDict['date'] = z
 						finalDict['amount'] = sum(y)
 						finaloutput.append(finalDict)
 						finalDict = {}
 
-					print(finaloutput)
+					# print(finaloutput)
 			
 
 		# print("pringting query==>",query.query)
