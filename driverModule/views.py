@@ -204,7 +204,7 @@ class updateDriverLocation(APIView):
 					if geopy.distance.geodesic(coords_1, coords_2).km < 2:
 						return Response({'message': 'you are nearer to user'})
 				else:
-				    pass
+					print()
 					# print("not a dictionary")
 
 			return Response({'message': 'location updated successfully'})

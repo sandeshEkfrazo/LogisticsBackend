@@ -44,9 +44,7 @@ urlpatterns = [
     path('coupons', CouponsView.as_view()),
     path('coupons/<int:pk>', CouponsView.as_view()),
 
-    path('status', StatusView.as_view()),
-    path('status/<int:pk>', StatusView.as_view()),
-
+    
     path('subcription-plan', SubscriptionView.as_view()),
     path('subcription-plan/<int:pk>', SubscriptionView.as_view()),
 
@@ -113,10 +111,6 @@ urlpatterns = [
     path('updateDriverDetails/<int:driver_id>',DriverSignup.as_view()),
     path('driver', DriverSignup.as_view()),
     path('user-login/', LoginApi.as_view()),
-    path('queries/', QueriesApi.as_view()),
-    path('queries/<int:pk>', QueriesApi.as_view()),
-    path('Aboutus/', AboutusApi.as_view()),
-    path('Aboutus/<int:pk>', AboutusApi.as_view()),
     path('customised_message/', Customised_messageApi.as_view()),
     path('customised_message/<int:pk>', Customised_messageApi.as_view()),
     path('accept_or_decline/<int:pk>', accept_or_declineApi.as_view()),
@@ -130,10 +124,8 @@ urlpatterns = [
     path('filter_order/', Filter_OrdersApi.as_view()),   
     path('Vehicle_estimation_cost/',vehicle_estimation_costApi.as_view()),
     path('driverdocumentstatus/', DriverDocumentStatusApi.as_view()),   
-    path('driverdocumentstatus/<int:pk>', DriverDocumentStatusApi.as_view()), 
-    path('filesize/', FilesizeApi.as_view()),      
-    path('filesize/<int:pk>', FilesizeApi.as_view()),      
-    path('accept_status/', accept_statusApi.as_view()),  
+    path('driverdocumentstatus/<int:pk>', DriverDocumentStatusApi.as_view()),
+    path('accept_status/', accept_statusApi.as_view()),
     path('remarks/', RemarksApi.as_view()), 
     path('remarks/<int:pk>', RemarksApi.as_view()),
     path('filtercount/', FilterCountApi.as_view()),
@@ -151,15 +143,11 @@ urlpatterns = [
     path('getdrivermsg/', getdrivermsgApi.as_view()),
     path('custommesage/', MessageCustomised.as_view()),
     path('custommesage/<int:pk>', MessageCustomised.as_view()),
-    path('subscription/', SubscriptionplanApi.as_view()),
-    path('subscription/<int:pk>', SubscriptionplanApi.as_view()),
     path('vehicle_subscription/', VehicleSubscriptionApi.as_view()),
     # path('vehicle_subscription/<int:vehicle_id>', VehicleSubscriptionApi.as_view()),
     # path('vehiclestatus/', VehiclestatusAPI.as_view()),
     path('schedulehour/', SchedulehourApi.as_view()),
     path('schedulehour/<int:pk>', SchedulehourApi.as_view()),
-    path('language/', LanguageApi.as_view()),
-    path('language/<int:pk>', LanguageApi.as_view()),
     path('history_of_subscriptionplan/', History_of_SubscriptionplanApi.as_view()),
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
