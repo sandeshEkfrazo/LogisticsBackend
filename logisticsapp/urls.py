@@ -44,9 +44,7 @@ urlpatterns = [
     path('coupons', CouponsView.as_view()),
     path('coupons/<int:pk>', CouponsView.as_view()),
 
-    path('status', StatusView.as_view()),
-    path('status/<int:pk>', StatusView.as_view()),
-
+    
     path('subcription-plan', SubscriptionView.as_view()),
     path('subcription-plan/<int:pk>', SubscriptionView.as_view()),
 
