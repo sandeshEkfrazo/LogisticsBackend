@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.models import User
 from .models import *
+from import_export.admin import ImportExportModelAdmin
 
 @admin.register(City)
 class City(admin.ModelAdmin):
@@ -11,7 +12,7 @@ class CustomUser(admin.ModelAdmin):
     list_display =['id','role','city','vehicle','first_name','last_name','mobile_number','company_name','email','alternate_number','zip_code','address','adhar_card','reset_otp','profile_image_path','base64','adhar_card_front_side_img','adhar_card_front_side_img_path','adhar_card_back_side_img','adhar_card_back_side_img_path','pan_card','pan_image_path','pan_card_base64','whatsup_number']
 
 @admin.register(VehicleTypes)
-class VehicleTypes(admin.ModelAdmin):
+class VehicleTypes(ImportExportModelAdmin):
     list_display =['id','vehicle_type_name','capacity','size','details','per_km_price','per_min_price','min_charge','free_min','max_time_min','badge','vehicle_type_image','offer_price',]
 
 @admin.register(Vehicle)
