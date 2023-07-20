@@ -379,4 +379,4 @@ class BookingDistanceApiView(APIView):
             return Response({"error": "Booking distance not found."}, status=status.HTTP_404_NOT_FOUND)
 
         booking_distance.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response({"Message": "Data deleted succesfully."},status=status.HTTP_204_NO_CONTENT)
