@@ -3,6 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import viewsets, status
 from .models import *
+from .serializers import *
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.utils import IntegrityError
 from logisticsapp.views import convertBase64
@@ -321,3 +322,61 @@ class AboutusApi(APIView):
             return Response({'message':'Successfully delete Aboutus'})
         else:
             return Response({'error':'aboutus id not found!!'},status=status.HTTP_404_NOT_FOUND)
+
+
+class BookingDistanceApiView(APIView):
+
+    def get(self, request):
+        booking_distances = BookingDistance.objects.all()
+        serializer = BookingDistanceSerializer(booking_distances, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request):
+        data = request.data
+        threshold_value = data.get('threshold_value')
+        incremented_value = data.get('incremented_value')
+        description = data.get('description')
+
+        if not (threshold_value and incremented_value and description ):
+            return Response({"message": "Missing required field"}, status=status.HTTP_400_BAD_REQUEST)
+
+        distance = BookingDistance.objects.create(threshold_value=threshold_value,
+                                                  incremented_value=incremented_value,description=description)
+        serializer = BookingDistanceSerializer(distance)
+        return Response({"message": "Data added successfully", "data": serializer.data}, status=status.HTTP_201_CREATED)
+
+    def put(self, request, pk):
+        try:
+            distance = BookingDistance.objects.get(pk=pk)
+        except BookingDistance.DoesNotExist:
+            return Response({"message": "Booking distance not found."}, status=status.HTTP_404_NOT_FOUND)
+
+        data = request.data
+
+        threshold_value = data.get('threshold_value')
+        incremented_value = data.get('incremented_value')
+        description = data.get('description')
+
+        if threshold_value is not None:
+            distance.threshold_value = threshold_value
+
+        if incremented_value is not None:
+            distance.incremented_value = incremented_value
+
+        if description is not None:
+            distance.description = description
+
+        distance.save()
+
+        serializer = BookingDistanceSerializer(distance)
+        return Response({"message": "Data updated successfully", "data": serializer.data}, status=status.HTTP_200_OK)
+
+
+    def delete(self, request, pk):
+        try:
+            booking_distance = BookingDistance.objects.get(pk=pk)
+        except BookingDistance.DoesNotExist:
+            return Response({"error": "Booking distance not found."}, status=status.HTTP_404_NOT_FOUND)
+
+        booking_distance.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)

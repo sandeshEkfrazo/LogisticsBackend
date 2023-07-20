@@ -45,3 +45,12 @@ class Aboutus(models.Model):
     alternate_phone_number=models.CharField(max_length=10, blank=True, null=True)
     text=models.TextField(blank=True, null=True)
     email = models.CharField(max_length=100, blank=True, null=True)
+
+
+class BookingDistance(models.Model):
+    threshold_value = models.IntegerField()
+    incremented_value = models.IntegerField()
+    description = models.TextField()
+
+    def _str_(self):
+        return self.threshold_value
