@@ -20,4 +20,8 @@ urlpatterns = [
     path('Aboutus/', AboutusApi.as_view()),
     path('Aboutus/<int:pk>', AboutusApi.as_view()),
 
+    path('book-distance/',BookingDistanceApiView.as_view(),name= "for getting all the datas"),
+    path('booking_distances/<int:pk>/', BookingDistanceApiView.as_view(), name='booking_distance_detail')
+
+
 ]
