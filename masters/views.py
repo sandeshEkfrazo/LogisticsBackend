@@ -336,12 +336,13 @@ class BookingDistanceApiView(APIView):
         threshold_value = data.get('threshold_value')
         incremented_value = data.get('incremented_value')
         description = data.get('description')
+        last_km_value = data.get('last_km_value')
 
-        if not (threshold_value and incremented_value and description ):
+        if not (threshold_value and incremented_value and description and last_km_value ):
             return Response({"message": "Missing required field"}, status=status.HTTP_400_BAD_REQUEST)
 
         distance = BookingDistance.objects.create(threshold_value=threshold_value,
-                                                  incremented_value=incremented_value,description=description)
+                                                  incremented_value=incremented_value,description=description,last_km_value=last_km_value)
         serializer = BookingDistanceSerializer(distance)
         return Response({"message": "Data added successfully", "data": serializer.data}, status=status.HTTP_201_CREATED)
 
@@ -356,6 +357,7 @@ class BookingDistanceApiView(APIView):
         threshold_value = data.get('threshold_value')
         incremented_value = data.get('incremented_value')
         description = data.get('description')
+        last_km_value = data.get('last_km_value')
 
         if threshold_value is not None:
             distance.threshold_value = threshold_value
@@ -365,6 +367,9 @@ class BookingDistanceApiView(APIView):
 
         if description is not None:
             distance.description = description
+
+        if last_km_value is not None:
+            distance.last_km_value  = last_km_value
 
         distance.save()
 

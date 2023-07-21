@@ -51,6 +51,7 @@ class BookingDistance(models.Model):
     threshold_value = models.IntegerField()
     incremented_value = models.IntegerField()
     description = models.TextField()
+    last_km_value = models.IntegerField(null=True,blank=2)
 
     def _str_(self):
         return self.threshold_value
