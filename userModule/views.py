@@ -142,7 +142,12 @@ class BookVehicleAPI(APIView):
 
             return Response({'message': 'wait till the driver accepts your order', 'order_id':order_obj.id,'user':sub_user_ph_number, 'vehicle_type_id': vehicle_obj.vehicletypes_id})
         else:
+            
             if data['schedule'] is not None:
+
+                print("scheduled data==>>>>>", data['schedule'])
+
+
                 order_obj = OrderDetails.objects.create(user_id=user_id, location_detail=location_detail, total_estimated_cost=data['total_estimated_cost'])
 
                 get_est_cost = views.find_vehicle_estimation_cost(data, data['vehicle_type'], location_detail)
@@ -170,11 +175,17 @@ class BookVehicleAPI(APIView):
 
                 return Response({'message': 'order scheduled successfully'})
 
-
+            
             # below query checking the type of the vehicle of particular driver along with he is online or not.
+            print("first=>",Driver.objects.filter(vehicle__vehicletypes_id=data['vehicle_type'], is_online=True))
+            print("second=>", Driver.objects.filter(vehicle__vehicletypes_id=data['vehicle_type']))
+            print("third==>", Driver.objects.filter(is_online=True))
+            
             if Driver.objects.filter(vehicle__vehicletypes_id=data['vehicle_type'], is_online=True):
-
+                
                 driver_obj_location = Driver.objects.filter(vehicle__vehicletypes_id=data['vehicle_type'], is_online=True).values()
+
+                
 
                 finalArr = []
                 final_obj = {}
@@ -478,16 +489,18 @@ def hello(request):
 #from datetime import datetime
 from django.core.exceptions import ObjectDoesNotExist   
 class AllScheduledOrder(APIView):
-
     def get(self, request):      
 
+        print("insdie get")
+
+
         scheduled_order_obj = ScheduledOrder.objects.all().values(
-            'booking__order__user__first_name', 'booking__order__location_detail', 'booking__order_id', 'booking__total_amount', 'booking__travel_details', 'booking__ordered_time', 'booking__driver__first_name', 'booking__driver_id', 'scheduled_date_and_time', 'booking__order__user__mobile_number', 'booking__order__total_estimated_cost', 'booking__status_id', 'booking__sub_user_phone_numbers', 'booking__order__user_id', 'booking__status__status_name', 'booking__status_id'
+            'booking__order__user__first_name', 'booking__order__location_detail', 'booking__order_id', 'booking__total_amount', 'booking__travel_details', 'booking__ordered_time', 'booking__driver__first_name', 'booking__driver_id', 'scheduled_date_and_time', 'booking__order__user__mobile_number', 'booking__order__total_estimated_cost', 'booking__status_id', 'booking__sub_user_phone_numbers', 'booking__order__user_id', 'booking__status__status_name', 'booking__status_id', 'booking__driver__vehicle__vehicle_number', 'booking__driver__mobile_number', 'booking__driver__vehicle__vehicletypes__vehicle_type_name'
         ).order_by('-id')
 
         if request.query_params.get('order_id'):
             shedule_obj_with_driver_order = ScheduledOrder.objects.filter(Q(booking__order_id=request.query_params.get('order_id')) & Q(booking__driver_id=request.query_params['driver_id'])).values(
-                'booking__order__user__first_name', 'booking__order__location_detail', 'booking__order_id', 'booking__total_amount', 'booking__travel_details', 'booking__ordered_time', 'booking__driver__first_name', 'booking__driver_id', 'scheduled_date_and_time', 'booking__order__user__mobile_number', 'booking__order__total_estimated_cost', 'booking__status_id', 'booking__sub_user_phone_numbers', 'booking__order__user_id', 'booking__status__status_name', 'booking__status_id'
+                'booking__order__user__first_name', 'booking__order__location_detail', 'booking__order_id', 'booking__total_amount', 'booking__travel_details', 'booking__ordered_time', 'booking__driver__first_name', 'booking__driver_id', 'scheduled_date_and_time', 'booking__order__user__mobile_number', 'booking__order__total_estimated_cost', 'booking__status_id', 'booking__sub_user_phone_numbers', 'booking__order__user_id', 'booking__status__status_name', 'booking__status_id', 'booking__driver__vehicle__vehicle_number', 'booking__driver__mobile_number', 'booking__driver__vehicle__vehicletypes__vehicle_type_name'
             ).last()
             if type(shedule_obj_with_driver_order['booking__order__location_detail']) == dict:
                 start_location = (shedule_obj_with_driver_order['booking__order__location_detail']['start_location']['lat'], shedule_obj_with_driver_order['booking__order__location_detail']['start_location']['lng'])
@@ -502,227 +515,82 @@ class AllScheduledOrder(APIView):
 
             shedule_obj_with_driver_order['distance'] = round(total_km, 1)
 
+            print("rtru 1")
+
             return Response({'data': shedule_obj_with_driver_order})
 
 
         if request.query_params:
 
-            if ScheduledOrder.objects.filter(Q(booking__driver_id=request.query_params['driver_id']) & ~Q(Q(booking__status_id=6) | Q(booking__status_id=5) | ~Q(booking__status_id=2))):
+            print("coming inside requst paramas")
+            
+            driver_o = Driver.objects.get(user_id=request.query_params['driver_id'])
+            vehcile_id = driver_o.vehicle_id
+
+            if Driver.objects.filter(Q(user_id=request.query_params['driver_id']) & Q(driver_status="Validated")) and Vehicle_Subscription.objects.filter(vehicle_id_id=vehcile_id).exists():
+
+                if ScheduledOrder.objects.filter(Q(booking__driver_id=request.query_params['driver_id']) & ~Q(Q(booking__status_id=6) | Q(booking__status_id=5) | ~Q(booking__status_id=2))):
 
 
-                driver_obj = Driver.objects.get(user_id=request.query_params['driver_id'])
+                    driver_obj = Driver.objects.get(user_id=request.query_params['driver_id'])
 
-                
-                booking_details = ScheduledOrder.objects.filter(Q(booking__driver_id=request.query_params['driver_id']) & Q(booking__status_id=2)).values('booking__order__user__first_name', 'booking__order__location_detail', 'booking__order_id', 'booking__total_amount', 'booking__travel_details', 'booking__ordered_time', 'booking__driver__first_name', 'booking__driver_id', 'scheduled_date_and_time', 'booking__order__user__mobile_number', 'booking__order__total_estimated_cost', 'booking__status_id','booking__sub_user_phone_numbers', 'booking__order__user_id', 'booking__status__status_name', 'booking__status_id').last()
-                
-                
-                if type(booking_details['booking__order__location_detail']) == dict:
-                    start_location = (booking_details['booking__order__location_detail']['start_location']['lat'], booking_details['booking__order__location_detail']['start_location']['lng'])
+                    
+                    booking_details = ScheduledOrder.objects.filter(Q(booking__driver_id=request.query_params['driver_id']) & Q(booking__status_id=2)).values('booking__order__user__first_name', 'booking__order__location_detail', 'booking__order_id', 'booking__total_amount', 'booking__travel_details', 'booking__ordered_time', 'booking__driver__first_name', 'booking__driver_id', 'scheduled_date_and_time', 'booking__order__user__mobile_number', 'booking__order__total_estimated_cost', 'booking__status_id','booking__sub_user_phone_numbers', 'booking__order__user_id', 'booking__status__status_name', 'booking__status_id', 'booking__driver__vehicle__vehicle_number', 'booking__driver__mobile_number', 'booking__driver__vehicle__vehicletypes__vehicle_type_name').last()
+                    
+                    
+                    if type(booking_details['booking__order__location_detail']) == dict:
+                        start_location = (booking_details['booking__order__location_detail']['start_location']['lat'], booking_details['booking__order__location_detail']['start_location']['lng'])
+                    else:
+                        start_location = (booking_details['booking__order__location_detail'][0]['start_location']['lat'], booking_details['booking__order__location_detail'][0]['start_location']['lng'])
+
+                    end_location = (driver_obj.live_lattitude , driver_obj.live_longitude)
+
+                    total_km = geopy.distance.geodesic(start_location, end_location).km
+
+                    booking_details['distance'] = round(total_km, 1)
+
+                    booking_status = BookingDetail.objects.filter(driver_id=request.query_params['driver_id']).values().last()
+
+                    return Response({'data': [booking_details], 'message': 'you have already selected the order', "booking__status_id": booking_details['booking__status_id']})
+                    # return Response("hello")
+        
+
                 else:
-                    start_location = (booking_details['booking__order__location_detail'][0]['start_location']['lat'], booking_details['booking__order__location_detail'][0]['start_location']['lng'])
+                    shedule_orders_with_no_drivers = ScheduledOrder.objects.filter(Q(booking__driver_id=None) & Q(booking__is_scheduled=True)).values('booking__order__user__first_name', 'booking__order__location_detail', 'booking__order_id', 'booking__total_amount', 'booking__travel_details', 'booking__ordered_time', 'booking__driver__first_name', 'booking__driver_id', 'scheduled_date_and_time', 'booking__order__user__mobile_number', 'booking__order__total_estimated_cost', 'booking__status_id', 'booking__sub_user_phone_numbers', 'booking__order__user_id', 'booking__status__status_name', 'booking__status_id', 'booking__driver__vehicle__vehicle_number', 'booking__driver__mobile_number', 'booking__driver__vehicle__vehicletypes__vehicle_type_name')
+                    
+                    return Response({'data': shedule_orders_with_no_drivers, "booking__status_id": 1})
 
-                end_location = (driver_obj.live_lattitude , driver_obj.live_longitude)
+                
 
-                total_km = geopy.distance.geodesic(start_location, end_location).km
+                final_arr = list(scheduled_order_obj)
+                for i in final_arr:
+                    if type(i['booking__order__location_detail']) == dict:
+                        start_location = (i['booking__order__location_detail']['start_location']['lat'], i['booking__order__location_detail']['start_location']['lng'])
+                    else:
+                        start_location = (i['booking__order__location_detail'][0]['start_location']['lat'], i['booking__order__location_detail'][0]['start_location']['lng'])
 
-                booking_details['distance'] = round(total_km, 1)
+                    end_location = (driver_obj.live_lattitude , driver_obj.live_longitude)
 
-                booking_status = BookingDetail.objects.filter(driver_id=request.query_params['driver_id']).values().last()
+                    total_km = geopy.distance.geodesic(start_location, end_location).km
 
-                return Response({'data': [booking_details], 'message': 'you have already selected the order', "booking__status_id": booking_details['booking__status_id']})
-                # return Response("hello")
-    
+                    # print("total km b/w driver and strt location", total_km)
 
+                    # print(final_arr)
+                    i['distance'] = round(total_km, 1)
+                    i['booking__order__total_estimated_cost'] = round(i['booking__order__total_estimated_cost'], 2)
+
+                    if i['booking__driver_id'] == None:
+                        finalArr.append(i)
+
+                
+
+                return Response({"data":finalArr})
             else:
-                shedule_orders_with_no_drivers = ScheduledOrder.objects.filter(Q(booking__driver_id=None) & Q(booking__is_scheduled=True)).values('booking__order__user__first_name', 'booking__order__location_detail', 'booking__order_id', 'booking__total_amount', 'booking__travel_details', 'booking__ordered_time', 'booking__driver__first_name', 'booking__driver_id', 'scheduled_date_and_time', 'booking__order__user__mobile_number', 'booking__order__total_estimated_cost', 'booking__status_id', 'booking__sub_user_phone_numbers', 'booking__order__user_id', 'booking__status__status_name', 'booking__status_id')
-                
-                return Response({'data': shedule_orders_with_no_drivers, "booking__status_id": 1})
-
-            
-
-            final_arr = list(scheduled_order_obj)
-            for i in final_arr:
-                if type(i['booking__order__location_detail']) == dict:
-                    start_location = (i['booking__order__location_detail']['start_location']['lat'], i['booking__order__location_detail']['start_location']['lng'])
-                else:
-                    start_location = (i['booking__order__location_detail'][0]['start_location']['lat'], i['booking__order__location_detail'][0]['start_location']['lng'])
-
-                end_location = (driver_obj.live_lattitude , driver_obj.live_longitude)
-
-                total_km = geopy.distance.geodesic(start_location, end_location).km
-
-                # print("total km b/w driver and strt location", total_km)
-
-                # print(final_arr)
-                i['distance'] = round(total_km, 1)
-                i['booking__order__total_estimated_cost'] = round(i['booking__order__total_estimated_cost'], 2)
-
-                if i['booking__driver_id'] == None:
-                    finalArr.append(i)
-
-            
-
-            return Response({"data":finalArr})
+                return Response({"message":"wait till the verification", 'data': []})
         else:
             return Response({"data":scheduled_order_obj})
 
             
-
-    # def get(self, request):      
-    #     finalArr = []
-    #     scheduled_order_obj = ScheduledOrder.objects.all().values(
-    #         'booking__order__user__first_name', 'booking__order__location_detail', 'booking__order_id', 'booking__total_amount', 'booking__travel_details', 'booking__ordered_time', 'booking__driver__first_name', 'booking__driver_id', 'scheduled_date_and_time', 'booking__order__user__mobile_number', 'booking__order__total_estimated_cost', 'booking__status_id', 'booking__sub_user_phone_numbers', 'booking__order__user_id', 'booking__status__status_name', 'booking__status_id'
-    #     ).order_by('-id')
-
-    #     if request.query_params.get('order_id'):
-    #         shedule_obj_with_driver_order = ScheduledOrder.objects.filter(Q(booking__order_id=request.query_params.get('order_id')) & Q(booking__driver_id=request.query_params['driver_id'])).values(
-    #             'booking__order__user__first_name', 'booking__order__location_detail', 'booking__order_id', 'booking__total_amount', 'booking__travel_details', 'booking__ordered_time', 'booking__driver__first_name', 'booking__driver_id', 'scheduled_date_and_time', 'booking__order__user__mobile_number', 'booking__order__total_estimated_cost', 'booking__status_id', 'booking__sub_user_phone_numbers', 'booking__order__user_id', 'booking__status__status_name', 'booking__status_id'
-    #         ).last()
-    #         if type(shedule_obj_with_driver_order['booking__order__location_detail']) == dict:
-    #             start_location = (shedule_obj_with_driver_order['booking__order__location_detail']['start_location']['lat'], shedule_obj_with_driver_order['booking__order__location_detail']['start_location']['lng'])
-    #         else:
-    #             start_location = (shedule_obj_with_driver_order['booking__order__location_detail']['start_location']['lat'], shedule_obj_with_driver_order['booking__order__location_detail']['start_location']['lng'])
-            
-    #         driver_obj = Driver.objects.get(user_id=request.query_params['driver_id'])
-
-    #         end_location = (driver_obj.live_lattitude , driver_obj.live_longitude)
-
-    #         total_km = geopy.distance.geodesic(start_location, end_location).km
-
-    #         shedule_obj_with_driver_order['distance'] = round(total_km, 1)
-
-    #         return Response({'data': shedule_obj_with_driver_order})
-
-
-    #     if request.query_params:
-
-    #         if ScheduledOrder.objects.filter(Q(booking__driver_id=request.query_params['driver_id']) & ~Q(Q(booking__status_id=6) | Q(booking__status_id=5) | ~Q(booking__status_id=2))):
-
-
-    #             driver_obj = Driver.objects.get(user_id=request.query_params['driver_id'])
-
-                
-    #             booking_details = ScheduledOrder.objects.filter(Q(booking__driver_id=request.query_params['driver_id']) & Q(booking__status_id=2)).values('booking__order__user__first_name', 'booking__order__location_detail', 'booking__order_id', 'booking__total_amount', 'booking__travel_details', 'booking__ordered_time', 'booking__driver__first_name', 'booking__driver_id', 'scheduled_date_and_time', 'booking__order__user__mobile_number', 'booking__order__total_estimated_cost', 'booking__status_id','booking__sub_user_phone_numbers', 'booking__order__user_id', 'booking__status__status_name', 'booking__status_id').last()
-                
-                
-    #             if type(booking_details['booking__order__location_detail']) == dict:
-    #                 start_location = (booking_details['booking__order__location_detail']['start_location']['lat'], booking_details['booking__order__location_detail']['start_location']['lng'])
-    #             else:
-    #                 start_location = (booking_details['booking__order__location_detail'][0]['start_location']['lat'], booking_details['booking__order__location_detail'][0]['start_location']['lng'])
-
-    #             end_location = (driver_obj.live_lattitude , driver_obj.live_longitude)
-
-    #             total_km = geopy.distance.geodesic(start_location, end_location).km
-
-    #             booking_details['distance'] = round(total_km, 1)
-
-    #             booking_status = BookingDetail.objects.filter(driver_id=request.query_params['driver_id']).values().last()
-
-    #             return Response({'data': [booking_details], 'message': 'you have already selected the order', "booking__status_id": booking_details['booking__status_id']})
-    #             # return Response("hello")
-    
-
-    #         else:
-    #             shedule_orders_with_no_drivers = ScheduledOrder.objects.filter(Q(booking__driver_id=None) & Q(booking__is_scheduled=True)).values('booking__order__user__first_name', 'booking__order__location_detail', 'booking__order_id', 'booking__total_amount', 'booking__travel_details', 'booking__ordered_time', 'booking__driver__first_name', 'booking__driver_id', 'scheduled_date_and_time', 'booking__order__user__mobile_number', 'booking__order__total_estimated_cost', 'booking__status_id', 'booking__sub_user_phone_numbers', 'booking__order__user_id', 'booking__status__status_name', 'booking__status_id')
-                
-    #             return Response({'data': shedule_orders_with_no_drivers, "booking__status_id": 1})
-
-            
-
-    #         final_arr = list(scheduled_order_obj)
-    #         for i in final_arr:
-    #             if type(i['booking__order__location_detail']) == dict:
-    #                 start_location = (i['booking__order__location_detail']['start_location']['lat'], i['booking__order__location_detail']['start_location']['lng'])
-    #             else:
-    #                 start_location = (i['booking__order__location_detail'][0]['start_location']['lat'], i['booking__order__location_detail'][0]['start_location']['lng'])
-
-    #             end_location = (driver_obj.live_lattitude , driver_obj.live_longitude)
-
-    #             total_km = geopy.distance.geodesic(start_location, end_location).km
-
-    #             print("total km b/w driver and strt location", total_km)
-
-    #             # print(final_arr)
-    #             i['distance'] = round(total_km, 1)
-    #             i['booking__order__total_estimated_cost'] = round(i['booking__order__total_estimated_cost'], 2)
-
-    #             if i['booking__driver_id'] is not None:
-    #                 finalArr.append(i)
-
-            
-
-    #         return Response({"data":finalArr})
-    #     else:
-    #         return Response({"data":scheduled_order_obj})
-
-
-
-
-
-
-
-
-
-
-
-        
-
-        # finalArr = []
-        # if request.query_params:
-        #     driver_obj = Driver.objects.get(user_id=request.query_params['driver_id'])
-
-        #     if ScheduledOrder.objects.filter(booking__driver_id=request.query_params['driver_id']).exists():
-
-        #         if BookingDetail.objects.filter(Q(driver_id=request.query_params['driver_id']) & (Q(status_id=2) | Q(status_id=5)| Q(status_id=6) | Q(status_id=8) | Q(status_id=9) | Q(status_id=10))):
-                    
-                    
-        #             booking_details = ScheduledOrder.objects.filter(booking__driver_id=request.query_params['driver_id']).values('booking__order__user__first_name', 'booking__order__location_detail', 'booking__order_id', 'booking__total_amount', 'booking__travel_details', 'booking__ordered_time', 'booking__driver__first_name', 'booking__driver_id', 'scheduled_date_and_time', 'booking__order__user__mobile_number', 'booking__order__total_estimated_cost', 'booking__status_id','booking__sub_user_phone_numbers', 'booking__order__user_id', 'booking__status__status_name', 'booking__status_id').last()
-
-        #             if type(booking_details['booking__order__location_detail']) == dict:
-        #                 start_location = (booking_details['booking__order__location_detail']['start_location']['lat'], booking_details['booking__order__location_detail']['start_location']['lng'])
-        #             else:
-        #                 start_location = (booking_details['booking__order__location_detail'][0]['start_location']['lat'], booking_details['booking__order__location_detail'][0]['start_location']['lng'])
-
-        #             end_location = (driver_obj.live_lattitude , driver_obj.live_longitude)
-
-        #             total_km = geopy.distance.geodesic(start_location, end_location).km
-
-        #             booking_details['distance'] = round(total_km, 1)
-
-        #             booking_status = BookingDetail.objects.filter(driver_id=request.query_params['driver_id']).values().last()
-
-
-        #             return Response({'data': [booking_details], 'message': 'you have already selected the order', "booking__status_id": booking_details['booking__status_id']})
-        #             # else:
-        #             #     return Response({'data': scheduled_order_obj, "status": 1})
-
-        #         # if Driver.objects.filter(user_id=request.query_params['driver_id']).exists():
-                    
-        #         final_arr = list(scheduled_order_obj)
-
-        #         for i in final_arr:
-        #             if type(i['booking__order__location_detail']) == dict:
-        #                 start_location = (i['booking__order__location_detail']['start_location']['lat'], i['booking__order__location_detail']['start_location']['lng'])
-        #             else:
-        #                 start_location = (i['booking__order__location_detail'][0]['start_location']['lat'], i['booking__order__location_detail'][0]['start_location']['lng'])
-
-        #             end_location = (driver_obj.live_lattitude , driver_obj.live_longitude)
-
-        #             total_km = geopy.distance.geodesic(start_location, end_location).km
-
-        #             print("total km b/w driver and strt location", total_km)
-
-        #             # print(final_arr)
-        #             i['distance'] = round(total_km, 1)
-        #             i['booking__order__total_estimated_cost'] = round(i['booking__order__total_estimated_cost'], 2)
-
-        #             if i['booking__driver_id'] == None:
-        #                 finalArr.append(i)
-                        
-        #         return Response({'data': finalArr, "status": 1})
-        #         # return Response({'message': "driver does not exists"}, status=status.HTTP_404_NOT_FOUND)
-        #     return Response({'data': scheduled_order_obj, 'booking__status_id': 1})
-        # return Response({'data': scheduled_order_obj, 'booking__status_id': 1})
 
     def post(self, request):
         driver_id = request.data['driver_id']
@@ -751,23 +619,27 @@ class DriverWithDistanceAPI(APIView):
 
         all_driver_obj = Driver.objects.filter(driver_status="Validated").values('user_id', 'user__first_name', 'live_lattitude', 'live_longitude')
 
+
         finalArr = []
         for i in list(all_driver_obj):
-            if i['live_lattitude'] is not None or i['live_longitude'] is not None:
-
-                if type(order_obj.location_detail) == dict:
-                    start_location = (order_obj.location_detail['start_location']['lat'], order_obj.location_detail['start_location']['lng'])
-                else:
-                    start_location = (order_obj.location_detail[0]['start_location']['lat'], order_obj.location_detail[0]['start_location']['lng'])
-
-                end_location = (i['live_lattitude'] , i['live_longitude'])
-
-                total_km = geopy.distance.geodesic(start_location, end_location).km
-
-                i['distance'] = str(round(total_km, 1)) + " km"
-
-                finalArr.append(i)
+            if BookingDetail.objects.filter(Q(driver_id=i['user_id']) & (Q(status_id=1) | Q(status_id=2) | Q(status_id=6) | Q(status_id=8) | Q(status_id=9) | Q(status_id=10))):
+                pass
             else:
-                i['distance'] = None
+                if i['live_lattitude'] is not None or i['live_longitude'] is not None:
 
-        return Response(finalArr)
+                    if type(order_obj.location_detail) == dict:
+                        start_location = (order_obj.location_detail['start_location']['lat'], order_obj.location_detail['start_location']['lng'])
+                    else:
+                        start_location = (order_obj.location_detail[0]['start_location']['lat'], order_obj.location_detail[0]['start_location']['lng'])
+
+                    end_location = (i['live_lattitude'] , i['live_longitude'])
+
+                    total_km = geopy.distance.geodesic(start_location, end_location).km
+
+                    i['distance'] = str(round(total_km, 1)) + " km"
+
+                    finalArr.append(i)
+                else:
+                    i['distance'] = None
+
+            return Response(finalArr)

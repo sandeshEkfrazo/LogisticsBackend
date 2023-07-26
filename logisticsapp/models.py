@@ -34,6 +34,9 @@ class VehicleTypes(models.Model):
     create_timestamp= models.DateTimeField(auto_now_add=True,verbose_name="create_timestamp")
     last_update_timestamp= models.DateTimeField(auto_now_add=True,verbose_name="last_update_timestamp")
 
+    def __str__(self):
+        return self.vehicle_type_name
+
 #!------------------------------------------------------------------------#!
 class Vehicle(models.Model):
     vehicletypes = models.ForeignKey(VehicleTypes, on_delete=models.CASCADE, blank=True, null=True, related_name='vehicletypes')
@@ -65,14 +68,20 @@ class Vehicle(models.Model):
     last_update_timestamp= models.DateTimeField(auto_now_add=True,verbose_name="last_update_timestamp",blank=True, null=True)
     is_active = models.BooleanField(default=True)
 
+    
+    def __str__(self):
+        if self.vehicle_name is not None:
+            return self.vehicle_name
+        else:
+            return ""
 
 class CustomUser(models.Model):
     # user  = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
-    role= models.ForeignKey(UserRoleRef, on_delete=models.CASCADE, blank=True, null=True)
+    role= models.ForeignKey(UserRoleRef, on_delete=models.CASCADE, blank=True, null=True, related_name="role")
     city= models.ForeignKey(City, on_delete=models.CASCADE, blank=True, null=True)
 
     # driver= models.ForeignKey(Driver, on_delete=models.CASCADE, blank=True, null=True)
-    vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE, blank=True, null=True)
+    vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE, blank=True, null=True, related_name='vehicle')
 
     first_name = models.CharField(max_length=250, blank=True, null=True)
     last_name = models.CharField(max_length=250, blank=True, null=True)
@@ -106,6 +115,10 @@ class CustomUser(models.Model):
 
     whatsup_number  = models.CharField(max_length=100, null=True, blank=True)
 
+    
+
+  
+
 class Driver(models.Model):
 
     user  = models.ForeignKey(CustomUser, on_delete=models.CASCADE, blank=True, null=True)
@@ -115,6 +128,7 @@ class Driver(models.Model):
     notification_history  = models.CharField(max_length=3000, blank=True, null=True)
 
     driver_driving_license= models.CharField(max_length=250, blank=True, null=True)
+    owner_driving_licence = models.CharField(max_length=100, null=True, blank=True)
     
     badge= models.CharField(max_length=250, blank=True, null=True)
     driving_license_image_path = models.CharField(max_length=250, blank=True, null=True)

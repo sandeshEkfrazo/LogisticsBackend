@@ -226,6 +226,7 @@ class SubscriptionplanApi(APIView):
         data = request.data
         if request.query_params:
             query_obj = Subscriptionplan.objects.filter(id=request.query_params['id']).values('id','time_period','validity_days','amount','type_of_service','status')
+            
             return Response({'data':query_obj})
         else:
             query_obj = Subscriptionplan.objects.all().values('id','time_period','validity_days','amount','type_of_service','status')

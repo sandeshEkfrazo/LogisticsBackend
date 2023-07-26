@@ -17,7 +17,10 @@ class Filesize(ImportExportModelAdmin):
 
 @admin.register(Queries)
 class Queries(ImportExportModelAdmin):
-    list_display =['id','questions','answer','isfor','status']
+    def user_role_name(self, obj):
+        return obj.isfor.user_role_name
+
+    list_display =['id','questions','answer','user_role_name','status']
 
 @admin.register(Language)
 class Language(ImportExportModelAdmin):
