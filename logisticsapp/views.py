@@ -5026,7 +5026,7 @@ def find_vehicle_estimation_cost(data, vehicle_type_id, location_details):
                 'total_km_of_ride': final_km['final_km'],
                 'remaining_miutes': remaining_minues['value'],
                 'base_fee': float(min_charge),
-                'total_fare_amount': total_charge,
+                'total_fare_amount': round(total_charge,2),
                 'final_km_charge': final_km_charage,
             }
 
@@ -5041,7 +5041,7 @@ def find_vehicle_estimation_cost(data, vehicle_type_id, location_details):
                 'per_km_price': float(per_kilm_price),
                 'base_fee': float(min_charge),
                 'per_min_price': float(per_minute_price),
-                'total_fare_amount': total_charge,
+                'total_fare_amount': round(total_charge,2),
                 'total_minutes_of_ride': final_min['final_min'],
                 'total_km_of_ride': final_km['final_km'],
                 'final_km_charge': final_km_charage,
@@ -6141,9 +6141,15 @@ class DriveryearApi(APIView):
         return Response({'driver_year':tempList})
 
 
+
+
+
 import datetime
 # from .backgroundScheduler import *
 import time
+from datetime import datetime
+from datetime import datetime, timedelta
+
 
 # from apscheduler.schedulers.background import BackgroundScheduler, BlockingScheduler
 
@@ -6195,61 +6201,131 @@ class VehicleSubscriptionApi(APIView):
 
         # print("payment response from razor pay", payment)
 
+        client = razorpay.Client(auth=(settings.RAZOR_KEY_ID, settings.RAZOR_KEY_SECRET))
+        payment = client.order.create({"amount": int(amount), "currency": "INR", "payment_capture": "1"})
+
         if Vehicle.objects.filter(id=vehicle_id).exists():
-            
-            vehicle=Vehicle.objects.filter(id=vehicle_id)
-            now = datetime.datetime.now()
-            expirydate= now + datetime.timedelta(validity_days)
+            vehicle = Vehicle.objects.get(id=vehicle_id)
+
+            if date_subscribed is not None:
+                date_subscribed = date_subscribed.split('T')[0]  # Extract only the date part
+                date_subscribed = datetime.strptime(date_subscribed, "%Y-%m-%d").date()
+
+            validity_days = int(validity_days)  # Convert validity_days to an integer
+            expiry_date = date_subscribed + timedelta(days=validity_days)
+
+            now = datetime.now()
+            expiry_date = datetime.combine(expiry_date, datetime.min.time())  # Convert expiry_date to a datetime object
+
+            if now > expiry_date:
+                status = 'Expired'
+            else:
+                status = 'Active'
 
             if data['vehicle_subscription_id'] is not None:
-                if is_amount_paid:
-                    obj=Vehicle_Subscription.objects.filter(id=data['vehicle_subscription_id']).update(
-                        time_period=time_period,
-                        date_subscribed=date_subscribed,
-                        expiry_date=expirydate,
-                        amount=amount,
-                        status=status,
-                        is_amount_paid=is_amount_paid,
-                        type_of_service=type_of_service,
-                        validity_days=validity_days,
-                        vehicle_id_id=vehicle_id
-                    ) 
-                obj=Vehicle_Subscription.objects.filter(id=data['vehicle_subscription_id']).update(
+                obj = Vehicle_Subscription.objects.filter(id=data['vehicle_subscription_id']).update(
                     time_period=time_period,
                     date_subscribed=date_subscribed,
-                    expiry_date=expirydate,
+                    expiry_date=expiry_date,
                     amount=amount,
                     status=status,
+                    is_amount_paid=is_amount_paid,
                     type_of_service=type_of_service,
                     validity_days=validity_days,
                     vehicle_id_id=vehicle_id
-                )             
-                return Response({'order_id':payment['id']})
+                )
+                return Response({'order_id': payment['id']})
             else:
-                if is_amount_paid:
-                    obj=Vehicle_Subscription.objects.create(
-                        time_period=time_period,
-                        date_subscribed=date_subscribed,
-                        expiry_date=expirydate,
-                        amount=amount,
-                        status=status,
-                        is_amount_paid=is_amount_paid,
-                        type_of_service=type_of_service,
-                        validity_days=validity_days,
-                        vehicle_id_id=vehicle_id
-                    ) 
-                obj=Vehicle_Subscription.objects.create(
+                obj = Vehicle_Subscription.objects.create(
                     time_period=time_period,
                     date_subscribed=date_subscribed,
-                    expiry_date=expirydate,
+                    expiry_date=expiry_date,
                     amount=amount,
                     status=status,
+                    is_amount_paid=is_amount_paid,
                     type_of_service=type_of_service,
                     validity_days=validity_days,
                     vehicle_id_id=vehicle_id
-                )             
-                return Response({'order_id':payment['id'], 'subscription_id': obj.id})
-        return Response({'data':'vehicle_id not found!!'})
+                )
+                return Response({'order_id': payment['id'], 'subscription_id': obj.id})
+
+        return Response({'data': 'vehicle_id not found!!'})
+
+    # def post(self,request):
+    #     data=request.data
+    #     time_period=data['time_period']
+    #     date_subscribed=data.get('date_subscribed')
+    #     # expiry_date=data['expiry_date']
+    #     amount=data['amount']
+    #     status=data.get('status')
+    #     is_amount_paid=data.get('is_amount_paid')
+    #     # paid_through=data.get('paid_through')
+    #     type_of_service=data.get('type_of_service')
+    #     vehicle_id=data.get('vehicle_id')
+    #     validity_days=data.get('validity_days')
+    #     # is_expired=data['is_expired']
+    #
+    #     client = razorpay.Client(auth=(settings.RAZOR_KEY_ID, settings.RAZOR_KEY_SECRET))
+    #
+    #     payment = client.order.create({"amount": int(amount),"currency": "INR","payment_capture": "1"})
+    #
+    #     # print("payment response from razor pay", payment)
+    #
+    #     if Vehicle.objects.filter(id=vehicle_id).exists():
+    #
+    #         vehicle=Vehicle.objects.filter(id=vehicle_id)
+    #         now = datetime.now()
+    #         expirydate= now + datetime.timedelta(validity_days)
+    #
+    #         if data['vehicle_subscription_id'] is not None:
+    #             if is_amount_paid:
+    #                 obj=Vehicle_Subscription.objects.filter(id=data['vehicle_subscription_id']).update(
+    #                     time_period=time_period,
+    #                     date_subscribed=date_subscribed,
+    #                     expiry_date=expirydate,
+    #                     amount=amount,
+    #                     status=status,
+    #                     is_amount_paid=is_amount_paid,
+    #                     type_of_service=type_of_service,
+    #                     validity_days=validity_days,
+    #                     vehicle_id_id=vehicle_id
+    #                 )
+    #             obj=Vehicle_Subscription.objects.filter(id=data['vehicle_subscription_id']).update(
+    #                 time_period=time_period,
+    #                 date_subscribed=date_subscribed,
+    #                 expiry_date=expirydate,
+    #                 amount=amount,
+    #                 status=status,
+    #                 type_of_service=type_of_service,
+    #                 validity_days=validity_days,
+    #                 vehicle_id_id=vehicle_id
+    #             )
+    #             return Response({'order_id':payment['id']})
+    #         else:
+    #             if is_amount_paid:
+    #                 obj=Vehicle_Subscription.objects.create(
+    #                     time_period=time_period,
+    #                     date_subscribed=date_subscribed,
+    #                     expiry_date=expirydate,
+    #                     amount=amount,
+    #                     status=status,
+    #                     is_amount_paid=is_amount_paid,
+    #                     type_of_service=type_of_service,
+    #                     validity_days=validity_days,
+    #                     vehicle_id_id=vehicle_id
+    #                 )
+    #             obj=Vehicle_Subscription.objects.create(
+    #                 time_period=time_period,
+    #                 date_subscribed=date_subscribed,
+    #                 expiry_date=expirydate,
+    #                 amount=amount,
+    #                 status=status,
+    #                 type_of_service=type_of_service,
+    #                 validity_days=validity_days,
+    #                 vehicle_id_id=vehicle_id
+    #             )
+    #             return Response({'order_id':payment['id'], 'subscription_id': obj.id})
+    #     return Response({'data':'vehicle_id not found!!'})
 
     def put(self, request):
         ord_id=request.data['razorpay_order_id']
@@ -6330,6 +6406,8 @@ class SchedulehourApi(APIView):
 #======================================================================================================================================
 
 
+from datetime import datetime
+
 class History_of_SubscriptionplanApi(APIView):
     def get(self, request):
         driver_id = request.query_params.get('driver_id')
@@ -6337,8 +6415,12 @@ class History_of_SubscriptionplanApi(APIView):
             driver = Driver.objects.get(user_id=driver_id)
             vehicle = driver.vehicle
             subscriptions = Vehicle_Subscription.objects.filter(vehicle_id=vehicle.id)
+            print(subscriptions,"ssssssssssss")
             serialized_subscriptions = []
             for subscription in subscriptions:
+                print(subscription.time_period,"subscription.time_periods==============")
+                print(subscription.date_subscribed,"subscription.date_subscribed==========")
+                print(subscription.expiry_date,"subscription.expiry_date")
                 serialized_subscription = {
                     'time_period': subscription.time_period,
                     'date_subscribed': subscription.date_subscribed,
@@ -6365,6 +6447,52 @@ class History_of_SubscriptionplanApi(APIView):
         except Driver.DoesNotExist:
             return Response(status=404, data={'message': 'Driver not found'})
 
+
+
+
+# class History_of_SubscriptionplanApi(APIView):
+#     def get(self, request):
+#         driver_id = request.query_params.get('driver_id')
+#         try:
+#             driver = Driver.objects.get(user_id=driver_id)
+#             vehicle = driver.vehicle
+#             subscriptions = Vehicle_Subscription.objects.filter(vehicle_id=vehicle.id)
+#             serialized_subscriptions = []
+#             for subscription in subscriptions:
+#                 current_date = datetime.now().date()
+#                 expiry_date = subscription.expiry_date.date()  # Convert expiry_date to datetime.date object
+#
+#                 if current_date > expiry_date:
+#                     status = 'Expired'
+#                 else:
+#                     status = 'Active'
+#
+#                 serialized_subscription = {
+#                     'time_period': subscription.time_period,
+#                     'date_subscribed': subscription.date_subscribed,
+#                     'expiry_date': subscription.expiry_date,
+#                     'amount': subscription.amount,
+#                     'status': status,
+#                     'is_amount_paid': subscription.is_amount_paid,
+#                     'paid_through': subscription.paid_through,
+#                     'type_of_service': subscription.type_of_service,
+#                     'validity_days': subscription.validity_days,
+#                     'is_expired': subscription.is_expired,
+#                     'driver_id': driver_id,
+#                     'driver_name': driver.user.first_name,
+#                     'vehicle_number': vehicle.vehicle_number,
+#                     'vehicle_name': vehicle.vehicle_name,
+#                     'mobile_number': driver.user.mobile_number,
+#                     'vehicle_type': vehicle.vehicletypes.vehicle_type_name,
+#                 }
+#                 serialized_subscriptions.append(serialized_subscription)
+#
+#             response_data = {
+#                 'subscriptions': serialized_subscriptions
+#             }
+#             return Response(response_data)
+#         except Driver.DoesNotExist:
+#             return Response(status=404, data={'message': 'Driver not found'})
 
         # if year and status_id:
         #     status_id_list = re.findall(r'\d+', status_id)
