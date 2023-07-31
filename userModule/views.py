@@ -414,8 +414,9 @@ def verifyOTP(mobile_number, otp, logged_in_time):
     looged_in_time = datetime.datetime.fromtimestamp(float(logged_in_time))
     new_time = looged_in_time + timedelta(minutes=2)
 
+    print( datetime.datetime.now(),"<<<<========>>>>", new_time)
 
-    if looged_in_time > new_time:
+    if datetime.datetime.now() > new_time:
         return "OTP has been expired"
     else:
         conn = http.client.HTTPSConnection("api.msg91.com")
