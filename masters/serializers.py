@@ -6,3 +6,10 @@ class BookingDistanceSerializer(serializers.ModelSerializer):
     class Meta:
         model = BookingDistance
         fields = '__all__'
+
+
+class TimeSerachSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Timesearch
+        fields = '__all__'

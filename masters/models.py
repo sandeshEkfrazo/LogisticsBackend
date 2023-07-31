@@ -59,11 +59,11 @@ class BookingDistance(models.Model):
     description = models.TextField()
     last_km_value = models.IntegerField(null=True,blank=2)
 
-    def _str_(self):
+    def __str__(self):
         return self.threshold_value
 
 class Timesearch(models.Model):
-    time = models.DateTimeField(auto_now_add=True,null=True, blank=True)
+    time = models.IntegerField()
 
-    def _str_(self):
-        return self.time
+    def __str__(self):
+        return str(self.time)

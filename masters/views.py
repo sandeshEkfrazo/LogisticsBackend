@@ -386,3 +386,53 @@ class BookingDistanceApiView(APIView):
 
         booking_distance.delete()
         return Response({"Message": "Data deleted succesfully."},status=status.HTTP_204_NO_CONTENT)
+
+
+class CustomizavleTimeSearchApiView(APIView):
+
+    def get(self, request):
+        time = Timesearch.objects.all()
+        serializer = TimeSerachSerializer(time, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request):
+        data = request.data
+        time = data.get('time')
+
+
+        if not (time ):
+            return Response({"message": "Missing required field"}, status=status.HTTP_400_BAD_REQUEST)
+
+        timeSearch = Timesearch.objects.create(time=time)
+        serializer = TimeSerachSerializer(timeSearch)
+        return Response({"message": "Data added successfully", "data": serializer.data}, status=status.HTTP_201_CREATED)
+
+    def put(self, request, pk):
+        try:
+            searchtime = Timesearch.objects.get(pk=pk)
+        except Timesearch.DoesNotExist:
+            return Response({"message": "Data not found."}, status=status.HTTP_404_NOT_FOUND)
+
+        data = request.data
+
+        time = data.get('time')
+
+
+        if time is not None:
+            searchtime.time = time
+
+
+        searchtime.save()
+
+        serializer = TimeSerachSerializer(searchtime)
+        return Response({"message": "Data updated successfully", "data": serializer.data}, status=status.HTTP_200_OK)
+
+
+    def delete(self, request, pk):
+        try:
+            searchtime = Timesearch.objects.get(pk=pk)
+        except Timesearch.DoesNotExist:
+            return Response({"error": " not found."}, status=status.HTTP_404_NOT_FOUND)
+
+        searchtime.delete()
+        return Response({"Message": "Data deleted succesfully."},status=status.HTTP_204_NO_CONTENT)

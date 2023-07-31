@@ -21,7 +21,10 @@ urlpatterns = [
     path('Aboutus/<int:pk>', AboutusApi.as_view()),
 
     path('book-distance/',BookingDistanceApiView.as_view(),name= "for getting all the datas"),
-    path('booking_distances/<int:pk>/', BookingDistanceApiView.as_view(), name='booking_distance_detail')
+    path('booking_distances/<int:pk>/', BookingDistanceApiView.as_view(), name='booking_distance_detail'),
+
+    path('time/',CustomizavleTimeSearchApiView.as_view(),name= "for getting all the datas"),
+    path('time/<int:pk>/', CustomizavleTimeSearchApiView.as_view(), name='time details ')
 
 
 ]
