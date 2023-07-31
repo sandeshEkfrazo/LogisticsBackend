@@ -33,3 +33,8 @@ class Subscriptionplan(ImportExportModelAdmin):
 @admin.register(Aboutus)
 class Aboutus(ImportExportModelAdmin):
     list_display = ['id','logo','heading','paragraph','phone_number','email','alternate_phone_number','text']
+
+class TimesearchAdmin(admin.ModelAdmin):
+    list_display = ['time']
+
+admin.site.register(Timesearch, TimesearchAdmin)

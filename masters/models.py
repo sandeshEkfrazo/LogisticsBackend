@@ -61,3 +61,9 @@ class BookingDistance(models.Model):
 
     def _str_(self):
         return self.threshold_value
+
+class Timesearch(models.Model):
+    time = models.DateTimeField(auto_now_add=True,null=True, blank=True)
+
+    def _str_(self):
+        return self.time

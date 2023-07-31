@@ -487,9 +487,97 @@ def hello(request):
     return HttpResponse("<center><h1>hello world</h1></center>")
 
 #from datetime import datetime
-from django.core.exceptions import ObjectDoesNotExist   
+from django.core.exceptions import ObjectDoesNotExist
+
+
+# class AllScheduledOrder(APIView):
+#     def get(self, request):
+#         scheduled_order_obj = ScheduledOrder.objects.all().values(
+#             'booking__order__user__first_name', 'booking__order__location_detail', 'booking__order_id', 'booking__total_amount', 'booking__travel_details', 'booking__ordered_time', 'booking__driver__first_name', 'booking__driver_id', 'scheduled_date_and_time', 'booking__order__user__mobile_number', 'booking__order__total_estimated_cost', 'booking__status_id', 'booking__sub_user_phone_numbers', 'booking__order__user_id', 'booking__status__status_name', 'booking__status_id'
+#         ).order_by('-id')
+#         print(scheduled_order_obj, "sssss")
+#
+#         if request.query_params.get('order_id') and request.query_params.get('driver_id'):
+#             # Filtering the ScheduledOrder queryset based on order_id and driver_id
+#             scheduled_order_qs = ScheduledOrder.objects.filter(
+#                 booking__order_id=request.query_params['order_id'],
+#                 booking__driver_id=request.query_params['driver_id']
+#             )
+#
+#             # Using .last() on the filtered QuerySet
+#             shedule_obj_with_driver_order = scheduled_order_qs.values(
+#                 'booking__order__user__first_name', 'booking__order__location_detail',
+#                 'booking__order_id', 'booking__total_amount', 'booking__travel_details',
+#                 'booking__ordered_time', 'booking__driver__first_name',
+#                 'booking__driver_id', 'scheduled_date_and_time',
+#                 'booking__order__user__mobile_number', 'booking__order__total_estimated_cost',
+#                 'booking__status_id', 'booking__sub_user_phone_numbers',
+#                 'booking__order__user_id', 'booking__status__status_name',
+#                 'booking__status_id'
+#             ).last()
+#
+#             print(shedule_obj_with_driver_order, "shedule_obj_with_driver_order")
+#             print(type(shedule_obj_with_driver_order))
+#
+#             if shedule_obj_with_driver_order is not None:
+#                 print("not none")
+#                 if type(shedule_obj_with_driver_order['booking__order__location_detail']) == dict:
+#                     start_location = (shedule_obj_with_driver_order['booking__order__location_detail']['start_location']['lat'], shedule_obj_with_driver_order['booking__order__location_detail']['start_location']['lng'])
+#                     print(start_location,"ssssif")
+#                 else:
+#                     start_location = (shedule_obj_with_driver_order['booking__order__location_detail'][0]['start_location']['lat'], shedule_obj_with_driver_order['booking__order__location_detail'][0]['start_location']['lng'])
+#                     print(start_location,"elseee")
+#
+#                 driver_obj = Driver.objects.get(user_id=request.query_params['driver_id'])
+#
+#                 end_location = (driver_obj.live_lattitude , driver_obj.live_longitude)
+#
+#                 total_km = geopy.distance.geodesic(start_location, end_location).km
+#
+#                 shedule_obj_with_driver_order['distance'] = round(total_km, 1)
+#
+#                 return Response({'data': shedule_obj_with_driver_order})
+#             else:
+#                 return Response({'message': 'No matching scheduled order found.'})
+#
+#         if request.query_params:
+#             if ScheduledOrder.objects.filter(Q(booking__driver_id=request.query_params['driver_id']) & ~Q(Q(booking__status_id=6) | Q(booking__status_id=5) | ~Q(booking__status_id=2))).exists():
+#                 driver_obj = Driver.objects.get(user_id=request.query_params['driver_id'])
+#
+#                 booking_details = ScheduledOrder.objects.filter(Q(booking__driver_id=request.query_params['driver_id']) & Q(booking__status_id=2)).values('booking__order__user__first_name', 'booking__order__location_detail', 'booking__order_id', 'booking__total_amount', 'booking__travel_details', 'booking__ordered_time', 'booking__driver__first_name', 'booking__driver_id', 'scheduled_date_and_time', 'booking__order__user__mobile_number', 'booking__order__total_estimated_cost', 'booking__status_id','booking__sub_user_phone_numbers', 'booking__order__user_id', 'booking__status__status_name', 'booking__status_id').last()
+#
+#                 if booking_details is not None:
+#                     if type(booking_details['booking__order__location_detail']) == dict:
+#                         start_location = (booking_details['booking__order__location_detail']['start_location']['lat'], booking_details['booking__order__location_detail']['start_location']['lng'])
+#                     else:
+#                         start_location = (booking_details['booking__order__location_detail'][0]['start_location']['lat'], booking_details['booking__order__location_detail'][0]['start_location']['lng'])
+#
+#                     end_location = (driver_obj.live_lattitude , driver_obj.live_longitude)
+#
+#                     total_km = geopy.distance.geodesic(start_location, end_location).km
+#
+#                     booking_details['distance'] = round(total_km, 1)
+#
+#                     booking_status = BookingDetail.objects.filter(driver_id=request.query_params['driver_id']).values().last()
+#
+#                     return Response({'data': [booking_details], 'message': 'you have already selected the order', "booking__status_id": booking_details['booking__status_id']})
+#                 else:
+#                     return Response({'message': 'No matching booking details found.'})
+#
+#             else:
+#                 shedule_orders_with_no_drivers = ScheduledOrder.objects.filter(Q(booking__driver_id=None) & Q(booking__is_scheduled=True)).values('booking__order__user__first_name', 'booking__order__location_detail', 'booking__order_id', 'booking__total_amount', 'booking__travel_details', 'booking__ordered_time', 'booking__driver__first_name', 'booking__driver_id', 'scheduled_date_and_time', 'booking__order__user__mobile_number', 'booking__order__total_estimated_cost', 'booking__status_id', 'booking__sub_user_phone_numbers', 'booking__order__user_id', 'booking__status__status_name', 'booking__status_id')
+#
+#                 return Response({'data': shedule_orders_with_no_drivers, "booking__status_id": 1})
+#
+#         else:
+#             return Response({"data":scheduled_order_obj})
+
+
+
+
 class AllScheduledOrder(APIView):
-    def get(self, request):      
+
+    def get(self, request):
 
         print("insdie get")
 
@@ -502,18 +590,24 @@ class AllScheduledOrder(APIView):
             shedule_obj_with_driver_order = ScheduledOrder.objects.filter(Q(booking__order_id=request.query_params.get('order_id')) & Q(booking__driver_id=request.query_params['driver_id'])).values(
                 'booking__order__user__first_name', 'booking__order__location_detail', 'booking__order_id', 'booking__total_amount', 'booking__travel_details', 'booking__ordered_time', 'booking__driver__first_name', 'booking__driver_id', 'scheduled_date_and_time', 'booking__order__user__mobile_number', 'booking__order__total_estimated_cost', 'booking__status_id', 'booking__sub_user_phone_numbers', 'booking__order__user_id', 'booking__status__status_name', 'booking__status_id', 'booking__driver__vehicle__vehicle_number', 'booking__driver__mobile_number', 'booking__driver__vehicle__vehicletypes__vehicle_type_name'
             ).last()
+
+
             if type(shedule_obj_with_driver_order['booking__order__location_detail']) == dict:
+                print("typee")
                 start_location = (shedule_obj_with_driver_order['booking__order__location_detail']['start_location']['lat'], shedule_obj_with_driver_order['booking__order__location_detail']['start_location']['lng'])
             else:
                 start_location = (shedule_obj_with_driver_order['booking__order__location_detail']['start_location']['lat'], shedule_obj_with_driver_order['booking__order__location_detail']['start_location']['lng'])
-            
+                print(start_location,"sss")
+
             driver_obj = Driver.objects.get(user_id=request.query_params['driver_id'])
 
-            end_location = (driver_obj.live_lattitude , driver_obj.live_longitude)
 
-            total_km = geopy.distance.geodesic(start_location, end_location).km
+            try:
+                driver = Driver.objects.get(id=request.query_params['driver_id'], driver_status="Validated")
+                print(driver ,"You are verified")
+            except Driver.DoesNotExist:
+                print('not verified.')
 
-            shedule_obj_with_driver_order['distance'] = round(total_km, 1)
 
             print("rtru 1")
 
@@ -525,6 +619,7 @@ class AllScheduledOrder(APIView):
             print("coming inside requst paramas")
             
             driver_o = Driver.objects.get(user_id=request.query_params['driver_id'])
+            print(driver_o,"dddd")
             vehcile_id = driver_o.vehicle_id
 
             if Driver.objects.filter(Q(user_id=request.query_params['driver_id']) & Q(driver_status="Validated")) and Vehicle_Subscription.objects.filter(vehicle_id_id=vehcile_id).exists():

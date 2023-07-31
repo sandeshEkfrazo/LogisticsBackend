@@ -31,7 +31,7 @@ app.autodiscover_tasks()
 
 
 
-@app.task(bind=True)
-def debug_task(self):
-    #print()"hello im printing in celery.py file")
+# @app.task(bind=True)
+# def debug_task(self):
+#     #print()"hello im printing in celery.py file")
     

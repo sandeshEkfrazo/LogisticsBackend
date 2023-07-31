@@ -4315,17 +4315,22 @@ import ast
 class OrderDeatilAPI(APIView):
     def get(self,request,user_id):
         data=request.data
+        print("hhhh")
         order_details = BookingDetail.objects.filter(driver_id=user_id).reverse().values('order_id__location_details','total_amount','order_id__user_id__mobile_number', 'order_id__user_id__alternate_number','status__colour','driver__mobile_number')
+        print(order_details,"deeee")
         return Response(order_details)
 
     def get(self,request):
         data = request.data
+        print("ooooo")
         is_scheduled = request.query_params.get('is_scheduled')
+        print(is_scheduled,"ooyyyy")
         status_id = request.query_params.get('status_id')
         # status_id_list = re.findall(r'\d+', status_id)
         # print(type(status_id_list))
         start_date = request.query_params.get('start_date')
         end_date = request.query_params.get('end_date')
+        print(end_date,"reeeeeeee")
         today = date.today()
         # return Response([])
         # book_obj=BookingDetail.objects.all().values()
@@ -4333,6 +4338,7 @@ class OrderDeatilAPI(APIView):
 
         if is_scheduled and status_id and status_id and end_date :
             status_id_list = re.findall(r'\d+', status_id)
+            print(status_id_list,"ssssssssss")
             status_id_list = [int(num) for num in status_id_list]
             end_date = datetime.datetime.strptime(end_date, '%Y-%m-%d').date()
             end_date = end_date + datetime.timedelta(days=1)
@@ -4340,7 +4346,7 @@ class OrderDeatilAPI(APIView):
             msg_obj = BookingDetail.objects.filter(Q(ordered_time__gte=start_date) &Q(ordered_time__lte=end_date) &Q(status__id__in=status_id_list) &Q(is_scheduled=is_scheduled)).values(
                 'id', 'order__user_id', 'order_id', 'driver_id', 'status','order__vehicle_number', 'total_amount','order__user_id__first_name', 'order__user_id__mobile_number',
                 'status__status_name', 'order__otp','driver__vehicle__vehicle_name', 'order__total_estimated_cost','last_update_timestamp', 'driver__first_name','status__colour','driver__mobile_number', 'ordered_time', 'is_scheduled','scheduledorder__scheduled_date_and_time','total_amount_without_actual_time_taken', 'driver__vehicle__vehicle_number')
-            # print('msg=====',msg_obj)
+            print('msg=====9999',msg_obj)
             reverse_obj=reversed(msg_obj)
             return Response(reverse_obj)
 
@@ -4352,7 +4358,7 @@ class OrderDeatilAPI(APIView):
             msg_obj = BookingDetail.objects.filter(Q(ordered_time__gte=start_date) &Q(ordered_time__lte=end_date) &Q(status__id__in=status_id_list)).values(
                 'id', 'order__user_id', 'order_id', 'driver_id', 'status','order__vehicle_number', 'total_amount','order__user_id__first_name', 'order__user_id__mobile_number',
                 'status__status_name', 'order__otp','driver__vehicle__vehicle_name', 'order__total_estimated_cost','last_update_timestamp', 'driver__first_name','status__colour','driver__mobile_number', 'ordered_time', 'is_scheduled','scheduledorder__scheduled_date_and_time','total_amount_without_actual_time_taken', 'driver__vehicle__vehicle_number')
-            # print('msg=====',msg_obj)
+            print('msg=====00',msg_obj)
             reverse_obj=reversed(msg_obj)
             return Response(reverse_obj)
 
@@ -4363,7 +4369,7 @@ class OrderDeatilAPI(APIView):
             msg_obj = BookingDetail.objects.filter(Q(ordered_time__gte=start_date) &Q(ordered_time__lte=end_date) &Q(is_scheduled=is_scheduled)).values(
                 'id', 'order__user_id', 'order_id', 'driver_id', 'status','order__vehicle_number', 'total_amount','order__user_id__first_name', 'order__user_id__mobile_number',
                 'status__status_name', 'order__otp','driver__vehicle__vehicle_name', 'order__total_estimated_cost','last_update_timestamp', 'driver__first_name','status__colour','driver__mobile_number', 'ordered_time', 'is_scheduled','scheduledorder__scheduled_date_and_time','total_amount_without_actual_time_taken', 'driver__vehicle__vehicle_number')
-            # print('msg=====',msg_obj)
+            print('msg=====',msg_obj)
             reverse_obj=reversed(msg_obj)
             return Response(reverse_obj)
 
@@ -4373,12 +4379,13 @@ class OrderDeatilAPI(APIView):
             msg_obj = BookingDetail.objects.filter(Q(ordered_time__gte=start_date) &Q(ordered_time__lte=end_date)).values(
                 'id', 'order__user_id', 'order_id', 'driver_id', 'status','order__vehicle_number', 'total_amount','order__user_id__first_name', 'order__user_id__mobile_number',
                 'status__status_name', 'order__otp','driver__vehicle__vehicle_name', 'order__total_estimated_cost','last_update_timestamp', 'driver__first_name','status__colour','driver__mobile_number', 'ordered_time', 'is_scheduled','scheduledorder__scheduled_date_and_time','total_amount_without_actual_time_taken', 'driver__vehicle__vehicle_number')
-            # print('msg=====',msg_obj)
+            print('msg=====1',msg_obj)
             reverse_obj=reversed(msg_obj)
             return Response(reverse_obj)
 
         if status_id and is_scheduled:
             status_id_list = re.findall(r'\d+', status_id)
+            print(status_id_list,"syttttt")
             status_id_list = [int(num) for num in status_id_list]
             is_scheduled = True if is_scheduled.lower() == 'true' else False
             msg_obj = BookingDetail.objects.filter(Q(status__id__in=status_id_list)&Q(is_scheduled = is_scheduled)).values('id','order__user_id','order_id','driver_id', 'status', 'order__vehicle_number','total_amount','order__user_id__first_name','order__user_id__mobile_number', 'status__status_name', 'order__otp', 'driver__vehicle__vehicle_name', 'order__total_estimated_cost','last_update_timestamp','driver__first_name','status__colour','driver__mobile_number','ordered_time','is_scheduled','scheduledorder__scheduled_date_and_time','total_amount_without_actual_time_taken', 'driver__vehicle__vehicle_number')
@@ -4387,6 +4394,7 @@ class OrderDeatilAPI(APIView):
 
         if status_id:
             status_id_list = re.findall(r'\d+', status_id)
+            print(status_id_list,"kkkk")
             status_id_list = [int(num) for num in status_id_list]
             msg_obj = BookingDetail.objects.filter(Q(status__id__in=status_id_list)).values('id','order__user_id','order_id','driver_id', 'status', 'order__vehicle_number','total_amount','order__user_id__first_name','order__user_id__mobile_number', 'status__status_name', 'order__otp', 'driver__vehicle__vehicle_name', 'order__total_estimated_cost','last_update_timestamp','driver__first_name','status__colour','driver__mobile_number','ordered_time','is_scheduled','scheduledorder__scheduled_date_and_time','total_amount_without_actual_time_taken', 'driver__vehicle__vehicle_number')
             reverse_obj=reversed(msg_obj)
@@ -4394,11 +4402,13 @@ class OrderDeatilAPI(APIView):
 
         if is_scheduled:
             is_scheduled = True if is_scheduled.lower() == 'true' else False
+            print(is_scheduled,"isyyyy")
             msg_obj = BookingDetail.objects.filter(is_scheduled = is_scheduled).values('id','order__user_id','order_id','driver_id', 'status', 'order__vehicle_number','total_amount','order__user_id__first_name','order__user_id__mobile_number', 'status__status_name', 'order__otp', 'driver__vehicle__vehicle_name', 'order__total_estimated_cost','last_update_timestamp','driver__first_name','status__colour','driver__mobile_number','ordered_time','is_scheduled','scheduledorder__scheduled_date_and_time','total_amount_without_actual_time_taken', 'driver__vehicle__vehicle_number')
             reverse_obj=reversed(msg_obj)
             return Response(reverse_obj)
 
         order_detail = BookingDetail.objects.all().order_by('-id').values('id','order__user_id','order_id','driver_id', 'status', 'order__vehicle_number','total_amount','order__user_id__first_name','order__user_id__mobile_number', 'status__status_name', 'order__otp', 'driver__vehicle__vehicle_name', 'order__total_estimated_cost','last_update_timestamp','driver__first_name','status__colour','ordered_time','driver__mobile_number','scheduledorder__scheduled_date_and_time','total_amount_without_actual_time_taken','driver__vehicle__vehicle_number')
+        print(order_detail,"detailll")
         return Response(order_detail)
 
 
@@ -6180,6 +6190,7 @@ class VehicleSubscriptionApi(APIView):
                 result.append(item)
 
             return Response(result)
+
 
     def post(self,request):
         data=request.data
