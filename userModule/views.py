@@ -145,9 +145,6 @@ class BookVehicleAPI(APIView):
             
             if data['schedule'] is not None:
 
-                print("scheduled data==>>>>>", data['schedule'])
-
-
                 order_obj = OrderDetails.objects.create(user_id=user_id, location_detail=location_detail, total_estimated_cost=data['total_estimated_cost'])
 
                 get_est_cost = views.find_vehicle_estimation_cost(data, data['vehicle_type'], location_detail)
@@ -177,15 +174,13 @@ class BookVehicleAPI(APIView):
 
             
             # below query checking the type of the vehicle of particular driver along with he is online or not.
-            print("first=>",Driver.objects.filter(vehicle__vehicletypes_id=data['vehicle_type'], is_online=True))
-            print("second=>", Driver.objects.filter(vehicle__vehicletypes_id=data['vehicle_type']))
-            print("third==>", Driver.objects.filter(is_online=True))
+            # print("first=>",Driver.objects.filter(vehicle__vehicletypes_id=data['vehicle_type'], is_online=True))
+            # print("second=>", Driver.objects.filter(vehicle__vehicletypes_id=data['vehicle_type']))
+            # print("third==>", Driver.objects.filter(is_online=True))
             
             if Driver.objects.filter(vehicle__vehicletypes_id=data['vehicle_type'], is_online=True):
                 
                 driver_obj_location = Driver.objects.filter(vehicle__vehicletypes_id=data['vehicle_type'], is_online=True).values()
-
-                
 
                 finalArr = []
                 final_obj = {}
@@ -238,6 +233,18 @@ class BookVehicleAPI(APIView):
 
 
                     booking_obj = BookingDetail.objects.create(order_id=order_obj.id, driver_id=randomly_assigning_driver[-1]['driver_id'], status_id=1, travel_details=travel_details, ordered_time=datetime.datetime.now(), sub_user_phone_numbers=sub_user_ph_number,total_amount_without_actual_time_taken=total_amount_without_actual_time_taken, is_scheduled=is_scheduled)
+
+
+                    # time_search = 1
+                    # current_time = datetime.datetime.now()
+                    # # Add two minutes to the current time this shuld come from admin panel 
+                    # new_time = current_time + timedelta(minutes=2)
+
+                    # clocked_obj = ClockedSchedule.objects.create(
+                    #     clocked_time = new_time
+                    # )
+
+                    # task_start = PeriodicTask.objects.create(name="UpdateDriverSearchResult"+str(clocked_obj.id), task="userModule.tasks.UpdateDriverSearchResult",clocked_id=clocked_obj.id, one_off=True, kwargs=json.dumps({'booking_id': booking_obj.id}))
 
                     return Response({'message': 'wait till the driver accepts your order', 'data': finalArr, 'order_id':order_obj.id})
             return Response({'message': 'no vehicle found near you', 'status': "NOT FOUND"}, status=status.HTTP_404_NOT_FOUND)
@@ -403,17 +410,24 @@ def sendMobileOTp(mobile_number):
     return data.decode("utf-8")
 
 
-def verifyOTP(mobile_number, otp):
-    conn = http.client.HTTPSConnection("api.msg91.com")
+def verifyOTP(mobile_number, otp, logged_in_time):
+    looged_in_time = datetime.datetime.fromtimestamp(float(logged_in_time))
+    new_time = looged_in_time + timedelta(minutes=2)
 
-    conn.request("GET", "/api/v5/otp/verify?otp="+str(otp)+"&authkey=351156AJtRgBbz5ff5687cP1&mobile="+str(mobile_number))
 
-    res = conn.getresponse()
-    data = res.read()
+    if looged_in_time > new_time:
+        return "OTP has been expired"
+    else:
+        conn = http.client.HTTPSConnection("api.msg91.com")
 
-    # print("verifying otp response ====>>",data)
+        conn.request("GET", "/api/v5/otp/verify?otp="+str(otp)+"&authkey=351156AJtRgBbz5ff5687cP1&mobile="+str(mobile_number))
 
-    return data.decode("utf-8")
+        res = conn.getresponse()
+        data = res.read()
+
+        # print("verifying otp response ====>>",data)
+
+        return data.decode("utf-8")
 
 class ResendOTP(APIView):
     def post(self,request):

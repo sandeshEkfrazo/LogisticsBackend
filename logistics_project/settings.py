@@ -35,12 +35,15 @@ ALLOWED_HOSTS = ['*','logistics.thestorywallcafe.com','www.logistics.thestorywal
 
 DEFAULT_APPS = [
     # 'jazzmin',
+    'jet.dashboard',
+    'jet',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
 ]
 THIRD_PARTY_APPS = [
     'rest_framework',
@@ -52,7 +55,7 @@ THIRD_PARTY_APPS = [
     'django_celery_results',
     'django_celery_beat',
     'import_export',
-    'background_task',
+    # 'background_task',
     # 'channels'
 ]
 LOCAL_APPS  = [
@@ -61,7 +64,8 @@ LOCAL_APPS  = [
     'driverModule',
     'account',
     'documents',
-    'masters'
+    'masters',
+    
 ]
 
 INSTALLED_APPS  =   DEFAULT_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -83,7 +87,7 @@ ROOT_URLCONF = 'logistics_project.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -103,23 +107,23 @@ ASGI_APPLICATION = 'logistics_project.asgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-
-
-
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'OPTIONS': {
-#             'read_default_file': '/logistics/auth/mysql.cnf',
-#         },
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
+
+
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'OPTIONS': {
+            'read_default_file': '/logistics/auth/mysql.cnf',
+        },
+    }
+}
 
 
 
@@ -163,6 +167,13 @@ CELERY_TASK_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Asia/Kolkata'
 CELERY_ACCEPT_CONTENT = ['application/json']
 
+CELERY_BEAT_SCHEDULE = {
+    'call-api-task': {
+        'task': 'userModule.tasks.call_api_task',
+        'schedule': 1.0  # Every 1 second
+    },
+}
+
 
 
 
@@ -179,8 +190,6 @@ DEFAULT_FROM_EMAIL = 'Admin<test@gmail.com>'
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=10),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=2),
-
-
     'AUTH_HEADER_TYPES': ('Bearer',),
 
 }
@@ -263,6 +272,3 @@ CHANNEL_LAYERS = {
         "BACKEND": "channels.layers.InMemoryChannelLayer"
     }
 }
-
-SMS_BACKEND = 'sms.backends.console.SmsBackend'
-

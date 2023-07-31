@@ -43,7 +43,8 @@ from django.conf import settings
 import base64
 import time
 # import datetime
-from datetime import datetime
+from datetime import datetime, time, date
+import datetime
 import pandas as pd
 
 from django.urls import reverse
@@ -459,6 +460,7 @@ class LoginApiView(APIView):
         
         if CustomUser.objects.filter(Q(mobile_number=mobile_number) & Q(role__user_role_name=user_role_name)).exists():
             sendMobileOTp(mobile_number)
+
             # print("CustomUser")
             cuser = CustomUser.objects.get(Q(mobile_number=mobile_number) & Q(role__user_role_name=user_role_name))
             store_otp = CustomUser.objects.filter(id=cuser.id, role__user_role_name=user_role_name).update(reset_otp=int(otp))
@@ -505,13 +507,16 @@ class VerifyOtpPhoneNumberApiView(APIView):
         otp_recieved = data.get('otp')
         mobile_number= data.get('mobile_number')
         user_role_name = data.get('user_role_name')
+        logged_in_time = data.get('logged_in_time')
 
 
         role = UserRoleRef.objects.get(Q(user_role_name=user_role_name))
         
         print("role id",role.id, CustomUser.objects.filter(Q(mobile_number=mobile_number) & Q(role_id=role.id)).exists())
         if  CustomUser.objects.filter(Q(mobile_number=mobile_number) & Q(role_id=role.id)).exists():
-            res = verifyOTP(mobile_number, otp_recieved)
+            res = verifyOTP(mobile_number, otp_recieved, logged_in_time)
+
+            
             print("response==>>", res)
             return Response(res)
         else:
@@ -3530,7 +3535,7 @@ class UserDestinationsView(APIView):
         return Response({'result':{'status':'Driver destination_array recieved'}})
 
 # ---------------------------------------------------------------------------------------------------------------------------------------
-import datetime
+# import datetime
 # datetime.datetime.utcnow()
 
 class LoginApi(APIView):
@@ -3547,9 +3552,9 @@ class LoginApi(APIView):
 
             if Driver.objects.filter(user_id=customUser.id).exists():
                 driver_obj = Driver.objects.get(user_id=customUser.id)
-                return Response({'message':'Login Successfull', 'otp': "otp", 'user_id': customUser.id, 'token': auth_token, 'vehicle_id': driver_obj.vehicle_id})
+                return Response({'message':'Login Successfull', 'otp': "otp", 'user_id': customUser.id, 'token': auth_token, 'vehicle_id': driver_obj.vehicle_id, 'logged_in_time': datetime.datetime.now().timestamp()})
 
-            return Response({'message':'Login Successfull', 'otp': "otp", 'user_id': customUser.id, 'token': auth_token})
+            return Response({'message':'Login Successfull', 'otp': "otp", 'user_id': customUser.id, 'token': auth_token, 'logged_in_time': datetime.now().timestamp()})
 
             # send this otp to his/her mobile number
         # if CustomUser.objects.filter(Q(mobile_number=data['mobile_number']) & Q(role__user_role_name=data['user_role_name'])).exists():
@@ -3569,17 +3574,16 @@ class UserLoginView(APIView):
         data = request.data
         mobile_number = data.get('mobile_number')
 
-        sendMobileOTp(mobile_number)
-        # otp = random.randint(100000, 999999)
-        # request.session['otp'] = otp
         if CustomUser.objects.filter(Q(mobile_number=mobile_number) & Q(role__user_role_name=data['user_role_name'])).exists():
             return Response({'driver already exist with this mobile number'}, status=status.HTTP_406_NOT_ACCEPTABLE)
         if CustomUser.objects.filter(Q(mobile_number=mobile_number) & Q(role__user_role_name=data['user_role_name'])).exists():
             return Response({'user already exist with this mobile number'}, status=status.HTTP_406_NOT_ACCEPTABLE)
- 
+
+    
         if data['user_role_name'] == None:
                 return Response({'message': 'role name is required'}, status=status.HTTP_406_NOT_ACCEPTABLE)
         else:
+            sendMobileOTp(mobile_number)
             if data['user_role_name'] == 'Driver':
                 customUser = CustomUser.objects.create(mobile_number=mobile_number, role_id=3)
                 driver_obj = Driver.objects.create(user_id=customUser.id, driver_status="Registered with Mobile Number")
@@ -3986,6 +3990,10 @@ class VehicleView(APIView):
             return Response({'result':{'status':'deleted'}})
 
 from django.db.models import F
+from userModule.tasks import getDriverDetailsByID
+
+
+
 
 class DriverSignup(APIView):
     def get(self, request):
@@ -4001,8 +4009,6 @@ class DriverSignup(APIView):
                 "passbook_img": base64.b64encode(requests.get(live_url + str(driver_image_obj_img.passbook_img)).content)
             }
 
-            # print("owner id============>", driver_obj[0]['owner_id'])
-
             if driver_obj[0]['owner_id'] == request.query_params['user_id']:
                 obj_with_owner_details = list(driver_obj)
                 if obj_with_owner_details[0]['user__profile_image'] == "":
@@ -4017,7 +4023,9 @@ class DriverSignup(APIView):
                 else:
                     obj_with_owner_details[0]['is_subscribed'] = False
 
-                return Response({'data': obj_with_owner_details, 'base64ImageData': imagesDict})
+                final_value = {'data': obj_with_owner_details, 'base64ImageData': imagesDict}
+
+                return Response(final_value)
             else:
                 # print("printing in else block")
 
@@ -4030,14 +4038,14 @@ class DriverSignup(APIView):
 
                 # print("query==>", Driver.objects.filter(owner_id=driver_obj[0]['owner_id']).values('driver_driving_license'))
 
-               
+                
                 owner_licence_number = Driver.objects.filter(owner_id=driver_obj[0]['owner_id']).values('owner_driving_licence').first()
                 owner_licence_number = owner_licence_number['owner_driving_licence'] 
                 
 
                 if owner_licence_number is not None:
                     owner_details['driver_driving_license'] = owner_licence_number
-               
+                
 
                 vehcile_id = driver_image_obj_img.vehicle_id
                 if Vehicle_Subscription.objects.filter(vehicle_id_id=vehcile_id).last():
@@ -4054,7 +4062,9 @@ class DriverSignup(APIView):
                 else:
                     obj_with_owner_details[0]['owner_details'] = [owner_details]
 
-                return Response({'data': obj_with_owner_details, 'base64ImageData': imagesDict})
+                final_value = {'data': obj_with_owner_details, 'base64ImageData': imagesDict}
+
+                return Response(final_value)
         else:
             driver_obj = Driver.objects.all().values('user_id', 'vehicle_id','vehicle__vehicle_name', 'vehicle__vehicle_number', 'driver_driving_license', 'user__first_name', 'badge', 'user__adhar_card_front_side_img_path', 'user__adhar_card_back_side_img_path', 'user__role__user_role_name', 'user__mobile_number', 'driver_driving_license', 'vehicle__permit_front_side_img_path', 'vehicle__registration_certificate_front_side_img_path', 'vehicle__vehicle_status','vehicle__registration_certificate_back_side_img_path', 'vehicle__pollution_certificate_front_side_img_path', 'license_img_front', 'license_img_back', 'insurence_img', 'passbook_img', 'license_expire_date', 'insurence_expire_date', 'fitness_certificate_expire_date', 'vehicle__permit_expire_date', 'vehicle__rc_expire_date', 'vehicle__emission_test_expire_date', 'vehicle__is_active', 'driver_status')
             return Response({'data': driver_obj})
@@ -4828,7 +4838,7 @@ class DriverCountStatusApi(APIView):
 
 
 
-import datetime
+# import datetime
 from django.db.models.functions import Extract
 import pandas as pd
 import calendar
@@ -5436,9 +5446,9 @@ class RemarksApi(APIView):
             return Response({'error':'Remarks id is not found'},status=status.HTTP_404_NOT_FOUND)
 
 import pytz
-import datetime
+# import datetime
 datetime.datetime.now()
-from datetime import datetime, timedelta
+# from datetime import datetime, timedelta
 class FilterCountApi(APIView):
     def get(self,request):
         start_date = request.query_params.get('start_date')
@@ -5910,7 +5920,7 @@ class Delete_vehicle_imageApi(APIView):
             update_vehicle_type_sub_img= VehicleTypes.objects.filter(id=vehicle_type_id).update(vehicle_description=des_list)      
             return Response({'data':'description deleted sucessfully!!!'})
             
-from datetime import datetime, date  
+# from datetime import datetime, date  
 
 class dateOrderDetailsApi(APIView):
     def post(self,request):
@@ -6154,11 +6164,10 @@ class DriveryearApi(APIView):
 
 
 
-import datetime
+# import datetime
 # from .backgroundScheduler import *
-import time
-from datetime import datetime
-from datetime import datetime, timedelta
+# import time
+# from datetime import timedelta, datetime
 
 
 # from apscheduler.schedulers.background import BackgroundScheduler, BlockingScheduler
@@ -6214,58 +6223,65 @@ class VehicleSubscriptionApi(APIView):
 
         if Vehicle.objects.filter(id=vehicle_id).exists():
 
-            vehicle=Vehicle.objects.filter(id=vehicle_id)
-            now = datetime.now()
-            expirydate= now + datetime.timedelta(validity_days)
+            if Vehicle_Subscription.objects.filter(vehicle_id_id=vehicle_id).exists():
 
-            if data['vehicle_subscription_id'] is not None:
-                if is_amount_paid:
+                vehicle=Vehicle.objects.filter(id=vehicle_id)
+                now = datetime.datetime.now()
+                expirydate= now + datetime.timedelta(validity_days)
+
+                if data['vehicle_subscription_id'] is not None:
+                    if is_amount_paid:
+                        obj=Vehicle_Subscription.objects.filter(id=data['vehicle_subscription_id']).update(
+                            time_period=time_period,
+                            date_subscribed=date_subscribed,
+                            expiry_date=expirydate,
+                            amount=amount,
+                            status=status,
+                            is_amount_paid=is_amount_paid,
+                            type_of_service=type_of_service,
+                            validity_days=validity_days,
+                            vehicle_id_id=vehicle_id
+                        )
                     obj=Vehicle_Subscription.objects.filter(id=data['vehicle_subscription_id']).update(
                         time_period=time_period,
                         date_subscribed=date_subscribed,
                         expiry_date=expirydate,
                         amount=amount,
                         status=status,
-                        is_amount_paid=is_amount_paid,
                         type_of_service=type_of_service,
                         validity_days=validity_days,
                         vehicle_id_id=vehicle_id
                     )
-                obj=Vehicle_Subscription.objects.filter(id=data['vehicle_subscription_id']).update(
-                    time_period=time_period,
-                    date_subscribed=date_subscribed,
-                    expiry_date=expirydate,
-                    amount=amount,
-                    status=status,
-                    type_of_service=type_of_service,
-                    validity_days=validity_days,
-                    vehicle_id_id=vehicle_id
-                )
-                return Response({'order_id':payment['id']})
-            else:
-                if is_amount_paid:
-                    obj=Vehicle_Subscription.objects.create(
+                    return Response({'order_id':payment['id']})
+                else:
+                    now = datetime.datetime.now()
+                    expirydate= now + datetime.timedelta(validity_days)
+                    obj=Vehicle_Subscription.objects.filter(vehicle_id_id=vehicle_id).update(
                         time_period=time_period,
                         date_subscribed=date_subscribed,
                         expiry_date=expirydate,
                         amount=amount,
                         status=status,
-                        is_amount_paid=is_amount_paid,
                         type_of_service=type_of_service,
                         validity_days=validity_days,
-                        vehicle_id_id=vehicle_id
                     )
+                    vehicle_obj = Vehicle_Subscription.objects.get(vehicle_id_id=vehicle_id)
+                    return Response({'order_id':payment['id'], 'subscription_id': vehicle_obj.id})
+
+            else:
+                now = datetime.datetime.now()
+                expirydate= now + datetime.timedelta(validity_days)
                 obj=Vehicle_Subscription.objects.create(
-                    time_period=time_period,
-                    date_subscribed=date_subscribed,
-                    expiry_date=expirydate,
-                    amount=amount,
-                    status=status,
-                    type_of_service=type_of_service,
-                    validity_days=validity_days,
-                    vehicle_id_id=vehicle_id
-                )
-                return Response({'order_id':payment['id'], 'subscription_id': obj.id})
+                        time_period=time_period,
+                        date_subscribed=date_subscribed,
+                        amount=amount,
+                        status=status,
+                        type_of_service=type_of_service,
+                        validity_days=validity_days,
+                        vehicle_id_id=vehicle_id,
+                        expiry_date=expirydate,
+                    )
+            return Response({'order_id':payment['id'], 'subscription_id': obj.id})
         return Response({'data':'vehicle_id not found!!'})
 
     def put(self, request):
@@ -6297,8 +6313,15 @@ class VehicleSubscriptionApi(APIView):
             Vehicle_Subscription.objects.filter(id=subscription_id).update(
                 is_amount_paid = is_amount_paid,
             )
+
+            expiry_date = Vehicle_Subscription.objects.get(id=subscription_id).expiry_date
+
+            clocked_obj = ClockedSchedule.objects.create(clocked_time = expiry_date)
+            task_start = PeriodicTask.objects.create(name="UpdateSubscrptionExpiry"+str(clocked_obj.id), task="userModule.tasks.UpdateSubscriptionStatus",clocked_id=clocked_obj.id, one_off=True, kwargs=json.dumps({'vehcile_subscription_id': subscription_id}))
         else:
             pass
+
+        
 
         return Response("")
 
@@ -6347,7 +6370,7 @@ class SchedulehourApi(APIView):
 #======================================================================================================================================
 
 
-from datetime import datetime
+# from datetime import datetime
 
 class History_of_SubscriptionplanApi(APIView):
     def get(self, request):
