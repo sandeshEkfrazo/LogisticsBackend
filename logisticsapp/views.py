@@ -3581,7 +3581,7 @@ class UserLoginView(APIView):
 
     
         if data['user_role_name'] == None:
-                return Response({'message': 'role name is required'}, status=status.HTTP_406_NOT_ACCEPTABLE)
+            return Response({'message': 'role name is required'}, status=status.HTTP_406_NOT_ACCEPTABLE)
         else:
             sendMobileOTp(mobile_number)
             if data['user_role_name'] == 'Driver':
@@ -3590,7 +3590,7 @@ class UserLoginView(APIView):
             else:
                 customUser = CustomUser.objects.create(mobile_number=mobile_number, role_id=2)
             
-            return Response({"message": "user created successfully", 'otp': "otp", 'user_id': customUser.id})
+            return Response({"message": "user created successfully", 'otp': "otp", 'user_id': customUser.id, 'logged_in_time': datetime.datetime.now().timestamp()})
 
 class OtpVerificationApi(APIView):
     def post(self, request):

@@ -15,6 +15,7 @@ from django_celery_beat.models import ClockedSchedule, CrontabSchedule, Periodic
 from logisticsapp import views
 from datetime import datetime
 
+
 coords_1 = (52.2296756, 21.0122287)
 coords_2 = (52.406374, 16.9251681)
 
@@ -414,10 +415,10 @@ def verifyOTP(mobile_number, otp, logged_in_time):
     looged_in_time = datetime.datetime.fromtimestamp(float(logged_in_time))
     new_time = looged_in_time + timedelta(minutes=2)
 
-    print( datetime.datetime.now(),"<<<<========>>>>", new_time)
-
     if datetime.datetime.now() > new_time:
-        return "OTP has been expired"
+        message = {'message': '"OTP has been expired"', 'type': 'failure'}
+        json_string = json.dumps(message)
+        return json_string
     else:
         conn = http.client.HTTPSConnection("api.msg91.com")
 
