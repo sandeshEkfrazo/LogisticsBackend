@@ -3990,7 +3990,6 @@ class VehicleView(APIView):
             return Response({'result':{'status':'deleted'}})
 
 from django.db.models import F
-from userModule.tasks import getDriverDetailsByID
 
 
 
@@ -4083,6 +4082,9 @@ class DriverSignup(APIView):
         owner_details = data['owner_details']
         driver_id = data['driver_id']
         is_online=data.get('is_online')
+
+        if Driver.objects.filter(Q(driver_driving_license=driving_licence_number)).exists():
+            return Response({'Error': 'This driving licence is already exists'})
 
 
 
@@ -6457,6 +6459,7 @@ class History_of_SubscriptionplanApi(APIView):
 #             return Response(response_data)
 #         except Driver.DoesNotExist:
 #             return Response(status=404, data={'message': 'Driver not found'})
+
 
         # if year and status_id:
         #     status_id_list = re.findall(r'\d+', status_id)
