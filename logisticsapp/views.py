@@ -4157,6 +4157,10 @@ class DriverSignup(APIView):
         passbook_image = data['passbook_image']
         mobile_number = data['mobile_number']
         owner_details = data['owner_details']  
+
+        if Driver.objects.filter(Q(driver_driving_license=driving_licence_number)).exists():
+            return Response({'Error': 'This driving licence is already exists'})
+
         if data['profile_image']:
             if data['profile_image']:
                 if "data:image/" in data['profile_image']:
