@@ -58,7 +58,7 @@ THIRD_PARTY_APPS = [
     # 'background_task',
     # 'channels'
 ]
-LOCAL_APPS  = [
+LOCAL_APPS = [
     'logisticsapp',
     'userModule',
     'driverModule',
@@ -116,13 +116,24 @@ ASGI_APPLICATION = 'logistics_project.asgi.application'
 
 
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'OPTIONS': {
+#             'read_default_file': '/logistics/auth/mysql.cnf',
+#         },
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'OPTIONS': {
-            'read_default_file': '/logistics/auth/mysql.cnf',
-        },
-    }
+    'ENGINE': 'django.db.backends.mysql',
+    'NAME': 'logistics',
+    'USER': 'root',
+    'PASSWORD': 'Ekfrazo@123#',
+    'HOST': '143.110.184.45',
+    'PORT': '3306',
+     }
 }
 
 

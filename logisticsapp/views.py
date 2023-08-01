@@ -372,6 +372,7 @@ class LoginView(APIView):
                     'role_id':c_user.role_id,
                     'role_name':user_role.user_role_name,
                     'token':authorization,
+                    
                     'status': status.HTTP_200_OK}
                 response['Authorization'] = authorization
                 response['status'] = status.HTTP_200_OK
@@ -435,10 +436,12 @@ class SignUpPhoneNumberApiView(APIView):
                             "user_role_name":user_role_name,
                             # 'email':user_create.email,
                             'role_id': user_role.id,
-                            'otp':otp
+                            'otp':otp,
+                            'logged_in_time': datetime.datetime.now().timestamp(),
                             # 'result':data_dict
                             
                             }}
+                response_result['logged_in_time'] =  datetime.datetime.now().timestamp()
                 response['Authorization'] = authorization
                 response['status'] = status.HTTP_200_OK
                 return Response(response_result['result'], headers=response,status= status.HTTP_200_OK)
@@ -3554,7 +3557,7 @@ class LoginApi(APIView):
                 driver_obj = Driver.objects.get(user_id=customUser.id)
                 return Response({'message':'Login Successfull', 'otp': "otp", 'user_id': customUser.id, 'token': auth_token, 'vehicle_id': driver_obj.vehicle_id, 'logged_in_time': datetime.datetime.now().timestamp()})
 
-            return Response({'message':'Login Successfull', 'otp': "otp", 'user_id': customUser.id, 'token': auth_token, 'logged_in_time': datetime.now().timestamp()})
+            return Response({'message':'Login Successfull', 'otp': "otp", 'user_id': customUser.id, 'token': auth_token, 'logged_in_time': datetime.datetime.now().timestamp()})
 
             # send this otp to his/her mobile number
         # if CustomUser.objects.filter(Q(mobile_number=data['mobile_number']) & Q(role__user_role_name=data['user_role_name'])).exists():
@@ -3990,6 +3993,10 @@ class VehicleView(APIView):
             return Response({'result':{'status':'deleted'}})
 
 from django.db.models import F
+<<<<<<< Updated upstream
+=======
+# from userModule.tasks import getDriverDetailsByID
+>>>>>>> Stashed changes
 
 
 
@@ -4085,8 +4092,6 @@ class DriverSignup(APIView):
 
         if Driver.objects.filter(Q(driver_driving_license=driving_licence_number)).exists():
             return Response({'Error': 'This driving licence is already exists'})
-
-
 
         if licence_image_front is not None or licence_image_back is not None:
             # print("base 64 byte==>", len(adhar_front_image) * 3 / 4 - adhar_front_image.count('='))
@@ -4281,9 +4286,10 @@ class DriverSignup(APIView):
                     Driver.objects.filter(user_id=driver_id).update(owner_driving_licence=data['owner_details']['owner_drivering_licence_number'], owner_id=owner_obj.id, driver_status = "waiting for verification")
 
         else:
-            Driver.objects.filter(user_id=driver_id).update(owner_id=None)
+            CustomUser.objects.filter(id=driver_id).update(first_name=full_name)
+            Driver.objects.filter(user_id=driver_id).update(owner_id=None, driver_driving_license=driving_licence_number, driver_status = "waiting for verification")
 
-        driver = Driver.objects.get(user_id=driver_id)
+        driver = Driver.objects.get(user_id=driver_id, badge=badge, )
         vehicle = driver.vehicle
         vehicle.vehicle_status = "waiting for verification"
         vehicle.save()

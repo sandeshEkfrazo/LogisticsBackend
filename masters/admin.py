@@ -34,7 +34,7 @@ class Subscriptionplan(ImportExportModelAdmin):
 class Aboutus(ImportExportModelAdmin):
     list_display = ['id','logo','heading','paragraph','phone_number','email','alternate_phone_number','text']
 
-class TimesearchAdmin(admin.ModelAdmin):
-    list_display = ['time']
+class TimesearchAdmin(ImportExportModelAdmin):
+    list_display = ['time', 'description']
 
 admin.site.register(Timesearch, TimesearchAdmin)
