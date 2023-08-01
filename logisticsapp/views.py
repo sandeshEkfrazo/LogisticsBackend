@@ -4091,7 +4091,7 @@ class DriverSignup(APIView):
         is_online=data.get('is_online')
 
         if Driver.objects.filter(Q(driver_driving_license=driving_licence_number)).exists():
-            return Response({'Error': 'This driving licence is already exists'})
+            return Response({'Error': 'This driving licence is already exists'}, status=status.HTTP_400_BAD_REQUEST)
 
         if licence_image_front is not None or licence_image_back is not None:
             # print("base 64 byte==>", len(adhar_front_image) * 3 / 4 - adhar_front_image.count('='))
@@ -4156,10 +4156,10 @@ class DriverSignup(APIView):
         licence_image_back = data['licence_image_back']
         passbook_image = data['passbook_image']
         mobile_number = data['mobile_number']
-        owner_details = data['owner_details']  
+        owner_details = data['owner_details']
 
         if Driver.objects.filter(Q(driver_driving_license=driving_licence_number)).exists():
-            return Response({'Error': 'This driving licence is already exists'})
+            return Response({'Error': 'This driving licence is already exists'}, status=status.HTTP_400_BAD_REQUEST)
 
         if data['profile_image']:
             if data['profile_image']:
