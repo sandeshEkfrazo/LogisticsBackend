@@ -30,6 +30,15 @@ class Vehicle(admin.ModelAdmin):
 class Driver(admin.ModelAdmin):
     list_display =['id','user','vehicle','owner_id','subcription','notification_history','driver_driving_license', 'owner_driving_licence','badge','driving_license_image_path','validity_start_date_time','validity_end_date_time','driver_status','license_expire_date','fitness_certificate_expire_date','insurence_expire_date','license_img_front','license_img_back','insurence_img','passbook_img','fitness_certificate_front_side_img_path','fitness_certificate_back_side_img_path','live_lattitude','live_longitude','date_online','date_offline','is_online','time','create_timestamp','last_update_timestamp']
 
+    def passbook_img(self, obj):
+        print("====>>", obj)
+        if obj.image:  # Assuming the name of your FileField is 'image'
+            return mark_safe(f'<img src="{obj.image.url}" width="50" height="50" />')
+        else:
+            return "No Image"
+
+    passbook_img.short_description = 'Image'
+
 @admin.register(Customised_message)
 class Customised_message(admin.ModelAdmin):
     list_display = ['id','driver_id','message_type']

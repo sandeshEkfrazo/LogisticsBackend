@@ -6,6 +6,8 @@ from .models import *
 @admin.register(BookingDetail)
 class BookingDetail(admin.ModelAdmin):
     list_display = ['id','order','driver', 'status', 'total_amount', 'create_timestamp', 'last_update_timestamp', 'travel_details', 'is_bill_required', 'is_bill_recived', 'request_cancel', 'ordered_time','pickedup_time','order_accepted_time','canceled_time','declined_time','trip_ended_time','request_canceled_ride_time','accept_canceled_ride_time','decline_canceled_ride_time','order_droped_time', 'sub_user_phone_numbers', 'actual_time_taken_to_complete', 'total_amount_without_actual_time_taken', 'is_scheduled']
+    
+
 
 @admin.register(OrderDetails)
 class OrderDeatils(admin.ModelAdmin):
