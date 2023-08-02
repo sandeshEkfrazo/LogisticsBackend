@@ -35,6 +35,6 @@ class Aboutus(ImportExportModelAdmin):
     list_display = ['id','logo','heading','paragraph','phone_number','email','alternate_phone_number','text']
 
 class TimesearchAdmin(ImportExportModelAdmin):
-    list_display = ['time', 'description']
+    list_display = ['id','time', 'description']
 
 admin.site.register(Timesearch, TimesearchAdmin)
