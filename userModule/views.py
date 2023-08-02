@@ -143,8 +143,30 @@ class BookVehicleAPI(APIView):
 
             return Response({'message': 'wait till the driver accepts your order', 'order_id':order_obj.id,'user':sub_user_ph_number, 'vehicle_type_id': vehicle_obj.vehicletypes_id})
         else:
-            
+
             if data['schedule'] is not None:
+                dt = parser.isoparse(data['schedule']['scheduled_datetime'])
+                current_time = datetime.datetime.now()
+
+                scheduled_time_timestamp = dt.timestamp()
+                after_one_hour = current_time + timedelta(hours=1)
+                after_one_hour_timestamp = after_one_hour.timestamp()
+
+                if scheduled_time_timestamp < after_one_hour_timestamp:
+                    return Response({"message": "The schedule time is less than 1 hour"},
+                                    status=status.HTTP_406_NOT_ACCEPTABLE)
+
+            # if data['schedule'] is not None:
+            #     dt = parser.isoparse(data['schedule']['scheduled_datetime'])
+            #     current_time = datetime.datetime.now()
+            #
+            #     scheduled_time_timestamp = datetime.datetime.strptime(dt, "%Y-%m-%d %H:%M:%S").timestamp()
+            #     after_one_hour = current_time+timedelta(hours=1)
+            #     after_one_hour_timestamp = after_one_hour.timestamp()
+            #
+            #     if scheduled_time_timestamp < after_one_hour_timestamp:
+            #         return Response({"message":"The schedule time is less than 1 hour"},status=status.HTTP_406_NOT_ACCEPTABLE)
+
 
                 order_obj = OrderDetails.objects.create(user_id=user_id, location_detail=location_detail, total_estimated_cost=data['total_estimated_cost'])
 
@@ -154,8 +176,6 @@ class BookVehicleAPI(APIView):
 
                 booking_obj = BookingDetail.objects.create(order_id=order_obj.id, status_id=1, travel_details=travel_details, ordered_time=datetime.datetime.now(), sub_user_phone_numbers=sub_user_ph_number,total_amount_without_actual_time_taken=total_amount_without_actual_time_taken, is_scheduled=is_scheduled)
 
-                
-                dt = parser.isoparse(data['schedule']['scheduled_datetime'])
 
                 last_hour_date_time = dt - timedelta(hours = 1)
 
