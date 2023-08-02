@@ -398,12 +398,13 @@ class CustomizavleTimeSearchApiView(APIView):
     def post(self, request):
         data = request.data
         time = data.get('time')
+        description = data.get('description')
 
 
-        if not (time ):
+        if not (time and description ):
             return Response({"message": "Missing required field"}, status=status.HTTP_400_BAD_REQUEST)
 
-        timeSearch = Timesearch.objects.create(time=time)
+        timeSearch = Timesearch.objects.create(time=time,description=description)
         serializer = TimeSerachSerializer(timeSearch)
         return Response({"message": "Data added successfully", "data": serializer.data}, status=status.HTTP_201_CREATED)
 
@@ -416,9 +417,13 @@ class CustomizavleTimeSearchApiView(APIView):
         data = request.data
 
         time = data.get('time')
+        description = data.get('description')
 
 
         if time is not None:
+            searchtime.time = time
+
+        if description is not None:
             searchtime.time = time
 
 
