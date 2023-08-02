@@ -436,7 +436,7 @@ class CustomizavleTimeSearchApiView(APIView):
         try:
             distance = BookingDistance.objects.get()
             # If a record exists, raise an exception with the error message
-            return Response ({"message": "Data already exists. Use PUT request to update it."}, status=status.HTTP_400_BAD_REQUEST)
+            return Response ({"message": "You are allowed to add only one data."}, status=status.HTTP_400_BAD_REQUEST)
             # raise ValidationError("Data already exists. Use PUT request to update it.")
         except BookingDistance.DoesNotExist:
             # If a record doesn't exist, create a new one
@@ -459,7 +459,7 @@ class CustomizavleTimeSearchApiView(APIView):
 
         try:
             timeSearch = Timesearch.objects.get()
-            return Response({"message": "Data already exists. Use PUT request to update it."},
+            return Response({"message": "You are allowed to add only one data."},
                         status=status.HTTP_400_BAD_REQUEST)
         except Timesearch.DoesNotExist:
 
