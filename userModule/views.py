@@ -155,19 +155,7 @@ class BookVehicleAPI(APIView):
                 if scheduled_time_timestamp < after_one_hour_timestamp:
                     return Response({"message": "The schedule time is less than 1 hour"},
                                     status=status.HTTP_406_NOT_ACCEPTABLE)
-
-            # if data['schedule'] is not None:
-            #     dt = parser.isoparse(data['schedule']['scheduled_datetime'])
-            #     current_time = datetime.datetime.now()
-            #
-            #     scheduled_time_timestamp = datetime.datetime.strptime(dt, "%Y-%m-%d %H:%M:%S").timestamp()
-            #     after_one_hour = current_time+timedelta(hours=1)
-            #     after_one_hour_timestamp = after_one_hour.timestamp()
-            #
-            #     if scheduled_time_timestamp < after_one_hour_timestamp:
-            #         return Response({"message":"The schedule time is less than 1 hour"},status=status.HTTP_406_NOT_ACCEPTABLE)
-
-
+                                    
                 order_obj = OrderDetails.objects.create(user_id=user_id, location_detail=location_detail, total_estimated_cost=data['total_estimated_cost'])
 
                 get_est_cost = views.find_vehicle_estimation_cost(data, data['vehicle_type'], location_detail)
