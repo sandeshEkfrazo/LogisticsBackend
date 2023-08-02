@@ -7,6 +7,8 @@ from .serializers import *
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.utils import IntegrityError
 from logisticsapp.views import convertBase64
+from rest_framework.exceptions import ValidationError
+
 
 # Create your views here.
 
@@ -339,13 +341,38 @@ class BookingDistanceApiView(APIView):
         description = data.get('description')
         last_km_value = data.get('last_km_value')
 
-        if not (threshold_value and incremented_value and description and last_km_value ):
+        if not (threshold_value and incremented_value and description and last_km_value):
             return Response({"message": "Missing required field"}, status=status.HTTP_400_BAD_REQUEST)
 
-        distance = BookingDistance.objects.create(threshold_value=threshold_value,
-                                                  incremented_value=incremented_value,description=description,last_km_value=last_km_value)
+        try:
+            distance = BookingDistance.objects.get()
+            # If a record exists, raise an exception with the error message
+            return Response ({"message": "Data already exists. Use PUT request to update it."}, status=status.HTTP_400_BAD_REQUEST)
+            # raise ValidationError("Data already exists. Use PUT request to update it.")
+        except BookingDistance.DoesNotExist:
+            # If a record doesn't exist, create a new one
+            distance = BookingDistance.objects.create(threshold_value=threshold_value,
+                                                      incremented_value=incremented_value,
+                                                      description=description,
+                                                      last_km_value=last_km_value)
+
         serializer = BookingDistanceSerializer(distance)
         return Response({"message": "Data added successfully", "data": serializer.data}, status=status.HTTP_201_CREATED)
+
+    # def post(self, request):
+    #     data = request.data
+    #     threshold_value = data.get('threshold_value')
+    #     incremented_value = data.get('incremented_value')
+    #     description = data.get('description')
+    #     last_km_value = data.get('last_km_value')
+    #
+    #     if not (threshold_value and incremented_value and description and last_km_value ):
+    #         return Response({"message": "Missing required field"}, status=status.HTTP_400_BAD_REQUEST)
+    #
+    #     distance = BookingDistance.objects.create(threshold_value=threshold_value,
+    #                                               incremented_value=incremented_value,description=description,last_km_value=last_km_value)
+    #     serializer = BookingDistanceSerializer(distance)
+    #     return Response({"message": "Data added successfully", "data": serializer.data}, status=status.HTTP_201_CREATED)
 
     def put(self, request, pk):
         try:
@@ -393,7 +420,33 @@ class CustomizavleTimeSearchApiView(APIView):
     def get(self, request):
         time = Timesearch.objects.all()
         serializer = TimeSerachSerializer(time, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response({"data" : serializer.data}, status=status.HTTP_200_OK)
+
+
+    def post(self, request):
+        data = request.data
+        threshold_value = data.get('threshold_value')
+        incremented_value = data.get('incremented_value')
+        description = data.get('description')
+        last_km_value = data.get('last_km_value')
+
+        if not (threshold_value and incremented_value and description and last_km_value):
+            return Response({"message": "Missing required field"}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            distance = BookingDistance.objects.get()
+            # If a record exists, raise an exception with the error message
+            return Response ({"message": "Data already exists. Use PUT request to update it."}, status=status.HTTP_400_BAD_REQUEST)
+            # raise ValidationError("Data already exists. Use PUT request to update it.")
+        except BookingDistance.DoesNotExist:
+            # If a record doesn't exist, create a new one
+            distance = BookingDistance.objects.create(threshold_value=threshold_value,
+                                                      incremented_value=incremented_value,
+                                                      description=description,
+                                                      last_km_value=last_km_value)
+
+        serializer = BookingDistanceSerializer(distance)
+        return Response({"message": "Data added successfully", "data": serializer.data}, status=status.HTTP_201_CREATED)
 
     def post(self, request):
         data = request.data
@@ -404,7 +457,14 @@ class CustomizavleTimeSearchApiView(APIView):
         if not (time and description ):
             return Response({"message": "Missing required field"}, status=status.HTTP_400_BAD_REQUEST)
 
-        timeSearch = Timesearch.objects.create(time=time,description=description)
+        try:
+            timeSearch = Timesearch.objects.get()
+            return Response({"message": "Data already exists. Use PUT request to update it."},
+                        status=status.HTTP_400_BAD_REQUEST)
+        except Timesearch.DoesNotExist:
+
+
+            timeSearch = Timesearch.objects.create(time=time,description=description)
         serializer = TimeSerachSerializer(timeSearch)
         return Response({"message": "Data added successfully", "data": serializer.data}, status=status.HTTP_201_CREATED)
 

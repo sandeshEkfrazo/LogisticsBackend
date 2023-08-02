@@ -64,6 +64,8 @@ class BookingDistance(models.Model):
 
 class Timesearch(models.Model):
     time = models.IntegerField()
+    description = models.TextField(null=True, blank=True,)
+
 
     def __str__(self):
         return str(self.time)
