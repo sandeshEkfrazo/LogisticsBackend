@@ -127,21 +127,25 @@ class BookVehicleAPI(APIView):
         is_scheduled = data['is_scheduled']
 
         if data['vehicle_number'] is not None:
-            vehicle_obj = Vehicle.objects.get(vehicle_number=data['vehicle_number'])
+            if Driver.objects.filter(vehicle__vehicle_number=vehicle_number , is_online=True):
+                vehicle_obj = Vehicle.objects.get(vehicle_number=data['vehicle_number'])
 
-            get_est_cost = views.find_vehicle_estimation_cost(data, vehicle_obj.vehicletypes_id, location_detail)
+                get_est_cost = views.find_vehicle_estimation_cost(data, vehicle_obj.vehicletypes_id, location_detail)
 
-            # print("get_est_cost by vehicle number book by number ==>>", get_est_cost)
+                # print("get_est_cost by vehicle number book by number ==>>", get_est_cost)
 
-            order_obj = OrderDetails.objects.create(user_id=user_id, vehicle_number=vehicle_number, location_detail=location_detail,total_estimated_cost = get_est_cost['total_fare_amount'])
+                order_obj = OrderDetails.objects.create(user_id=user_id, vehicle_number=vehicle_number, location_detail=location_detail,total_estimated_cost = get_est_cost['total_fare_amount'])
 
-            total_amount_without_actual_time_taken = get_est_cost['final_km_charge'] + get_est_cost['base_fee']
+                total_amount_without_actual_time_taken = get_est_cost['final_km_charge'] + get_est_cost['base_fee']
 
-            driver_obj = Driver.objects.get(vehicle__vehicle_number=vehicle_number)
+                driver_obj = Driver.objects.get(vehicle__vehicle_number=vehicle_number)
 
-            booking_obj = BookingDetail.objects.create(order_id=order_obj.id, driver_id=driver_obj.user_id, status_id=1, travel_details=travel_details, ordered_time=datetime.datetime.now(), sub_user_phone_numbers=sub_user_ph_number, total_amount_without_actual_time_taken=total_amount_without_actual_time_taken)
+                booking_obj = BookingDetail.objects.create(order_id=order_obj.id, driver_id=driver_obj.user_id, status_id=1, travel_details=travel_details, ordered_time=datetime.datetime.now(), sub_user_phone_numbers=sub_user_ph_number, total_amount_without_actual_time_taken=total_amount_without_actual_time_taken)
 
-            return Response({'message': 'wait till the driver accepts your order', 'order_id':order_obj.id,'user':sub_user_ph_number, 'vehicle_type_id': vehicle_obj.vehicletypes_id})
+                return Response({'message': 'wait till the driver accepts your order', 'order_id':order_obj.id,'user':sub_user_ph_number, 'vehicle_type_id': vehicle_obj.vehicletypes_id})
+            return Response({'message': 'no vehicle found near you', 'status': "NOT FOUND"}, status=status.HTTP_404_NOT_FOUND)
+
+
         else:
 
             if data['schedule'] is not None:
