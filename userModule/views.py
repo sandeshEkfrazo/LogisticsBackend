@@ -270,7 +270,7 @@ class CancelOrderByUser(APIView):
         return Response({'message': 'your order has been canceled'})
 
     def post(self, request):
-        order_detail = BookingDetail.objects.filter(order__user_id=request.data['user_id']).order_by('-id').values('order_id','driver_id', 'status','status__status_name', 'order__vehicle_number', 'driver__first_name', 'driver__mobile_number', 'status__status_name', 'order__otp', 'driver__vehicle__vehicle_name', 'order__total_estimated_cost', 'order__location_detail', 'request_cancel', 'travel_details', 'ordered_time', 'pickedup_time', 'order_accepted_time', 'canceled_time', 'order_droped_time')
+        order_detail = BookingDetail.objects.filter(order__user_id=request.data['user_id']).order_by('-id').values('order_id','driver_id', 'status','status__status_name', 'order__vehicle_number', 'driver__first_name', 'driver__mobile_number', 'status__status_name', 'order__otp', 'driver__vehicle__vehicle_name', 'order__total_estimated_cost', 'order__location_detail', 'request_cancel', 'travel_details', 'ordered_time', 'pickedup_time', 'order_accepted_time', 'canceled_time', 'order_droped_time','is_scheduled')
         return Response({'data': order_detail})
 
 class UserFeedBackApi(APIView):
