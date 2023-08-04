@@ -336,7 +336,7 @@ class NotifyDriverDocumentExpiry(APIView):
 			print('days==>', days == "", days)
 			if int(days) == 0:
 				dateDict['document'] = k
-				dateDict['days_remaining'] = str(remaining_days).replace("0:00:00", "").replace(",", "")
+				dateDict['days_remaining'] = 0
 				dateDict['message'] = document_name.capitalize() +" is expiring today "
 				dateDict['is_expired'] = 1
 			elif int(days) < 30 and int(days) >= 0:
