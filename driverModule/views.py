@@ -305,8 +305,12 @@ class DriverEarningsAndratingAPI(APIView):
 class NotifyDriverDocumentExpiry(APIView):
 	def get(self, request):
 		driver_id = request.query_params['driver_id']
+		print(driver_id,"ddddddddddddddddd")
+		driver_o = Driver.objects.filter(user_id=driver_id)
+		print(driver_o,"gggg")
 
 		driver_obj = Driver.objects.filter(user_id=driver_id).values('license_expire_date', 'insurence_expire_date','fitness_certificate_expire_date', 'vehicle__permit_expire_date', 'vehicle__rc_expire_date', 'vehicle__emission_test_expire_date')
+		print(driver_obj,"ooooobbbb")
 
 		# temp = min(dict(driver_obj[0]).values())
 		# res = [key for key in dict(driver_obj[0]) if dict(driver_obj[0])[key] == temp]
@@ -326,12 +330,21 @@ class NotifyDriverDocumentExpiry(APIView):
 			
 			
 			document_name = k.replace("_expire_date", "").replace("__", " ").replace("_", " ")
-			if int(days) < 30 and int(days) >= 0:
+
+			if days == "":
+				days = 0
+			print('days==>', days == "", days)
+			if int(days) == 0:
+				dateDict['document'] = k
+				dateDict['days_remaining'] = str(remaining_days).replace("0:00:00", "").replace(",", "")
+				dateDict['message'] = document_name.capitalize() +" is expiring today "
+				dateDict['is_expired'] = 1
+			elif int(days) < 30 and int(days) >= 0:
 				dateDict['document'] = k
 				dateDict['days_remaining'] = str(remaining_days).replace("0:00:00", "").replace(",", "")
 				dateDict['message'] = document_name.capitalize() +" is expiring in "+str(remaining_days).replace("0:00:00", "").replace(",", "")
 				dateDict['is_expired'] = 1
-			if int(days) <= 0 :
+			elif int(days) < 0 :
 				dateDict['document'] = k
 				dateDict['expired'] = str(remaining_days).replace("0:00:00", "").replace(",", "").replace("-", "") + "ago"
 				dateDict['message'] = document_name.capitalize()+" has expired "+ str(remaining_days).replace("0:00:00", "").replace(",", "").replace("-", "") + "ago ."
