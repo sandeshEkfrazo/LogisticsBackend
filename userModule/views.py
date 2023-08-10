@@ -156,21 +156,35 @@ class BookVehicleAPI(APIView):
                         dt = parser.isoparse(data['schedule']['scheduled_datetime'])
                         current_time = datetime.datetime.now()
 
-                        dt_1 = datetime.datetime.strptime(str(dt), '%Y-%m-%d %H:%M:%S%z')
-                        current_time_1 = datetime.datetime.strptime(str(current_time), '%Y-%m-%d %H:%M:%S.%f')
+                        scheduled_time_timestamp = dt.timestamp()
+                        print(scheduled_time_timestamp,"sssssss")
+                        after_one_hour = current_time + timedelta(hours=1)
+                        after_one_hour_timestamp = after_one_hour.timestamp()
+                        print(int(after_one_hour_timestamp),"affff")
 
-                        dt_1 = dt_1.strftime('%H:%M')
-                        current_time_1 = current_time_1.strftime('%H:%M')
-
-                        a_dt = datetime.datetime.strptime(dt_1, '%H:%M')
-                        b_dt = datetime.datetime.strptime(current_time_1, '%H:%M')
-
-                        time_difference_minutes = (a_dt - b_dt).seconds // 60
-
-                        if time_difference_minutes < 60:
-                            print("Less than 1 hour")
+                        if int(scheduled_time_timestamp) < int(after_one_hour_timestamp):
                             return Response({"message": "The schedule time is less than 1 hour"},
                                             status=status.HTTP_406_NOT_ACCEPTABLE)
+
+                    # if data['schedule'] is not None:
+                    #     dt = parser.isoparse(data['schedule']['scheduled_datetime'])
+                    #     current_time = datetime.datetime.now()
+                    #
+                    #     dt_1 = datetime.datetime.strptime(str(dt), '%Y-%m-%d %H:%M:%S%z')
+                    #     current_time_1 = datetime.datetime.strptime(str(current_time), '%Y-%m-%d %H:%M:%S.%f')
+                    #
+                    #     dt_1 = dt_1.strftime('%H:%M')
+                    #     current_time_1 = current_time_1.strftime('%H:%M')
+                    #
+                    #     a_dt = datetime.datetime.strptime(dt_1, '%H:%M')
+                    #     b_dt = datetime.datetime.strptime(current_time_1, '%H:%M')
+                    #
+                    #     time_difference_minutes = (a_dt - b_dt).seconds // 60
+                    #
+                    #     if time_difference_minutes < 60:
+                    #         print("Less than 1 hour")
+                    #         return Response({"message": "The schedule time is less than 1 hour"},
+                    #                         status=status.HTTP_406_NOT_ACCEPTABLE)
 
 
                         order_obj = OrderDetails.objects.create(user_id=user_id, location_detail=location_detail, total_estimated_cost=data['total_estimated_cost'])
