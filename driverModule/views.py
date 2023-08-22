@@ -68,7 +68,7 @@ class DriverAPI(APIView):
                
 
 		if phone_number is not None and otp is not None:
-			verified_otp = verifyOTP(phone_number, otp)
+			verified_otp = verifyOTP(phone_number, otp, datetime.datetime.now().timestamp())
 
 			if is_last_number == True:
 				return Response({'status': '11', 'data': verified_otp})
@@ -125,8 +125,13 @@ class DriverAPI(APIView):
 			if data['driver_id'] is not None:
 				BookingDetail.objects.filter(order_id=order_id).update(status=update_status, order_accepted_time=datetime.datetime.now(), driver_id=data['driver_id'])
 				estimationCostCalculation(order_id, update_status)
+
+			# driver_obj = Driver.objects.get(user_id=data['driver_id'])
+			# vehicle_obj = Vehicle.objects.get(id=vehicle_id)
+
 			estimationCostCalculation(order_id, update_status)
 			otp = random.randint(100000, 999999)
+			
 			request.session['user_order_otp'] = otp
 			OrderDetails.objects.filter(id=order_id).update(otp=otp)
 			
@@ -392,7 +397,14 @@ class DriverEarningReport(APIView):
 
 		Vehicle_number = Vehicle.objects.get(id=vehicle_id).vehicle_number
 
+		print("Vehicle_number=>>", Vehicle_number)
+		
+		if Vehicle_number is None:
+			return Response({'message': 'you have not started any earnigs', 'data': {}, 'is_data': 0})
+		
+
 		query = BookingDetail.objects.select_related('order').filter(order__vehicle_number=Vehicle_number).values('order__total_estimated_cost', 'order_accepted_time')
+
 		# query = BookingDetail.objects.filter(driver_id=driver_id).values('order__total_estimated_cost', 'order_accepted_time')
 		if driver_id and year is not None:
 			year_query = BookingDetail.objects.select_related('order').filter(order__vehicle_number=Vehicle_number, order_accepted_time__year=year).values('order__total_estimated_cost', 'order_accepted_time')
@@ -433,7 +445,7 @@ class DriverEarningReport(APIView):
 					# print(result)
 					for z, y in result.items():
 						yeardict[z]=sum(y)
-			return Response (yeardict)
+			return Response ({'message': 'your earnings are','data':yeardict, 'is_data': 1})
 			
 		else:
 			for i in query:
@@ -483,7 +495,7 @@ class DriverEarningReport(APIView):
 			
 
 		# print("pringting query==>",query.query)
-			return Response (finaloutput)
+			return Response ({'message': 'your earnings are','data':finaloutput, 'is_data': 1})
 
 
 

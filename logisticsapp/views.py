@@ -26,7 +26,7 @@ from rest_framework.views import APIView
 from rest_framework import generics
 from rest_framework.serializers import Serializer
 from .models import *
-import jwt
+
 from django.db.models import Q
 
 from rest_framework import serializers
@@ -411,40 +411,8 @@ class SignUpPhoneNumberApiView(APIView):
 
             else:
                 sendMobileOTp(mobile_number)
-                store_otp = CustomUser.objects.create(mobile_number=mobile_number,reset_otp=int(otp),
-                role_id = user_role.id 
-                )
+                return Response({'message': 'otp sent successfully', 'logged_in_time': datetime.datetime.now().timestamp()})
                 
-                data_dict = {}
-                data_dict["OTP"] = otp
-            
-                auth_token = jwt.encode(
-                                    {'user_id': store_otp.id, 'user_role_name':user_role_name,
-                                    'role_id': user_role.id,'mobile_number':mobile_number,'otp':otp
-
-                                    }, str(settings.JWT_SECRET_KEY), algorithm="HS256")
-                # print(auth_token,'this is auth_token')
-                authorization = 'Bearer'+' '+auth_token
-
-                response_result = {}
-                response = {}
-                response_result['result'] = {
-                            'result': {'data': 'Register successful',
-                            'token':authorization,
-                            'user_id':store_otp.id,
-                            "mobile_number":mobile_number,
-                            "user_role_name":user_role_name,
-                            # 'email':user_create.email,
-                            'role_id': user_role.id,
-                            'otp':otp,
-                            'logged_in_time': datetime.datetime.now().timestamp(),
-                            # 'result':data_dict
-                            
-                            }}
-                response_result['logged_in_time'] =  datetime.datetime.now().timestamp()
-                response['Authorization'] = authorization
-                response['status'] = status.HTTP_200_OK
-                return Response(response_result['result'], headers=response,status= status.HTTP_200_OK)
         else:
             return Response({'error':{'message':'UserRole  doesnot exists'}})
 
@@ -500,9 +468,9 @@ class LoginApiView(APIView):
                     'detail': 'Invalid Username / Password', 'status': status.HTTP_401_UNAUTHORIZED}}
                 return Response(response['error'], headers=header_response,status= status.HTTP_401_UNAUTHORIZED)
         else:      
-            response['error'] = {'error': {
-                    'detail': 'Invalid Username / Password', 'status': status.HTTP_401_UNAUTHORIZED}}
-            return Response(response['error'], status= status.HTTP_401_UNAUTHORIZED)
+            response['error'] = {'error': 
+                {'detail': 'Invalid Username / Password', 'status': status.HTTP_401_UNAUTHORIZED}}
+            return Response(status= status.HTTP_401_UNAUTHORIZED)
 
 class VerifyOtpPhoneNumberApiView(APIView):
     def post(self, request):
@@ -515,15 +483,25 @@ class VerifyOtpPhoneNumberApiView(APIView):
 
         role = UserRoleRef.objects.get(Q(user_role_name=user_role_name))
         
-        print("role id",role.id, CustomUser.objects.filter(Q(mobile_number=mobile_number) & Q(role_id=role.id)).exists())
-        if  CustomUser.objects.filter(Q(mobile_number=mobile_number) & Q(role_id=role.id)).exists():
-            res = verifyOTP(mobile_number, otp_recieved, logged_in_time)
+        # print("role id",role.id, CustomUser.objects.filter(Q(mobile_number=mobile_number) & Q(role_id=role.id)).exists())
 
-            
-            print("response==>>", res)
-            return Response(res)
+        
+
+        if CustomUser.objects.filter(Q(mobile_number=mobile_number) & Q(role_id=role.id)).exists():
+            custom_user_obj = CustomUser.objects.get(Q(mobile_number=mobile_number) & Q(role_id=role.id))
+            auth_token = jwt.encode({'user_id': custom_user_obj.id}, str(settings.JWT_SECRET_KEY), algorithm="HS256")
+            res = verifyOTP(mobile_number, otp_recieved, logged_in_time)  
+
+            if Driver.objects.filter(user_id=custom_user_obj.id).exists():
+                driver_obj = Driver.objects.get(user_id=custom_user_obj.id)   
+
+                driver_status = driver_obj.driver_status
+
+                return Response({'res': res, 'user_id': custom_user_obj.id, 'token': auth_token, 'driver_status': driver_obj.driver_status})
+            return Response({'res': res,  'user_id': custom_user_obj.id, 'token': auth_token, 'user_status': custom_user_obj.user_status})
         else:
-            return Response({'error':{'message': 'Unauthorized!'}})
+            res = RegisterUserAfterVerifyOTP(mobile_number, otp_recieved, logged_in_time, user_role_name)
+            return Response(res)
 
 
 
@@ -1818,7 +1796,7 @@ class DriverView(APIView):
                 'status_code':status.HTTP_400_BAD_REQUEST,
                 }},status=status.HTTP_400_BAD_REQUEST)
         else:
-            driver_data = Driver.objects.all().values('id','vehicle_id','vehicle__vehicle_status','user_id','owner_id','driver_driving_license','badge','user_id','user__role__id','user__first_name','user__mobile_number','passbook_img','vehicle__vehicle_name','vehicle__vehicle_number','vehicle__permit_front_side_img_path','vehicle__pollution_certificate_front_side_img_path','vehicle__registration_certificate_back_side_img_path','vehicle__registration_certificate_front_side_img_path','license_img_back','vehicle__vehicletypes__vehicle_type_name', 'license_expire_date', 'insurence_expire_date', 'fitness_certificate_expire_date', 'vehicle__permit_expire_date', 'vehicle__rc_expire_date', 'vehicle__emission_test_expire_date', 'is_online', 'is_active', 'driver_status')
+            driver_data = Driver.objects.all().order_by('-id').values('id','vehicle_id','vehicle__vehicle_status','user_id','owner_id','driver_driving_license','badge','user_id','user__role__id','user__first_name','user__mobile_number','passbook_img','vehicle__vehicle_name','vehicle__vehicle_number','vehicle__permit_front_side_img_path','vehicle__pollution_certificate_front_side_img_path','vehicle__registration_certificate_back_side_img_path','vehicle__registration_certificate_front_side_img_path','license_img_back','vehicle__vehicletypes__vehicle_type_name', 'license_expire_date', 'insurence_expire_date', 'fitness_certificate_expire_date', 'vehicle__permit_expire_date', 'vehicle__rc_expire_date', 'vehicle__emission_test_expire_date', 'is_online', 'is_active', 'driver_status')
             return Response({'result':{'status':'GET','data':driver_data}})
 
         # if id:
@@ -3555,20 +3533,11 @@ class LoginApi(APIView):
 
             if Driver.objects.filter(user_id=customUser.id).exists():
                 driver_obj = Driver.objects.get(user_id=customUser.id)
-                return Response({'message':'Login Successfull', 'otp': "otp", 'user_id': customUser.id, 'token': auth_token, 'vehicle_id': driver_obj.vehicle_id, 'logged_in_time': datetime.datetime.now().timestamp()})
+                return Response({'message':'Login Successfull', 'otp': "otp", 'user_id': customUser.id, 'vehicle_id': driver_obj.vehicle_id, 'driver_status': driver_obj.driver_status, 'logged_in_time': datetime.datetime.now().timestamp()})
 
-            return Response({'message':'Login Successfull', 'otp': "otp", 'user_id': customUser.id, 'token': auth_token, 'logged_in_time': datetime.datetime.now().timestamp()})
-
-            # send this otp to his/her mobile number
-        # if CustomUser.objects.filter(Q(mobile_number=data['mobile_number']) & Q(role__user_role_name=data['user_role_name'])).exists():
-        #     customUser = CustomUser.objects.get(mobile_number=data['mobile_number'])
-
-        #     auth_token = jwt.encode({'user_id': customUser.id, 'exp': datetime.utcnow() + timedelta(days=5)}, str(settings.JWT_SECRET_KEY), algorithm="HS256")
-
-        #     return Response({'message':'Login Successfull', 'otp': otp, 'user_id': customUser.id, 'token': auth_token})
+            return Response({'message':'Login Successfull', 'otp': "otp", 'user_id': customUser.id, 'logged_in_time': datetime.datetime.now().timestamp()})
         else:
             return Response({'message':'User Does not exists'},  status=status.HTTP_406_NOT_ACCEPTABLE)
-            # pass
 
         
 
@@ -3587,19 +3556,14 @@ class UserLoginView(APIView):
             return Response({'message': 'role name is required'}, status=status.HTTP_406_NOT_ACCEPTABLE)
         else:
             sendMobileOTp(mobile_number)
-            if data['user_role_name'] == 'Driver':
-                customUser = CustomUser.objects.create(mobile_number=mobile_number, role_id=3)
-                driver_obj = Driver.objects.create(user_id=customUser.id, driver_status="Registered with Mobile Number")
-            else:
-                customUser = CustomUser.objects.create(mobile_number=mobile_number, role_id=2)
-            
-            return Response({"message": "user created successfully", 'otp': "otp", 'user_id': customUser.id, 'logged_in_time': datetime.datetime.now().timestamp()})
+            return Response({"message": "Otp sent successfully to the registered mobile number",'logged_in_time': datetime.datetime.now().timestamp()})
+
 
 class OtpVerificationApi(APIView):
     def post(self, request):
         data = request.data
         user_role = data.get('user_role')
-        verified_otp = verifyOTP(data['moibile_number'], data['otp'])
+        verified_otp = verifyOTP(data['moibile_number'], data['otp'], datetime.datetime.now().timestamp())
         return Response(verified_otp)
         # if(request.session['otp'] == data['otp']):
 
@@ -3659,7 +3623,8 @@ class UserSignup(APIView):
             first_name=first_name,
             last_name=last_name,
             company_name=company_name,
-            email=email
+            email=email,
+            user_status = "user_added_with_the_profile_details"
         )
 
         if whatsup_number is not None:
@@ -3807,51 +3772,52 @@ class VehicleView(APIView):
         vehicle_id = data['vehicle_id']
         # vehicle_status=data.get('vehicle_status')
         
-         
-        if Driver.objects.filter(Q(vehicle__vehicle_number=data['vehicle_number']) & ~Q(user_id=driver_id)).exists():
+        
+
+
+        if Driver.objects.filter(Q(vehicle__vehicle_number=data['vehicle_number']) & ~Q(user_id=driver_id)).exists() and data.get('updated_by') != "ADMIN":
             return Response({'error': 'Vehicle number is already used by another driver'}, status=status.HTTP_400_BAD_REQUEST)
 
         else:
-
             if "data:image/" in reg_certifiacte_front:
                 converted_reg_certificate_front = convertBase64(reg_certifiacte_front, 'driver', uuid.uuid4(), "registration_certificate")
-                Vehicle.objects.filter(id=vehicle_id).update(registration_certificate_front_side_img_path = converted_reg_certificate_front)
+                Vehicle.objects.filter(id=vehicle_id).update(registration_certificate_front_side_img_path = converted_reg_certificate_front, rc_expire_date=None)
             else:
                 pass
 
             if "data:image/" in reg_certifiacte_back:
                 converted_reg_certificate_back = convertBase64(reg_certifiacte_back, 'driver',  uuid.uuid4(), "registration_certificate")
-                Vehicle.objects.filter(id=vehicle_id).update(registration_certificate_back_side_img_path = converted_reg_certificate_back)
+                Vehicle.objects.filter(id=vehicle_id).update(registration_certificate_back_side_img_path = converted_reg_certificate_back, rc_expire_date=None)
             else:
                 pass
 
             if "data:image/" in pollution_certifiactae_front:
                 converted_pollution_certificate_front = convertBase64(pollution_certifiactae_front, 'driver',  uuid.uuid4(), "pollution_certificate")
-                Vehicle.objects.filter(id=vehicle_id).update(pollution_certificate_front_side_img_path = converted_pollution_certificate_front)
+                Vehicle.objects.filter(id=vehicle_id).update(pollution_certificate_front_side_img_path = converted_pollution_certificate_front, emission_test_expire_date=None)
             else:
                 pass
 
             if "data:image/" in fitness_certifiacte_front:
                 converted_fittness_certificate_front = convertBase64(fitness_certifiacte_front, 'driver',  uuid.uuid4(), "fitness_certificate")
-                Driver.objects.filter(user_id=driver_id).update(fitness_certificate_front_side_img_path = converted_fittness_certificate_front)
+                Driver.objects.filter(user_id=driver_id).update(fitness_certificate_front_side_img_path = converted_fittness_certificate_front, fitness_certificate_expire_date=None)
             else:
                 pass
 
             if "data:image/" in fitness_certifiacte_back:
                 converted_fittness_certificate_back = convertBase64(fitness_certifiacte_back, 'driver',  uuid.uuid4(), "fitness_certificate")
-                Driver.objects.filter(user_id=driver_id).update(fitness_certificate_back_side_img_path = converted_fittness_certificate_back)
+                Driver.objects.filter(user_id=driver_id).update(fitness_certificate_back_side_img_path = converted_fittness_certificate_back, fitness_certificate_expire_date=None)
             else:
                 pass
 
             if "data:image/" in permit_image:
                 converted_permit_image = convertBase64(permit_image, 'driver',  uuid.uuid4(), "permit_front_side")
-                Vehicle.objects.filter(id=vehicle_id).update(permit_front_side_img_path = converted_permit_image)
+                Vehicle.objects.filter(id=vehicle_id).update(permit_front_side_img_path = converted_permit_image, permit_expire_date=None)
             else:
                 pass
 
             if "data:image/" in insurance_image:
                 converted_insurance_image = convertBase64(insurance_image, 'driver',  uuid.uuid4(), "insurance_image")
-                Driver.objects.filter(user_id=driver_id).update(insurence_img = converted_insurance_image)
+                Driver.objects.filter(user_id=driver_id).update(insurence_img = converted_insurance_image, insurence_expire_date=None)
             else:
                 pass
             if 'vehicle_status' in request.data:
@@ -4021,7 +3987,9 @@ class DriverSignup(APIView):
 
                 # print("vehcile_id===> vehcile_id===> with subscription", vehcile_id, Vehicle_Subscription.objects.filter(vehicle_id_id=vehcile_id).last())
 
-                if Vehicle_Subscription.objects.filter(vehicle_id_id=vehcile_id).last():
+                if Vehicle_Subscription.objects.filter(Q(vehicle_id_id=vehcile_id) & Q(type_of_service='post-paid') & Q(Q(is_amount_paid=False) | Q(is_amount_paid=True))).exists():
+                    obj_with_owner_details[0]['is_subscribed'] = True
+                elif Vehicle_Subscription.objects.filter(Q(vehicle_id_id=vehcile_id) & Q(type_of_service='pre-paid') & Q(is_amount_paid=True)).exists():
                     obj_with_owner_details[0]['is_subscribed'] = True
                 else:
                     obj_with_owner_details[0]['is_subscribed'] = False
@@ -4033,7 +4001,7 @@ class DriverSignup(APIView):
                 # print("printing in else block")
 
                 obj_with_owner_details = list(driver_obj)
-                print("obj_with_owner_details==>>>", obj_with_owner_details)
+                # print("obj_with_owner_details==>>>", obj_with_owner_details)
                 if obj_with_owner_details[0]['user__profile_image'] == "":
                     obj_with_owner_details[0]['user__profile_image'] = None
 
@@ -4051,7 +4019,12 @@ class DriverSignup(APIView):
                 
 
                 vehcile_id = driver_image_obj_img.vehicle_id
-                if Vehicle_Subscription.objects.filter(vehicle_id_id=vehcile_id).last():
+
+                print("==>>>",Vehicle_Subscription.objects.filter(Q(vehicle_id_id=vehcile_id) & Q(type_of_service='post-paid') & Q(Q(is_amount_paid=False) | Q(is_amount_paid=True))).exists(), Vehicle_Subscription.objects.filter(Q(vehicle_id_id=vehcile_id) & Q(type_of_service='pre-paid') & Q(is_amount_paid=True)).exists())
+
+                if Vehicle_Subscription.objects.filter(Q(vehicle_id_id=vehcile_id) & Q(type_of_service='post-paid') & Q(Q(is_amount_paid=False) | Q(is_amount_paid=True))).exists():
+                    obj_with_owner_details[0]['is_subscribed'] = True
+                elif Vehicle_Subscription.objects.filter(Q(vehicle_id_id=vehcile_id) & Q(type_of_service='pre-paid') & Q(is_amount_paid=True)).exists():
                     obj_with_owner_details[0]['is_subscribed'] = True
                 else:
                     obj_with_owner_details[0]['is_subscribed'] = False
@@ -4159,19 +4132,19 @@ class DriverSignup(APIView):
             return Response({'Error': 'This driving licence is already exists'}, status=status.HTTP_400_BAD_REQUEST)
 
         if data['profile_image']:
-            if data['profile_image']:
-                if "data:image/" in data['profile_image']:
-                    converted_profile_image = convertBase64(data['profile_image'], 'driver_profile_image', uuid.uuid4(), 'profile')
-                    CustomUser.objects.filter(id=driver_id).update(profile_image=converted_profile_image)
-                    driver = CustomUser.objects.get(id=driver_id)
-                    response_data = {
-                        'message': 'Driver profile image is updated',
-                        'profile_image_path': driver.profile_image.url,
-                    }
-                    # print('response_data=============',response_data)
-                    return Response(response_data)  
-                else:
-                    pass 
+            if "data:image/" in data['profile_image']:
+                converted_profile_image = convertBase64(data['profile_image'], 'driver_profile_image', uuid.uuid4(), 'profile')
+                CustomUser.objects.filter(id=driver_id).update(profile_image=converted_profile_image)
+                driver = CustomUser.objects.get(id=driver_id)
+                response_data = {
+                    'message': 'Driver profile image is updated',
+                    'profile_image_path': driver.profile_image.url,
+                }
+                # print('response_data=============',response_data)
+                return Response(response_data)  
+            else:
+                pass 
+            
 
         if adhar_front_image or adhar_back_image is not None or passbook_image is not None or licence_image is not None:
             if "data:image/" in adhar_front_image:
@@ -4191,12 +4164,12 @@ class DriverSignup(APIView):
                 pass
             if "data:image/" in licence_image_back:
                 converted_licence_image_back = convertBase64(licence_image_back, 'licenceback', uuid.uuid4(), 'driving_license_file')
-                Driver.objects.filter(user_id=driver_id).update(license_img_back = converted_licence_image_back)
+                Driver.objects.filter(user_id=driver_id).update(license_img_back = converted_licence_image_back, badge=badge)
             else:
                 pass
             if "data:image/" in passbook_image:
                 converted_passbook_image = convertBase64(passbook_image, 'passbook', uuid.uuid4(), 'passbooks')
-                Driver.objects.filter(user_id=driver_id).update(passbook_img = converted_passbook_image)
+                Driver.objects.filter(user_id=driver_id).update(passbook_img = converted_passbook_image, badge=badge)
             else:
                 pass
 
@@ -4249,7 +4222,7 @@ class DriverSignup(APIView):
                         mobile_number=data['owner_details']['owner_mobile_number'],
                     )
 
-                    Driver.objects.filter(owner_id=data['owner_details']['owner_id']).update(owner_driving_licence=data['owner_details']['owner_drivering_licence_number'])
+                    Driver.objects.filter(owner_id=data['owner_details']['owner_id']).update(owner_driving_licence=data['owner_details']['owner_drivering_licence_number'], badge=badge,  driver_status = "Validated")
                 else:
                     owner_obj = CustomUser.objects.filter(id=data['owner_details']['owner_id']).update(
                         first_name=data['owner_details']['owner_name'],
@@ -4257,7 +4230,7 @@ class DriverSignup(APIView):
                         mobile_number=data['owner_details']['owner_mobile_number'],
                     )
 
-                    Driver.objects.filter(owner_id=data['owner_details']['owner_id']).update(owner_driving_licence=data['owner_details']['owner_drivering_licence_number'], driver_status = "waiting for verification")
+                    Driver.objects.filter(owner_id=data['owner_details']['owner_id']).update(owner_driving_licence=data['owner_details']['owner_drivering_licence_number'], driver_status = "waiting for verification", badge=badge)
 
             else:
                 converted_owneraf_image = convertBase64(data['owner_details']['owner_adhar_front_image'], 'owner_adharFront', driver_id, 'documents')
@@ -4273,7 +4246,7 @@ class DriverSignup(APIView):
                     )
 
                     
-                    Driver.objects.filter(user_id=driver_id).update(owner_driving_licence=data['owner_details']['owner_drivering_licence_number'], owner_id=owner_obj.id)
+                    Driver.objects.filter(user_id=driver_id).update(owner_driving_licence=data['owner_details']['owner_drivering_licence_number'], owner_id=owner_obj.id, driver_status = "Validated")
                 else:
                     owner_obj = CustomUser.objects.create(
                         adhar_card_front_side_img_path=converted_owneraf_image,
@@ -4287,13 +4260,18 @@ class DriverSignup(APIView):
                     Driver.objects.filter(user_id=driver_id).update(owner_driving_licence=data['owner_details']['owner_drivering_licence_number'], owner_id=owner_obj.id, driver_status = "waiting for verification")
 
         else:
-            CustomUser.objects.filter(id=driver_id).update(first_name=full_name)
-            Driver.objects.filter(user_id=driver_id).update(owner_id=None, driver_driving_license=driving_licence_number, driver_status = "waiting for verification")
+            if data.get('updated_by'):
+                CustomUser.objects.filter(id=driver_id).update(first_name=full_name)
+                Driver.objects.filter(user_id=driver_id).update(owner_id=None, driver_driving_license=driving_licence_number, badge=badge, driver_status = "Validated")
+            else:
+                CustomUser.objects.filter(id=driver_id).update(first_name=full_name)
+                Driver.objects.filter(user_id=driver_id).update(owner_id=None, driver_driving_license=driving_licence_number, driver_status = "waiting for verification", badge=badge)
 
-        driver = Driver.objects.get(user_id=driver_id, badge=badge, )
-        vehicle = driver.vehicle
-        vehicle.vehicle_status = "waiting for verification"
-        vehicle.save()
+        
+        # driver = Driver.objects.get(user_id=driver_id, badge=badge, )
+        # vehicle = driver.vehicle
+        # vehicle.vehicle_status = "waiting for verification"
+        # vehicle.save()
 
         return Response({'message': 'driver updated successfully'})
 
@@ -4737,13 +4715,56 @@ class accept_or_declineApi(APIView):
     def put(self,request,pk):
         data = request.data
         vehicle_status=data['vehicle_status']
+    
 
-        if Driver.objects.filter(user_id=pk).exists():            
+        if Driver.objects.filter(user_id=pk).exists():   
+
+            check_field_list_user = ['first_name', 'mobile_number', 'adhar_card_front_side_img_path', 'adhar_card_back_side_img_path']
+
+            check_field_list_driver = ['license_img_front', 'license_img_back', 'insurence_img', 'passbook_img', 'fitness_certificate_front_side_img_path', 'fitness_certificate_back_side_img_path', 'passbook_img', 'license_expire_date', 'fitness_certificate_expire_date', 'insurence_expire_date']
+
+            check_field_list_vehicle = ['permit_front_side_img_path', 'registration_certificate_front_side_img_path','registration_certificate_back_side_img_path', 'pollution_certificate_front_side_img_path', 'vehicletypes', 'vehicle_name', 'vehicle_number', 'permit_expire_date', 'rc_expire_date', 'emission_test_expire_date']
+
             driver_obj = Driver.objects.get(user_id=pk)
-            # print('SSSSSSSSSSSS',driver_obj)
-            Driver.objects.filter(user_id=pk).update(driver_status=vehicle_status)
-            Vehicle.objects.filter(id=driver_obj.vehicle_id).update(vehicle_status=vehicle_status)
-            return Response({'message': 'message is updated'})
+            user_obj = CustomUser.objects.get(id=pk)
+            vehicle_obj = Vehicle.objects.get(id=driver_obj.vehicle_id)
+
+            driver_empty_fields = []
+            user_empty_fields = []
+            vehicle_empty_fields = []
+
+            for driver_field in check_field_list_driver:
+                value = getattr(driver_obj, driver_field)
+                if not value:
+                    driver_empty_fields.append(driver_field)
+
+            for user_field in check_field_list_user:
+                value = getattr(user_obj, user_field)
+                if not value:
+                    user_empty_fields.append(user_field)
+
+            for vehicle_field in check_field_list_vehicle:
+                value = getattr(vehicle_obj, vehicle_field)
+                if not value:
+                    vehicle_empty_fields.append(vehicle_field)
+
+            print(driver_empty_fields, user_empty_fields, vehicle_empty_fields)
+
+            if len(driver_empty_fields) == 0 and len(user_empty_fields) == 0 and len(vehicle_empty_fields) == 0:
+
+                if vehicle_status == 'Inactive' or vehicle_status == 'Decline':
+                    Driver.objects.filter(user_id=pk).update(driver_status=vehicle_status, is_online=False)
+                    Vehicle.objects.filter(id=driver_obj.vehicle_id).update(vehicle_status=vehicle_status)
+                    return Response({'message': 'message is updated'})
+                else:
+                    # print('SSSSSSSSSSSS',driver_obj)
+                    Driver.objects.filter(user_id=pk).update(driver_status=vehicle_status)
+                    Vehicle.objects.filter(id=driver_obj.vehicle_id).update(vehicle_status=vehicle_status)
+                    return Response({'message': 'message is updated'})
+
+            else:
+                empty_fields= driver_empty_fields + user_empty_fields + vehicle_empty_fields,
+                return Response({'error': 'some of the field are not filled yet', 'empty_fields': empty_fields[0]}, status=status.HTTP_406_NOT_ACCEPTABLE)
         else:
             return Response({'error':'id is not found'},status=status.HTTP_404_NOT_FOUND)
 
@@ -4819,7 +4840,7 @@ class DriverCountStatusApi(APIView):
             is_online = True if is_online.lower() == 'true' else False
             drivers_detail = Driver.objects.filter(
                 is_online=is_online
-            ).values(
+            ).order_by('-id').values(
                 'id','vehicle_id','vehicle__vehicle_status','vehicle__vehicle_name', 'vehicle__vehicle_number', 'driver_driving_license', 'user__first_name', 'badge', 'user__adhar_card_front_side_img_path', 'user__adhar_card_back_side_img_path', 'user__role__user_role_name', 'user__mobile_number', 'vehicle__permit_front_side_img_path', 'vehicle__registration_certificate_front_side_img_path', 'vehicle__registration_certificate_back_side_img_path', 'vehicle__pollution_certificate_front_side_img_path', 'license_img_front', 'license_img_back', 'insurence_img', 'passbook_img', 'user_id', 'owner_id', 'fitness_certificate_back_side_img_path','fitness_certificate_front_side_img_path', 'license_expire_date', 'insurence_expire_date', 'fitness_certificate_expire_date', 'vehicle__permit_expire_date', 'vehicle__rc_expire_date', 'vehicle__emission_test_expire_date','vehicle__vehicletypes__vehicle_type_name','vehicle__vehicletypes__id','vehicle__vehicletypes__vehicle_type_image', 'user__profile_image', 'vehicle__is_active','is_online', 'date_online','date_offline', 'driver_status'
             )
             
@@ -4839,7 +4860,7 @@ class DriverCountStatusApi(APIView):
             is_online = True if is_online.lower() == 'true' else False
             drivers_detail = Driver.objects.filter(
                 is_online=is_online
-            ).values(
+            ).order_by('-id').values(
                 'id','vehicle_id','vehicle__vehicle_status','vehicle__vehicle_name', 'vehicle__vehicle_number', 'driver_driving_license', 'user__first_name', 'badge', 'user__adhar_card_front_side_img_path', 'user__adhar_card_back_side_img_path', 'user__role__user_role_name', 'user__mobile_number', 'vehicle__permit_front_side_img_path', 'vehicle__registration_certificate_front_side_img_path', 'vehicle__registration_certificate_back_side_img_path', 'vehicle__pollution_certificate_front_side_img_path', 'license_img_front', 'license_img_back', 'insurence_img', 'passbook_img', 'user_id', 'owner_id', 'fitness_certificate_back_side_img_path','fitness_certificate_front_side_img_path', 'license_expire_date', 'insurence_expire_date', 'fitness_certificate_expire_date', 'vehicle__permit_expire_date', 'vehicle__rc_expire_date', 'vehicle__emission_test_expire_date','vehicle__vehicletypes__vehicle_type_name','vehicle__vehicletypes__id','vehicle__vehicletypes__vehicle_type_image', 'user__profile_image', 'vehicle__is_active', 'is_online','date_online','date_offline', 'driver_status'
             )
             count=drivers_detail.count()
@@ -5055,7 +5076,8 @@ def find_vehicle_estimation_cost(data, vehicle_type_id, location_details):
                 'total_km_of_ride': final_km['final_km'],
                 'remaining_miutes': remaining_minues['value'],
                 'base_fee': float(min_charge),
-                'total_fare_amount': round(total_charge,2),
+                'total_fare_amount': round(total_charge,0),
+                # 'total_fare_amount': int(total_charge),
                 'final_km_charge': final_km_charage,
             }
 
@@ -5070,7 +5092,7 @@ def find_vehicle_estimation_cost(data, vehicle_type_id, location_details):
                 'per_km_price': float(per_kilm_price),
                 'base_fee': float(min_charge),
                 'per_min_price': float(per_minute_price),
-                'total_fare_amount': round(total_charge,2),
+                'total_fare_amount': round(total_charge,0),
                 'total_minutes_of_ride': final_min['final_min'],
                 'total_km_of_ride': final_km['final_km'],
                 'final_km_charge': final_km_charage,
@@ -5133,7 +5155,7 @@ def find_vehicle_estimation_cost(data, vehicle_type_id, location_details):
                 'per_km_price': float(per_kilm_price),
                 'per_min_price': float(per_minute_price),
                 'base_fee': float(min_charge),
-                'total_fare_amount': total_charge,
+                'total_fare_amount': round(total_charge,0),
 
                 'free_minutes': float(free_min),
                 'total_minutes_of_ride': abs(sum(final_min)),
@@ -5151,7 +5173,7 @@ def find_vehicle_estimation_cost(data, vehicle_type_id, location_details):
                 'message':'calulated output without offer', 
                 'per_km_price': float(per_kilm_price),
                 'per_min_price': float(per_minute_price),
-                'total_fare_amount': total_charge,
+                'total_fare_amount': round(total_charge,0),
                 'total_minutes_of_ride': abs(sum(final_min)),
                 'base_fee': float(min_charge),
                 'total_km_of_ride': abs(sum(final_km)),
@@ -6184,6 +6206,7 @@ class DriveryearApi(APIView):
 # def stopScheduler():
 
 
+
 class VehicleSubscriptionApi(APIView):
     def get(self, request):
         if request.query_params:
@@ -6498,3 +6521,6 @@ class History_of_SubscriptionplanApi(APIView):
         #     return Response(response_data)
         # return Response([])  like ths i need to filter the dates             for booking in bookings:
         #         if booking['ordered_time'] and str(booking['ordered_time'].date()) == ordered_time:
+
+def templateView(request):
+    return render(request, 'admin/customTemplate.html')

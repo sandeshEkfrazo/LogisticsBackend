@@ -35,7 +35,7 @@ def test_fun(self):
 
 @shared_task(bind=True)
 def UpdateSubscriptionStatus(self, *args, **kwargs):
-    Vehicle_Subscription.objects.filter(id=kwargs['vehcile_subscription_id']).update(status='Expired')
+    Vehicle_Subscription.objects.filter(id=kwargs['vehcile_subscription_id']).update(status='Expired', is_expired=True)
 
     return "status updated successfully"
 

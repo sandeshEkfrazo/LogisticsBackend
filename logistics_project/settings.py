@@ -120,7 +120,7 @@ ASGI_APPLICATION = 'logistics_project.asgi.application'
 #     'default': {
 #         'ENGINE': 'django.db.backends.mysql',
 #         'OPTIONS': {
-#             'read_default_file': '/logistics/auth/mysql.cnf',
+#             'read_default_file': 'db.conf',
 #         },
 #     }
 # }
