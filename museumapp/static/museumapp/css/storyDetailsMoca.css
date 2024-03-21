@@ -1,0 +1,121 @@
+.parallax {
+	/* Set a specific height */
+	min-height: 650px; 
+
+	/* Create the parallax scrolling effect */
+	background-position: bottom;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+.left-side-image{
+	width:auto;
+	height: auto;
+}
+.left_caption{
+	width:200px;
+	height: 275px;
+}
+.close-icon{
+	width: 15px; 
+	height: 15px;
+}
+.story-title{
+	width: auto;
+	padding-bottom: 10px;
+	margin-bottom: 0px;
+}
+.underline-title{
+	border-top: 1px solid black;
+	width: 30px;
+	padding-bottom: 50px;
+}
+div.next-page-indicator img{
+	height: 22px;
+}
+#outer-div{
+    width: 100%;
+  	height: 100vh;
+ 	overflow: hidden;
+ 	padding-bottom: 20px;
+}
+#inner-div{
+    height: 100%;
+  	margin-right: -50px; /* maximum width of scrollbar */
+  	padding-right: 50px; /* maximum width of scrollbar */
+  	overflow-y: scroll;
+}
+.goldbar-top{
+    border-top: 5px solid #b5a268;
+}
+.imageBox {
+	position: absolute;
+	float: left;
+	bottom: 40px;
+	margin-right: 15px;
+	left: 0;
+}
+.imageBoxSmallPic {
+	top: 330px;
+	position: relative;
+	left: 80px;
+}
+.imageBox .hoverImg {
+	position: absolute;
+	left: -50px;
+	top: 10%;
+	display: none;
+}
+.imageBox .hoverImgTwo {
+	position: absolute;
+	left: 170px;
+	top: 22%;
+	display: none;
+	right: -180px;
+}
+.imageBoxSmallPic .hoverImgThree {
+	position: absolute;
+	position: absolute;
+	bottom: 20%;
+	left: -85%;
+}
+.content-pad{
+	padding: 0px;
+}
+.imageBoxMob {
+	float: center;
+	bottom: 40px;
+	margin-right: 15px;
+	left: 0;
+}
+.imageBoxMob .hoverImgMob {
+	position: absolute;
+	left: -50px;
+	top: 10%;
+	display: none;
+}
+.image-for-mobiles{
+	display: none;
+}
+.down-arrow{
+	margin: 40% 0px 30px 0px;
+}
+.imageBox:hover .hoverImg {
+	display: block;
+}
+
+@media (max-width: 768px) {
+	.content-pad{
+		padding: 0px 15px;
+	}
+}
+@media (max-width: 767px) {
+	.imageBox {
+		display: none;
+	}
+	.image-for-mobiles{
+		display: block;
+	}
+	.down-arrow{
+		margin: 12% 0px 60px 0px;
+	}
+}

@@ -1,0 +1,759 @@
+{% extends "museumapp/base.html" %}
+
+
+{% block title %} Search The Collection {% endblock %}
+
+{% load static %}
+
+  
+
+   {% block style %} 
+
+   	body{
+   		background-color: #f5f5f5;
+	}
+	.opt{
+		padding: 35px;
+		font-size: 15px; 
+	}
+	a{
+		color: #a79591;
+		text-decoration: none;
+	}
+	/*a:visited {
+		color: #ec487e;
+		text-decoration:none;
+	}*/
+	a:hover {
+		color: #ec487e;
+		text-decoration:none;
+	}
+	a:active {
+		color: #ec487e;
+		text-decoration:none;
+	}
+	.dot{
+		height: 223px;
+		width: 519px;
+		position: relative;
+		display: block;
+		border-radius: 10px;
+	}
+
+	.info_dot{
+		height: auto;
+		width: 300px;
+		position: relative;
+		display: block;
+		border-radius: 10px;
+		padding: 0px;
+	}
+
+	.info_img{
+		height: 150px;
+		width: 270px;
+		position: relative;
+		display: block;
+		border-radius: 10px;
+	}
+
+	.dot1{
+		height: 166px;
+		width: 405px;
+		position: relative;
+		display: block;
+		border-radius: 10px;
+	}
+
+	.aswtProj{
+		border-radius: 10px;
+		background-color: #fff;
+		margin-top: -15px;
+		position: absolute;
+		border-bottom-color: #dfdfdf;
+		border-bottom-style: solid;
+		padding-left: 10px;
+		padding-bottom: 10px;
+		margin-left: 5px;
+		width: auto;
+		left: 5px;
+		right: 5px;
+		margin-right: 5px;
+		
+	}
+
+	.proj{
+		padding-bottom: 50px;
+	}
+
+	.proj_explore{
+		padding: 5px 0px;
+	}
+	
+	.google-maps {
+		position: relative;
+		padding-bottom: 25%; // This is the aspect ratio
+		height: 0;
+		overflow: hidden;
+	}
+	.google-maps iframe {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100% !important;
+		height: 100% !important;
+	}
+	.project_css1{
+		border-color: #252121; 
+		border-radius: 10px; 
+		border-style: solid; 
+		vertical-align: middle;
+	}
+	#display_all{
+		background-color: #ec487e;
+		text-align: center;
+	}
+	.form-control{
+		border-radius: 10px !important;
+	}
+
+	.displayALLContent{
+		color:white; 
+		margin:24px 0px 0px 0px;
+	}
+	.btn-group{
+		width: 207px;
+		height: 35px;
+	}
+	.project_css2{
+		margin-left: 21px; 
+		padding: 0px 0px 0px 0px;
+		width: 479px;
+		height: 127px;
+	}
+	.project_css3{	
+    	padding-left: 0px;
+    	padding-right: 0px;
+    	width: 361px;
+    	height: 77px;
+	}
+	.project_css4{
+		padding-right: 0px;
+		padding-left: 0px;
+	}
+	a.btn{
+		font-size: 15px;
+		font-weight: bold;
+		text-decoration: none;
+		color:#a79591;
+	}
+	#hover_css1{
+		font-size: 10px;
+		text-decoration: none;
+		color: #ec487e;
+		font-weight: bold;
+		padding-left: 0px;
+	}
+	#icon_size{
+		height:20px;
+		width:20px;
+	}
+	.propName{
+		font-size: 25px;
+		padding-top:5px; 
+		padding-bottom:5px;
+	}
+	.inner{
+		padding-bottom: 50px;
+	}
+	.rPad{
+		padding-right: 0px;
+	}
+	/*.spaceLeRi{
+		margin: 10px 100px;
+	}*/
+
+	.aswtProjExp{
+		border-radius: 10px;
+		background-color: #fff;
+		margin-top: -15px;
+		border-bottom-color: #dfdfdf;
+		border-bottom-style: solid;
+		padding-left: 10px;
+		padding-bottom: 10px;
+		width: auto;
+		margin-left: 0px !important;
+		margin-right: 0px !important;
+		max-width: 493px;
+	}
+	/* maps implementation */
+	/* Set the size of the div element that contains the map */
+	  #map-canvas {
+		height: 550px; 
+		width: auto;
+	   }
+
+	.stuck {
+		position: absolute;
+		width: auto;
+		overflow-y: scroll;
+		height: 100%;
+	}
+	.not-stuck {
+		width: 100%;
+		margin-left: auto;
+	}
+
+	/*@media screen and (max-width: 1024px) {
+		.not-stuck{
+			margin-left: 330px;
+		}
+		#map-canvas{
+			width: 650px;
+		}
+	}*/
+
+	@media screen and (max-width: 768px) {
+		.upMove{
+			padding-left: 0px;
+		}
+		.project_css2{
+			width: inherit;
+		}
+		.dot{
+			height: 200px;
+		}
+		.propName{
+			font-size: 19px;
+		}
+		div.innercss1 {
+			margin-left: 0px !important;
+		}
+		div.inner {
+			margin-bottom: 60px !important;
+			padding-bottom: 0px;
+		}
+		div.innercss1 {
+			margin-left: 0px !important;
+		}
+		.enlarge{
+			padding-left: 0px;
+			padding-right: 0px;
+		}
+		.proj{
+			padding-bottom: 0px !important;
+		}
+		/*.not-stuck{
+			margin-left: 240px;
+		}
+		#map-canvas{
+			width: 490px;
+		}*/
+
+	}
+
+
+	@media screen and (max-width: 425px) {
+		#explore{
+			height: 1000px;
+		}
+		#map-canvas{
+			height: 300px;
+			margin-top: 10px;
+		}
+		.stuck{
+			top: 300px;
+			height: 400px;
+			margin-top: 25px;
+		}
+		#list_data{
+			padding: 0px;
+		}
+		.proj_explore{
+			padding: 0px;
+		}
+  		div.inner {
+			margin-bottom: 60px !important;
+			padding-bottom: 0px;
+		}
+		div.innercss1 {
+			margin-left: 0px !important;
+		}
+		.enlarge{
+			padding-left: 0px;
+			padding-right: 0px;
+		}
+		.project_css2{
+			width: inherit;
+		}
+		.setWidth{
+			width: auto;
+		}
+		#hover_css1{
+			top: 54px;
+		}
+		.upMove{
+			padding-left: 15px;
+			bottom: 26px;
+		}
+		.dot{
+			height: 200px;
+		}
+		.propName{
+			font-size: 20px;
+			margin-bottom: 0px;
+		}
+		.displayALLContent{
+			margin:10px 0px 10px 0px;
+		}
+		.form-control, .opt{
+			font-size: 12px !important;
+		}
+		.form-group{
+			margin-bottom: 0px !important;
+		}
+
+	}
+
+
+  {% endblock %}
+
+{% block body %}
+	<div> hi </div>
+	
+	<div id="explore">
+		<section class="site_filter" style="background-color: white;">
+			<div class="container-fluid">
+				<div class="row justify-content-center">
+
+					<div class="col-sm-2">
+						<div class="form-group">
+							<label for="object_Type"></label>
+							<select class="form-control" id="object_Type" url = "{% url 'museumapp:getobj_type' %}">
+							</select>
+						</div>
+					</div>
+					<div class="col-sm-2">
+						<div class="form-group">
+							<label for="material"></label>
+							<select class="form-control" id="material" url = "{% url 'museumapp:getmaterial' %}">
+							</select>
+						</div>
+					</div>
+					<div class="col-sm-2">
+						<div class="form-group">
+							<label for="period"></label>
+							<select class="form-control" id="period" url = "{% url 'museumapp:getdate' %}">
+							</select>
+						</div>
+					</div>
+					<div class="col-sm-2">
+						<div class="form-group">
+							<label for="locationobject_name"></label>
+							<select class="form-control" id="location" url = "{% url 'museumapp:getlocation' %}">
+								<option value='all' selected>location</option>
+							</select>
+						</div>
+					</div>
+					
+					<div class="col-sm-2">
+						<div class="row displayALLContent">
+							<a class="form-control" id="display_all" style="cursor: pointer;">Display All</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		
+		<section>
+			<div class="container-fluid">
+				
+				<div class="row">
+					<div id = "no_results">
+						<h5>No results found</h5>
+					</div>
+					<div class="container-fluid" id="list_data" data-toggle="div" url = "{% url 'museumapp:listing' %}">
+						<div class="container-fluid proj_explore justify-content-center">
+							<div class="col-sm-12 spaceLeRi">
+								<div class="row">
+									<div class="stuck col-sm-12">
+										<div id="#html-text">
+										<div class="container-fluid" id="listing" style="padding-top: 20px;">
+											
+										</div>
+										</div>
+										
+									</div>
+									
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</div>
+
+
+
+    
+	<script type="text/javascript">
+	
+	var send_data = {}
+
+	/*var filterType = '{{filterType}}'
+	var filterValue ='{{filterValue}}'*/
+
+	$(document).ready(function () {
+		
+		/*if(filterValue != 'None')
+		{
+			
+			undoFilter = callCustomData(filterType, filterValue);
+			getAPIData();
+			send_data['property'] = '';
+		}
+		else
+		{*/
+			// reset all parameters on page load
+			resetFilters();
+			getlocation();
+			// bring all the data without any filters
+			getAPIData();
+			// get all region/area from database via 
+			// AJAX call into region/area select options
+			getobj_type();
+			// get all object type from database via 
+			// AJAX call into status select options
+			getmaterial();
+			// get all material from database via 
+			// AJAX call into budget select options
+			getdate();
+			// get getdate type from database via 
+			// AJAX call into budget select options
+			
+	/*		
+		}*/
+
+		// on selecting the region/area option
+		$('#object_Type').on('change', function () {
+			
+
+			// update the selected region/area
+			if(this.value == "all")
+				send_data['object_Type'] = "";
+			else
+				send_data['object_Type'] = this.value;
+
+			
+			getAPIData();
+		});
+
+		$('#material').on('change', function () {
+			if(this.value == "all")
+				send_data['material'] = "";
+			else
+				send_data['material'] = this.value;
+			getAPIData();
+		});
+
+		// on filtering the date input
+		$('#period').on('change', function () {
+			
+			
+			
+			if(this.value == "all")
+				send_data['period'] = "";
+			else
+				send_data['period'] = this.value;
+			
+			//gettype(this.value);
+			
+			getAPIData();
+		});
+
+		// on filtering the type input
+		$('#location').on('change', function () {
+			if(this.value == "all")
+				send_data['location'] = "";
+			else
+				send_data['location'] = this.value;
+			getAPIData();
+		});
+
+		/*// sort the data according to 
+		$('#sort_by').on('change', function () {
+			send_data['sort_by'] = this.value;
+			getAPIData();
+		});*/
+
+		// display the results after reseting the filters
+		$("#display_all").click(function(){
+			resetFilters();
+			getAPIData();
+		})
+	})
+
+
+	/**
+		Function that resets all the filters   
+	**/
+	function resetFilters() {
+		$("#object_Type").val("all");
+		$("#period").val("all");
+		$("#location").val("all");
+		$("#material").val("all");
+		
+		/*$("#sort_by").val("none");
+		
+		clearing up the budget and type select box
+		getbudget("all");
+		gettype("all");*/
+
+		send_data['object_Type'] = '';
+		send_data['period'] = '';
+		send_data['location'] = '';
+		send_data['material'] = '';
+		//send_data["sort_by"] = '',
+		send_data['format'] = 'json';
+	}
+
+	/**.
+		Utility function to showcase the api data 
+		we got from backend to the table content
+	**/
+	function putTableData(result) {
+		var dataAddress = [];
+		var content = [];
+		// creating table row for each result and
+		// pushing to the html cntent of table body of listing table
+		let row;
+		if(result["results"].length > 0){
+			$("#no_results").hide();
+			$("#list_data").show();
+			$("#listing").html("");  
+			$.each(result["results"], function (a, b) {
+
+				
+
+				row = b.object_name
+					
+				$("#listing").append(row);   
+			});
+			// var y = initMap(dataAddress, content);
+		}
+		else{
+			// if no result found for the given filter, then display no result
+			$("#no_results h5").html("No results found");
+			$("#list_data").hide();
+			$("#no_results").show();
+		}
+		// setting previous and next page url for the given result
+		let prev_url = result["previous"];
+		let next_url = result["next"];
+		// disabling-enabling button depending on existence of next/prev page. 
+		if (prev_url === null) {
+			$("#previous").addClass("disabled");
+			$("#previous").prop('disabled', true);
+		} else {
+			$("#previous").removeClass("disabled");
+			$("#previous").prop('disabled', false);
+		}
+		if (next_url === null) {
+			$("#next").addClass("disabled");
+			$("#next").prop('disabled', true);
+		} else {
+			$("#next").removeClass("disabled");
+			$("#next").prop('disabled', false);
+		}
+		// setting the url
+		$("#previous").attr("url", result["previous"]);
+		$("#next").attr("url", result["next"]);
+		// displaying result count
+		$("#result-count span").html(result["count"]);
+	}
+
+	function getAPIData() {
+		let url = $('#list_data').attr("url")
+		$.ajax({
+			method: 'GET',
+			url: url,
+			data: send_data,
+			beforeSend: function(){
+				$("#no_results h5").html("Loading data...");
+			},
+			success: function (result) {
+				putTableData(result);
+			},
+			error: function (response) {
+				$("#no_results h5").html("Something went wrong");
+				$("#list_data").hide();
+			}
+		});
+	}
+
+	$("#next").click(function () {
+		let url = $(this).attr("url");
+		if (!url)
+			$(this).prop('all', true);
+
+		$(this).prop('all', false);
+		$.ajax({
+			method: 'GET',
+			url: url,
+			success: function (result) {
+				putTableData(result);
+			},
+			error: function(response){
+				console.log(response)
+			}
+		});
+	})
+
+	$("#previous").click(function () {
+		let url = $(this).attr("url");
+		if (!url)
+			$(this).prop('all', true);
+
+		$(this).prop('all', false);
+		$.ajax({
+			method: 'GET',
+			url: url,
+			success: function (result) {
+				putTableData(result);
+			},
+			error: function(response){
+				console.log(response)
+			}
+		});
+	})
+
+	function getobj_type() {
+		let url = $("#object_Type").attr("url");
+		$.ajax({
+			method: 'GET',
+			url: url,
+			data: {},
+			success: function (result) {
+				region_options = "<option value='all' selected>All Objects</option>";
+				$.each(result["object_Type"], function (a, b) {
+					// if(filter_val != 'none' && filter_val == b){
+					// 	region_options += "<option selected>" + b + "</option>"
+					// }
+					// else{
+						region_options += "<option>" + b + "</option>"
+					// }
+				});
+				$("#object_Type").html(region_options)
+			},
+			error: function(response){
+				console.log(response)
+			}
+		});
+	}
+
+	function getmaterial() {
+		let url = $("#material").attr("url");
+		$.ajax({
+			method: 'GET',
+			url: url,
+			data: {},
+			success: function (result) {
+				status_options = "<option value='all' selected>Material</option>";
+				$.each(result["material"], function (a, b) {
+					// if(filter_val != 'none' && filter_val == b){
+					// 	status_options += "<option selected>" + b + "</option>"
+					// }
+					// else{
+						status_options += "<option>" + b + "</option>"
+					// }
+				});
+				$("#material").html(status_options)
+			},
+			error: function(response){
+				console.log(response)
+			}
+		});
+	}
+
+	function getdate() {
+		let url = $("#period").attr("url");
+		$.ajax({
+			method: 'GET',
+			url: url,
+			data: {},
+			success: function (result) {
+				budget_options = "<option value='all' selected>Period</option>";
+				$.each(result["period"], function (a, b) {
+					// if(filter_val != 'none' && filter_val == b){
+					// 	budget_options += "<option selected>" + b + "</option>"
+					// }
+					// else{
+						budget_options += "<option>" + b + "</option>"
+					// }
+				});
+				$("#period").html(budget_options)
+			},
+			error: function(response){
+				console.log(response)
+			}
+		});
+	}
+
+	function getlocation() {
+		let url = $("#location").attr("url");
+		$.ajax({
+			method: 'GET',
+			url: url,
+			data: {},
+			success: function (response) {
+				type_options = "<option value='all' selected>all locations</option>";
+				$.each(response["location"], function (a, b) {
+					type_options += "<option>" + b + "</option>"
+				});
+				$("#location").html(type_options);
+			},
+			error: function(response){
+				console.log(response)
+			}
+		});
+	}
+
+	/*function callCustomData(typeFilter, data ) {
+		if(typeFilter=='object_Type'){
+			send_data['object_Type'] = data;
+			getobj_type(data);
+			getmaterial('none');
+			getdate('none');
+			getlocation();
+		}
+		else if(typeFilter=='material'){
+			send_data['material'] = data;
+			getobj_type('none');
+			getmaterial(data);
+			getdate('none');
+			getlocation();
+		}
+		else if(typeFilter=='period'){
+			send_data['period'] = data;
+			getobj_type('none');
+			getmaterial('none');
+			getdate(data);
+			getlocation();
+			
+		}
+		else{
+			send_data['property'] = data;
+			getobj_type('none');
+			getmaterial('none');
+			getdate('none');
+			getlocation();
+		}*/
+	
+
+	
+
+	</script>
+	
+{% endblock %}

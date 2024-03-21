@@ -1,0 +1,307 @@
+{% extends "museumapp/base.html" %}
+
+{% load static %}
+	
+	<!--- Title --->
+	{% block title %}
+		Museum of Christian Art
+	{% endblock %}
+
+	<!--- Custom CSS --->
+	{% block custom-css-parts %}
+	{% endblock %}
+
+	<!--- Custom Style --->
+	{% block style %}
+		<link rel="stylesheet" type="text/css" href="{% static 'museumapp/css/supportMoca.css' %}"/>
+		
+		<style>
+		
+		
+		
+		
+		
+		@media (max-width: 575px) {
+.side-sticky-links {
+    display: block !important;
+    margin-bottom: 20px;
+}
+}
+		
+		</style>
+		
+		
+		
+	{% endblock %}
+
+	<!--- Body content --->
+	{% block body-content %}
+		<!-- Page Content  -->
+		<div id="content">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-sm-12" style="padding: 0px;">
+						<div class="parallax" style="background-image: url('{% static 'museumapp/image/2068.jpg' %}');"></div>
+					</div>
+					
+					<div class="move-top">
+						<div class="fira-on-image fira font-weight-bold" style="color:white;">FRIENDS OF MoCA</div>
+					<div class="big-font-on-image garamond" style="color:white;">Support the <br> Museum</div>
+					</div>
+				</div>
+			</div>
+				
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-sm-12">
+					  	<div class="row">
+							<div class="col-sm-8"></div>
+						 	<div class="col-sm-2 buy-to-end">
+						   		<a href="{% url 'museumapp:buy_tickets' %}"><button type="button" class="buy-tickets-button fira small-heading">BOOK TICKETS</button></a>
+							</div>
+							<div class="col-sm-2"></div>
+					 	</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="container-fluid from-image-content">
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="row">
+							<div class="col-sm-12">
+								<div class="row">
+									<div class="col-sm-1"></div>
+									<div class="col-sm-2">
+										<div class="side-sticky-links">
+
+											<a href="#student">
+												<span class="small-text fira font-weight-bold" id="side-links">STUDENT</span><br>
+											</a>
+											
+											<a href="#Individual"><span class="small-text fira font-weight-bold" id="side-links">INDIVIDUAL</span><br>
+											</a>
+											
+											
+											<a href="#family">
+												<span class="small-text fira font-weight-bold" id="side-links">FAMILY</span><br>
+											</a>
+											
+											<a href="#Lifetime">
+												<span class="small-text fira font-weight-bold" id="side-links">LIFETIME</span><br>
+											</a>
+
+												
+
+
+											
+
+
+											
+
+											<a href="#Patrons">
+												<span class="small-text fira font-weight-bold" id="side-links">PATRONS</span><br>
+											</a>
+
+
+											<a href="#Corporate">
+												<span class="small-text fira font-weight-bold" id="side-links">CORPORATE</span><br>
+											</a>
+
+
+                                            <a href="{% url 'museumapp:membership' %}" target="_blank">
+												<span class="small-text fira font-weight-bold" id="side-links">DONATE</span><br>
+											</a>
+
+
+
+											<!-- <a href="{% static 'museumapp/pdf/list_of_donors.pdf' %}" target="_blank"> -->
+											<a href="{% static 'museumapp/pdf/List_of_Donors2023.pdf' %}" target="_blank">
+												<span class="small-text fira font-weight-bold" id="side-links">DONORS LIST</span>
+											</a>
+
+
+										</div>
+									</div>
+									<div class="col-sm-6">
+										<div class="row" id="mob-margin-zero">
+											<div class="page-highlights garamond high-para">
+												By becoming a Friend, you contribute positively to preserving our rich artistic heritage
+for posterity, and our mission to widen our understanding of it. You will be helping
+us with the conservation of our collection and maintenance of our heritage building.
+Your contribution will also support our various educational activities and outreach
+programmes.
+											</div>
+											<div class="page-highlights garamond side-head-para">
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-sm-12 page-highlights garamond side-head-para">As a 'Friend of MoCA' you enjoy unlimited entry to the museum as well as all of our
+											member benefits.<br><br>
+
+											Go on. Join today. Become a Friend of MoCA.
+</div>
+
+										</div>
+										
+										
+										<div class="row">
+											<div class="col-sm-12 page-highlights garamond" id="student" style="margin-bottom: 0px;"> Student Membership</div>
+											<div class="col-sm-12 inner-para garamond high-para">
+
+One Year Rs. 1000/- <br>
+Unlimited free admission to the Museum<br>
+Discount for workshops and public lectures<br>
+Name of the member on MoCA’s Website<br>
+One guided tour of the Museum<br>
+
+											</div>
+										</div>
+
+
+										<div class="row">
+											<div class="col-sm-12 page-highlights garamond" id="Individual" style="margin-bottom: 0px;"> Individual Membership</div>
+											<div class="col-sm-12 inner-para garamond high-para">
+One Year Rs. 5000/-<br>
+Unlimited free admission to the Museum<br>
+Discount for workshops and public lectures<br>
+Name of the member on MoCA’s Website<br>
+One guided tour of the Museum<br>
+Exemption under Section 80G of the Income Tax Act<br>
+											</div>
+										</div>
+
+
+
+
+										
+										<div class="row">
+											<div class="col-sm-12 page-highlights garamond" id="family" style="margin-bottom: 0px;"> Family Membership upto- 4 members</div>
+											<div class="col-sm-12 inner-para garamond high-para">
+									One Year Rs. 25,000/-<br>
+Unlimited free admission to the Museum<br>
+Discount for workshops and public lectures<br>
+Name of the member on MoCA’s Website<br>
+One guided tour of the Museum<br>
+One Heritage walk of the Holy Hill for the family<br>
+Exemption under Section 80G of the Income Tax Act<br>
+
+											</div>
+										</div>
+										
+
+
+						<div class="row">
+							<div class="col-sm-12 page-highlights garamond" id="Lifetime" style="margin-bottom: 0px;"> Lifetime Membership</div>
+								<div class="col-sm-12 inner-para garamond high-para">
+										Rs. 1,00,000/- and above<br>
+										Name of the member on MoCA’s Website<br>
+										Unlimited free admission to the Museum<br>
+										One guided tour of the Museum <br>
+										One Heritage walk of the Holy Hill for a group of up to 10 people<br>
+										Discount for workshops and public lectures<br>
+										Invitation to our Special Events<br>
+										Exemption under Section 80G of the Income Tax Act<br>
+
+								</div>
+							</div>
+
+
+							<div class="row">
+								<div class="col-sm-12 page-highlights garamond" id="Patrons" style="margin-bottom: 0px;"> Patrons</div>
+									<div class="col-sm-12 inner-para garamond high-para">
+											Rs. 5,00,000/-and above<br>
+											Name of the donor on the Donor Board<br>
+											Name of the member on MoCA’s Website<br>
+											Exemption under Section 80G of the Income Tax Act <br>
+											Unlimited free admission to the Museum<br>
+											One guided tour of the Museum<br>
+											One Heritage walk of the Holy Hill for a group of up to 10 people<br>
+											Discount for workshops and public lectures<br>
+											Invitation to our Special Events<br>
+
+	
+									</div>
+								</div>
+
+
+										
+
+
+		
+								
+
+
+
+
+
+										<div class="row">
+											<div class="col-sm-12 page-highlights garamond" id="Corporate" style="margin-bottom: 0px;"> Corporate Membership</div>
+											<div class="col-sm-12 inner-para garamond high-para">
+												Rs. 5,00,000/- and above<br>
+												Name of the donor on the Donor Board<br>
+												Name of the member on MoCA’s Website<br>
+												Exemption under Section 80G of the Income Tax Act<br>
+												One guided tour of the Museum for a group of upto 10 people<br>
+												One Heritage walk of the Holy Hill for a group of up to 10 people<br>
+												Invitation to our Special Events<br>
+												
+
+
+											</div>
+										</div>
+
+											<!-- <div class="row">
+											<div class="col-sm-12 page-highlights garamond" id="Corporate" style="margin-bottom: 0px;">Collaborators</div>
+											<div class="col-sm-12 inner-para garamond high-para">
+											2. Fundacao Oriente<br>
+3. Ministry of Culture, India<br>
+
+											</div>
+										</div> -->
+
+
+									</div>
+									<div class="col-sm-3"></div>
+								</div>
+
+								<!-- <div class="row">
+									<div class="col-sm-3"></div>
+									<div class="col-sm-6">
+										<div class="side-heading-size35 garamond"></div>
+										<div class="inner-para garamond"> Please note that if you want to visit museum within one week we recommend to purchase your membership at ticket desk 1 or in the museum shop.
+										</div>
+									</div>
+									<div class="col-sm-3"></div>
+								</div>
+
+								<div class="row">
+									<div class="col-sm-3"></div>
+									<div class="col-sm-6">
+										<div class="side-heading-size35 garamond"></div>
+										<div class="inner-para garamond high-para">Cost of Rijks Friend membership<br> €50 annually for individual membership<br> €75 annually for joint membership<br> If you become a Friend for €75 you will get one personal card and one card for guests.
+										</div>
+									</div>
+									<div class="col-sm-3"></div>
+								</div>
+
+								<div class="row">
+									<div class="col-sm-3"></div>
+									<div class="col-sm-6">
+										<div class="side-heading-size35 garamond"></div>
+										<div class="inner-para garamond high-para">
+											Questions? Get in touch!tours.
+										</div>
+									</div>
+									<div class="col-sm-3"></div>
+								</div> -->
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	{% endblock %}
+
+	<!--- Custom Script Block --->
+	{% block custom-script %}	{% endblock %}

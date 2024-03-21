@@ -1,0 +1,158 @@
+{% extends "museumapp/base.html" %}
+
+{% load static %}
+	
+	<!--- Title --->
+	{% block title %}	{% endblock %}
+
+	<!--- Custom CSS --->
+	{% block custom-css-parts %}
+	{% endblock %}
+
+	<!--- Custom Style --->
+	{% block style %}
+
+		<link rel="stylesheet" type="text/css" href="{% static 'museumapp/css/conservationMoca.css' %}"/>
+
+	{% endblock %}
+
+	<!--- Body content --->
+	{% block body-content %}
+		<!-- Page Content  -->
+		<div id="content">
+				
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-sm-12" style="padding: 0px;">
+						<div class="parallax" style="background-image: url('{% static 'museumapp/image/206.png' %}');"></div>
+					</div>
+					
+					<!-- <div class="move-top">
+						<div class="fira-on-image fira font-weight-bold">PLAN A VISIT</div>
+						<div class="big-font-on-image garamond">Where, When <br>& How</div>
+					</div> -->
+				</div>
+			</div>
+			
+				<div class="container-fluid">
+			   	<div class="row">
+					<div class="col-sm-12">
+				  		<div class="row">
+							<div class="col-sm-8">  
+							</div>
+					 		<div class="col-sm-2 buy-to-end">
+					   			<a href="{% url 'museumapp:buy_tickets' %}"><button type="button" class="buy-tickets-button fira small-heading"><b>BOOK TICKETS</b></button></a>
+							</div>
+							<div class="col-sm-2"></div>
+				 		 </div>   
+					</div>
+			 	 </div>
+			</div>
+			
+				<div class="container-fluid from-image-content" >
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="row">
+								<div class="col-sm-3"></div>
+									<div class="col-sm-6">
+										<div class="small-heading fira font-weight-bold sub-para">MOCA KNOWLEDGE CENTRE / <span style="color:#A9A9A9">CONSERVATION</span> </div>		
+									</div>
+									<div class="col-sm-3"></div>
+								</div>
+
+									<div class="row">
+										<div class="col-sm-3">
+											
+										</div>
+										<div class="col-sm-6">
+<!-- -->								<div class="page-heading garamond high-para">Preserving Knowledge</div>		
+										</div>
+										<div class="col-sm-3"></div>
+									</div>
+
+									<div class="row">
+										<div class="col-sm-1"></div>
+										<div class="col-sm-2">
+											<span class="small-text fira font-weight-bold" id="side-links">
+												GROUP CHECK IN
+											</span><br>
+											<span class="small-text fira font-weight-bold" id="side-links">
+												CUSTOMISE YOUR TOUR
+											</span>	
+										</div>
+										<div class="col-sm-6">
+											<p class="page-highlights garamond high-para ">
+											The most significant objective of the museum is to conserve
+											and preserve the unique collection of Indo Portuguese art
+											objects, found extensively in Goa.
+										</div>
+										<div class="col-sm-3"></div>
+									</div>
+								
+									<div class="row">
+										<div class="col-sm-3"> 
+										</div>
+										<div class="col-sm-6">	
+											<p class="inner-para garamond sub-para">
+												The various categories of museum objects not only need a great deal of expertise
+												to conserve, but the entire process also needs to be documented in great detail for
+												reference in the future. Some of the key objects from the Museum’s collection are also
+												being documented for immersive technologies applications in the future.
+												As part of the refurbishment project that commenced in 2017, the art objects from
+												the Museum’s collection were documented and conserved by a team of conservators
+												from INTACH, New Delhi. A temporary Conservation lab was set up at the Museum
+												for this purpose.
+											</p>																	
+										</div>
+										<div class="col-sm-3"></div>
+									</div>
+
+									<div class="row">
+									<div class="col-sm-3"></div>
+										<div class="col-sm-6 " >
+											<p class="inner-para garamond sub-para">
+												The objects in the collection classified in different categories as per their material
+												were carefully examined for any damages that were occurring on them, detailed
+												photographs of each object were taken before, during and after the treatment, based
+												on which the Conservators formulated the Conservation treatment for each object.
+												The conservation treatments, which included Mechanical and Solvent cleaning,
+												Insecticidal treatments, Removal of previous faulty restorations, Consolidation,
+												Reintegration and Re Stabilisation; differed for each object, depending on its
+												condition
+											</p>																	
+										</div>
+										<div class="col-sm-3 "></div>
+									</div>
+
+
+									<div class="row">
+									<div class="col-sm-3"></div>
+										<div class="col-sm-6" >
+											<p class="inner-para garamond sub-para">
+												During the course of conservation works, the INTACH conservators trained and
+												were assisted by a team of local interns
+											</p>																	
+										</div>
+										<div class="col-sm-3"></div>
+									</div>
+								<div class="row bottom-button ">
+									<div class="col-sm-3"></div>
+										<div class="col-sm-6">
+											<div class="row" style= "margin-left: 0px;margin-top: 30px;margin-bottom: 45px;">
+												<a href="{% url 'museumapp:buy_tickets' %}"><button type="button" class="buy-tickets-button small-heading"><b>BOOK TICKETS</b></button></a>
+											</div>
+										</div>
+										<div class="col-sm-3"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+					
+									
+					
+	{% endblock %}
+
+	<!--- Custom Script Block --->
+	{% block custom-script %}	{% endblock %}

@@ -1,0 +1,244 @@
+{% extends "museumapp/base.html" %}
+
+{% load static %}
+	
+	<!--- Title --->
+	{% block title %}
+		Museum of Christian Art
+	{% endblock %}
+
+	<!--- Custom CSS --->
+	{% block custom-css-parts %}
+		<link rel="stylesheet" type="text/css" href="{% static 'museumapp/css/accessibilityMoca.css' %}"/>
+	{% endblock %}
+
+	<!--- Custom Style --->
+	{% block style %}
+	{% endblock %}
+
+	<!--- Body content --->
+	{% block body-content %}
+		<!-- Page Content  -->
+		<div id="content">
+				
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-sm-12" style="padding: 0px;">
+						<div class="parallax" style="    min-height: 500px;
+background-image: url('{% static 'museumapp/image/facilitiesheader-min.jpg' %}');"></div>
+					</div>
+					
+					<!-- <div class="move-top">
+						<div class="fira-on-image fira font-weight-bold">PLAN A VISIT</div>
+						<div class="big-font-on-image garamond">Where, When <br>& How</div>
+					</div> -->
+				</div>
+			</div>
+			
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-sm-12">
+					  	<div class="row">
+							<div class="col-sm-8"></div>
+						 	<div class="col-sm-2 buy-to-end">
+						   		<a href="{% url 'museumapp:buy_tickets' %}">
+						   			<button type="button" class="buy-tickets-button fira small-heading"><b>BOOK TICKETS</b></button>
+						   		</a>
+							</div>
+							<div class="col-sm-2"></div>
+					 	</div>   
+					</div>
+				</div>
+			</div>
+			
+			<div class="container-fluid from-image-content" >
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="row">
+							<div class="col-sm-3"></div>
+							<div class="col-sm-6">
+								<div class="small-heading fira font-weight-bold sub-para">PLAN A VISIT / <span style="color:#A9A9A9">FACILITIES</span></div>
+							</div>
+							<div class="col-sm-3"></div>
+						</div>
+
+						<div class="row">
+							<div class="col-sm-3"></div>
+							<div class="col-sm-6">
+								<div class="page-heading garamond high-para">Amenities for everyone</div>		
+								</div>
+							<div class="col-sm-3"></div>
+						</div>
+
+						<div class="row">
+							<div class="col-sm-3"></div>
+						<!-- 	<div class="col-sm-1"></div>
+							<div class="col-sm-2">
+								<div class="side-sticky-links">
+									<a href="#amenities">
+										<span class="small-text fira font-weight-bold" id="side-links">AMENITIES</span><br>
+									</a>
+
+									<a href="#accessibility">
+										<span class="small-text fira font-weight-bold" id="side-links">ACCESSIBILITY</span>
+									</a>
+								</div>
+							</div> -->
+							<div class="col-sm-6">
+								<div class="row">
+									<div class="col-sm-12 page-highlights garamond high-para ">
+									To make your visit as comfortable as possible, here are the
+facilities we provide at the museum.
+									</div>
+								</div>
+						<!-- 		<div class="row">
+									<div class="col-sm-12 page-heading garamond high-para" id="amenities">Amenities</div>		
+									<div class="col-sm-12 inner-para garamond sub-para">
+										The museum is wheelchair accessible.
+										Minivan and car parking is available on the premises. Your driver may drop off and pick up your group at the museum’s main entrance.
+									</div>	
+								</div> -->
+								<div class="row">
+									<div class="col-sm-12 page-highlights garamond" style="margin-bottom: 0px;"> Accessibility</div>
+									<div class="col-sm-12 inner-para garamond sub-para bottom-border">
+										<!-- Our museum is wheelchair accessible, with the exceptions of our upper
+level and washrooms. While MoCA attempts to make a visit to the museum a
+comfortable experience for all, our location within a heritage building restrains our
+ability to provide access to certain parts of the museum for those with wheelchairs
+and mobility difficulties. -->
+<br><br>
+<!-- Wheelchair access is available at the cafe, the courtyard, and the lower level which
+houses our <i>Life of Saint Francis Xavier, Textiles, Religious Furniture, books,</i> and <i>Precious
+Metal Objects collections,</i> and the Church of Santa Monica. -->
+Wheelchair access is available at the cafe, the courtyard, the lower level and the upper level of the museum, with the exceptions of our washrooms. While MoCA attempts to make a visit to the museum a comfortable experience for all, our location within a heritage building restrains our ability to provide access to certain parts of the museum for those with wheelchairs and mobility difficulties.
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-12 page-highlights garamond " style="margin-bottom: 0px; margin-top: 10px;">Locker</div>
+									<div class="col-sm-12 inner-para garamond sub-para bottom-border">
+										The museum ground floor has well-furnished lockers for visitors to store bags,
+backpacks, water bottles, and packages. Personal items are not allowed near the
+museum collection.
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-12 page-highlights garamond" style="margin-bottom: 0px; margin-top: 10px">Washroom</div>
+									<div class="col-sm-12 inner-para garamond sub-para bottom-border">
+									Our washrooms are on the museum's ground level.
+									</div>
+								</div>
+								
+									<div class="row">
+									<div class="col-sm-12 page-highlights garamond" style="margin-bottom: 0px; margin-top: 10px">Audio Guides</div>
+									<div class="col-sm-12 inner-para garamond sub-para bottom-border">
+									Audio guides for our collection are available at the museum ticket counter right when
+you enter the building
+									</div>
+								</div>
+								
+								
+								<div class="row">
+									<div class="col-sm-12 page-highlights garamond " style="margin-bottom: 0px; margin-top: 10px"><a style="color:#8f0000;" href="{% url 'museumapp:cafeMoca' %}">MoCA Café</a></div>
+									<div class="col-sm-12 inner-para garamond sub-para bottom-border">
+									The MoCA café located on our beautiful courtyard serves a delicious range of
+snacks and beverages.<br>
+Time 10 a.m - 5p.m
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-12 page-highlights garamond" style="margin-bottom: 0px; margin-top: 10px">MoCA Shop</div>
+									<div class="col-sm-12 inner-para garamond sub-para bottom-border">
+										Our Museum’s shop entry is free for all.<br>
+Check out our range of merchandise at <!--<a style="color:#8f0000;" href="http://www.selfdefence.co.in/mocashop" target="_blank">mocashop.com</a>--><a style="color:#8f0000;" href="https://shop.museumofchristianart.com/product/museum-of-christian-art-convent-of-santa-monica-goa-india/" target="_blank">mocashop.com</a>
+									</div>
+								</div>
+								
+									<div class="row">
+									<div class="col-sm-12 page-highlights garamond" style="margin-bottom: 0px; margin-top: 10px"> Parking and Drop Off</div>
+									<div class="col-sm-12 inner-para garamond sub-para bottom-border">
+										Minivan and car parking is available on the premises. You may drop off and
+pick up your group at the museum’s main entrance.
+									</div>
+								</div>
+								
+								
+								<div class="row">
+									<div class="col-sm-12 page-highlights garamond" style="margin-bottom: 0px; margin-top: 10px"> Lost and Found</div>
+									<div class="col-sm-12 inner-para garamond sub-para bottom-border">
+								Lost or found objects may be deposited at the Museum Ticket counter.<br>
+Visitors must take care of their personal belongings. The Museum is not responsible
+for loss of belongings
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-12 page-highlights garamond" style="margin-bottom: 0px; margin-top: 10px"> Guided Tours and Walks</div>
+									<div class="col-sm-12 inner-para garamond sub-para bottom-border">
+										We have curated walks for groups of 10-20 people <br>
+for more information, visit our <a style="color:#8f0000;" href="{% url 'museumapp:guidedToursMoca' %}">Guided Tours</a>, <a style="color:#8f0000;" href="{% url 'museumapp:eventsMoca' %}">What’s On</a> or <a style="color:#8f0000;" href="{% url 'museumapp:contactUsMoca' %}">Contact</a> pages
+									</div>
+								</div>
+								
+									<div class="row">
+									<div class="col-sm-12 page-highlights garamond" style="margin-bottom: 0px; margin-top: 10px">Venue For Hire</div>
+									<div class="col-sm-12 inner-para garamond sub-para bottom-border">
+										The Church of Santa Monica is available for sacred music concerts, exhibitions,
+lectures, panel discussions, workshops, seminars related to the promotion and
+education of art and culture.<br><br>
+The Museum Courtyard is available for book launches, museum theme birthday
+parties and other similar events.<br><br>
+Prior advance booking of three weeks is required.<br>
+For further inquiries, please 	<a style="color:#8f0000;" href="{% url 'museumapp:contactUsMoca' %}">Contact Us</a>
+									</div>
+								</div>
+								
+								
+						<!-- 		<div class="row">
+									<div class="col-sm-12 side-heading-garamond garamond side-head-para" id="accessibility" style="margin-top: 30px;">
+										Accessibility
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-12 inner-para garamond sub-para ">
+										The museum is wheelchair accessible.
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-12 inner-para garamond sub-para">
+										MoCA attempts to make your visit a comfortable experience, however because it is located within a heritage building accessibility is limited for wheelchair users and others with mobility difficulties (The Museum ground floor is wheelchair friendly and can be accessed by ramps).
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-12 inner-para garamond high-para">
+										Minivan and car parking is available on the premises. Your driver may drop off and pick up your group at the museum’s main entrance.
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-12 inner-para garamond high-para">
+										For more information, contact 1234567890
+									</div>
+								</div> -->
+							</div>
+							<div class="col-sm-3"></div>
+						</div>
+								
+							
+					<!-- 	<div class="row bottom-button ">
+							<div class="col-sm-3"></div>
+							<div class="col-sm-6">
+								<div class="row" style= "margin-left: 0px;margin-top: 30px;margin-bottom: 45px;">
+									<a href="{% url 'museumapp:ticketMoca' %}">
+										<button type="button" class="buy-tickets-button small-heading"><b>BUY TICKETS</b></button>
+									</a>
+								</div>
+							</div>
+							<div class="col-sm-3"></div>
+						</div> -->
+					</div>
+				</div>
+			</div>
+		</div>
+				
+	{% endblock %}
+
+	<!--- Custom Script Block --->
+	{% block custom-script %}	{% endblock %}

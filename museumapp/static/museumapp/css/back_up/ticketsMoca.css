@@ -1,0 +1,116 @@
+.parallax {
+	/* Set a specific height */
+	min-height: 400px; 
+
+	/* Create the parallax scrolling effect */
+	background-attachment: fixed;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	border-bottom: 5px solid #b5a268;
+}
+.button-type{
+	padding: 0px 2px;
+}
+.hover-button{
+	background-color: #f5f5f5;
+	height: 100%;
+	padding: 20px 25px 20px 5px;
+	width: 100%;
+}
+.hover-button:active, .hover-button:hover, .custom-radio:hover, .custom-radio:active{
+	background-color: #84bd91;
+}
+
+#book-content{
+	padding-top: 35px;
+}
+.custom-radio{
+	background-color: #f5f5f5;
+	padding: 15px;
+	margin: 15px;
+	text-align: center;
+	font-weight: bold;
+}
+.custom-radio input{
+	position: absolute;
+  	opacity: 0;
+  	cursor: pointer;
+  	height: 100%;
+  	width: 100%;
+  	margin-top: -15px;
+  	margin-left: -40%;
+
+}
+.title, span.current-info{
+				display: none;
+			}
+			form{
+				width: 100%;
+			}
+			.fira{
+				letter-spacing: 0px;
+			}
+			div.steps ul li{
+				display: inline;
+				font-size: 18px;
+				text-transform: uppercase;
+				color: #dedede82;
+				padding: 0px 80px 0px 0px;
+				font-weight: bold;
+			}
+			div.steps ul{
+				padding: 15px 0px;
+				background-color: #000;
+				margin-bottom: 0px;
+			}
+			div.actions ul{
+				padding: 15px 0px;
+				text-align: end;
+				background-color: #f5f5f5;
+			}
+			div.actions ul li{
+				display: inline;
+				font-size: 16px;
+				text-transform: uppercase;
+				padding: 0px 80px 0px 0px;
+				font-weight: bold;
+			}
+			div.steps ul li:hover, div.steps ul li:active{
+				color: white;
+			}
+			
+    		thead{
+    			background-color: #e6e6e6;
+    		}
+			#basic-info{
+				background-color: #f5f5f5;
+				padding: 15px;
+			}
+			
+			.tickets td{
+    			padding: 25px 0px 15px 0px;
+    			vertical-align: bottom;
+    			border-top: 1px solid #000;
+			}
+			.tickets th{
+    			padding: 10px 0px 20px 0px;
+    			vertical-align: bottom;
+    			border-top: 1px solid #000;
+			}
+			input[type="button"] {
+				background: none;
+				color: inherit;
+				border: none;
+				font: inherit;
+				cursor: pointer;
+				outline: inherit;
+				background-color: #636363;
+    			padding: 5px 12px;
+    			text-align: center;
+			}
+			#qty1, #qty2, #qty3{
+				border: none;
+				background-color: #aaabad;
+				padding: 5px 0px;
+			}

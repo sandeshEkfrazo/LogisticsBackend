@@ -1,0 +1,417 @@
+{% extends "museumapp/base.html" %}
+
+{% load static %}
+
+<!--- Title --->
+{% block title %}
+Museum of Christian Art
+{% endblock %}
+
+<!--- Custom CSS --->
+{% block custom-css-parts %}
+<link rel="stylesheet" type="text/css" href="{% static 'museumapp/css/featuredDetailMoca.css' %}" />
+{% endblock %}
+
+<!--- Custom Style --->
+{% block style %}
+{% endblock %}
+
+<!--- Body content --->
+{% block body-content %}
+<!-- Page Content  -->
+<div id="content">
+
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-sm-12" style="padding: 0px;">
+
+				<div class="parallax" style="background-image: url('../media/{{featuredDetail.event_cover_image}}');">
+				</div>
+			</div>
+
+			<!-- <div class="move-top">
+						<div class="fira-on-image fira font-weight-bold">PLAN A VISIT</div>
+						<div class="big-font-on-image garamond">Where, When <br>& How</div>
+					</div> -->
+		</div>
+	</div>
+
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="row">
+					<div class="col-sm-8"> </div>
+					<div class="col-sm-2 buy-to-end">
+						<a href="{% url 'museumapp:buy_tickets' %}"><button type="button"
+								class="buy-tickets-button fira small-heading">BOOK TICKETS</button></a>
+					</div>
+					<div class="col-sm-2"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container-fluid from-image-content">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="row">
+					<div class="col-sm-3"></div>
+					<div class="col-sm-6">
+
+						<div class="small-heading fira font-weight-bold sub-para">WHAT'S ON / <span
+								style="color:#A9A9A9; text-transform:uppercase;">{{ featuredDetail.category }}</span>
+						</div>
+					</div>
+					<div class="col-sm-3"></div>
+				</div>
+
+				<div class="row">
+					<div class="col-sm-3"></div>
+					<div class="col-sm-6">
+						<div class="page-heading garamond high-para">{{ featuredDetail.event_name }}</div>
+					</div>
+					<div class="col-sm-3"></div>
+				</div>
+
+				<div class="row">
+					<div class="col-sm-3"></div>
+					<!-- <div class="col-sm-2">
+								<div class="side-sticky-links">
+									<a href="#group"><span class="small-text fira font-weight-bold" id="side-links">GROUP CHECK IN</span><br>
+									</a>
+
+									<a href="#Customize"><span class="small-text fira font-weight-bold" id="side-links">CUSTOMISE YOUR TOUR</span>
+									</a>
+								</div>
+							</div> -->
+					<div class="col-sm-6 bottom-border">
+						<div class="row">
+							<div class="col-sm-12 page-highlights garamond high-para ">
+								{{ featuredDetail.event_short_description|linebreaks }}
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-12 inner-para garamond sub-para">
+								{{ featuredDetail.event_long_description|safe }}
+							</div>
+						</div>
+						<!-- <div class="row">
+									<div class="col-sm-12 side-heading-garamond garamond side-head-para" id="group" style="margin-top: 15px;">
+									Group Check in
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-12 inner-para garamond sub-para "> Groups scheduled for a curated walk should plan to arrive well in advance to the
+									scheduled time slot, kindly collect your passes from the ticket counter and deposit
+									your baggage in the counter.
+									Please note: Arrival on time is crucial, due to booked time slot.
+									Please schedule all tours at least 10 days in advance.
+									Customize your visit with the following guided-tour options
+									</div>	
+								</div>
+								<div class="row">
+									<div class="col-sm-12 side-heading-garamond garamond side-head-para" id="Customize" style="margin-top: 15px;"> Customize your visit with the following guided-tour options.
+									</div>
+									<div class="col-sm-12 inner-para garamond high-para"> Please schedule all tours at least three weeks in advance. If you are interested in Curriculum-based Programs or booking directly from a school please visit our education area.
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-12 small-heading fira font-weight-bold side-head-para" >
+										FEATURED TOUR
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-12 page-highlights garamond" style="margin-bottom: 0px;">
+										Highlights of the Museum of Christian Art
+									</div>	
+									<div class="col-sm-12 inner-para garamond high-para">This guided tour that takes you on a journey from the early days of the Portuguese in
+									India to the present day through the collection at the museum.
+									The morning tour starts at 11 am and the afternoon tour at 2 pm and lasts for about
+									an hour.
+									Schedule your date and time for tour from Bookyourticket page
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-12 small-heading fira font-weight-bold side-head-para">
+										SPECIAL TOUR
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-12 page-highlights garamond" style="margin-bottom: 0px;"> Holy Hill Tour</div>	
+									<div class="col-sm-12 inner-para garamond sub-para">
+									Go on a private guided tour that begins at the museum and covers different parts of
+									Old Goa, to bring a unique understanding of the Indian-influenced Christian art of
+									Goa. This is ideal for groups of 15 or more.
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-12 inner-para garamond sub-para">
+									Besides the Museum’s primary responsibility of showcasing and preserving Christian
+									art, the Museum also conducts heritage walks of the Holy Hill (Monte Santo) The
+									walk is focused on the architectural and artistic wonders of the monuments which
+									include the ruins of St. Augustine's Monastery, the Royal Chapel of St Anthony,
+									Church of Santa Monica, Museum of Christian Art, and Chapel of Our Lady of the
+									Rosary. The walks are aimed at students of art, architecture, history as well as the
+									general public to create awareness of Goa’s unique heritage.
+									Schedule the date for your group tour from Bookyourticket page
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-12 inner-para garamond sub-para">
+									For exclusive tours, recommended for hotels and tourism agencies, kindly
+									contact1234567890. If you are a school or educational institute we have special
+									programs for you here.
+									</div>
+								</div> -->
+					</div>
+					<div class="col-sm-3"></div>
+				</div>
+
+
+				<div class="row priceImageDetails mt-2">
+					<div class="col-md-4 offset-md-2">
+						<img class="w-100"
+							src="https://museumofchristianart.com/static/museumapp/image/holihiils2.jpeg"></img>
+					</div>
+					<div class="col-md-4 mt-md-0 mt-2">
+						<img class="w-100"
+							src="https://museumofchristianart.com/static/museumapp/image/holihills1.jpeg"></img>
+					</div>
+				</div>
+
+				<div class="row mt-3 pdfViewe">
+
+					<div class="col-12 col-md-8 offset-0 offset-md-2">
+						<canvas id="pdf_canvas" style="width: inherit !important"></canvas>
+					</div>
+					<div class="col-sm-6 offset-md-3 text-center mt-2">
+						<button id="prev" class="btn btn-light border" style="border-radius: 8px">Previous</button>
+						<button id="next" class="btn border"
+							style="background-color: #771D14; color:white; border-radius: 8px">Next</button>
+						<!--<button id="zoomIn" class="btn btn-light border" style="border-radius: 8px">+</button>
+								<button id="zoomOut" class="btn btn-light border" style="border-radius: 8px">-</button>-->
+						<span>Page: <span id="page_num"></span> / <span id="page_count"></span></span>
+
+					</div>
+				</div>
+
+
+
+				<div class="children-day-event">
+					<div class="row">
+						<div class="col-md-3 offset-md-3">
+							<img src="https://museumofchristianart.com/media/31BFBB7A-D725-4EAA-A6E0-7300F1F48C1B.jpeg"
+								class="w-100" alt="">
+						</div>
+						<div class="col-md-3 offset-md-1">
+							<img src="https://museumofchristianart.com/media/BFC3C9BE-D339-4505-A28B-F6F5F7F7F0DF.jpeg"
+								class="w-100" alt="">
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-3 offset-md-3">
+							<img src="https://museumofchristianart.com/media/0F4B6D1B-4BDC-400B-AE28-E906FD90BD40.jpeg"
+								class="w-100" alt="">
+						</div>
+						<div class="col-md-3 offset-md-1">
+							<img src="https://museumofchristianart.com/media/F975B6FA-A4B7-4271-8ED8-185291247127.jpeg"
+								class="w-100" alt="">
+						</div>
+					</div>
+				</div>
+
+				<!-- <div class="row">
+							<div class="col-sm-3"> 
+							</div>
+							<div class="col-sm-6">	
+								<div class="inner-para garamond sub-para"> The museum is wheelchair accessible. Minivan and car parking is available on the premises. Your driver may drop off and pick up your group at the museum’s main entrance.
+								</div>	
+							</div>
+							<div class="col-sm-3"></div>
+						</div>
+
+						<div class="row ">
+							<div class="col-sm-3"></div>
+							<div class="col-sm-6 bottom-border" >	
+								<div class="inner-para garamond high-para" id="for-border">
+									For more information, call the Group Tour Department at 123456789
+								</div>	
+							</div>
+							<div class="col-sm-3"></div>
+						</div>	 -->
+
+				<!-- <div class="row">
+							<div class="col-sm-3"></div>
+							<div class="col-sm-6 bottom-border">	
+								<div class="inner-para garamond high-para"> Please note: It is important to arrive on time. Docents will wait only 15 minutes past the scheduled start time unless notified that the group will be late.
+								</div>
+							</div>
+							<div class="col-sm-3"></div>
+						</div>	 -->
+
+				<!-- 
+						<div class="row">
+							<div class="col-sm-3"></div>
+							<div class="col-sm-6" >	
+								<div class="small-heading fira font-weight-bold side-head-para">
+									FEATURED STORY
+								</div>																
+							</div>
+							<div class="col-sm-3"></div>
+						</div>
+									 -->
+				<!-- <div class="row">
+							<div class="col-sm-3"></div>
+							<div class="col-sm-6">
+							<div class="page-highlights garamond" style="margin-bottom: 0px;">
+								Scenes from a Mother's Life</div>	
+								<div class="inner-para garamond high-para"> An experienced docent introduces your group to the collection through a story. Length: 30 minutes to one hour, depending on the story. Lorem ipsum dolor sit amet, possim commodo mea eu, ex eam nobis antiopam. Ullum partiendo hendrerit te mei, impetus salutandi id has, principes euripidis sed cu. Habeo torquatos has an. Cum elitr possit detraxit at, ex magna luptatum lucilius eos. Quo at harum vitae honestatis, cu tale veri torquatos mea, graeci singulis erroribus ne sit. Ea sed inani Length: 30 minutes to 1 hour.
+								</div>
+							</div>
+							<div class="col-sm-3"></div>
+						</div>	 -->
+
+				<!-- 		<div class="row bottom-button ">
+							<div class="col-sm-3"></div>
+							<div class="col-sm-6">
+								<div class="row" style= "margin-left: 0px;margin-top: 30px;">
+									<a href="{% url 'museumapp:ticketMoca' %}"><button type="button" class="buy-tickets-button small-heading fira">BUY TICKETS</button></a>
+								</div>
+							</div>
+							<div class="col-sm-3"></div>
+						</div> -->
+
+			</div>
+		</div>
+	</div>
+
+
+
+	<div class="container-fluid">
+
+	</div>
+</div>
+{% endblock %}
+
+{% comment %} Custom Script Block {% endcomment %}
+{% block custom-script %}
+
+<script>
+	var pdfDoc = null
+	pageNum = 1
+	pageRendering = false
+	pageNumPending = null
+	scale = 1.5
+	canvas = document.getElementById('pdf_canvas')
+	ctx = canvas.getContext('2d')
+
+	function renderPage(num) {
+		pageRendering = true
+		pdfDoc.getPage(num).then((page) => {
+			var viewport = page.getViewport({ scale: scale })
+			console.log(viewport, viewport.height / 2, viewport.width)
+			canvas.height = viewport.height
+			canvas.width = viewport.width
+
+			var renderContext = {
+				canvasContext: ctx,
+				viewport: viewport
+			}
+			var renderTask = page.render(renderContext)
+			renderTask.promise.then(() => {
+				pageRendering = false
+				if (pageNumPending !== null) {
+					renderPage(pageNumPending)
+					pageNumPending = null
+				}
+			})
+		})
+
+		document.getElementById('page_num').textContent = num
+	}
+
+	function queueRenderPage(num) {
+		if (pageRendering) {
+			pageNumPending = num
+		}
+		else {
+			renderPage(num)
+		}
+	}
+
+	function onPrevPage() {
+		if (pageNum <= 1) {
+			return
+		}
+		pageNum--;
+		queueRenderPage(pageNum)
+	}
+
+	document.getElementById('prev').addEventListener('click', onPrevPage)
+
+	function onNextPage() {
+		if (pageNum >= pdfDoc.numPages) {
+			return
+		}
+		pageNum++;
+		queueRenderPage(pageNum)
+	}
+
+	document.getElementById('next').addEventListener('click', onNextPage)
+
+	{% comment %} function zoomOut() {
+		scale -= 0.1
+		renderPage(pageNum)
+	}
+
+	document.getElementById('zoomOut').addEventListener('click', zoomOut)
+
+	function zoomIn() {
+		scale += 0.1
+		renderPage(pageNum)
+	}
+
+	document.getElementById('zoomIn').addEventListener('click', zoomIn) {% endcomment %}
+
+	if(window.location.href == "https://museumofchristianart.com/whatsOn_detailed_view/holi-hill-heritage-festival") {
+		$(".priceImageDetails").show();
+		$(".pdfViewe").hide();
+		$(".children-day-event").hide();
+	}
+	else if(window.location.href == 'https://museumofchristianart.com/whatsOn_detailed_view/Contemporary_Responses_to_18th_Century_Prints_From') {
+		$(".pdfViewe").show();
+		$(".priceImageDetails").hide();
+		$(".children-day-event").hide();
+
+		pdfjsLib.getDocument('https://museumofchristianart.com/static/museumapp/pdf/Cataogue Final-Spread Web Upload.pdf').promise.then((doc) => {
+			console.log("doc is loading", doc);
+			pdfDoc = doc
+			document.getElementById('page_count').textContent = doc.numPages;
+			renderPage(pageNum)
+		})
+
+	} else if(window.location.href == 'https://museumofchristianart.com/whatsOn_detailed_view/engraved-treasures-part-ii') {
+		$(".pdfViewe").show();
+		$(".priceImageDetails").hide();
+		$(".children-day-event").hide();
+
+		pdfjsLib.getDocument('https://museumofchristianart.com/static/museumapp/pdf/Catalog-Engraved Treasures II.pdf').promise.then((doc) => {
+			console.log("doc is loading", doc);
+			pdfDoc = doc
+			document.getElementById('page_count').textContent = doc.numPages;
+			renderPage(pageNum)
+		})
+	}
+	else if(window.location.href == "https://museumofchristianart.com/whatsOn_detailed_view/capturing-heritage-one-click-time-childrens-lens-h") {
+		$(".children-day-event").show();
+		$(".priceImageDetails").hide();
+		$(".pdfViewe").hide();
+	}
+	else {
+		$(".pdfViewe").hide();
+		$(".priceImageDetails").hide();
+		$(".children-day-event").hide();
+	}
+</script>
+{% endblock %}

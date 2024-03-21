@@ -1,0 +1,267 @@
+{% extends "museumapp/base.html" %}
+
+{% load static %}
+	
+	<!--- Title --->
+	{% block title %}
+		Museum of Christian Art
+	{% endblock %}
+
+	<!--- Custom CSS --->
+	{% block custom-css-parts %}
+		<link rel="stylesheet" type="text/css" href="{% static 'museumapp/css/knowledgeCenterMoca.css' %}"/>
+		<link rel="stylesheet" type="text/css" href="{% static 'museumapp/css/toi-css/hover-box.css' %}" />
+	{% endblock %}
+
+	<!--- Custom Style --->
+	{% block style %}	{% endblock %}
+
+	<!--- Body content --->
+	{% block body-content %}
+		<!-- Page Content  -->
+		<div id="content">
+
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-sm-12" style="padding: 0px;">
+						<div class="parallax" style="background-image: url('{% static 'museumapp/image/203.jpg' %}');"></div>
+					</div>
+					
+					<div class="move-top">
+						<div class="fira-on-image fira font-weight-bold">MoCA KNOWLEDGE CENTER</div>
+						<div class="big-font-on-image garamond">Building Knowledge</div>
+					</div>
+				</div>
+			</div>
+				
+			<div class="container-fluid from-image-content">
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="row">
+							<div class="col-sm-12">
+								<div class="row">
+									<div class="col-sm-3"></div>
+									<div class="col-sm-6 display-image">
+										<div class="page-highlights garamond  high-para">
+										Our multifaceted Knowledge Center aims to build and share
+knowledge about the Indian-influenced Christian art of Goa.
+We are committed to nurturing this knowledge in its most
+open-minded and encompassing definition, one that involves
+varied disciplines in the attaining of a deeper understanding of
+Goa's layered artistic and cultural heritage.
+										</div>
+										
+											<div class="inner-para garamond high-para">
+										
+
+										</div>		
+										
+										
+									</div>
+									<div class="col-sm-3"></div>
+								</div>
+									
+								<div class="row">
+									<div class="col-sm-3"></div>
+									<div class="col-sm-6 display-image" style="border-bottom: 1px solid black;
+    margin-bottom: 30px;">
+										<div class="page-highlights garamond  high-para">
+										Conservation 
+										</div>
+										<div class="inner-para garamond high-para">As part of the refurbishment project that commenced in 2017, the art objects from
+the Museum’s collection were studied, documented and cared for by a team of
+experienced conservators from INTACH, New Delhi, at a special unit set up at the
+Museum for this purpose.
+<br><br>
+One of MoCA’s major initiatives is to establish a Centre that will offer conservation
+services, research, documentation and to various museums and cultural institutions.
+The MOCA Conservation Centre will be housed in Old Goa and run by a team of
+dedicated art conservator-restorers. Professionals at this center will be trained to
+work across various materials and technologies, and the facility will have a museum
+to provide ready resources and references. Visitors to MoCA will be able to visit the
+Conservation centre which aims to raise awareness about this field of protecting
+cultural heritage.
+
+<br><br>
+	<img src="{% static 'museumapp/image/iwt/conservation.jpg' %}" class="img-fluid" alt="Moca" >
+										</div>							
+									</div>
+									<div class="col-sm-3"></div>
+								</div>
+								
+								
+								<div class="row">
+									<div class="col-sm-3"></div>
+									<div class="col-sm-6 display-image" style="border-bottom: 1px solid black;
+    margin-bottom: 30px;">
+										<div class="page-highlights garamond  high-para">
+										Restoration 
+										</div>
+										<div class="inner-para garamond high-para">The four hundred year old Church of Santa Monica is a state protected monument and was restored with the financial support from the Directorate of Archives and Archaeology, Government of Goa. The restoration was a means to protect and preserve the valued art left behind in the Church, which stands unique even amongst the many treasures of Old Goa. Its chapel of the Weeping Cross, reputed by many to be miraculous, the gilt altars, retables, pulpits, and the unique examples of fresco and mannerist painting have undergone careful and conscientious restoration, making the Church of Santa Monica one of the best examples of architectural restoration in Goa.
+<br><br>
+While the museum occupies a part of the church, the entire body of this monument
+serves as an extension for special exhibitions, lectures on art and culture, as well as a
+venue for sacred music performances.
+<br><br>
+The restoration efforts allow the Church to remain open and free for all to visit
+during museum hours.
+
+										</div>							
+									</div>
+									<div class="col-sm-3"></div>
+								</div>
+								
+								
+										
+								<div class="row">
+									<div class="col-sm-3"></div>
+									<div class="col-sm-6 display-image" style="border-bottom: 1px solid black;
+    margin-bottom: 30px;">
+										<div class="page-highlights garamond  high-para">
+										Research 
+										</div>
+										<div class="inner-para garamond high-para">MoCA gives credibility to researchers aiming to investigate relevant areas of knowledge and scholarship. We connect researchers affiliated with us to funders and help deliver the outcomes of their work. 
+										</div>							
+									</div>
+									<div class="col-sm-3"></div>
+								</div>
+								
+													
+								<div class="row">
+									<div class="col-sm-3"></div>
+									<div class="col-sm-6 display-image" style="border-bottom: 1px solid black;
+    margin-bottom: 30px;">
+										<div class="page-highlights garamond  high-para">
+										MoCA Press
+										</div>
+										<div class="inner-para garamond high-para">MoCA Press is an academic press which publishes outcomes of research and
+scholarship generated at or in collaboration with the Museum. Besides this, MoCA
+Press will bring out art publications, books on conservation and restoration, and
+educational material for younger age groups.
+</div>							
+									</div>
+									<div class="col-sm-3"></div>
+								</div>
+								
+								
+								<div class="row">
+									<div class="col-sm-3"></div>
+									<div class="col-sm-6 display-image" style="border-bottom: 1px solid black;
+    margin-bottom: 30px;">
+										<div class="page-highlights garamond  high-para">
+										Digital Repository
+										</div>
+										<div class="inner-para garamond high-para">The MoCA Digital Repository supports management of scholarly information
+resources of enduring value to MoCA Knowledge Centre. Students and researchers
+from around the world may use content in their research as well share their published
+works through our Repository. The deposited content is preserved in a robust,
+reliable, and secure environment for access by researchers today and for generations
+to come.
+<br><br>
+Our repository is a democratised reserve of material that manages and stores all kinds
+of content digitally with the aim of making knowledge accessible to support any kind
+of research or study.
+
+</div>							
+									</div>
+									<div class="col-sm-3"></div>
+								</div>
+								
+								
+									<div class="row">
+									<div class="col-sm-3"></div>
+									<div class="col-sm-6 display-image">
+										<div class="page-highlights garamond  high-para">
+										Library And Archives
+										</div>
+										<div class="inner-para garamond high-para">The MoCA Library is a physical space for the building and sharing of knowledge
+through lectures, short courses, and workshops on various aspects of Goan culture.
+Please reach out to us if you wish to contribute or donate to our growing collection of
+books and material. Please <a style="color:#771D14;" href="{% url 'museumapp:contactUsMoca' %}">Contact Us</a> to us if you wish to contribute or donate to our growing collection of books and material.
+
+</div>							
+									</div>
+									<div class="col-sm-3"></div>
+								</div>
+								
+								
+								
+								
+
+					<!-- 		<div class="row next-links">
+									<div class="col-sm-3"></div>
+									
+									<div class="col-sm display-image pad-image">
+										<a href="{% url 'museumapp:conservationMoca' %}">
+											<div class="hvrbox">
+												<img src="{% static 'museumapp/image/iwt/kc1.jpg' %}" class="img-fluid1 img-fluid" alt="Moca">
+									
+											</div>
+										</a>
+									</div>
+
+									<div class="col-sm display-image pad-image">
+										<a href="{% url 'museumapp:restorationMoca' %}">
+											<div class="hvrbox">
+												<img src="{% static 'museumapp/image/iwt/kc2.jpg' %}" class="img-fluid1 img-fluid" alt="Moca" >
+									
+											</div>
+										</a>
+									</div>
+
+									<div class=" col-sm display-image pad-image">
+										<a href="{% url 'museumapp:researchMoca' %}">
+											<div class="hvrbox">
+												<img src="{% static 'museumapp/image/iwt/KC03.jpeg' %}" class="img-fluid1 img-fluid" alt="Moca">
+									
+											</div>
+										</a>
+									</div>
+
+									<div class="col-sm-3"></div>	
+								</div>
+								
+								<div class="row next-links" id="image-row">
+									<div class="col-sm-3"></div>
+									
+									<div class="col-sm display-image pad-image">
+										<a href="{% url 'museumapp:mocapressMoca' %}">
+											<div class="hvrbox">
+												<img src="{% static 'museumapp/image/iwt/KC02.jpeg' %}" class="img-fluid1 img-fluid" alt="Moca">
+										
+											</div>
+										</a>
+									</div>
+									<div class="col-sm display-image pad-image">
+										<a href=" {% url 'museumapp:digitalrepMoca' %}">
+											<div class="hvrbox">
+												<img src="{% static 'museumapp/image/iwt/DR.jpeg' %}" class="img-fluid1 img-fluid" alt="Moca" >
+										
+											</div>
+										</a>
+									</div>
+
+									<div class=" col-sm display-image pad-image">
+										<a href="{% url 'museumapp:libraryArchivesMoca' %}">
+											<div class="hvrbox">
+												<img src="{% static 'museumapp/image/iwt/kc6.png' %}" class="img-fluid1 img-fluid" alt="Moca">
+										
+											</div>
+										</a>
+									</div>
+
+									<div class="col-sm-3"></div>	
+								</div> -->
+								
+								
+								
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	{% endblock %}
+
+	<!--- Custom Script Block --->
+	{% block custom-script %}	{% endblock %}

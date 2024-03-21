@@ -1,0 +1,197 @@
+{% extends "museumapp/base.html" %}
+
+{% load static %}
+	
+	<!--- Title --->
+	{% block title %}	{% endblock %}
+
+	<!--- Custom CSS --->
+	{% block custom-css-parts %}
+	{% endblock %}
+
+	<!--- Custom Style --->
+	{% block style %}
+		<link rel="stylesheet" type="text/css" href="{% static 'museumapp/css/connectionsMoca.css' %}"/>
+		<link rel="stylesheet" type="text/css" href="{% static 'museumapp/css/toi-css/hover-box.css' %}" />
+	{% endblock %}
+
+	<!--- Body content --->
+	{% block body-content %}
+		<!-- Page Content  -->
+		<div id="content">
+				
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-sm-12" style="padding: 0px;">
+						<div class="parallax" style="background-image: url('{% static 'museumapp/image/31.jpg' %}');"></div>
+					</div>
+					
+					<div class="move-top">
+						<div class="fira-on-image fira font-weight-bold">MoCA COMMUNITY</div>
+						<div class="big-font-on-image garamond">We Are All Custodians</div>
+					</div>
+				</div>
+			</div>
+				
+			<div class="container-fluid from-image-content">
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="row">
+							<div class="col-sm-12">
+								<div class="row">
+									<div class="col-sm-3"></div>
+									<div class="col-sm-6 display-image">
+										<div class="page-highlights garamond high-para"> 
+											<!-- The Museum of Christian Art is at the centre of many aspects
+											of Goan culture. The museum aims to build communities
+											through creating a deeper understanding of the unique culture
+											of Goa. -->
+											MoCA is a people’s museum. <br> We believe a museum of the 21st Century is a space for community. 
+
+										</div>
+									</div>
+									<div class="col-sm-3"></div>
+								</div>
+									
+								<div class="row">
+									<div class="col-sm-3"></div>
+									<div class="col-sm-6 display-image">		
+										<div class="inner-para garamond font-weight-bolder  sub-para"> 
+										<!-- 	Our activities which include audio guide tours for individuals, guided tours for
+											groups, trails/treasure hunts for families, art and craft activities, colouring sheets,
+											puzzles, activity cards, for children. MoCA also conducts workshops and orientations
+											for students, educators and the public in general. -->
+											MoCA is a meeting place that invites dialogue, debate and the sharing of values. At MoCA Community we care about culture building through workshops, events, activities, and support people led-initiatives aimed at building pride in Goa’s Heritage, its living traditions and plural outlook. 
+										</div>	
+									</div>
+									<div class="col-sm-3"></div>
+								</div>
+
+							<!-- 	<div class="row">
+									<div class="col-sm-3"></div>
+									<div class="col-sm-6 display-image">
+									<div class="side-heading-garamond garamond side-head-para">For Families</div>	
+										<div class="inner-para garamond font-weight-bolder high-para"> 
+											Set out on an adventure with the curated family trails MoCA has on offer. Hunt for
+											details, uncover stories, and use your imagination while exploring the collection at
+											MoCA. Download a trail before your visit, or pick one up at the Ticket Counter/
+											Information Desks. Also don’t miss out on a range of collection themed art and craft
+											activities and DIY kits during your visit.
+											Saturday mornings will be dedicated to young MoCA Explorers.
+											Check whats on for more information.
+										</div>
+									</div>
+									<div class="col-sm-3"></div>
+								</div>
+								<div class="row">
+									<div class="col-sm-3"></div>
+									<div class="col-sm-6 display-image">
+									<div class="side-heading-garamond garamond side-head-para">For Students</div>	
+										<div class="inner-para garamond font-weight-bolder high-para"> 
+											MoCA offers guided tours for student groups of upto 30 students. The tours are led
+											by a member of the MoCA team.
+											The tours offered are<br>
+											• Highlights of the Museum tour<br>
+											• Flora and Fauna in art<br>
+											• Holy Hill Heritage walk.<br>
+											For student groups over 30 students there will be an orientation/introduction to
+											MoCA, the building and the collection
+										</div>
+									</div>
+									<div class="col-sm-3"></div>
+								</div>
+
+								<div class="row">
+									<div class="col-sm-3"></div>
+									<div class="col-sm-6 display-image">
+									<div class="side-heading-garamond garamond side-head-para">Booking Information:</div>	
+										<div class="inner-para garamond font-weight-bolder high-para"> 
+											All student group visits should be booked 10 days in advance.
+											For enquiries, contact museumofchristianart@gmail.com or call the 08322285299
+										</div>
+									</div>
+									<div class="col-sm-3"></div>
+								</div> -->
+
+							<!-- 	<div class="row next-links">
+									<div class="col-sm-3"></div>
+
+									<div class="col-sm-2 display-image pad-image">
+										<a href="{% url 'museumapp:learnMoca' %}">
+											<div class="hvrbox">
+												<img src="{% static 'museumapp/image/iwt/learn.png' %}" class="img-fluid1 img-fluid" alt="Moca">
+											
+											</div>
+										</a>
+									</div>
+
+									 <div class="col-sm-2 display-image pad-image">
+										<a href="{% url 'museumapp:familiesMoca' %}">
+											<div class="hvrbox">
+												<img src="{% static 'museumapp/image/iwt/families.png' %}" class="img-fluid1 img-fluid" alt="Moca">
+											
+											</div>
+										</a>
+									</div>
+
+									<div class="col-sm-2 display-image pad-image">
+										<a href="{% url 'museumapp:communityIniMoca' %}">
+											<div class="hvrbox">
+												<img src="{% static 'museumapp/image/iwt/comunity.png' %}" class="img-fluid1 img-fluid" alt="Moca">
+										
+											</div>
+										</a>
+									</div> 
+
+									<div class="col-sm-3"></div>	
+								</div> -->
+
+								<div class="row next-links" id="image-row">
+									<div class="col-sm-3"></div>
+
+									<div class="col-sm pad-image">
+										<a href="{% url 'museumapp:eventsMoca' %}">
+											<div class="hvrbox">
+												<img src="{% static 'museumapp/image/iwt/whats-min.png' %}" class="img-fluid" alt="Moca">
+											
+											</div>
+										</a>
+									</div>
+
+									<div class="col-sm pad-image">
+										<a href="{% url 'museumapp:guidedToursMoca' %}">
+											<div class="hvrbox">
+												<img src="{% static 'museumapp/image/iwt/guided t.png' %}" class="img-fluid" alt="Moca">
+											
+											</div>
+										</a>
+									</div>
+
+									<div class="col-sm pad-image">
+										<a href="{% url 'museumapp:accessibilityMoca' %}">
+											<div class="hvrbox">
+												<img src="{% static 'museumapp/image/iwt/access-min.png' %}" class="img-fluid" alt="Moca" >
+											</div>
+										</a>
+									</div> 
+
+									<div class="col-sm pad-image">
+								<!-- 	<a href="{% url 'museumapp:accessibilityMoca' %}"> -->
+											<div class="hvrbox">
+											<!-- 	<img src="{% static 'museumapp/image/iwt/access-min.png' %}" class="img-fluid" alt="Moca" > -->
+											</div>
+									<!-- 	</a> -->
+									
+									</div> 
+									<div class="col-sm-2"></div>	
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	{% endblock %}
+
+	<!--- Custom Script Block --->
+	{% block custom-script %}	{% endblock %}

@@ -1,0 +1,1397 @@
+{% extends "museumapp/base.html" %}
+
+{% load static %}
+
+	<!--- Title --->
+	{% block title %}
+		Museum of Christian Art
+	{% endblock %}
+
+	<!--- Custom CSS --->
+	{% block custom-css-parts %}
+		<link rel="stylesheet" type="text/css" href="{% static 'museumapp/css/ticketsMoca.css' %}"/>
+		<link rel="stylesheet" type="text/css" href="{% static 'museumapp/css/toi-css/hover-box.css' %}" />
+		<link rel="stylesheet" href="//code.jquery.com/ui/1.12.0/themes/base/jquery-ui.css"/>
+
+
+
+	{% endblock %}
+
+	<!--- Custom Style --->
+	{% block style %}
+		<style type="text/css">
+			.fira-on-image{
+				font-size: 15px;
+			}
+			.ui-widget,.ui-datepicker table {
+				font-family: 'Fira Sans';
+				font-size: 15px;
+				font-weight: bold;
+			}
+			.ui-widget.ui-widget-content {
+				border: none;
+				width: 100%;
+			}
+			.ui-widget-header {
+				border: none;
+				background: none;
+			}
+			.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default, .ui-button, html .ui-button.ui-state-disabled:hover, html .ui-button.ui-state-disabled:active {
+				border-top: none;
+				border-left: 0px solid #c5c5c5;
+				border-right: 0px solid #c5c5c5;
+				border-bottom: 0px solid #c5c5c5;
+				background-color: inherit;
+				text-align: center;
+				color: #b4b4b4;
+				font-weight: bold;
+				padding: 10px 10px;
+			}
+			.ui-datepicker td {
+				border-top: none;
+				border-left: 1px solid #c5c5c5;
+				border-right: 1px solid #c5c5c5;
+				border-bottom: 1px solid #c5c5c5;
+				background-color: white;
+				padding: 0px;
+			}
+			.ui-datepicker td a:hover, {
+				background-color: #84bd91;
+				color: white;
+			}
+            .ui-datepicker td a:active {
+				background-color: #84bd91;
+				color: white;
+			}
+			.ui-datepicker .ui-datepicker-title {
+				text-transform: uppercase;
+			}
+
+			#customer_name, #customer_email, #customer_phone{
+				border: 0px;
+				background-color: whitesmoke;
+				padding-left: 10px;
+			}
+		</style>
+	{% endblock %}
+
+	<!--- Body content --->
+	{% block body-content %}
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+
+
+
+		<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+
+
+
+		<!-- Page Content  -->
+		<div id="content">
+
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-sm-2"></div>
+					<div class="col-sm-8 side-heading-size35-index garamond" id="top-pad">
+						Book Tickets
+					</div>
+					<div class="col-sm-2"></div>
+					<!-- <div class="col-sm-12" style="padding: 0px;">
+						<div class="parallax" style="background-image: url('{% static 'museumapp/image/203.png' %}');"></div>
+					</div> -->
+					<!-- <div class="move-top">
+						<div class="fira-on-image fira font-weight-bold">MOCA KNOWLEDGE CENTER</div>
+						<div class="big-font-on-image garamond">Nurturing Knowledge</div>
+					</div> -->
+				</div>
+			</div>
+
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-sm-2"></div>
+					<div class="col-sm-8 display-image">
+						<div class="row" id="mob-margin-zero">
+							<div class="col-sm-12">
+								<!-- <div class="row">
+									<h2 class="page-heading garamond">Booking Tickets</h2>
+								</div> -->
+								<div class="row">
+									<form class="fira" id="example-advanced-form" action="#">
+
+										<h3>PLAN YOUR VISIT</h3>
+										<fieldset>
+											<div class="fira fira-on-image" id="basic-info">
+												<span id="type-info" style="font-weight: normal !important;"></span><span id="date-info" style="font-weight: bold;padding-left: 10px;"></span><span id="time-info" style="font-weight: bold;padding-left: 10px;"></span>
+											</div>
+
+											<div class="fira-on-image fira high-para" style="margin-top: 30px;"> PLAN YOUR VISIT. <br>SELECT FROM THE OPTIONS BELOW.</div>
+
+											<div class="row" style="margin: 0px;">
+												<div class="col-sm-4 button-type high-para">
+													<div class="hover-button" id="Museum admission ">
+														<div class="row" style="margin: 0px;">
+														<div class="col-sm-2" style="width: auto;">
+															<input type="radio" name="entry_type" id="choice0" onclick="displayChoice(this.id)" required checked>
+														</div>
+														<div class="col-sm-10" style="padding: 0px;width: auto;">
+															<div class="fira font-weight-bold small-heading" style="padding: 0px 0px 40px 0px;">Museum admission</div>
+															<!-- <div id="book-content" class="fira font-weight-bold small-heading">Rs. 100 per adult <br> Rs 50 per student</div> -->
+															<div id="book-content" class="fira font-weight-bold small-heading">Rs. 100 per adult <br> Rs 50 per student</div>
+
+														</div>
+														</div>
+													</div>
+												</div>
+
+												<div class="col-sm-4 button-type high-para">
+													<!-- <div class="hover-button" id="Museum admission + Museum highlights "> -->
+													<div class="hover-button" id="Highlights of the Museum of Christian Art.">
+														<div class="row" style="margin: 0px;">
+														<div class="col-sm-2" style="width: auto;">
+															<input type="radio" name="entry_type" id="choice1" onclick="displayChoice(this.id)" required>
+														</div>
+														<div class="col-sm-10" style="padding: 0px;width: auto;">
+															<!-- <div class="fira font-weight-bold small-heading" style="padding: 0px;"><a href="https://museumofchristianart.com/guided-tours#museumHighlites" style="color: #8f0000;">Museum admission +<br>'Museum Highlights'<br> guided tour</a><br></div> -->
+															<!-- <div id="book-content" class="fira font-weight-bold small-heading">Rs. 200 per adult <br> Rs 100 per student</div> -->
+															<div class="fira font-weight-bold small-heading" style="padding: 0px;"><a href="https://museumofchristianart.com/guided-tours#museumHighlites" style="color: #8f0000;">Highlights of the Museum of Christian Art.</a><br></div>
+															<div id="book-content" class="fira font-weight-bold small-heading">Rs. 300 per adult <br> Rs 150 per student</div>
+														</div>
+														</div>
+													</div>
+												</div>
+
+												<div class="col-sm-4 button-type high-para">
+													<!-- <div class="hover-button" id="Museum admission + Private guided group tour"> -->
+													<div class="hover-button" id="Retracing Monte Santo (the Holy Hill Tour)">
+														<div class="row" style="margin: 0px;">
+														<div class="col-sm-2" style="width: auto;">
+															<input type="radio" name="entry_type" id="choice2" onclick="displayChoice(this.id)" required>
+														</div>
+														<div class="col-sm-10" style="padding: 0px;width: auto;">
+															<!-- <div class="fira font-weight-bold small-heading" style="padding: 0px; "><a href="https://museumofchristianart.com/guided-tours#museumtour" style="color: #8f0000;">Museum admission + <br> Private guided group tour<br> (for groups over 15 persons)</a><br></div> -->
+															<div class="fira font-weight-bold small-heading" style="padding: 0px; "><a href="https://museumofchristianart.com/guided-tours#museumtour" style="color: #8f0000;">Retracing Monte Santo (the Holy Hill Tour)</a><br></div>
+															<div id="book-content" class="fira font-weight-bold small-heading">Rs. 1000 per adult <br> Rs. 500 for students</div>
+														</div>
+														</div>
+													</div>
+												</div>
+											</div>
+
+											<div id="choice0Text" style="display: block;" >
+												<!--<div class="fira fira-on-image high-para" style="font-weight: normal !important;">This ticket entitles you to visit the museum. For the safety of the museum collection, we restrict the number of visitors to the museum to a maximum 20 persons at a time.</div>-->
+												<!-- <div class="fira fira-on-image high-para" style="font-weight: normal !important;">We restrict the number of visitors to the Museum to a maximum of 20 persons at a time.
+Plan your visit in advance by Booking your ticket and pay for it at the Museum ticket counter.
+</div> -->
+
+<div class="fira fira-on-image high-para" style="font-weight: normal !important;">We restrict the number of visitors to the Museum to a maximum of 10 persons at a time.
+	Plan your visit in advance by Booking your ticket and pay for it at the Museum Ticket counter.
+	</div>
+												<div class="fira fira-on-image high-para" style="font-weight: normal !important;">Select a date and time below.</div>
+											</div>
+
+											<div id="choice1Text" style="display: none;" >
+												<div class="fira fira-on-image high-para" style="font-weight: normal !important;">
+													<!-- <span class="font-weight-bold">'MUSEUM HIGHLIGHTS 'TOUR</span><br> -->
+												<!-- This guided tour that takes you on a journey from the early days of the Portuguese in India to the present day through the collection at the museum. The morning tour starts at 11 am and the afternoon tour at 2 pm and lasts for about an hour.Deepen your knowledge on the confluences of two cultures through the Museum’s collection, with our curated guided tour. <br>One-hour tour at 11 am and 2 pm. -->
+												</div>
+												<div class="fira fira-on-image high-para" style="font-weight: normal !important;">Select a date and time below.</div>
+											</div>
+
+											<div id="choice2Text" style="display: none;" >
+												<div class="fira fira-on-image high-para" style="font-weight: normal !important;">
+													<span class="font-weight-bold">PRIVATE GUIDED TOUR</span><br>
+												<!-- Go on a private guided tour that begins at the museum and covers different parts of Old Goa, to bring a unique understanding of the Indian-influenced Christian art of Goa. This is ideal for groups of 15 or more. -->The walks are aimed at students of art, architecture, history as well as the general public to create awareness of Goa’s unique heritage. This is ideal for groups of 10-15 people. <br>
+												Smaller numbers can be added to pre-scheduled walks subject to availability. MoCA also conducts a Monthly Heritage Walk to a different location every month, which is announced via our social media channels.
+											</div>
+												<!-- <div class="fira fira-on-image high-para" style="font-weight: normal !important;">Schedule the date for your group tour</div> -->
+												<div class="fira fira-on-image high-para" style="font-weight: normal !important;">Schedule the date for your group tour via email on museumofchristianart@gmail.com</div>
+
+											</div>
+
+											<div id="calander" style="display:block">
+												<div class="row">
+													<div class="col-md-6">
+														<div  id="date-picker-1" placeholder="Recipient's username" id="ttry" aria-describedby="basic-addon1"></div>
+														<span class="" id="example-popover-1"></span>
+														<div id="example-popover-1-content" class="hidden"> </div>
+														<div id="example-popover-1-title" class="hidden"> </div>
+													</div>
+
+													<div class="col-md-6">
+														<div  id="date-picker-2" placeholder="Recipient's username" id="ttry" aria-describedby="basic-addon2"></div>
+														<span class="" id="example-popover-2"></span>
+														<div id="example-popover-2-content" class="hidden"> </div>
+														<div id="example-popover-2-title" class="hidden"> </div>
+													</div>
+												</div>
+
+												<div class="timings fira-on-image" id="time-slot">
+													<div class="sub-para" id="time-slot-title" style="margin-top: 30px;font-weight: bold;">Select time slot on mm/dd/yy</div>
+													<div class="row" id="mob-center">
+														<div class="col-md-1 col-sm-4 custom-radio" id="10:00">
+															<input type="radio" name="time_slot" id="time_slot_1" onclick="storeTime('10:00');" required>10:00
+														</div>
+														<div class="col-md-1 col-sm-4 custom-radio" id="10:30">
+															<input type="radio" name="time_slot" id="time_slot_2" onclick="storeTime('10:30');" required>10:30
+														</div>
+														<div class="col-md-1 col-sm-4 custom-radio" id="11:00">
+															<input type="radio" name="time_slot" id="time_slot_3" onclick="storeTime('11:00');" required>11:00
+														</div>
+														<div class="col-md-1 col-sm-4 custom-radio" id="11:30">
+															<input type="radio" name="time_slot" id="time_slot_4" onclick="storeTime('11:30');" required>11:30
+														</div>
+														<div class="col-sm-1 custom-radio" id="12:00">
+															<input type="radio" name="time_slot" id="time_slot_5" onclick="storeTime('12:00');" required>12:00
+														</div>
+														<div class="col-md-1 col-sm-4 custom-radio" id="12:30">
+															<input type="radio" name="time_slot" id="time_slot_6" onclick="storeTime('12:30');" required>12:30
+														</div>
+													</div>
+													<div class="row high-para"  id="mob-center">
+														<div class="col-md-1 col-sm-4 custom-radio" id="14:00">
+															<input type="radio" name="time_slot" id="time_slot_7" onclick="storeTime('14:00');" required>14:00
+														</div>
+														<div class="col-md-1 col-sm-4 custom-radio" id="14:30">
+															<input type="radio" name="time_slot" id="time_slot_8" onclick="storeTime('14:30');" required>14:30
+														</div>
+														<div class="col-md-1 col-sm-4 custom-radio" id="15:00">
+															<input type="radio" name="time_slot" id="time_slot_9" value="15:00" onclick="storeTime('15:00');" required>15:00
+														</div>
+														<div class="col-md-1 col-sm-4 custom-radio" id="15:30">
+															<input type="radio" name="time_slot" id="time_slot_10" onclick="storeTime('15:30');" required>15:30
+														</div>
+														<div class="col-md-1 col-sm-4 custom-radio" id="16:00">
+															<input type="radio" name="time_slot" id="time_slot_11" onclick="storeTime('16:00');" required>16:00
+														</div>
+														<div class="col-md-1 col-sm-4 custom-radio" id="16:30">
+															<input type="radio" name="time_slot" id="time_slot_12" onclick="storeTime('16:30');" required>16:30
+														</div>
+													</div>
+												</div>
+											</div>
+										</fieldset>
+
+										<h3>TICKETS</h3>
+										<fieldset>
+
+											<div class="fira fira-on-image high-para" id="basic-info">
+												<span class="" style="font-weight: normal !important;"id="number-info"></span><span class="" style="font-weight: normal !important;"> x </span><span class="" style="font-weight: normal !important;"id="tickets-type-info"></span><span class=""> Total Rs </span><span class="" style="font-weight: normal !important;"id="cost-info"></span>
+											</div>
+
+											<div id="tickets fira-on-image fira">
+												<div class="fira-on-image" style="padding-top: 20px;" >
+													<h4 class="high-para fira-on-image">SELECT YOUR MUSEUM TICKETS HERE.</h4>
+													<table class="table tickets">
+														<tbody>
+															<tr>
+																<th>Tickets</th>
+																<th>Price</th>
+																<th>Number</th>
+															</tr>
+
+															<tr style="font-weight: normal !important;">
+																<td>Adult</td>
+																<td id="adult_value"></td>
+																<td>
+																	<input type='button' name='subtract' onclick='displayValues("adult_sub");' value='-'/>
+																	<input name='qty1' id='qty1' style="text-align:center;" type="text" value="0"  autocomplete="off" size="2">
+																	<input type='button' name='add' onclick='displayValues("adult_add");' value='+'/>
+																</td>
+															</tr>
+															<tr style="font-weight: normal !important;">
+																<!--<td>Children ages 12 and under</td>-->
+																<td>Students</td>
+																<td id="child_value"></td>
+																<td>
+																	<input type='button' name='subtract' onclick='displayValues("child_sub");' value='-'/>
+																	<input name='qty2' id='qty2' style="text-align:center;" type="text" value="0"  autocomplete="off" size="2">
+																	<input type='button' name='add' onclick='displayValues("child_add");' value='+'/>
+																</td>
+															</tr style="font-weight: normal !important;">
+
+															<tr style="font-weight: normal !important;">
+																<td>Friends of MOCA</td>
+																<td>FREE</td>
+																<td>
+																	<input type='button' name='subtract' onclick='displayValues("friend_sub");' value='-'/>
+																	<input name='qty3' id='qty3' style="text-align:center;" type="text" value="0"  autocomplete="on" size="2">
+																	<input type='button' name='add' onclick='displayValues("friend_add");' value='+'/>
+																</td>
+															</tr>
+
+															<tr style="font-weight: normal !important;">
+																<td>For groups over 20 persons and educational institutions</td>
+																<td colspan="2">Please <a style="color:#8f0000;" href="{% url 'museumapp:contactUsMoca' %}">contact</a> the museum to plan your visit</td>
+															</tr>
+
+															<tr>
+																<td></td>
+																<td></td>
+																<td></td>
+															</tr>
+														</tbody>
+													</table>
+
+													<div class="container">
+														<div class="row">
+															<div>Church of Santa Monica- FREE ADMISSION</div>
+														</div>
+														<div class="row" style="padding-bottom: 30px;">
+															<div>MoCA Shop- FREE ADMISSION</div>
+														</div>
+														<div class="row" style="font-weight: normal !important;">
+															<div class="col-sm-12" style="padding-left: 0px;">Friends of MoCA - please carry your membership card or number assigned by the Museum.</div>
+															<!-- <div class="col-sm-12" style="padding-left: 0px;">No selfie sticks allowed in museum or church</div> -->
+															<!-- <div class="col-sm-12" style="padding-left: 0px;">Museum entry is restricted to a maximum of 20 persons for each time slot</div> -->
+															<div class="col-sm-12" style="padding-left: 0px;">Museum entry is restricted to a maximum of 10 persons for each time slot</div>
+														</div>
+													</div>
+												</div>
+
+												<div class="row">
+													<div style="overflow:auto;">
+														<div style="float:right; padding-top: 40px;">
+															<!--<button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button> -->
+															<!-- <button type="button" style="background-color: #8FBC8F;" id="nextBtn" onclick= "tickets" >Continue</button> -->
+														</div>
+													</div>
+												</div>
+											</div>
+										</fieldset>
+
+										<h3>DETAILS</h3>
+										<fieldset>
+
+											<div class="fira fira-on-image high-para" id="basic-info">
+												<span class="" style="font-weight: normal !important;"id="detail-number-info"></span><span class="" style="font-weight: normal !important;"> x </span><span class="" style="font-weight: normal !important;"id="detail-type-info"></span><span class=""> Total Rs </span><span class="" style="font-weight: normal !important;"id="detail-cost-info"></span>
+											</div>
+
+											<div class="container high-para fira-on-image">
+												<div class="row" style="margin-bottom: 5px;">
+													<div class="col-sm-12 col-md-4" style="padding-left: 0px;">Full Name :</div>
+													<div class="col-sm" id="mob-pad-zero">
+														<input type="text" name="FirstName" id="customer_name" required>
+													</div>
+												</div>
+												<div class="row" style="margin-bottom: 5px;">
+													<div class="col-sm-12 col-md-4" style="padding-left: 0px;">Email ID :</div>
+													<div class="col-sm" id="mob-pad-zero">
+														<input type="email" id="customer_email" required>
+													</div>
+												</div>
+												<div class="row" style="margin-bottom: 5px;">
+													<div class="col-sm-12 col-md-4" style="padding-left: 0px;">Phone Number :</div>
+													<div class="col-sm" id="mob-pad-zero">
+														<input type="text" id="customer_phone" min="10" max="13" required>
+													</div>
+												</div>
+
+
+												<!-- <div class="row" style="margin-top: 20px;">
+													<div>Church entrance FREE</div>
+												</div>
+												<div class="row" style="padding-bottom: 30px;">
+													<div>Shop access FREE</div>
+												</div>
+												<div class="row" style="font-weight: normal !important;">
+													<div class="col-sm-12" style="padding-left: 0px;">Please carry your membership card or number assigned by the Museum.</div>
+													<div class="col-sm-12" style="padding-left: 0px;">No selfie sticks allowed in museum or church</div>
+													<div class="col-sm-12" style="padding-left: 0px;">Museum entry is restricted to a maximum of 20 persons for each time slot</div>
+												</div> 	 -->
+											</div>
+
+											<input id="acceptTerms-2" name="acceptTerms" type="checkbox" class="required high-para"><label class="fira-on-image" for="acceptTerms-2">I agree with the Terms and Conditions.</label>
+
+											<div class="row sub-para">
+												<div class="col-sm-12">
+													<div class="row">
+														<!--<div class="col-sm-2">
+															<button type="button" class="buy-tickets-button fira small-heading">PAY NOW</button>
+														</div>-->
+														<div class="col-sm-10"></div>
+													</div>
+												</div>
+											</div>
+
+										</fieldset>
+
+										<!-- <h3>PAYMENT</h3>
+										<fieldset>
+
+										</fieldset> -->
+									</form>
+									<div class="please-note fira fira-on-image" style="font-weight: normal !important; margin-top: 15px;"><span class="fira small-heading" style="font-weight: bold;">PLEASE NOTE</span><br>
+
+
+									<br>Camera Pass - Additional Rs. 100.<br>
+Camera with Tripod/Stand- only with Prior Permission from Authority.<br>
+Friends of MoCA please carry your membership card or number assigned by the Museum.<br>
+Students Admission with valid Institution Identity cards.<br>
+Smoking is not permitted anywhere on the Museum premises.<br>
+No eatables or beverages are allowed inside the Museum.<br>
+Deposit large bags, backpacks, umbrellas and water bottles at the counter.<br>
+No selfie sticks allowed inside the museum.<br>
+The Museum authorities reserve the right to admission in the Museum.<br><br>
+
+<!-- <b>Covid-19 safety guidelines and regulations:</b><br><br>
+Filling names and contact details of all visitors is mandatory.<br>
+Wearing masks for all visitors is mandatory.<br>
+Adequate physical distancing of at least 6 feet to be followed at all times.<br>
+Temperature screening of each visitor will happen upon entry.<br>
+Hand-sanitizing at the entrance point of the museum is mandatory.<br> -->
+
+
+								<!-- 	If you are not able to print your ticket, no problem! Just bring your smartphone or tablet with you to the museum. Do ensure that the battery is sufficiently charged. Your ticket is only valid on the selected date and time.<br>Smoking is not permitted anywhere on the Museum premises.<br> No eatables or beverages are allowed inside the Museum.<br> Deposit large bags, backpacks, umbrellas and water bottles at the counter.<br> No selfie sticks allowed inside the museum.<br> Students Admission with valid Institution Identity cards.<br> Camera Pass - Additional Rs. 100. <br> Camera with Tripod/Stand- only with Prior Permission from Authority.<br> The Museum authorities reserve the right to a admission in Museum. -->
+
+
+
+									</div>
+
+
+
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-2"></div>
+				</div>
+			</div>
+		</div>
+	{% endblock %}
+
+	<!--- Custom Script Block --->
+	{% block custom-script %}
+
+		<script src="{% static 'museumapp/css/tickets-form/jquery.steps.js' %}"></script>
+		<script src="{% static 'museumapp/css/tickets-form/jquery.steps.min.js' %}"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.js"></script>
+		<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
+
+		<script type="text/javascript">
+
+            var choosed_time
+
+			function totalCost(child_count, parent_count, child_price, parent_price){
+				var cost1 = child_price;
+				var cost2 = parent_price;
+				var count1 = child_count;
+				var count2 = parent_count;
+				cost1 = cost1*count1;
+				cost2 = cost2*count2;
+				return cost1+cost2;
+			}
+
+			function totalNo(child_count, parent_count, friend_count){
+				var count = child_count;
+				count = count+parent_count;
+				count = count+friend_count;
+				return count;
+			}
+
+
+			today = new Date();
+			var date = today.getDate();
+			var month = today.getMonth()+1;
+			var year = today.getFullYear();
+
+			date = date+"/"+month+"/"+year;
+			entry_type = 'Museum admission';
+			time = '10:00'
+			// adult_price = 100;
+			// child_price = 50;
+			adult_price = 100;
+			child_price = 50;
+			adult_no = 0;
+			child_no = 0;
+			friend_no = 0;
+			name = 'name';
+			email = 'ab@gmail.com';
+			phone = '7542589643';
+			total_no = totalNo(0, 0, 0)
+			total_cost = totalCost(child_no, adult_no, child_price, adult_price);
+
+			document.getElementById('type-info').innerHTML = entry_type;
+			document.getElementById('tickets-type-info').innerHTML = entry_type;
+			document.getElementById('cost-info').innerHTML = total_cost;
+			document.getElementById('number-info').innerHTML = total_no;
+			document.getElementById('date-info').innerHTML = date;
+			document.getElementById('time-info').innerHTML = time;
+			document.getElementById("adult_value").innerHTML = adult_price;
+			document.getElementById("child_value").innerHTML = child_price;
+			document.getElementById('detail-type-info').innerHTML = entry_type;
+			document.getElementById('detail-cost-info').innerHTML = total_cost;
+			document.getElementById('detail-number-info').innerHTML = total_no;
+			document.getElementById("time-slot-title").innerHTML = "Select time slot on "+date;
+
+			document.getElementById('Museum admission ').style.backgroundColor = "#84bd91";
+			document.getElementById(time).style.backgroundColor = "#84bd91";
+
+			var form = $("#example-advanced-form").show();
+
+			form.steps({
+				headerTag: "h3",
+				bodyTag: "fieldset",
+				transitionEffect: "slideLeft",
+				onStepChanging: function (event, currentIndex, newIndex)
+				{
+					// Allways allow previous action even if the current form is not valid!
+					if (currentIndex > newIndex)
+					{
+						return true;
+					}
+					/*// Forbid next action on "Warning" step if the user is to young
+					if (newIndex === 3 && Number($("#age-2").val()) < 18)
+					{
+						return false;
+					}*/
+					// Needed in some cases if the user went back (clean up)
+					if (currentIndex < newIndex)
+					{
+						// To remove error styles
+						form.find(".body:eq(" + newIndex + ") label.error").remove();
+						form.find(".body:eq(" + newIndex + ") .error").removeClass("error");
+					}
+					form.validate().settings.ignore = ":disabled,:hidden";
+					return form.valid();
+				},
+				onStepChanged: function (event, currentIndex, priorIndex)
+				{
+					/*// Used to skip the "Warning" step if the user is old enough.
+					if (currentIndex === 2 && Number($("#age-2").val()) >= 18)
+					{
+						form.steps("next");
+					}
+					// Used to skip the "Warning" step if the user is old enough and wants to the previous step.
+					if (currentIndex === 2 && priorIndex === 3)
+					{
+						form.steps("previous");
+					}*/
+				},
+				onFinishing: function (event, currentIndex)
+				{
+					form.validate().settings.ignore = ":disabled";
+					return form.valid();
+				},
+				onFinished: function (event, currentIndex)
+				{
+				    //date = date+"/"+month+"/"+year;
+				    date = date;
+                    entry_type ;
+                    time;
+                    // adult_price = 100;
+					// child_price = 50;
+					adult_price = 100;
+                    child_price = 50;
+                    adult_no ;
+                    child_no ;
+                    friend_no;
+                    total_no = totalNo(adult_no, child_no, friend_no)
+                    total_cost = totalCost(child_no, adult_no, child_price, adult_price);
+                    let name = document.getElementById('customer_name').value;
+                    let email = document.getElementById('customer_email').value;
+                    let phone = document.getElementById('customer_phone').value;
+
+
+
+				    $.ajax({
+					url: "{% url 'museumapp:buy_tickets' %}",
+					type: "POST",
+					async: false,
+					data: {date:date,entry_type:entry_type,time:time,total_no:total_no,total_cost:total_cost,
+                            name:name, email:email,phone:phone,adult_no:adult_no,child_no:child_no,friend_no:friend_no,
+                        csrfmiddlewaretoken: '{{ csrf_token }}'},
+					success: function (data) {
+
+					    //alert("Submitted!");
+                        //swal("Submitted!");
+                        //swal("Here's the title!", "...and here's the text!");
+                        /*swal("Are you sure you want to do this?", {
+                          buttons: ["Oh noez!", "Aww yiss!"],
+                        });*/
+					    //window.location.reload();
+						Swal.fire({
+								  title: "<b>Your tickets have been booked sucessfully! We will get in touch with you soon.</b>",
+								  html: `<br>Name:${name}<br>Email:${email}<br>Phone:${phone}<br>Date:${date}<br>Time:${time}<br>Adult Nos:${adult_no}<br>Child Nos:${child_no} <br>Friends of MoCA Nos:${friend_no}`,
+								  confirmButtonText: "<b>OK</b>",
+								});
+
+
+
+
+
+					}
+				});
+
+
+				}
+			}).validate({
+				errorPlacement: function errorPlacement(error, element) { element.before(error); },
+				rules: {
+					/*confirm: {
+						equalTo: "#password-2"
+					}*/
+				}
+			});
+
+
+
+			function displayChoice(id) {
+                if(id == 'choice1' | id == 'choice2'){
+                    $('#date-picker-1').removeClass("hasDatepicker")
+                    $('#date-picker-1 ').empty()
+                    datePick1()
+                }else {
+                    $('#date-picker-1').removeClass("hasDatepicker")
+                    $('#date-picker-1 ').empty()
+                    datePick()
+				}
+
+				if(id == 'choice1'){
+
+					document.getElementById('time-info').innerHTML = '11:30';
+
+					document.getElementById("10:00").style.display = "none";
+
+					document.getElementById("10:30").style.display = "none";
+
+					document.getElementById("11:00").style.display = "none";
+
+					document.getElementById("11:30").style.display = "bloac";
+
+					document.getElementById("12:00").style.display = "none";
+
+					document.getElementById("12:30").style.display = "none";
+
+					document.getElementById("14:00").style.display = "none";
+
+					document.getElementById("14:30").style.display = "none";
+
+					document.getElementById("15:00").style.display = "none";
+
+					document.getElementById("15:30").style.display = "none";
+
+					document.getElementById("16:00").style.display = "none";
+
+					document.getElementById("16:30").style.display = "none";
+
+				}
+
+				if(id == 'choice2'){
+
+					document.getElementById('time-info').innerHTML = '';
+
+					document.getElementById("10:00").style.display = "none";
+
+					document.getElementById("10:30").style.display = "none";
+
+					document.getElementById("11:00").style.display = "none";
+
+					document.getElementById("11:30").style.display = "none";
+
+					document.getElementById("12:00").style.display = "none";
+
+					document.getElementById("12:30").style.display = "none";
+
+					document.getElementById("14:00").style.display = "none";
+
+					document.getElementById("14:30").style.display = "none";
+
+					document.getElementById("15:00").style.display = "none";
+
+					document.getElementById("15:30").style.display = "none";
+
+					document.getElementById("16:00").style.display = "none";
+
+					document.getElementById("16:30").style.display = "none";
+
+				}
+
+				if(id == 'choice0'){
+
+					document.getElementById('time-info').innerHTML = '10:00';
+
+					document.getElementById("10:00").style.display = "block";
+
+					document.getElementById("10:30").style.display = "block";
+
+					document.getElementById("11:00").style.display = "block";
+
+					document.getElementById("11:30").style.display = "block";
+
+					document.getElementById("12:00").style.display = "block";
+
+					document.getElementById("12:30").style.display = "block";
+
+					document.getElementById("14:00").style.display = "block";
+
+					document.getElementById("14:30").style.display = "block";
+
+					document.getElementById("15:00").style.display = "block";
+
+					document.getElementById("15:30").style.display = "block";
+
+					document.getElementById("16:00").style.display = "block";
+
+					document.getElementById("16:30").style.display = "block";
+
+				}
+
+
+				var choices = ['choice0Text', 'choice1Text', 'choice2Text']
+				// var entry_types = ['Museum admission ', 'Museum admission + Museum highlights ', 'Museum admission + Private guided group tour ']
+				var entry_types = ['Museum admission ', 'Highlights of the Museum of Christian Art.', 'Retracing Monte Santo (the Holy Hill Tour)']
+				// var prices = [[100,50], [200,100], [2000,2000]]
+				// var prices = [[100,50], [250,100], [500,200]]
+				// var prices = [[100,50], [500,300], [1000,500]]
+				var prices = [[100,50], [300,150], [1000,500]]
+				var num = id.substr(6, 1);
+				for(var i=0; i<3; i++){
+					if (i==num){
+						document.getElementById(choices[i]).style.display = "block";
+						adult_price = prices[i][0];
+						child_price = prices[i][1];
+						total_cost = prices[i][0]+prices[i][1];
+						entry_type = entry_types[i];
+						// console.log(entry_types[i])
+						document.getElementById(entry_type).style.backgroundColor = "#84bd91";
+						document.getElementById("adult_value").innerHTML = prices[i][0];
+						document.getElementById("child_value").innerHTML = prices[i][1];
+						document.getElementById('type-info').innerHTML = entry_type;
+						document.getElementById("cost-info").innerHTML = totalCost(child_no, adult_no, child_price, adult_price);
+						document.getElementById("tickets-type-info").innerHTML = entry_type;
+						document.getElementById('detail-type-info').innerHTML = entry_type;
+						document.getElementById('detail-cost-info').innerHTML = totalCost(child_no, adult_no, child_price, adult_price);
+					}
+					else{
+						// console.log(entry_types[i])
+						document.getElementById(choices[i]).style.display = "none";
+						document.getElementById(entry_types[i]).style.backgroundColor = "#f5f5f5";
+					}
+				}
+				document.getElementById('calander').style.display = null;
+				/////Gunjan//////
+				if(id == 'choice2'){
+						document.getElementById('calander').style.display ='none';
+				}
+				//////Gunjan end///////
+			}
+
+
+			{% comment %}
+
+			$('#date-picker-1').popover({
+
+				html : true,
+				/*content: function() {
+					return $("#example-popover-1-content").html();
+				},*/
+				title: function() {
+				return $("#example-popover-1-title").html();
+				}
+			});
+
+			$("#date-picker-1").datepicker({
+				onSelect: function(dateText) {
+					date = dateText;
+					document.getElementById("time-slot-title").innerHTML = "Select time slot on "+date;
+					/*$('#example-popover-1-title').html('');*/
+					/*var html = '<button  class="btn btn-success">8:00 am – 9:00 am</button><br><button  class="btn btn-success">10:00 am – 12:00 pm</button><br><button  class="btn btn-success">12:00 pm – 2:00 pm</button>';*/
+					/*$('#example-popover-1-content').html('Select time slot on <strong>'+dateText+'</strong><br>');*/
+					/*$('.date-picker-1').popover('show');*/
+					document.getElementById("date-info").innerHTML = date;
+				}
+			});
+
+{% endcomment %}
+
+			window.onload = popUp();
+
+			window.onload = datePick();
+
+			window.onload = CheckDefaultTime();
+
+
+			function CheckDefaultTime(){
+
+				var time = today.getHours() + ":" + today.getMinutes();
+
+				// alert(time)
+
+
+				if (time >= '10:00'){
+
+					$( "#time_slot_1" ).prop( "disabled", false );
+					$('#time_slot_1').prop('checked',false);
+
+				}if(time >= '10:30'){
+
+					$( "#time_slot_2" ).prop( "disabled", true );
+					$('#time_slot_2').prop('checked',false);
+
+				}if(time >= '11:00'){
+
+					$( "#time_slot_3" ).prop( "disabled", true );
+					$('#time_slot_3').prop('checked',false);
+
+				}if(time >= '11:30'){
+
+					$( "#time_slot_4" ).prop( "disabled", true );
+					$('#time_slot_4').prop('checked',false);
+
+				}if(time >= '12:00'){
+
+					$( "#time_slot_5" ).prop( "disabled", true );
+					$('#time_slot_5').prop('checked',false);
+
+				}if(time >= '12:30'){
+
+					$("#time_slot_6" ).prop( "disabled", true );
+					$('#time_slot_6').prop('checked',false);
+
+				}if(time >= '14:00'){
+
+					$( "#time_slot_7" ).prop( "disabled", true );
+					$('#time_slot_7').prop('checked',false);
+
+				}if(time >= '14:30'){
+
+					$( "#time_slot_8" ).prop( "disabled", true );
+					$('#time_slot_8').prop('checked',false);
+
+				}if(time >= '15:00'){
+
+					$( "#time_slot_9" ).prop( "disabled", true );
+					$('#time_slot_9').prop('checked',false);
+
+				}if(time >= '15:30'){
+
+					$( "#time_slot_10" ).prop( "disabled", true );
+					$('#time_slot_10').prop('checked',false);
+
+				}if(time >= '16:00'){
+
+					$( "#time_slot_11" ).prop( "disabled", true );
+					$('#time_slot_11').prop('checked',false);
+
+				}if(time >= '16:30'){
+
+					$( "#time_slot_12" ).prop( "disabled", true );
+					$('#time_slot_12').prop('checked',false);
+
+				}if(time >= '16:30'){
+
+					$( "#time_slot_12" ).prop( "disabled", true );
+					$('#time_slot_12').prop('checked',false);
+
+				}
+
+
+
+
+
+
+
+			}
+
+
+			// function popUp(){
+
+			// 		// swal ( "Sorry for the inconvenience" ,  "Due to COVID-19, reopening of the refurbished MoCA has been postponed", {
+			// 		swal ( "The Museum will remain temporarily closed for visitors till further notice as a precautionary measure to prevent the spread of COVID-19", {
+
+			// 			button: false,
+			// 			closeOnEsc: false,
+            //     		closeOnClickOutside: false,
+
+			// 		})
+
+
+			// };
+
+
+
+
+			// function popUp(){
+
+			// 			var message = "The Museum will remain temporarily closed for visitors till further notice as a precautionary measure to prevent the spread of COVID-19";
+			// 			var content = document.createElement('div');
+			// 			content.innerHTML = '<strong>'+ message +'</strong>'; //<br><strong>'+ message2 +'</strong><br><strong>'+ message3 +'</strong>';
+			// 			swal({
+			// 				// button: false,
+			// 				buttons: {
+			// 					cancel: false,
+			// 					confirm: true,
+			// 				},
+			// 				timer: 10000,
+			// 				showCancelButton: true,
+   			// 				cancelButtonText: 'OK',
+			// 				content: content,
+			// 				closeOnEsc: false,
+			// 				closeOnClickOutside: false,
+
+			// 			})
+			// 		};
+
+			function popUp(){
+
+						var message = "The Museum will remain temporarily closed for visitors till further notice as a precautionary measure to prevent the spread of COVID-19";
+						// var message = "MoCA will remain closed to the public from 2nd May to 23rd May 2022. We will welcome you all from 24th May 2022 onwards";
+						var content = document.createElement('div');
+						content.innerHTML = '<strong>'+ message +'</strong>'; //<br><strong>'+ message2 +'</strong><br><strong>'+ message3 +'</strong>';
+						swal({
+							button: false,
+							buttons: {
+								cancel: false, //
+								confirm: false, //
+							}, //
+							timer: 10000, //
+							showCancelButton: false, //
+   							cancelButtonText: 'OK',	//
+							content: content,
+							closeOnEsc: false,
+							closeOnClickOutside: false,
+
+						})
+					};
+
+
+
+
+
+			function datePick() {
+
+			    var user_selected_date
+
+                var dateToday = new Date();
+                var dates = $("#date-picker-1").datepicker({
+
+					// beforeShowDay: function(date){
+					// 	console.log(dateToday)
+					// 	var string = jQuery.datepicker.formatDate('mm/dd/yy', date);
+					// 	return [ array.indexOf(string) == -1 ]
+					// },
+                    //defaultDate: "+1w",
+                    changeMonth: false,
+                    numberOfMonths: 1,
+					// minDate: dateToday,
+					minDate: "+2",
+                    onSelect: function(selectedDate) {
+                        var option = this.id == "from" ? "minDate" : "maxDate",
+                            instance = $(this).data("datepicker"),
+                            date = $.datepicker.parseDate(instance.settings.dateFormat || $.datepicker._defaults.dateFormat, selectedDate, instance.settings);
+                        dates.not(this).datepicker("option", option, date);
+
+                        user_selected_date = selectedDate
+                        document.getElementById("time-slot-title").innerHTML = "Select time slot on "+selectedDate;
+                        document.getElementById("date-info").innerHTML = selectedDate;
+
+
+
+
+
+                        let split_date
+                if (user_selected_date){
+                    split_date = user_selected_date.split('/')[1]
+                }
+                let cr_date = new Date();
+                let cr_today_date = cr_date.getDate();
+                let cr_hour = cr_date.getHours();
+                let cr_min = cr_date.getMinutes();
+                let cr_hr_min = cr_hour+':'+cr_min
+                        if (cr_today_date >= split_date){
+                            //if (cr_hr_min < '10:00' | cr_hr_min > '16:30'){
+                if (cr_hr_min != '10:00'){
+
+                    $( "#time_slot_1" ).prop( "disabled", true );
+                    $('#time_slot_1').prop('checked',false);
+
+                }if(cr_hr_min != '10:30'){
+
+                    $( "#time_slot_2" ).prop( "disabled", true );
+                    $('#time_slot_2').prop('checked',false);
+
+                }if(cr_hr_min != '11:00'){
+
+                    $( "#time_slot_3" ).prop( "disabled", true );
+                    $('#time_slot_3').prop('checked',false);
+
+                }if(cr_hr_min != '11:30'){
+
+                    $( "#time_slot_4" ).prop( "disabled", true );
+                    $('#time_slot_4').prop('checked',false);
+
+                }if(cr_hr_min != '12:00'){
+
+                    $( "#time_slot_5" ).prop( "disabled", true );
+                    $('#time_slot_5').prop('checked',false);
+
+                }if(cr_hr_min != '12:30'){
+
+                    $("#time_slot_6" ).prop( "disabled", true );
+                    $('#time_slot_6').prop('checked',false);
+
+                }if(cr_hr_min != '14:00'){
+
+                    $( "#time_slot_7" ).prop( "disabled", true );
+                    $('#time_slot_7').prop('checked',false);
+
+                }if(cr_hr_min != '14:30'){
+
+                    $( "#time_slot_8" ).prop( "disabled", true );
+                    $('#time_slot_8').prop('checked',false);
+
+                }if(cr_hr_min != '15:00'){
+
+                    $( "#time_slot_9" ).prop( "disabled", true );
+                    $('#time_slot_9').prop('checked',false);
+
+                }if(cr_hr_min != '15:30'){
+
+                    $( "#time_slot_10" ).prop( "disabled", true );
+                    $('#time_slot_10').prop('checked',false);
+
+                }if(cr_hr_min != '16:00'){
+
+                    $( "#time_slot_11" ).prop( "disabled", true );
+                    $('#time_slot_11').prop('checked',false);
+
+                }if(cr_hr_min != '16:30'){
+
+                    $( "#time_slot_12" ).prop( "disabled", true );
+                    $('#time_slot_12').prop('checked',false);
+
+                }if(cr_hr_min > '16:30'){
+
+                    $( "#time_slot_12" ).prop( "disabled", true );
+                    $('#time_slot_12').prop('checked',false);
+
+                }
+
+                    }else {
+                            if (cr_hr_min != '10:00'){
+
+                    $( "#time_slot_1" ).prop( "disabled", false );
+                    $('#time_slot_1').prop('checked',false);
+
+                }if(cr_hr_min != '10:30'){
+
+                    $( "#time_slot_2" ).prop( "disabled", false );
+                    $('#time_slot_2').prop('checked',false);
+
+                }if(cr_hr_min != '11:00'){
+
+                    $( "#time_slot_3" ).prop( "disabled", false );
+                    $('#time_slot_3').prop('checked',false);
+
+                }if(cr_hr_min != '11:30'){
+
+                    $( "#time_slot_4" ).prop( "disabled", false );
+                    $('#time_slot_4').prop('checked',false);
+
+                }if(cr_hr_min != '12:00'){
+
+                    $( "#time_slot_5" ).prop( "disabled", false );
+                    $('#time_slot_5').prop('checked',false);
+
+                }if(cr_hr_min != '12:30'){
+
+                    $("#time_slot_6" ).prop( "disabled", false );
+                    $('#time_slot_6').prop('checked',false);
+
+                }if(cr_hr_min != '14:00'){
+
+                    $( "#time_slot_7" ).prop( "disabled", false );
+                    $('#time_slot_7').prop('checked',false);
+
+                }if(cr_hr_min != '14:30'){
+
+                    $( "#time_slot_8" ).prop( "disabled", false );
+                    $('#time_slot_8').prop('checked',false);
+
+                }if(cr_hr_min != '15:00'){
+
+                    $( "#time_slot_9" ).prop( "disabled", false );
+                    $('#time_slot_9').prop('checked',false);
+
+                }if(cr_hr_min != '15:30'){
+
+                    $( "#time_slot_10" ).prop( "disabled", false );
+                    $('#time_slot_10').prop('checked',false);
+
+                }if(cr_hr_min != '16:00'){
+
+                    $( "#time_slot_11" ).prop( "disabled", false );
+                    $('#time_slot_11').prop('checked',false);
+
+                }if(cr_hr_min != '16:30'){
+
+                    $( "#time_slot_12" ).prop( "disabled", false );
+                    $('#time_slot_12').prop('checked',false);
+
+                }if(cr_hr_min > '16:30'){
+
+                    $( "#time_slot_12" ).prop( "disabled", false );
+                    $('#time_slot_12').prop('checked',false);
+
+                }
+                        }
+
+
+					}
+
+                });
+
+
+
+            }
+
+
+            function datePick1() {
+
+                var dateToday = new Date();
+
+			    var newDate = new Date()
+                newDate.setDate(newDate.getDate() + 15)
+
+                var dates = $("#date-picker-1").datepicker({
+                    defaultDate: "+1w",
+                    changeMonth: false,
+                    numberOfMonths: 1,
+                    minDate: newDate,
+                    onSelect: function(selectedDate) {
+                        var option = this.id == "from" ? "minDate" : "maxDate",
+                            instance = $(this).data("datepicker"),
+                            date = $.datepicker.parseDate(instance.settings.dateFormat || $.datepicker._defaults.dateFormat, selectedDate, instance.settings);
+                        dates.not(this).datepicker("option", option, date);
+
+                        user_selected_date = selectedDate
+                        document.getElementById("time-slot-title").innerHTML = "Select time slot on "+selectedDate;
+                        document.getElementById("date-info").innerHTML = selectedDate;
+
+
+
+
+
+                        let split_date
+                if (user_selected_date){
+                    split_date = user_selected_date.split('/')[1]
+                }
+                let cr_date = new Date();
+                let cr_today_date = cr_date.getDate();
+                let cr_hour = cr_date.getHours();
+                let cr_min = cr_date.getMinutes();
+                let cr_hr_min = cr_hour+':'+cr_min
+                        if (cr_today_date >= split_date){
+                if (cr_hr_min != '10:00'){
+
+                    $( "#time_slot_1" ).prop( "disabled", true );
+                    $('#time_slot_1').prop('checked',false);
+
+                }if(cr_hr_min != '10:30'){
+
+                    $( "#time_slot_2" ).prop( "disabled", true );
+                    $('#time_slot_2').prop('checked',false);
+
+                }if(cr_hr_min != '11:00'){
+
+                    $( "#time_slot_3" ).prop( "disabled", true );
+                    $('#time_slot_3').prop('checked',false);
+
+                }if(cr_hr_min != '11:30'){
+
+                    $( "#time_slot_4" ).prop( "disabled", true );
+                    $('#time_slot_4').prop('checked',false);
+
+                }if(cr_hr_min != '12:00'){
+
+                    $( "#time_slot_5" ).prop( "disabled", true );
+                    $('#time_slot_5').prop('checked',false);
+
+                }if(cr_hr_min != '12:30'){
+
+                    $("#time_slot_6" ).prop( "disabled", true );
+                    $('#time_slot_6').prop('checked',false);
+
+                }if(cr_hr_min != '14:00'){
+
+                    $( "#time_slot_7" ).prop( "disabled", true );
+                    $('#time_slot_7').prop('checked',false);
+
+                }if(cr_hr_min != '14:30'){
+
+                    $( "#time_slot_8" ).prop( "disabled", true );
+                    $('#time_slot_8').prop('checked',false);
+
+                }if(cr_hr_min != '15:00'){
+
+                    $( "#time_slot_9" ).prop( "disabled", true );
+                    $('#time_slot_9').prop('checked',false);
+
+                }if(cr_hr_min != '15:30'){
+
+                    $( "#time_slot_10" ).prop( "disabled", true );
+                    $('#time_slot_10').prop('checked',false);
+
+                }if(cr_hr_min != '16:00'){
+
+                    $( "#time_slot_11" ).prop( "disabled", true );
+                    $('#time_slot_11').prop('checked',false);
+
+                }if(cr_hr_min != '16:30'){
+
+                    $( "#time_slot_12" ).prop( "disabled", true );
+                    $('#time_slot_12').prop('checked',false);
+
+                }if(cr_hr_min > '16:30'){
+
+                    $( "#time_slot_12" ).prop( "disabled", true );
+                    $('#time_slot_12').prop('checked',false);
+
+                }
+
+                    }else {
+                            if (cr_hr_min != '10:00'){
+
+                    $( "#time_slot_1" ).prop( "disabled", false );
+                    $('#time_slot_1').prop('checked',false);
+
+                }if(cr_hr_min != '10:30'){
+
+                    $( "#time_slot_2" ).prop( "disabled", false );
+                    $('#time_slot_2').prop('checked',false);
+
+                }if(cr_hr_min != '11:00'){
+
+                    $( "#time_slot_3" ).prop( "disabled", false );
+                    $('#time_slot_3').prop('checked',false);
+
+                }if(cr_hr_min != '11:30'){
+
+                    $( "#time_slot_4" ).prop( "disabled", false );
+                    $('#time_slot_4').prop('checked',false);
+
+                }if(cr_hr_min != '12:00'){
+
+                    $( "#time_slot_5" ).prop( "disabled", false );
+                    $('#time_slot_5').prop('checked',false);
+
+                }if(cr_hr_min != '12:30'){
+
+                    $("#time_slot_6" ).prop( "disabled", false );
+                    $('#time_slot_6').prop('checked',false);
+
+                }if(cr_hr_min != '14:00'){
+
+                    $( "#time_slot_7" ).prop( "disabled", false );
+                    $('#time_slot_7').prop('checked',false);
+
+                }if(cr_hr_min != '14:30'){
+
+                    $( "#time_slot_8" ).prop( "disabled", false );
+                    $('#time_slot_8').prop('checked',false);
+
+                }if(cr_hr_min != '15:00'){
+
+                    $( "#time_slot_9" ).prop( "disabled", false );
+                    $('#time_slot_9').prop('checked',false);
+
+                }if(cr_hr_min != '15:30'){
+
+                    $( "#time_slot_10" ).prop( "disabled", false );
+                    $('#time_slot_10').prop('checked',false);
+
+                }if(cr_hr_min != '16:00'){
+
+                    $( "#time_slot_11" ).prop( "disabled", false );
+                    $('#time_slot_11').prop('checked',false);
+
+                }if(cr_hr_min != '16:30'){
+
+                    $( "#time_slot_12" ).prop( "disabled", false );
+                    $('#time_slot_12').prop('checked',false);
+
+                }if(cr_hr_min > '16:30'){
+
+                    $( "#time_slot_12" ).prop( "disabled", false );
+                    $('#time_slot_12').prop('checked',false);
+
+                }
+                        }
+                    }
+
+                });
+
+
+
+            }
+
+
+			function storeTime(time_value){
+				debugger
+				var time_slots = ['10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30']
+				time = time_value;
+				document.getElementById('time-info').innerHTML = time;
+				for(var i=0; i<12; i++){
+					// console.log(i);
+					if(time_slots[i] == time_value){
+						document.getElementById(time_value).style.backgroundColor = "#84bd91";
+					}
+					else{
+						document.getElementById(time_slots[i]).style.backgroundColor = "#f5f5f5";
+					}
+				}
+			}
+
+
+			function displayValues(data){
+				if(data == 'adult_add'){
+					adult_no += 1;
+					document.getElementById("qty1").value = adult_no;
+				}
+				else if(data == 'adult_sub' && adult_no != 0){
+					adult_no -= 1;
+					document.getElementById("qty1").value = adult_no;
+				}
+				else if(data == 'child_add'){
+					child_no += 1;
+					document.getElementById("qty2").value = child_no;
+				}
+				else if(data == 'child_sub' && child_no != 0){
+					child_no -= 1;
+					document.getElementById("qty2").value = child_no;
+				}
+				else if(data == 'friend_sub' && friend_no != 0){
+					friend_no -= 1;
+					document.getElementById("qty3").value = friend_no;
+				}
+				else {
+					if(data == 'friend_add'){
+						friend_no += 1;
+						document.getElementById("qty3").value = friend_no;
+					}
+				}
+
+				total_no = totalNo(child_no, adult_no, friend_no);
+
+				total_cost = totalCost(child_no, adult_no, child_price, adult_price);
+
+				document.getElementById("number-info").innerHTML = total_no;
+				document.getElementById("cost-info").innerHTML = total_cost;
+
+				document.getElementById('detail-number-info').innerHTML = total_no;
+				document.getElementById('detail-cost-info').innerHTML = total_cost;
+			}
+
+
+
+
+
+
+		</script>
+
+	{% endblock %}
+
+</body>
+</html>

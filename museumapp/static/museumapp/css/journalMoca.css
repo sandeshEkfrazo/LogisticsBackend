@@ -1,0 +1,83 @@
+.parallax {
+	/* The image used */
+	/* Set a specific height */
+	min-height: 700px; 
+
+	/* Create the parallax scrolling effect */
+	background-attachment: fixed;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	border-bottom: 5px solid #b5a268;
+}
+#collection-main-img-text{
+	color: white;
+	height: 300px;
+}
+#mj-main-image
+{
+	color: black;
+}
+.move-top{
+	top: 30%;
+	left: 70%;
+	position: absolute;
+}
+.display-image
+{
+	padding-left: 0px;
+}
+.search{
+	text-align: center;
+	background-color: #D3D3D3;
+	border:0px;
+	color:black;
+	height: 46px;
+	width: 100%;
+}
+.moca-journals-color{
+	background-color: #d3d3d35e;
+}
+.mj-side-text
+{
+	padding: 10px;
+}
+.search-area
+{
+	background-color: #eeeff1;
+	border: 0px;
+	padding: 13px;
+	color: #615f5f82;
+}
+.dropdown {
+	color: white;
+}
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f5f5f5;
+  min-width: 160px;
+  z-index: 1;
+}
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+.drp-button-class
+{
+	width: 100%;
+	margin-left: 15px;
+}
+.drop-button
+{
+	background-color: #d3d3d35e;
+	border:0px;
+	height: 40px;
+	max-width: 100%;
+	color: #615f5f82;
+}
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}

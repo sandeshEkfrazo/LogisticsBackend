@@ -1,0 +1,143 @@
+{% extends "museumapp/base.html" %}
+
+{% load static %}
+	
+	<!--- Title --->
+	{% block title %}	{% endblock %}
+
+	<!--- Custom CSS --->
+	{% block custom-css-parts %}
+	{% endblock %}
+
+	<!--- Custom Style --->
+	{% block style %}
+		<link rel="stylesheet" type="text/css" href="{% static 'museumapp/css/learnMoca.css' %}"/>
+		<link rel="stylesheet" type="text/css" href="{% static 'museumapp/css/toi-css/hover-box.css' %}" />
+	{% endblock %}
+
+	<!--- Body content --->
+	{% block body-content %}
+		<!-- Page Content  -->
+		<div id="content">
+
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-sm-12" style="padding: 0px;">
+						<div class="parallax" style="background-image: url('{% static 'museumapp/image/206.png' %}');"></div>
+					</div>
+					
+					<!-- <div class="move-top">
+						<div class="fira-on-image fira font-weight-bold">MOCA KNOWLEDGE CENTER</div>
+						<div class="big-font-on-image garamond">Nurturing Knowledge</div>
+					</div> -->
+				</div>
+			</div>
+				
+			<div class="container-fluid ">
+				<div class="row">
+					<div class="col-sm-12">
+						  <div class="row">
+							<div class="col-sm-8"></div>
+							 <div class="col-sm-2">
+							   	<a href="{% url 'museumapp:buy_tickets' %}"><button type="button" class="buy-tickets-button fira small-heading">BOOK TICKETS</button></a>
+							</div>
+							<div class="col-sm-2"></div>
+						 </div>   
+					</div>
+				</div>
+			</div>
+					
+			<div class="container-fluid from-image-content">
+				<div class="row" style="padding-bottom: 40px;">
+					<div class="col-sm-12">
+						<div class="col-sm-12">
+							<div class="row">
+								<div class="col-sm-3"></div>
+								<div class="col-sm-6" style="padding-left: 8px;">
+									<div class="small-heading fira font-weight-bold sub-para">MOCA COMMUNITY /<span style="color:#A9A9A9">COMMUNITY INITIATIVES</span></div>		
+								</div>
+								<div class="col-sm-3"></div>
+							</div>
+
+							<div class="row">
+								<div class="col-sm-3"></div>
+								<div class="col-sm-6" style="padding-left: 8px;">
+									<div class="side-heading-size35-index  garamond side-head-para">The Present through the Past</div>		
+								</div>
+								<div class="col-sm-3"></div>
+							</div>
+							
+							<div class="row">
+								<div class="col-sm-3"></div>
+								<div class="col-sm-6" style="padding-left: 8px;">
+									<div class="page-highlights garamond high-para"> MOCA supports educators to foster critical and creative thinking, and promote discovery and wonder. Our educator programs support classroom instruction and motivate student learning by providing opportunities to discover
+								</div>
+								<div class="col-sm-3"></div>
+							</div>
+										
+							<div class="row">
+								<div class="col-sm-3"> </div>
+								<div class="col-sm-6">	
+									<div class="inner-para garamond high-para"> Lorem ipsum dolor sit amet, possim commodo mea eu, ex eam nobis antiopam. Ullum partiendo hendrerit te mei, impetus salutandi id has, principes euripidis sed cu. Habeo torquatos has an. Cum elitr possit detraxit at, ex magna luptatum lucilius eos. Quo at harum vitae honestatis, cu tale veri torquatos mea, graeci singulis erroribus ne sit. Ea sed inani
+									</div>	
+								</div>
+								<div class="col-sm-3"></div>
+							</div>	
+
+							<div class="row">
+								<div class="col-sm-3"></div>
+								<div class="col-sm-6">	
+									<div class="side-heading-garamond garamond side-head-para">
+										The MOCA Pedagogy
+									</div>
+									<div class="inner-para garamond high-para"> Lorem ipsum dolor sit amet, possim commodo mea eu, ex eam nobis antiopam. Ullum partiendo hendrerit te mei, impetus salutandi id has, principes euripidis sed cu. Habeo torquatos has an. Cum elitr possit detraxit at, ex magna luptatum lucilius eos. Quo at harum vitae honestatis, cu tale veri torquatos mea, graeci singulis erroribus ne sit. Ea sed inani
+									</div>			
+								</div>
+								<div class="col-sm-3"></div>
+							</div>	
+
+							<div class="row">
+								<div class="col-sm-3"></div>
+								<div class="col-sm-6">	
+									<div class="side-heading-garamond garamond side-head-para">
+										Primary Schools
+									</div>
+									<div class="inner-para garamond high-para"> Lorem ipsum dolor sit amet, possim commodo mea eu, ex eam nobis antiopam. Ullum partiendo hendrerit te mei, impetus salutandi id has, principes euripidis sed cu. Habeo torquatos has an. Cum elitr possit detraxit at, ex magna luptatum lucilius eos. Quo at harum vitae honestatis, cu tale veri torquatos mea, graeci singulis erroribus ne sit. Ea sed inani
+									</div>	
+								</div>
+								<div class="col-sm-3"></div>
+							</div>
+
+							<div class="row">
+								<div class="col-sm-3"></div>
+								<div class="col-sm-6">	
+									<div class="side-heading-garamond garamond side-head-para">
+										Secodary Schools and Colleges
+									</div>
+									<div class="inner-para garamond high-para"> Lorem ipsum dolor sit amet, possim commodo mea eu, ex eam nobis antiopam. Ullum partiendo hendrerit te mei, impetus salutandi id has, principes euripidis sed cu. Habeo torquatos has an. Cum elitr possit detraxit at, ex magna luptatum lucilius eos. Quo at harum vitae honestatis, cu tale veri torquatos mea, graeci singulis erroribus ne sit. Ea sed inani
+									</div>															
+								</div>
+								<div class="col-sm-3"></div>
+							</div>
+
+
+							<div class="row last-para">
+								<div class="col-sm-3"></div>
+								<div class="col-sm-6">	
+									<div class="side-heading-garamond garamond side-head-para">
+										Teacher Resource
+									</div>
+									<div class="inner-para garamond high-para"> Lorem ipsum dolor sit amet, possim commodo mea eu, ex eam nobis antiopam. Ullum partiendo hendrerit te mei, impetus salutandi id has, principes euripidis sed cu. Habeo torquatos has an. Cum elitr possit detraxit at, ex magna luptatum lucilius eos. Quo at harum vitae honestatis, cu tale veri torquatos mea, graeci singulis erroribus ne sit. Ea sed inani
+									</div>
+								</div>
+								<div class="col-sm-3"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	{% endblock %}
+
+	<!--- Custom Script Block --->
+	{% block custom-script %}	{% endblock %}

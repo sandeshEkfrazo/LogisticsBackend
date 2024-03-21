@@ -1,0 +1,674 @@
+{% extends "museumapp/base.html" %}
+
+{% load static %}
+	
+	<!--- Title --->
+	{% block title %}
+		Museum of Christian Art
+	{% endblock %}
+
+	<!--- Custom CSS --->
+	{% block custom-css-parts %}
+		<link rel="stylesheet" type="text/css" href="{% static 'museumapp/css/objectsMoca.css' %}"/>
+		<link rel="stylesheet" type="text/css" href="{% static 'museumapp/css/toi-css/hover-box.css' %}" />
+	{% endblock %}
+
+	<!--- Custom Style --->
+	{% block style %}
+		<style type="text/css">
+			.form-group{
+				margin-bottom: 0px;
+			}
+			option.space{
+				margin-bottom: 20px;
+			}
+			span.twitter-typeahead
+			{
+				width: 100%;
+				height: 40px;
+			}
+			input.tt-hint{
+				width: 100%;
+				height: 40px;
+				border: 0px;
+				padding-left: 20px;
+				color: #615f5f82;
+				font-size: 15px;
+				letter-spacing: 0px;
+			}
+			input.tt-input{
+				width: 100%;
+				background-color: #d3d3d35e !important;
+				border: 0px;
+				height: 40px;
+				color: #615f5f82;
+				border-radius: 0px;
+				font-size: 15px;
+				letter-spacing: 0px;
+				padding-left: 20px;
+			}
+			div.tt-menu{
+				background-color: #d3d3d3;
+				width: 100%;
+				padding: 20px;
+			}
+			div.tt-dataset{
+				border-bottom: 1px solid black;
+				margin-bottom: 10px;
+				padding-bottom: 10px;
+			}
+			div.tt-suggestion, div.tt-selectable{
+				cursor: pointer;
+			}
+			@media (max-width: 425px) {
+				input.tt-hint {
+				    padding-left: 5px;
+				    font-size: 12px;
+				}
+				input.tt-input {
+				    font-size: 12px;
+				    padding-left: 5px;
+				}
+				div.drp-button-class div.pad_left div.form-group {
+				    margin-bottom: 5px;
+				}
+				#object_type, #material, #time_period, #location{
+					margin-bottom: 5px;
+				}
+				.in-middle{
+					text-align: -webkit-center;
+				}
+			}
+			
+		</style>
+		{% endblock %}
+
+	<!--- Body content --->
+	{% block body-content %}
+		<!-- Page Content  -->
+		<div id="content">
+			<div class="container-fluid from-image-content">
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="row">
+							<div class="col-sm-12" style="">
+								<div class="row">
+									<div class="col-sm-2"></div>
+									<div class="col-sm-8">
+										<div class="page-heading garamond sub-para">Search The Collection</div>
+									</div>
+									<div class="col-sm-2"></div>
+								</div>
+
+								<div class="row sub-para">
+									<div class="col-sm-2"></div>
+									<div class="col-sm-9" style="padding-right: 0px ">
+										<form>
+											<div class="form-group" id="search">
+												<div id="multiple-datasets">
+													<div class="container-fluid">
+														<div class="row" style="margin-right: 0px;justify-content: space-evenly;">
+															<div class="col-sm-11" style="padding-left: 0px;width: 90%;">
+																<input class="typeahead fira small-text font-weight-bold" type="text" placeholder="SEARCH BY OBJECT,  MATERIAL,  PERIOD,  LOCATION" name="search" style="color: #615f5f82;">
+															</div>
+															<div class="col-sm-1" style="padding-left: 0px; width: auto; padding-right: 0px;">
+																<button type="submit" value="Search" class="search-button"><img class="search-icon" src="{% static 'museumapp/image/search-icon.png' %}"></button>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</form>
+									</div>
+									<div class="col-sm-1"></div>
+								</div>
+
+								<div class="row">
+									<div class="col-sm-2"></div>
+									<div class="col-sm-8">
+										<div class="small-text font-weight-bold fira sub-para" style="">FILTER BY</div>
+									</div>
+									<div class="col-sm-2">
+									</div>
+								</div>
+
+								<div class="row ">
+									<div class="col-sm-2"></div>
+										<div class="col-sm-8 drp-button-class">
+											<div class="row">
+												<div class="col-sm-3 pad_left">
+													<div class="form-group">
+														
+														<select class="form-control fira font-weight-bold" id="object_type" url = "{% url 'museumapp:get_type' %}">
+														</select>
+													</div>
+												</div>
+
+												<div class="col-sm-3 pad_left">
+													<div class="form-group">
+														
+														<select class="form-control fira font-weight-bold" id="material" url = "{% url 'museumapp:get_material' %}">
+														</select>
+													</div>
+												</div>
+
+												<div class="col-sm-3 pad_left">
+													<div class="form-group">
+														
+														<select class="form-control fira font-weight-bold" id="location" url = "{% url 'museumapp:get_location' %}">
+														</select>
+													</div>
+												</div>
+
+												<div class="col-sm-3 pad_left">
+													<div class="form-group">
+														
+														<select class="form-control fira font-weight-bold" id="time_period" url = "{% url 'museumapp:get_period' %}">
+														</select>
+													</div>
+												</div>
+											</div>
+											<div class="row" style="margin-right: 0px;border-bottom: 1px solid black;margin-top: 20px;"></div>
+										</div>	
+									<div class="col-sm-2"> </div>
+								</div>
+												
+								<div class="row applied">
+									<div class="col-sm-2"></div>
+									<div class="col-sm-6">
+										<div class="small-heading fira font-weight-bold high-para">APPLIED FILTERS: <span id="filterType"></span></div>
+									</div>
+									<div class="col-sm-3"></div>
+								</div>
+
+								<div class="row">
+									<div class="col-sm-2"></div>
+									<div class="col-sm-8">
+										<div class="row" style="margin: 0px;">
+											<div id = "no_results">
+												<h5 class="fira small-heading" style="letter-spacing: 0px;">No results found</h5>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-2"></div>
+									
+									<div class="container-fluid" id="list_data" data-toggle="div" url = "{% url 'museumapp:listing' %}">
+										<div class="row">
+											<div class="col-sm-2"></div>
+											<div class="col-sm-8 in-middle">
+												<div class="row" id="listing">
+												
+												</div>
+											</div>
+											<div class="col-sm-2"></div>
+										</div>
+									</div>
+								</div>
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	{% endblock %}
+
+	<!--- Custom Script Block --->
+	{% block custom-script %}
+
+		<script src="{% static 'museumapp/css/search/bloodhound.js' %}"></script>
+		<script src="{% static 'museumapp/css/search/bloodhound.min.js' %}"></script>
+		<script src="{% static 'museumapp/css/search/typeahead.bundle.js' %}"></script>
+		<script src="{% static 'museumapp/css/search/typeahead.bundle.min.js' %}"></script>
+		<script src="{% static 'museumapp/css/search/typeahead.jquery.js' %}"></script>
+		<script src="{% static 'museumapp/css/search/typeahead.jquery.min.js' %}"></script>
+		
+		<script type="text/javascript">
+
+			var send_data = {}
+
+			//custom pre-defined filters
+			var filterType = '{{filterType}}'
+			var filterValue ='{{filterValue}}'
+
+			$(document).ready(function () {
+				
+				if(filterValue != 'None')
+				{
+					//custom filter parameter from serach
+					//filterType defines the type of filter
+					//filterValue gives the filter value
+					undoFilter = callCustomData(filterType, filterValue);
+					getAPIData();
+					
+				}
+				else
+				{
+					// reset all parameters on page load
+					resetFilters();
+					// bring all the data without any filters
+					getAPIData();
+					// get all region/area from database via 
+					// AJAX call into region/area select options
+					gettype('none');
+					// get all status from database via 
+					// AJAX call into status select options
+					getmaterial('none');
+					// get all budget from database via 
+					// AJAX call into budget select options
+					getlocation('none');
+					// get all type from database via 
+					// AJAX call into budget select options
+					getperiod('none');
+					
+				}
+
+				// on selecting the object_type option
+				$('#object_type').on('change', function () {
+					// since  is dependent 
+					// on object_type select, empty all the options from select input
+					/*$("#").val("all");
+					$("#").val("all");
+					send_data[''] = '';
+					send_data[''] = '';*/
+
+					// update the selected object_type
+					if(this.value == "all")
+						send_data['object_type'] = "";
+					else
+						send_data['object_type'] = this.value;
+
+					//get  of selected object_type
+					//get();
+					// get api data of updated filters
+					getAPIData();
+				});
+
+				// on filtering the material input
+				$('#material').on('change', function () {
+					// get the api data of updated material
+					if(this.value == "all")
+						send_data['material'] = "";
+					else
+						send_data['material'] = this.value;
+					getAPIData();
+				});
+
+				// on filtering the location input
+				$('#location').on('change', function () {
+					
+					// clear the  input 
+					// since it is dependent on  input
+					//send_data[''] = "";
+					//$('#').val("all");
+					
+					if(this.value == "all")
+						send_data['location'] = "";
+					else
+						send_data['location'] = this.value;
+					getAPIData();
+				});
+
+				// on filtering the period input
+				$('#time_period').on('change', function () {
+					if(this.value == "all")
+						send_data['time_period'] = "";
+					else
+						send_data['time_period'] = this.value;
+					getAPIData();
+				});
+
+				/*// sort the data according to 
+				$('#sort_by').on('change', function () {
+					send_data['sort_by'] = this.value;
+					getAPIData();
+				});*/
+
+				// display the results after reseting the filters
+				$("#display_all").click(function(){
+					resetFilters();
+					getAPIData();
+				})
+			})
+
+
+			/**
+				Function that resets all the filters   
+			**/
+			function resetFilters() {
+				$("#object_type").val("all");
+				$("#material").val("all");
+				$("#location").val("all");
+				$("#time_period").val("all");
+				
+				/*$("#sort_by").val("none");
+				
+				clearing up the budget and type select box
+				getbudget("all");
+				gettype("all");*/
+
+				send_data['object_type'] = '';
+				send_data['material'] = '';
+				send_data['location'] = '';
+				send_data['time_period'] = '';
+				//send_data["sort_by"] = '',
+				send_data['format'] = 'json';
+			}
+
+			/**.
+				Utility function to showcase the api data 
+				we got from backend to the table content
+			**/
+			function putTableData(result) {
+				var dataAddress = [];
+				var content = [];
+				// creating table row for each result and
+				// pushing to the html cntent of table body of listing table
+				let row;
+				if(result["results"].length > 0){
+					$("#no_results").hide();
+					$("#list_data").show();
+					$("#listing").html("");  
+					$.each(result["results"], function (a, b) {
+						if (b.object_image != null){
+						row ="<div class='col-sm-3' style='margin-bottom:30px;'><a href='https://museumofchristianart.com/moca-object/"+ b.slug +"'><div class='image-container sub-para'><img src= '"+ b.object_image +"' class='img-fluid' alt='MoCA'></div><div class='gara-14 font-weight-bold garamond'>"+ b.object_name.toUpperCase() +"</div></a></div>"
+
+						//removed from display of row : <div class='gara-14 garamond' style='letter-spacing: 0px;'>"+ b.time_period +"<br>"+ b.material +"</div>
+							
+						$("#listing").append(row);
+						}  
+					});
+				}
+				else{
+					// if no result found for the given filter, then display no result
+					$("#no_results h5").html("No results found");
+					$("#list_data").hide();
+					$("#no_results").show();
+				}
+				// setting previous and next page url for the given result
+				let prev_url = result["previous"];
+				let next_url = result["next"];
+				// disabling-enabling button depending on existence of next/prev page. 
+				if (prev_url === null) {
+					$("#previous").addClass("disabled");
+					$("#previous").prop('disabled', true);
+				} else {
+					$("#previous").removeClass("disabled");
+					$("#previous").prop('disabled', false);
+				}
+				if (next_url === null) {
+					$("#next").addClass("disabled");
+					$("#next").prop('disabled', true);
+				} else {
+					$("#next").removeClass("disabled");
+					$("#next").prop('disabled', false);
+				}
+				// setting the url
+				$("#previous").attr("url", result["previous"]);
+				$("#next").attr("url", result["next"]);
+				// displaying result count
+				$("#result-count span").html(result["count"]);
+			}
+
+			function getAPIData() {
+				let url = $('#list_data').attr("url")
+				$.ajax({
+					method: 'GET',
+					url: url,
+					data: send_data,
+					beforeSend: function(){
+						$("#no_results h5").html("Loading data...");
+					},
+					success: function (result) {
+						putTableData(result);
+					},
+					error: function (response) {
+						$("#no_results h5").html("Something went wrong");
+						$("#list_data").hide();
+					}
+				});
+			}
+
+			$("#next").click(function () {
+				let url = $(this).attr("url");
+				if (!url)
+					$(this).prop('all', true);
+
+				$(this).prop('all', false);
+				$.ajax({
+					method: 'GET',
+					url: url,
+					success: function (result) {
+						putTableData(result);
+					},
+					error: function(response){
+						console.log(response)
+					}
+				});
+			})
+
+			$("#previous").click(function () {
+				let url = $(this).attr("url");
+				if (!url)
+					$(this).prop('all', true);
+
+				$(this).prop('all', false);
+				$.ajax({
+					method: 'GET',
+					url: url,
+					success: function (result) {
+						putTableData(result);
+					},
+					error: function(response){
+						console.log(response)
+					}
+				});
+			})
+
+			function gettype(filter_val) {
+				let url = $("#object_type").attr("url");
+				$.ajax({
+					method: 'GET',
+					url: url,
+					data: {},
+					success: function (result) {
+						type_options = "<option  class='fira small-heading space' value='all' selected>OBJECT TYPE</option>";
+						$.each(result["object_type"], function (a, b) {
+							if(filter_val != 'none' && filter_val.toUpperCase() == b.toUpperCase()){
+								type_options += "<option  class='fira small-heading space' selected>" + b.toUpperCase() + "</option>"
+							}
+							else{
+								type_options += "<option class='fira small-heading space'>" + b.toUpperCase() + "</option>"
+							}
+						});
+						$("#object_type").html(type_options)
+					},
+					error: function(response){
+						console.log(response)
+					}
+				});
+			}
+
+			function getmaterial(filter_val) {
+				let url = $("#material").attr("url");
+				$.ajax({
+					method: 'GET',
+					url: url,
+					data: {},
+					success: function (result) {
+						material_options = "<option  class='fira small-heading space' value='all' selected>MATERIAL</option>";
+						$.each(result["material"], function (a, b) {
+							if(filter_val != 'none' && filter_val.toUpperCase() == b.toUpperCase()){
+								material_options += "<option  class='fira small-heading space' selected>" + b.toUpperCase() + "</option>"
+							}
+							else{
+								material_options += "<option class='fira small-heading space'>" + b.toUpperCase() + "</option>"
+							}
+						});
+						$("#material").html(material_options)
+					},
+					error: function(response){
+						console.log(response)
+					}
+				});
+			}
+
+			function getlocation(filter_val) {
+				let url = $("#location").attr("url");
+				$.ajax({
+					method: 'GET',
+					url: url,
+					data: {},
+					success: function (result) {
+						location_options = "<option  class='fira small-heading space' value='all' selected>LOCATION</option>";
+						$.each(result["location"], function (a, b) {
+							if(filter_val != 'none' && filter_val.toUpperCase() == b.toUpperCase()){
+								location_options += "<option  class='fira small-heading space' selected>" + b.toUpperCase() + "</option>"
+							}
+							else{
+								location_options += "<option class='fira small-heading space'>" + b.toUpperCase() + "</option>"
+							}
+						});
+						$("#location").html(location_options)
+					},
+					error: function(response){
+						console.log(response)
+					}
+				});
+			}
+
+			function getperiod(filter_val) {
+				let url = $("#time_period").attr("url");
+				$.ajax({
+					method: 'GET',
+					url: url,
+					data: {},
+					success: function (response) {
+						period_options = "<option class='fira small-heading space' value='all' selected>PERIOD</option>";
+						$.each(response["time_period"], function (a, b) {
+							if(filter_val != 'none' && filter_val.toUpperCase() == b.toUpperCase()){
+								period_options += "<option class='fira small-heading space' selected>" + b.toUpperCase() + " </option>"
+							}
+							else{
+								period_options += "<option class='fira small-heading space'>" + b.toUpperCase() + "</option>"
+							}
+						});
+						$("#time_period").html(period_options);
+					},
+					error: function(response){
+						console.log(response)
+					}
+				});
+			}
+
+			function callCustomData(typeFilter, data ) {
+				if(typeFilter=='object_type'){
+					var value = data.replace(/-/gi, " ");
+					send_data['object_type'] = value;
+					gettype(value);
+					getmaterial('none');
+					getlocation('none');
+					getperiod('none');
+				}
+				else if(typeFilter=='material'){
+					var value = data.replace(/-/gi, " ");
+					send_data['material'] = value;
+					gettype('none');
+					getmaterial(value);
+					getlocation('none');
+					getperiod('none');
+				}
+				else if(typeFilter=='location'){
+					var value = data.replace(/-/gi, " ");
+					send_data['location'] = value;
+					gettype('none');
+					getmaterial('none');
+					getlocation(value);
+					getperiod('none');
+					
+				}
+				else{
+					var value = data.replace(/-/gi, " ");
+					send_data['time_period'] = value;
+					gettype('none');
+					getmaterial('none');
+					getlocation('none');
+					getperiod(value);
+				}
+			}
+	
+			// bloodHound.clearPrefetchCache()
+			var object_type = new Bloodhound({
+				datumTokenizer: Bloodhound.tokenizers.obj.whitespace('team'),
+				queryTokenizer: Bloodhound.tokenizers.whitespace,
+				prefetch: '../static/museumapp/object_type.json',
+				remote: '../static/museumapp/object_type.json',
+				// prefetch: 'https://github.com/twitter/typeahead.js/blob/gh-pages/data/nba.json'
+			});
+
+			var material = new Bloodhound({
+				datumTokenizer: Bloodhound.tokenizers.obj.whitespace('team'),
+				queryTokenizer: Bloodhound.tokenizers.whitespace,
+				prefetch: '../static/museumapp/material.json',
+				remote: '../static/museumapp/material.json',
+				//  prefetch: 'https://github.com/twitter/typeahead.js/blob/gh-pages/data/nhl.json'
+			});
+
+			var time_period = new Bloodhound({
+				datumTokenizer: Bloodhound.tokenizers.obj.whitespace('team'),
+				queryTokenizer: Bloodhound.tokenizers.whitespace,
+				prefetch: '../static/museumapp/period.json',
+				remote: '../static/museumapp/period.json',
+				//  prefetch: 'https://github.com/twitter/typeahead.js/blob/gh-pages/data/nhl.json'
+			});
+
+			var location_moca = new Bloodhound({
+				datumTokenizer: Bloodhound.tokenizers.obj.whitespace('team'),
+				queryTokenizer: Bloodhound.tokenizers.whitespace,
+				prefetch: '../static/museumapp/location.json',
+				remote: '../static/museumapp/location.json',
+				//  prefetch: 'https://github.com/twitter/typeahead.js/blob/gh-pages/data/nhl.json'
+			});
+
+			$('#multiple-datasets .typeahead').typeahead({
+					highlight: true,
+					hint: true
+				},
+				{
+					name: 'nba-teams',
+					display: 'team',
+					source: object_type,
+					templates: {
+						header: '<h5 class="league-name text-left">Object Type</h5>'
+					}
+				},
+				{
+					name: 'nhl-teams',
+					display: 'team',
+					source: material,
+					templates: {
+						header: '<h5 class="league-name text-left">Material</h5>'
+					}
+				},
+				{
+					name: 'nba-teams',
+					display: 'team',
+					source: time_period,
+					templates: {
+						header: '<h5 class="league-name text-left">Time Period</h5>'
+					}
+				},
+				{
+					name: 'nhl-teams',
+					display: 'team',
+					source: location_moca,
+					templates: {
+						header: '<h5 class="league-name text-left">Location</h5>'
+					}
+				
+			});
+
+		</script>
+		
+	
+	{% endblock %}

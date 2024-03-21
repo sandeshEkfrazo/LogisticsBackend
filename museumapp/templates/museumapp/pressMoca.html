@@ -1,0 +1,92 @@
+{% extends "museumapp/base.html" %}
+
+{% load static %}
+	
+	<!--- Title --->
+	{% block title %}
+		Museum of Christian Art
+	{% endblock %}
+
+	<!--- Custom CSS --->
+	{% block custom-css-parts %}
+	{% endblock %}
+
+	<!--- Custom Style --->
+	{% block style %}
+
+		<link rel="stylesheet" type="text/css" href="{% static 'museumapp/css/conservationMoca.css' %}"/>
+
+	{% endblock %}
+
+	<!--- Body content --->
+	{% block body-content %}
+		<!-- Page Content  -->
+		<div id="content">
+				
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-sm-12" style="padding: 0px;">
+						<div class="parallax" style="background-image: url('{% static 'museumapp/image/206.png' %}');"></div>
+					</div>
+					
+					<!-- <div class="move-top">
+						<div class="fira-on-image fira font-weight-bold">PLAN A VISIT</div>
+						<div class="big-font-on-image garamond">Where, When <br>& How</div>
+					</div> -->
+				</div>
+			</div>
+			
+				<div class="container-fluid">
+			   	<div class="row">
+					<div class="col-sm-12">
+				  		<div class="row">
+							<div class="col-sm-8">  
+							</div>
+					 		<div class="col-sm-2 buy-to-end">
+					   			<a href="{% url 'museumapp:buy_tickets' %}"><button type="button" class="buy-tickets-button fira small-heading"><b>BOOK TICKETS</b></button></a>
+							</div>
+							<div class="col-sm-2"></div>
+				 		 </div>   
+					</div>
+			 	 </div>
+			</div>
+			
+				<div class="container-fluid from-image-content" >
+					<div class="row">
+						<div class="col-sm-12">
+								<div class="row">
+										<div class="col-sm-3">
+											
+										</div>
+										<div class="col-sm-6">
+<!-- -->								<div class="page-heading garamond high-para">Press</div>		
+										</div>
+										<div class="col-sm-3"></div>
+									</div>
+
+									<div class="row">
+										<div class="col-sm-1"></div>
+										<div class="col-sm-2">
+											
+										</div>
+										<div class="col-sm-6">
+											<p class="page-highlights garamond high-para ">
+											The most significant objective of the museum is to conserve
+											and preserve the unique collection of Indo Portuguese art
+											objects, found extensively in Goa.
+										</div>
+										<div class="col-sm-3"></div>
+									</div>						
+								</div>
+							</div>
+						</div>
+					</div>
+				</p>
+			</div></div></div></div></div></div>
+					
+									
+					
+	{% endblock %}
+
+	<!--- Custom Script Block --->
+	{% block custom-script %}	{% endblock %}

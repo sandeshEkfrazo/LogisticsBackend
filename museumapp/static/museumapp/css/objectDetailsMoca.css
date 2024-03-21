@@ -1,0 +1,68 @@
+.panel{
+	background-color: white;
+	max-height: 0;
+	overflow: hidden;
+	transition: max-height 0.2s ease-out;
+}
+#object{
+	padding: 10px;
+}
+.accordion-inner-head{
+	padding-bottom: 5px;
+}
+.accordion-inner-details{
+	padding-left: 10px;
+}
+.card-header > a:before {
+	float: right !important;
+	font-family: FontAwesome;
+	content:"\f068";
+	padding-right: 5px;
+	font-size: 12px;
+}
+.card-header > a.collapsed:before {
+	float: right !important;
+	content:"\f067";
+}
+.card-header > a:hover, 
+.card-header > a:active, 
+.card-header > a:focus  {
+	text-decoration:none;
+}
+div.card{
+	border: 0px;
+	border-bottom: 1px solid black;
+	border-radius: 0px !important;
+}
+div.card-header{
+	border-radius: 0px !important;
+	background-color: white;
+	border-bottom: 0px;
+	padding: 15px 0px; 
+}
+#similar_item{
+	padding: 0px 6px;
+}
+.moca-icon{
+	position: fixed !important;
+}
+.gara-14{
+	font-size: 14px;
+	letter-spacing: 1px;
+}
+img.left-object-image{
+	width: 100%;
+	height: auto;
+}
+.mobile-view{
+	padding-left: 0px; 
+	padding-right: 0px;
+}
+@media (max-width: 768px) {
+	.mobile-view{
+		padding: 20px 15px 0px 15px;
+	}
+	div.mobile-view #hide-mob{
+		display: none;
+	}
+}

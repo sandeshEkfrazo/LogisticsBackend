@@ -28,15 +28,16 @@ SECRET_KEY = 'django-insecure-ksl6&0_jeh0c$0_avne%l6z=e_e$&eg1_#5)%yqpj=9d@qpga&
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*','logistics.thestorywallcafe.com','www.logistics.thestorywallcafe.com']
+ALLOWED_HOSTS = ['*','logisticsdev.thestorywallcafe.com','www.logisticsdev.thestorywallcafe.com']
 # ALLOWED_HOSTS=[]
 
 # Application definition
 
 DEFAULT_APPS = [
     # 'jazzmin',
-    'jet.dashboard',
-    'jet',
+    #'jet.dashboard',
+    #'jet',
+    'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -58,7 +59,7 @@ THIRD_PARTY_APPS = [
     # 'background_task',
     # 'channels'
 ]
-LOCAL_APPS = [
+LOCAL_APPS  = [
     'logisticsapp',
     'userModule',
     'driverModule',
@@ -74,7 +75,7 @@ APPEND_SLASH=False
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',    
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -120,22 +121,47 @@ ASGI_APPLICATION = 'logistics_project.asgi.application'
 #     'default': {
 #         'ENGINE': 'django.db.backends.mysql',
 #         'OPTIONS': {
-#             'read_default_file': 'db.conf',
+#             'read_default_file': '/logistics_dev/auth/mysql.cnf',
 #         },
 #     }
 # }
 
-DATABASES = {
-    'default': {
-    'ENGINE': 'django.db.backends.mysql',
-    'NAME': 'logistics',
-    'USER': 'root',
-    'PASSWORD': 'Ekfrazo@123#',
-    'HOST': '143.110.184.45',
-    'PORT': '3306',
-     }
-}
 
+# DATABASES = {
+#         'default': 
+#         {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'logistics_dev',
+#         'USER': 'root',    
+#         'PASSWORD': 'Ekfrazo@123#',    
+#         'HOST': '143.110.184.45',    
+#         'PORT': '3306',     
+#         }
+#     }
+
+DATABASES = {
+        'default': 
+        {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'logistics',
+        'USER': 'logistics_users',    
+        'PASSWORD': 'Ekfrazo@123#',    
+        'HOST': '143.110.184.45',    
+        'PORT': '3306',     
+        }
+    }
+
+# DATABASES = {
+#         'default': 
+#         {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'logistics',
+#         'USER': 'root',    
+#         'PASSWORD': 'Ekfrazo@123#',    
+#         'HOST': '143.110.184.45',    
+#         'PORT': '3306',     
+#         }
+#     }
 
 
 
@@ -186,8 +212,6 @@ CELERY_BEAT_SCHEDULE = {
 }
 
 
-
-
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
@@ -201,6 +225,8 @@ DEFAULT_FROM_EMAIL = 'Admin<test@gmail.com>'
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=10),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=2),
+
+
     'AUTH_HEADER_TYPES': ('Bearer',),
 
 }
@@ -234,8 +260,8 @@ STATIC_URL = '/statics/'
 MEDIA_URL = '/media/'
 
 
-STATIC_ROOT="/logistics/site/public/statics"
-MEDIA_ROOT="/logistics/site/public/media"
+STATIC_ROOT="/logistics_dev/site/public/static"
+MEDIA_ROOT="/logistics_dev/site/public/media"
 
 CORS_ORIGIN_ALLOW_ALL   = True
 CORS_ALLOW_CREDENTIALS  = True
@@ -278,8 +304,19 @@ RAZOR_KEY_ID = 'rzp_test_GxaJhvoS78ZpIz'
 RAZOR_KEY_SECRET = 'SYBvWXndjCMdfCk7VBJ6pZei'
 
 
+# CHANNEL_LAYERS = {
+#     "default": {
+#         "BACKEND": "channels.layers.InMemoryChannelLayer"
+#     }
+# }
+
 CHANNEL_LAYERS = {
     "default": {
-        "BACKEND": "channels.layers.InMemoryChannelLayer"
-    }
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 6379)],
+        },
+    },
 }
+
+

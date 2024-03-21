@@ -8,17 +8,19 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.utils import IntegrityError
 from logisticsapp.views import convertBase64
 from rest_framework.exceptions import ValidationError
-
-
+from django.db.models import Q
+from logistics_project.pagination import CustomPagination
+from django.utils.decorators import method_decorator
+from account.auth import authorization_required
 # Create your views here.
 
-# @method_decorator([AutorizationRequired], name='dispatch')
+@method_decorator([authorization_required], name='dispatch')
 class StatusView(APIView):
+
     def get(self,request):
         id = request.query_params.get('id')
         if id:
             all_data = Status.objects.filter(id=id).values()
-
             if not all_data:
                 return Response({
                 'error':{'message':'Record not found!',
@@ -27,8 +29,18 @@ class StatusView(APIView):
 
             return Response({'result':{'status':'GET by Id','data':all_data}})
         else:
-            all_data = Status.objects.all().values()
-            return Response({'result':{'status':'GET','data':all_data}})
+            queryset = Status.objects.all()
+
+            # Apply pagination
+            paginator = CustomPagination()
+            paginated_queryset = paginator.paginate_queryset(queryset, request)
+
+            # Serialize paginated data
+            serializer = StatusSerializer(paginated_queryset, many=True)
+            if self.request.query_params.get('page_size') is None and self.request.query_params.get('page') is None:
+                return Response({'result':{'status':'GET','data':queryset.values()}})
+            else:
+                return paginator.get_paginated_response(serializer.data)
 
     def post(self,request):
         data = request.data
@@ -37,51 +49,32 @@ class StatusView(APIView):
 
         selected_page_no =1
         page_number = request.GET.get('page')
-        if page_number:
-            selected_page_no = int(page_number)
 
-        try:
-            emp_role = Status.objects.create(
+        if Status.objects.filter(Q(status_name=status_name)).exists():
+            return Response({'message': 'status name already exists'}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            Status.objects.create(
                         status_name=status_name,
                         colour=colour
                     )
-            posts = Status.objects.all().values()
-            paginator = Paginator(posts,10)
-            try:
-                page_obj = paginator.get_page(selected_page_no)
-            except PageNotAnInteger:
-                page_obj = paginator.page(1)
-            except EmptyPage:
-                page_obj = paginator.page(paginator.num_pages)
-            return Response({'result':{'status':'Created','data':list(page_obj)}})
 
-        except IntegrityError as e:
-            error_message = e.args
-            return Response({
-            'error':{'message':'DB error!',
-            'detail':error_message,
-            'status_code':status.HTTP_400_BAD_REQUEST,
-            }},status=status.HTTP_400_BAD_REQUEST)
+            return Response({'message': 'status created successfully'})
 
     def put(self,request,pk):
         data = request.data
         status_name=data.get('status_name')
         colour=data.get('colour')
 
-        try:
-            emp_role= Status.objects.filter(id=pk).update(status_name=status_name,
-                                                            colour=colour,
-                                            )
+        if Status.objects.filter(~Q(id=pk) & Q(status_name=status_name)).exists():
+            return Response({'message': 'status name already exists'}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            Status.objects.filter(id=pk).update(
+                        status_name=status_name,
+                        colour=colour
+                    )
 
-        except IntegrityError as e:
-            error_message = e.args
-            return Response({
-            'error':{'message':'DB error!',
-            'detail':error_message,
-            'status_code':status.HTTP_400_BAD_REQUEST,
-            }},status=status.HTTP_400_BAD_REQUEST)
-        return Response({'result':{'status':'Updated'}})
-
+            return Response({'message': 'status created successfully'})
+        
     def delete(self,request,pk):
         test = (0,{})
         all_values = Status.objects.filter(id=pk).delete()
@@ -95,15 +88,29 @@ class StatusView(APIView):
             return Response({'result':{'status':'deleted'}})
 
 
+@method_decorator([authorization_required], name='dispatch')
 class FilesizeApi(APIView):
     def get(self,request):
         data = request.data
-        if request.query_params:
+        if request.query_params.get('id'):
             file_obj = Filesize.objects.filter(id=request.query_params['id']).values('id','file_type','size')
             return Response({'data': file_obj})
         else:
-            file_obj = Filesize.objects.values('id','file_type','size')
-            return Response({'data': file_obj})
+            # file_obj = Filesize.objects.values('id','file_type','size')
+            # return Response({'data': file_obj})
+
+            queryset = Filesize.objects.all()
+
+            # Apply pagination
+            paginator = CustomPagination()
+            paginated_queryset = paginator.paginate_queryset(queryset, request)
+
+            # Serialize paginated data
+            serializer = FileSizeSerializer(paginated_queryset, many=True)
+            if self.request.query_params.get('page_size') is None and self.request.query_params.get('page') is None:
+                return Response({'data': queryset.values('id','file_type','size')})
+            else:
+                return paginator.get_paginated_response(serializer.data)
 
     def post(self,request):
         data = request.data
@@ -120,11 +127,13 @@ class FilesizeApi(APIView):
         data = request.data
         file_type=data.get('file_type')
         size=data.get('size')
-        if Filesize.objects.filter(id=pk).exists():
+        if Filesize.objects.filter(~Q(id=pk) & Q(file_type=file_type)).exists():
+            return Response({'error': 'File type name already taken'}, status=status.HTTP_404_NOT_FOUND)
+        else:
             Filesize.objects.filter(id=pk).update(file_type=file_type,size=size)
             return Response({'message': 'Filesize is updated'})
-        else:
-            return Response({'error':'Filesize id is not found'},status=status.HTTP_404_NOT_FOUND)
+        # else:
+        #     return Response({'error':'Filesize id is not found'},status=status.HTTP_404_NOT_FOUND)
 
     def delete(self,request,pk):
         data = request.data
@@ -134,19 +143,32 @@ class FilesizeApi(APIView):
         else:
             return Response({'error':'Filesize id is not found'},status=status.HTTP_404_NOT_FOUND)
 
-
+@method_decorator([authorization_required], name='dispatch')
 class QueriesApi(APIView):
     def get(self, request):
         data = request.data
-        if request.query_params:
+        if request.query_params.get('id'):
             query_obj = Queries.objects.filter(id=request.query_params['id']).values('id', 'isfor',
                                                                                      'isfor__user_role_name',
                                                                                      'questions', 'answer', 'status')
             return Response({'data': query_obj})
         else:
-            query_obj = Queries.objects.all().values('id', 'isfor', 'isfor__user_role_name', 'questions', 'answer',
-                                                     'status')
-            return Response({'data': query_obj})
+            # query_obj = Queries.objects.all().values('id', 'isfor', 'isfor__user_role_name', 'questions', 'answer',
+            #                                          'status')
+            # return Response({'data': query_obj})
+
+            queryset = Queries.objects.all()
+
+            # Apply pagination
+            paginator = CustomPagination()
+            paginated_queryset = paginator.paginate_queryset(queryset, request)
+
+            # Serialize paginated data
+            serializer = QueriesSerializer(paginated_queryset, many=True)
+            if self.request.query_params.get('page_size') is None and self.request.query_params.get('page') is None:
+                return Response({'data': queryset.values('id', 'isfor', 'isfor__user_role_name', 'questions', 'answer','status')})
+            else:
+                return paginator.get_paginated_response(serializer.data)
 
     def post(self, request):
         data = request.data
@@ -184,16 +206,29 @@ class QueriesApi(APIView):
         else:
             return Response({'error': 'Query id is not found'}, status=status.HTTP_404_NOT_FOUND)
 
-
+@method_decorator([authorization_required], name='dispatch')
 class LanguageApi(APIView):
     def get(self, request):
         data = request.data
-        if request.query_params:
+        if request.query_params.get('id'):
             query_obj = Language.objects.filter(id=request.query_params['id']).values('id', 'name')
             return Response({'data': query_obj})
         else:
-            query_obj = Language.objects.all().values('id', 'name')
-            return Response({'data': query_obj})
+            # query_obj = Language.objects.all().values('id', 'name')
+            # return Response({'data': query_obj})
+
+            queryset = Language.objects.all()
+
+            # Apply pagination
+            paginator = CustomPagination()
+            paginated_queryset = paginator.paginate_queryset(queryset, request)
+
+            # Serialize paginated data
+            serializer = LanguageSerializer(paginated_queryset, many=True)
+            if self.request.query_params.get('page_size') is None and self.request.query_params.get('page') is None:
+                return Response({'data': queryset.values('id', 'name')})
+            else:
+                return paginator.get_paginated_response(serializer.data)
 
     def post(self, request):
         data = request.data
@@ -210,6 +245,9 @@ class LanguageApi(APIView):
 
         if Language.objects.filter(id=pk).exists():
 
+            if Language.objects.filter(~Q(id=pk) & Q(name=name)).exists():
+                return Response({'error': 'Language name already taken'}, status=status.HTTP_406_NOT_ACCEPTABLE)
+
             lang_obj = Language.objects.filter(id=pk).update(name=name)
             return Response({'message': 'Successfully update Language'})
         else:
@@ -223,16 +261,30 @@ class LanguageApi(APIView):
         else:
             return Response({'error': 'Language id not found!!'}, status=status.HTTP_404_NOT_FOUND)
 
+# @method_decorator([authorization_required], name='dispatch')
 class SubscriptionplanApi(APIView):
     def get(self,request):
         data = request.data
-        if request.query_params:
+        if request.query_params.get('id'):
             query_obj = Subscriptionplan.objects.filter(id=request.query_params['id']).values('id','time_period','validity_days','amount','type_of_service','status')
             
             return Response({'data':query_obj})
         else:
-            query_obj = Subscriptionplan.objects.all().values('id','time_period','validity_days','amount','type_of_service','status')
-            return Response({'data':query_obj})
+            # query_obj = Subscriptionplan.objects.all().values('id','time_period','validity_days','amount','type_of_service','status')
+            # return Response({'data':query_obj})
+
+            queryset = Subscriptionplan.objects.all()
+
+            # Apply pagination
+            paginator = CustomPagination()
+            paginated_queryset = paginator.paginate_queryset(queryset, request)
+
+            # Serialize paginated data
+            serializer = SubscriptionSerializer(paginated_queryset, many=True)
+            if self.request.query_params.get('page_size') is None and self.request.query_params.get('page') is None:
+                return Response({'data': queryset.values('id','time_period','validity_days','amount','type_of_service','status')})
+            else:
+                return paginator.get_paginated_response(serializer.data)
 
     def post(self,request):
         data = request.data
@@ -266,7 +318,7 @@ class SubscriptionplanApi(APIView):
         else:
             return Response({'error':'Query id is not found'},status=status.HTTP_404_NOT_FOUND)
 
-
+@method_decorator([authorization_required], name='dispatch')
 class AboutusApi(APIView):
     def get(self,request):
         id = request.query_params.get('id')
@@ -281,8 +333,20 @@ class AboutusApi(APIView):
             return Response({'result':{'status':'GET by Id','data':all_data}})
 
         else:
-            all_data = Aboutus.objects.all().values()
-            return Response({'result':{'status':'GET','data':all_data}})
+            queryset = Aboutus.objects.all()
+
+            # Apply pagination
+            paginator = CustomPagination()
+            paginated_queryset = paginator.paginate_queryset(queryset, request)
+
+            # Serialize paginated data
+            serializer = AboutusSerializer(paginated_queryset, many=True)
+            if self.request.query_params.get('page_size') is None and self.request.query_params.get('page') is None:
+                return Response({'data': queryset.values()})
+            else:
+                return paginator.get_paginated_response(serializer.data)
+            # all_data = Aboutus.objects.all().values()
+            # return Response({'result':{'status':'GET','data':all_data}})
 
     def post(self,request):
         data = request.data

@@ -1,0 +1,295 @@
+{% extends "museumapp/base.html" %}
+
+{% load static %}
+	
+	<!--- Title --->
+	{% block title %}
+		Museum of Christian Art
+	{% endblock %}
+
+	<!--- Custom CSS --->
+	{% block custom-css-parts %}
+		<link rel="stylesheet" type="text/css" href="{% static 'museumapp/css/whatsOnMoca.css' %}"/>
+		<!-- <link rel="stylesheet" type="text/css" href="{% static 'museumapp/css/toi-css/hover-box.css' %}" /> -->
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/air-datepicker/2.2.3/css/datepicker.css" rel="stylesheet"/>
+	{% endblock %}
+
+	<!--- Custom Style --->
+	{% block style %}
+		<style type="text/css">
+			.card{
+				border: none !important;
+			}
+			div.fc-header-toolbar div.fc-left, div.fc-header-toolbar div.fc-right{
+				display: none !important; 
+			}
+			div.fc-center, th.fc-day-header, span.fc-day-number{
+				font-family: 'EB Garamond', serif;
+			}
+			.fc-row .fc-content-skeleton tbody td, .fc-row .fc-helper-skeleton tbody td {
+				border-top: 1px solid black;
+			}
+			.modal-footer {display: none;}
+			.modal-body {
+				padding-right: 30px;
+			}
+			.modal-content{
+				height: 350px;
+				width: 400px;
+			}
+			.modal.show .modal-dialog {
+				-webkit-transform: none;
+				transform: none;
+			}
+			.fc-ltr .fc-basic-view .fc-day-top .fc-day-number {
+				float: left;
+				font-size: 12px;
+			}
+			.fc .fc-row .fc-content-skeleton table thead tr td{
+				background: none;
+				border-color: transparent;
+				padding: 0px 5px;
+				background-color: #bfc1c3;
+			}
+			.fc-center h2{
+				font-size: 33px;
+				font-weight: bold;
+			}
+			.fc th.fc-day-header {
+				background-color: #919395;
+				color: white;
+				font-weight: bold;
+				font-size: 20px;
+			}
+		</style>
+	{% endblock %}
+
+	<!--- Body content --->
+	{% block body-content %}
+		<!-- Page Content  -->
+		<div id="content">
+
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-sm-12" style="padding: 0px;">
+						<div class="parallax" style="background-image: url('{% static 'museumapp/image/203.png' %}');"></div>
+					</div>
+					
+					<!-- <div class="move-top">
+						<div class="fira-on-image fira font-weight-bold">MOCA KNOWLEDGE CENTER</div>
+						<div class="big-font-on-image garamond">Nurturing Knowledge</div>
+					</div> -->
+				</div>
+			</div>
+				
+			<div class="container-fluid" style="margin-top: 70px;">
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="row">
+							<div class="col-sm-2"></div>
+							<div class="col-sm-8">
+								<div class="card">
+									<div class="card-body p-0">
+										<div id="calendar"></div>
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-2"></div>
+						</div>
+						<!-- calendar modal -->
+						<div id="modal-view-event" class="modal modal-top fade calendar-modal">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-body garamond">
+										<h4 class="modal-title">
+											<span class="event-title"></span><br>
+											<span class="event-icon"></span>
+										</h4>
+										<div class="event-body inner-para" style="margin-bottom: 10px;"></div>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	{% endblock %}
+
+	<!--- Custom Script Block --->
+	{% block custom-script %}
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/air-datepicker/2.2.3/js/datepicker.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/air-datepicker/2.2.3/js/i18n/datepicker.en.js"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+
+		<script type="text/javascript">
+			jQuery(document).ready(function(){
+				jQuery('.datetimepicker').datepicker({
+					timepicker: true,
+					language: 'en',
+					range: true,
+					multipleDates: true,
+					multipleDatesSeparator: " - "
+				});
+				/*jQuery("#add-event").submit(function(){
+					alert("Submitted");
+					var values = {};
+					$.each($('#add-event').serializeArray(), function(i, field) {
+						values[field.name] = field.value;
+					});
+					console.log(values);
+				});*/
+			});
+
+			(function () {    
+				'use strict';
+				// ------------------------------------------------------- //
+				// Calendar
+				// ------------------------------------------------------ //
+				jQuery(function() {
+					// page is ready
+					jQuery('#calendar').fullCalendar({
+						themeSystem: 'bootstrap4',
+						// emphasizes business hours
+						businessHours: false,
+						defaultView: 'month',
+						// event dragging & resizing
+						editable: false,
+						// header
+						header: {
+							center: 'title',
+						},
+						footer: {
+							left: 'prev',
+							right: 'next'
+						},
+						events: [
+							{
+								title: 'Featured Story',
+								description: 'A popular tour through the museum collection to find out why motherhood plays such a central role in Christianity.',
+								start: '2019-10-07',
+								end: '2019-10-07',
+								className: 'fc-bg-default',
+								icon : "https://museumofchristianart.com/media/story_image/scenes-min_TCRIypz.png"
+							},
+							{
+								title: 'Featured Story',
+								description: 'A popular tour through the museum collection to find out why motherhood plays such a central role in Christianity.',
+								start: '2019-10-08T14:00:00',
+								end: '2019-10-08T20:00:00',
+								className: 'fc-bg-deepskyblue',
+								icon : "https://museumofchristianart.com/media/story_image/scenes-min_TCRIypz.png",
+								allDay: false
+							},
+							{
+								title: 'Featured Story',
+								description: 'A popular tour through the museum collection to find out why motherhood plays such a central role in Christianity.',
+								start: '2019-10-10T13:00:00',
+								end: '2019-10-10T16:00:00',
+								className: 'fc-bg-pinkred',
+								icon : "https://museumofchristianart.com/media/story_image/scenes-min_TCRIypz.png",
+								allDay: false
+							},
+							{
+								title: 'Featured Story',
+								description: 'A popular tour through the museum collection to find out why motherhood plays such a central role in Christianity.',
+								start: '2019-10-12',
+								className: 'fc-bg-lightgreen',
+								icon : "https://museumofchristianart.com/media/story_image/scenes-min_TCRIypz.png"
+							},
+							{
+								title: 'Featured Story',
+								description: 'A popular tour through the museum collection to find out why motherhood plays such a central role in Christianity.',
+								start: '2019-10-13',
+								end: '2019-10-15',
+								className: 'fc-bg-blue',
+								icon : "https://museumofchristianart.com/media/story_image/scenes-min_TCRIypz.png"
+							},
+							{
+								title: 'Featured Story',
+								description: 'A popular tour through the museum collection to find out why motherhood plays such a central role in Christianity.',
+								start: '2019-10-13',
+								end: '2019-10-14',
+								className: 'fc-bg-default',
+								icon : "https://museumofchristianart.com/media/story_image/scenes-min_TCRIypz.png"
+							},
+							{
+								title: 'Featured Story',
+								description: 'A popular tour through the museum collection to find out why motherhood plays such a central role in Christianity.',
+								start: '2019-10-13',
+								end: '2019-10-14',
+								className: 'fc-bg-default',
+								icon : "https://museumofchristianart.com/media/story_image/scenes-min_TCRIypz.png"
+							},
+							{
+								title: 'Featured Story',
+								description: 'A popular tour through the museum collection to find out why motherhood plays such a central role in Christianity.',
+								start: '2019-10-15T09:30:00',
+								end: '2019-10-15T11:45:00',
+								className: 'fc-bg-default',
+								icon : "https://museumofchristianart.com/media/story_image/scenes-min_TCRIypz.png",
+								allDay: false
+							},
+							{
+								title: 'Featured Story',
+								description: 'A popular tour through the museum collection to find out why motherhood plays such a central role in Christianity.',
+								start: '2019-10-15T20:00:00',
+								end: '2019-10-15T22:30:00',
+								className: 'fc-bg-default',
+								icon : "https://museumofchristianart.com/media/story_image/scenes-min_TCRIypz.png",
+								allDay: false
+							},
+							{
+								title: 'Featured Story',
+								description: 'A popular tour through the museum collection to find out why motherhood plays such a central role in Christianity.',
+								start: '2019-10-25',
+								end: '2019-10-25',
+								className: 'fc-bg-blue',
+								icon : "https://museumofchristianart.com/media/story_image/scenes-min_TCRIypz.png"
+							},
+							{
+								title: 'Featured Story',
+								description: 'A popular tour through the museum collection to find out why motherhood plays such a central role in Christianity.',
+								start: '2019-10-27',
+								end: '2019-10-27',
+								className: 'fc-bg-default',
+								icon : "https://museumofchristianart.com/media/story_image/scenes-min_TCRIypz.png"
+							},
+							{
+								title: 'Featured Story',
+								description: 'A popular tour through the museum collection to find out why motherhood plays such a central role in Christianity.',
+								start: '2019-10-29T11:30:00',
+								end: '2019-10-29T012:30:00',
+								className: 'fc-bg-blue',
+								icon : "https://museumofchristianart.com/media/story_image/scenes-min_TCRIypz.png",
+								allDay: false
+							}
+						],
+						eventRender: function(event, element) {
+							/*if(event.icon){
+								element.find(".fc-title").prepend("<img src='"+event.icon+"' alt='event'style='width: 200px; height: 200px;'>");
+							}*/
+						  },
+						/*dayClick: function() {
+							jQuery('#modal-view-event-add').modal();
+						},*/
+						eventClick: function(event, jsEvent, view) {
+							jQuery('.event-title').html(event.title);
+							jQuery('.event-icon').html("<img src='"+event.icon+"' alt='event' style='width: 100%; height: 100%;margin-top: 10px;'>");
+							jQuery('.event-body').html(event.description);
+							jQuery('.eventUrl').attr('href',event.url);
+							jQuery('#modal-view-event').modal();
+						},
+					})
+				});
+			  
+			})(jQuery);
+		</script>
+	{% endblock %}

@@ -1,0 +1,163 @@
+{% extends "museumapp/base.html" %}
+
+{% load readmore %}
+
+{% load static %}
+	
+	<!--- Title --->
+	{% block title %}
+		Museum of Christian Art
+	{% endblock %}
+
+	<!--- Custom CSS --->
+	{% block custom-css-parts %}
+		<!-- Scrollbar Custom CSS -->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+		<link rel="stylesheet" type="text/css" href="{% static 'museumapp/css/storyDetailsMoca.css' %}"/>
+		<link rel="stylesheet" type="text/css" href="{% static 'museumapp/css/toi-css/hover-box.css' %}" />
+	{% endblock %}
+
+	<!--- Custom Style --->
+	{% block style %}
+		<style type="text/css">
+	.story-title {
+
+    font-weight: 900 !important;
+    font-size: 14px !important;
+}
+
+
+.inner-para p {
+   
+    text-align: left !IMPORTANT;
+}
+
+</style>
+	
+	{% endblock %}
+
+	<!--- Body content --->
+	{% block body-content %}
+
+		<!-- Page Content  -->
+		<div id="content">
+			<section class="panel">
+				<div class="section">
+					<div class="parallax img-fluid" style="background-image: url('{{ story.story_image.url }}');">		
+					</div>
+				</div>
+			</section>
+			{% for scene in story.story_scenes.all %}
+				<section class="panel goldbar-top">
+					<div class="section" style="background-color: white;">
+						<div class="container-fluid">
+							<div class="row" style="padding: 20px 0px 0px 0px;">
+								<div class="col-md-1"></div>
+								<div class="col-md-4">
+									<div class="imageBox">
+										<div class="imageInn">
+											{% if scene.left_side_image %}<img src="{{ scene.left_side_image.url }}" class="img-fluid left-side-image" alt="moca" style="max-height: 100vh;">{% endif %}
+										</div>
+										<div class="hoverImg">
+											{% if scene.left_side_caption %}<img src="{{ scene.left_side_caption.url }}" class="img-fluid left_caption" alt="moca">{% endif %}
+										</div>
+									</div>
+								</div>
+								<div class="col-md-5 content-pad">
+									<div class="text-left" style="">
+										<a href="{% url 'museumapp:storiesMoca' %}">
+											<img class="close-icon img-fluid" src="{% static 'museumapp/image/x-mark.png' %}">
+										</a>
+									</div>
+									<div id="outer-div">
+										<div id="inner-div">
+											<div style="margin: 20px 0px 10px 0px;">
+												<div class="image-for-mobiles">
+													<div class="col-sm-12">
+														<div class="imageBoxMob text-center">
+															<div class="imageInnMob">
+																{% if scene.left_side_image %}
+																	<img src="{{ scene.left_side_image.url }}" class="img-fluid left-side-image" alt="moca" style="max-height: 350px;">
+																{% endif %}
+															</div>
+															<div class="hoverImgMob">
+																{% if scene.left_side_caption %}
+																	<img src="{{ scene.left_side_caption.url }}" class="img-fluid left_caption" alt="moca">
+																{% endif %}
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="font-weight-bold garamond gara-13 story-title">{{ story.story_title|upper }}</div>
+												<div class="underline-title"></div>
+												<div class="inner-para garamond side-head-para" style="">{{ scene.chapter_content|safe }}
+												</div>
+												<div class="row down-arrow">
+													<div class="next-page-indicator">
+														<img class="img-fluid" src="{% static 'museumapp/image/below.png' %}" alt="below">
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-2">
+									<!-- side-right-image -->
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+			{% endfor %}
+		</div>
+	{% endblock %}
+
+	<!--- Custom Script Block --->
+	{% block custom-script %}
+		<script src="//cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.7/ScrollMagic.min.js"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.7/plugins/debug.addIndicators.min.js"></script>
+		<script type="text/javascript">
+			$(function () { // wait for document ready
+				// init
+				var controller = new ScrollMagic.Controller({
+					globalSceneOptions: {
+						triggerHook: 'onLeave',
+						duration: "200%" // this works just fine with duration 0 as well
+						// However with large numbers (>20) of pinned sections display errors can occur so every section should be unpinned once it's covered by the next section.
+						// Normally 100% would work for this, but here 200% is used, as Panel 3 is shown for more than 100% of scrollheight due to the pause.
+					}
+				});
+
+				// get all slides
+				var slides = document.querySelectorAll("section.panel");
+
+				// create scene for every slide
+				for (var i=0; i<slides.length; i++) {
+					new ScrollMagic.Scene({
+						triggerElement: slides[i]
+					})
+					.setPin(slides[i], {pushFollowers: false})
+						
+					.addTo(controller);
+				}
+			});
+		</script>
+		<script type="text/javascript">
+			$(document).ready(function () {
+				$('#sidebarCollapse').on('click', function () {
+					$('#sidebar').toggleClass('active');
+					$('#sidebarContent').toggleClass('');
+				});
+			});
+
+			function myFunction(x) {
+				x.classList.toggle("change");
+			}
+		</script>
+	{% endblock %}
+
+	<!--- to hide footer ---->
+	{% block footer %}{% endblock %}
+
+	<!--- to hide common-scripts ---->
+	{% block common-script %}{% endblock %}

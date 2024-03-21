@@ -1,0 +1,26 @@
+.parallax {
+	 /* Set a specific height */
+	min-height:700px; 
+
+	/* Create the parallax scrolling effect */
+	background-attachment: fixed;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	border-bottom: 5px solid #b5a268;
+}
+.img-fluid1{
+	height: 188px;
+	width: 188px;
+}
+.display-image{
+	padding-left: 0px;
+	padding-bottom: 30px;
+}
+.move-top {
+	position: absolute;
+	margin-top: 35%;
+	margin-left: 5%;
+	color: black;
+}
+

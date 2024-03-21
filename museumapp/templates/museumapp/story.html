@@ -1,0 +1,22 @@
+{% extends "museumapp/base.html" %}
+	{% block body %}<p> Welcome to MOCA </p>
+	<p>Explore the Collection through Stories</p>
+	    List of all Stories
+	
+	{{ story }}
+
+	{% for i in story %}
+
+	<li> <a href="{% url 'museumapp:strydetails' i.slug %}">{{ i.story_title }}</a> </li>
+	
+	{% endfor %}
+
+	 {% endblock %}
+
+
+
+	
+
+
+
+ 

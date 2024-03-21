@@ -1,0 +1,25 @@
+.parallax {
+	/* Set a specific height */
+	min-height: 400px; 
+
+	/* Create the parallax scrolling effect */
+	background-attachment: fixed;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	border-bottom: 5px solid #b5a268;
+}
+.bottom-border
+{
+	border-bottom:1px solid black;
+	margin-left: 15px;
+	padding-left: 0px;
+	padding-bottom: 15px;
+}
+#side-links
+{
+	color: #8f0000;
+	border-bottom: 1px solid #8f0000;
+}
+
+

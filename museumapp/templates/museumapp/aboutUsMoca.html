@@ -1,0 +1,114 @@
+{% extends "museumapp/base.html" %}
+
+{% load static %}
+	
+	<!--- Title --->
+	{% block title %}
+		Museum of Christian Art
+	{% endblock %}
+
+	<!--- Custom CSS --->
+	{% block custom-css-parts %}
+	{% endblock %}
+
+	<!--- Custom Style --->
+	{% block style %}
+		<link rel="stylesheet" type="text/css" href="{% static 'museumapp/css/aboutUsMoca.css' %}"/>
+	{% endblock %}
+
+	<!--- Body content --->
+	{% block body-content %}
+		<!-- Page Content  -->
+		<div id="content">
+			
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-sm-12" style="padding: 0px;">
+						<div class="parallax" style="background-image: url('{% static 'museumapp/image/50.png' %}');"></div>
+					</div>
+					
+					<div class="move-top">
+						<div class="fira-on-image fira font-weight-bold" id="about-moca-main-img-text">ABOUT MOCA</div>
+						<div class="big-font-on-image  garamond" id="about-moca-main-img-text">Director's Welcome</div>
+					</div>
+				</div>
+			</div>
+				
+			<div class="container-fluid from-image-content">
+				<div class="row">
+					<div class="col-sm-12">
+								
+						<div class="row">
+							<div class="col-sm-1"></div>
+							<div class="col-sm-2">
+								<span class="small-text fira font-weight-bold" id="side-links">HISTORY</span><br>
+								<span class="small-text fira font-weight-bold" id="side-links">MISSION VISION</span><br>	
+								<span class="small-text fira font-weight-bold" id="side-links">OUR BRAND</span>	
+							</div>
+							<div class="col-sm-6">
+								<div class="page-highlights garamond high-para">Welcome to MOCA. There are many reasons to come to here. Sometimes, looking at a work of art with someone special by your side is all the motivation you need. Sitting in the lightfilled Atrium, watching the expression on a child's face as she makes a collage — each experience is worth the trip. PEM is the place to come for enjoyment, enrichment, sharing with family and friends, and creative stimulation.</div>
+							</div>
+							<div class="col-sm-3"></div>
+						</div>
+									
+						<div class="row">
+							<div class="col-sm-3"></div>
+							<div class="col-sm-6">	
+								<div class="inner-para garamond sub-para">We gain exciting insights about ourselves and other cultures through special exhibitions, weekend festivals and family art-making programs. You are vital to the equation. Your experiences shape the art you look at and the performances you watch, making them more meaningful and transformative.
+									</div>				
+							</div>
+							<div class="col-sm-3"></div>
+						</div>
+
+						<div class="row ">
+							<div class="col-sm-3"></div>
+							<div class="col-sm-6" >	
+								<div class="inner-para garamond sub-para">PEM continues to touch lives and to make a difference.
+								</div>			
+							</div>
+							<div class="col-sm-3"></div>
+						</div>	
+
+						<div class="row">
+							<div class="col-sm-3"></div>
+							<div class="col-sm-6">	
+								<div class="inner-para high-para garamond">Museums help us to make meaning of ourselves, our lives, our community, and the wider world by giving us time and space to experience wonder, think, feel, reflect, and create. I look forward to ensuring PEM continues to be a vital resource, a hub of innovation, and a force of good in the world for years to come.
+								</div>				
+							</div>
+							<div class="col-sm-3"></div>
+						</div>	
+
+						<div class="row">
+							<div class="col-sm-3"></div>
+							<div class="col-sm-6" >
+								<div class="row opacity-para-content" style="padding-left:0px; padding-right: 0px; padding-left: 0px; margin-left: -15px;margin-right: -15px; padding: 20px;margin-top: 25px;margin-bottom: 50px;">	
+									<div class="side-heading-garamond  garamond" style="padding: 30px 15px; "> “It was my privilege to be present at the inauguration ceremony of the relocated Museum of Christian Art at Old Goa. The Museum is a rich andvaried repository of magnificent works which have been showcased with great dedication and professionalism. The museum holds attractions for theart connoisseur as well as the layman. The synergy between Indian and western creations in the Museum speaks volumes for our shared heritage. I wish Fr. Avinash Rebelo and his team all success in their endeavour to help the Museum attain further heights of glory.”
+								</div>
+
+								<div class="small-heading font-weight-bold fira opacity-para-content "> MANOHAR PARIKAR,<br> LATE CHIEF MINISTER OF GOA<br> 23RD JANUARY 2002
+								</div>
+							</div>					
+							</div>
+							<div class="col-sm-3"></div>
+						</div>
+
+							<!--<div class="row">
+								<div class="col-sm-3"></div>
+								<div class="col-sm-6" style="padding: 20px 15px 0px 0px;">	
+									<p class="inner-para fira opacity-para-content ">
+										Manohar Parrikar,<br>
+										LATE Chief Minister of Goa<br>
+										23rd January 2002
+									</p>
+								</div>
+								<div class="col-sm-3"></div>
+							</div>-->
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	{% endblock %}
+
+	<!--- Custom Script Block --->
+	{% block custom-script %}	{% endblock %}

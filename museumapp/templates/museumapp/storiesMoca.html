@@ -1,0 +1,85 @@
+{% extends "museumapp/base.html" %}
+
+{% load static %}
+	
+	<!--- Title --->
+	{% block title %}
+		Museum of Christian Art
+	{% endblock %}
+
+	<!--- Custom CSS --->
+	{% block custom-css-parts %}
+	{% endblock %}
+
+	<!--- Custom Style --->
+	{% block style %}
+		<link rel="stylesheet" type="text/css" href="{% static 'museumapp/css/storiesMoca.css' %}"/>
+		<link rel="stylesheet" type="text/css" href="{% static 'museumapp/css/toi-css/hover-box.css' %}" />
+	{% endblock %}
+
+	<!--- Body content --->
+	{% block body-content %}
+		<!-- Page Content  -->
+		<div id="content">
+
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-sm-12" style="padding: 0px;">
+						<div class="parallax" style="background-image: url('{% static 'museumapp/image/45.png' %}');"></div>
+					</div>
+					
+					<div class="move-top">
+						<div class="fira-on-image fira font-weight-bold">EXPLORE ART</div>
+						<div class="big-font-on-image garamond">Stories</div>
+					</div>
+				</div>
+			</div>
+				
+			<div class="container-fluid from-image-content">
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="row">
+						<div class="col-sm-3"></div>
+						<div class="col-sm-6" >
+							<div class="page-highlights garamond explore-art-para high-para">
+								Objects from the past speak to us in myriad ways. They can even tell us about ourselves, and the history behind our present relationships to art and culture.  
+								<br> <br> At MoCA, we like to tell stories old and new. Explore history, art and culture through riveting narratives that draw on our Museum’s own collection.
+							</div>
+						</div>
+						<div class="col-sm-3"></div>
+					</div>
+				</div>
+				
+				<div class="col-sm-12">
+					<div class="row high-para">
+						<div class="col-sm-3"></div>
+
+						<div class="col-sm-6">
+							<div class="row">
+								{% for story in stories %}
+								<div class="col-sm-4 display-image">
+									<a href="{% url 'museumapp:storyDetailsMoca' story.slug %}">
+										<div class="hvrbox" style="box-shadow: none;">
+											<img src="{{ story.story_thumbnail.url }}" class="img-fluid" alt="Moca">
+											<div class="hvrbox-layer_top">
+												<div class="hvrbox-text garamond hvrbox-layer_slideup" style="text-align: center;
+    margin-top: 50px;">
+													{{ story.story_description }}</div>
+											</div>
+										</div>
+									</a>
+								</div>
+								{% endfor %}
+							</div>
+						</div>
+						
+						<div class="col-sm-3"></div>	
+					</div>
+				</div>
+			</div>
+		</div>
+		</div>
+	{% endblock %}
+
+	<!--- Custom Script Block --->
+	{% block custom-script %}	{% endblock %}

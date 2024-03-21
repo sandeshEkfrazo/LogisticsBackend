@@ -1,0 +1,126 @@
+{% extends "museumapp/base.html" %}
+
+{% load static %}
+	
+	<!--- Title --->
+	{% block title %}	{% endblock %}
+
+	<!--- Custom CSS --->
+	{% block custom-css-parts %}
+	{% endblock %}
+
+	<!--- Custom Style --->
+	{% block style %}
+
+		<link rel="stylesheet" type="text/css" href="{% static 'museumapp/css/conservationMoca.css' %}"/>
+		
+		<style type="text/css">
+.move-top1 {
+    position: absolute;
+    color: white;
+    top: 70%;
+    left: 10%;
+}
+
+.parallax {
+    
+    min-height: 700px;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-bottom: 5px solid #b5a268;
+}
+
+
+</style>
+
+
+
+	{% endblock %}
+
+	<!--- Body content --->
+	{% block body-content %}
+		<!-- Page Content  -->
+		<div id="content">
+				
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-sm-12" style="padding: 0px;">
+						<div class="parallax" style="background-image: url('{% static 'museumapp/image/career.jpg' %}');"></div>
+					</div>
+					
+					 <div class="move-top1">
+						<div class="fira-on-image fira font-weight-bold">Google Art & Culture</div>
+						<div class="big-font-on-image garamond">MoCA</div>
+					</div>
+				</div>
+			</div>
+			
+				<div class="container-fluid">
+			   	<div class="row">
+					<div class="col-sm-12">
+				  		<div class="row">
+							<div class="col-sm-8">  
+							</div>
+					 		<div class="col-sm-2 buy-to-end">
+					   			<a href="{% url 'museumapp:buy_tickets' %}"><button type="button" class="buy-tickets-button fira small-heading"><b>BOOK TICKETS</b></button></a>
+							</div>
+							<div class="col-sm-2"></div>
+				 		 </div>   
+					</div>
+			 	 </div>
+			</div>
+			
+				<div class="container-fluid from-image-content" >
+					<div class="row">
+						<div class="col-sm-12">
+								<div class="row">
+										<div class="col-sm-3">
+											
+										</div>
+										<div class="col-sm-6">
+								<!-- <div class="page-heading garamond high-para">Careers</div>		 -->
+										</div>
+										<div class="col-sm-3"></div>
+									</div>
+
+									<div class="row">
+										<div class="col-sm-1"></div>
+										<div class="col-sm-2">
+											
+										</div>
+										<!-- <div class="col-sm-6">
+											<p class="page-highlights garamond high-para ">
+											COMING SOON
+										</p>
+										
+										
+										<div class="inner-para garamond sub-para">
+									
+									
+									We are working hard!
+
+
+
+								
+									</div>
+									</div> -->
+									<iframe allowfullscreen frameborder="0" width="800" height="600" src="https://embed.culturalspot.org/embed/exhibit/2gJygKGJBZeEIQ"></iframe> <!-- (for the Life of Christ page) -->
+									
+									
+										<div class="col-sm-3"></div>
+									</div>						
+								</div>
+							</div>
+						</div>
+					</div>
+				</p>
+			</div></div></div></div></div></div>
+					
+									
+					
+	{% endblock %}
+
+	<!--- Custom Script Block --->
+	{% block custom-script %}	{% endblock %}

@@ -1,0 +1,38 @@
+.parallax {
+	/* Set a specific height */
+	min-height: 700px; 
+
+	/* Create the parallax scrolling effect */
+	background-attachment: fixed;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	border-bottom: 5px solid #b5a268;
+}
+.move-top{
+	position: absolute;
+	top: 50%;
+	left: 35%;
+	color: white;
+}
+.moca-cafe-text
+{
+	background-color: #F5F5DC;
+	box-shadow: 4px 4px 5px #e6ecd2;
+	border-bottom: 1px solid white;
+}
+.heading-moca-cafe
+{
+	margin-left: 15px;
+}
+.moca-cafe-text-img{
+	padding-top: 50px;
+	margin-left: 0px;
+}
+.display-image{
+	padding-left: 0px;
+}
+.img-fluid1{
+	height: 188px;
+	width: 188px;
+}

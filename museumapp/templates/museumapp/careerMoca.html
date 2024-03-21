@@ -1,0 +1,270 @@
+{% extends "museumapp/base.html" %}
+
+{% load static %}
+
+<!--- Title --->
+{% block title %} {% endblock %}
+
+<!--- Custom CSS --->
+{% block custom-css-parts %}
+{% endblock %}
+
+<!--- Custom Style --->
+{% block style %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'museumapp/css/conservationMoca.css' %}" />
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<style type="text/css">
+	.move-top1 {
+		position: absolute;
+		color: white;
+		top: 70%;
+		left: 10%;
+	}
+
+	.parallax {
+
+		min-height: 700px;
+		background-attachment: fixed;
+		background-position: center;
+		background-repeat: no-repeat;
+		background-size: cover;
+		border-bottom: 5px solid #b5a268;
+	}
+</style>
+
+
+
+{% endblock %}
+
+<!--- Body content --->
+{% block body-content %}
+<!-- Page Content  -->
+<div id="content">
+
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-sm-12" style="padding: 0px;">
+				<div class="parallax" style="background-image: url('{% static 'museumapp/image/career.jpg' %}');"></div>
+			</div>
+
+			<div class="move-top1">
+				<div class="fira-on-image fira font-weight-bold">CAREERS</div>
+				<div class="big-font-on-image garamond">Work at MoCA</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="row">
+					<div class="col-sm-8">
+					</div>
+					<div class="col-sm-2 buy-to-end">
+						<a href="{% url 'museumapp:buy_tickets' %}"><button type="button"
+								class="buy-tickets-button fira small-heading"><b>BOOK TICKETS</b></button></a>
+					</div>
+					<div class="col-sm-2"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container-fluid from-image-content">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="row">
+					<div class="col-sm-3">
+
+					</div>
+					<div class="col-sm-6">
+						<!-- <div class="page-heading garamond high-para">Careers</div>		 -->
+					</div>
+					<div class="col-sm-3"></div>
+				</div>
+
+				<!-- <div class="row">
+					<div class="col-12 col-md-9 offset-md-3">
+						<div class="row">
+							<div class="col-12 col-md-5">
+								<img src="/static/museumapp/image/hiring.jpg" height="500px" class="w-100" alt="">
+							</div>
+							<div class="col-12 col-md-5">
+								<img src="/static/museumapp/image/hiring1JD.jpg" height="500px" class="w-100" alt="">
+							</div>
+						</div>
+						<div class="row mt-2">
+							<div class="col-12 col-md-5">
+								<img src="/static/museumapp/image/hiring2.jpg" height="500px" class="w-100" alt="">
+							</div>
+							<div class="col-12 col-md-5">
+								<img src="/static/museumapp/image/hiring2JD.jpg" height="500px" class="w-100" alt="">
+							</div>
+						</div>
+					</div>
+				</div> -->
+
+				
+				<!-- Modal JD 1-->
+				<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+					aria-hidden="true">
+					<div class="modal-dialog inner-para garamond sub-para">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h1 class="modal-title fs-5" id="exampleModalLabel">We Are Hiring</h1>
+								<button type="button" class="btn-close" data-bs-dismiss="modal"
+									aria-label="Close"></button>
+							</div>
+							<div class="modal-body inner-para garamond sub-para">
+								<div class="row">
+									<div class="col-12">
+										<img src="/static/museumapp/image/hiring.jpg" class="w-100" height="400px" alt="">
+									</div>
+									<div class="col-12 mt-3">
+										<h2>Job Description</h2>
+									</div>
+									<div class="col-12">
+										<ul>
+											<li>
+												Responsible for maintaining/updating the Museum's Collection and Collection database.
+											</li>
+											<li>
+												Responsible for planning and executing the calender of events and activities for the Museum in consultation with Curator.
+											</li>
+											<li>Responsible for conducting Guided tours of the Museum.</li>
+											<li>Responsible for coordinating activities for educational intitutions.</li>
+										</ul>
+									</div>
+									<div class="col-12 mt-3">
+										<h4>Key Requirements</h4>
+									</div>
+									<div class="col-12">
+										<ul>
+											<li>Master's Degree in Archaeology / History / Art History.</li>
+											<li>Degree / Diploma in Museology from a reputable University.</li>
+											<li>At least 2 year's experience of working in museum</li>
+											<li>Fluency in Written and Spoken English.</li>
+											<li>Valid Driving Licence</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Modal JD 2-->
+				<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel2"
+					aria-hidden="true">
+					<div class="modal-dialog inner-para garamond sub-para">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h1 class="modal-title fs-5" id="exampleModalLabel">We Are Hiring</h1>
+								<button type="button" class="btn-close" data-bs-dismiss="modal"
+									aria-label="Close"></button>
+							</div>
+							<div class="modal-body inner-para garamond sub-para">
+								<div class="row">
+									<div class="col-12">
+										<img src="/static/museumapp/image/hiring2.jpg" class="w-100" height="400px" alt="">
+									</div>
+									<div class="col-12 mt-3">
+										<h2>Job Description</h2>
+									</div>
+									<div class="col-12">
+										<ul>
+											<li>
+												Promoting Moca amongst tour companies, group, hotels, Government tourism departments & other agencies. 
+											</li>
+											<li>
+												Planning and Coordination of MoCA's Events and Activities along with the team.
+											</li>
+											<li>Publicity of MoCA's Programmes in the press & Social media.</li>
+											<li>Periodic Assignments & Projects as directed by the Curator.</li>
+										</ul>
+									</div>
+									<div class="col-12 mt-3">
+										<h4>Key Requirements</h4>
+									</div>
+									<div class="col-12">
+										<ul>
+											<li>Degree in Arts/Science/Commerce/Business Administration.</li>
+											<li>Fluency in Written and Spoken English.</li>
+											<li>Ability to work well in a Team</li>
+											<li>Prior Experience will be advantage.</li>
+											<li>Valid Driving Licence</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row mt-4">
+					<div class="col-sm-2"></div>
+					<div class="col-sm-6 text-start">
+
+						<p class="page-highlights garamond high-para ">
+							MoCA is constantly growing. From developing new exhibitions and events to making the
+							knowledge of our collection accessible to new audiences, we require a team of talented and
+							dedicated human resources. Keep checking this page for new positions in different fields!
+						</p>
+
+
+						<div class="inner-para garamond sub-para">
+
+
+							You can view all open job positions:
+							<ul>
+								<!-- <li>Vacancy / Job</li> -->
+
+								<!-- <span class="text-primary" data-bs-toggle="modal" style="cursor: pointer;" data-bs-target="#exampleModal">
+									<u>Curatorial Associate & Museum Educator</u>
+								</span><br>
+
+								<span class="text-primary" data-bs-toggle="modal" style="cursor: pointer;" data-bs-target="#exampleModal2">
+									<u>Sales & Marketing Associate </u>
+								</span> -->
+
+								<li>Internship</li>
+								<li> Research</li>
+							</ul>
+
+							Send us your resume with a covering letter and contact details <br> (with subject: job
+							title) to: <br>
+							museumofchristianart@gmail.com<br>
+							For further information, reach out to us <a style="color: #8f0000;" target="_blank"
+								href="{% url 'museumapp:contactUsMoca' %}">here</a>.<br>
+
+
+
+						</div>
+					</div>
+
+
+					<div class="col-sm-3"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+
+{% endblock %}
+
+<!--- Custom Script Block --->
+{% block custom-script %} {% endblock %}

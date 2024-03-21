@@ -1,0 +1,517 @@
+/* ---------------------------------------------------
+	COMMON EFFECTS STYLE
+----------------------------------------------------- */
+
+	a, a:hover, a:active{
+		text-decoration: none;
+		color: inherit;
+	}
+
+	/*---- font & size ----*/
+	
+		.garamond{
+			font-family: 'EB Garamond', serif;
+		}
+		.fira{
+			font-family: 'Fira Sans';
+			letter-spacing: 1px;
+		}
+		.fira-on-image{
+			font-size: 18px;
+			font-weight: 900 !important;
+		}
+		.big-font-on-image{
+			font-size: 70px;
+			line-height: 65px;
+		}
+		.page-highlights{
+			font-size: 26px;
+			line-height: 36px;
+		}
+		.side-heading-garamond{
+			font-size: 33px;
+		}
+		.inner-para{
+			font-size: 20px;
+			line-height: 28px;
+		}
+		.small-heading{
+			font-size: 15px;
+		}
+		.page-heading{
+			font-size: 42px;
+		}
+		.side-heading-size35-index{
+			font-size: 45px;
+			line-height: 56px;
+		}
+		.small-text{
+			font-size: 12px;
+		}
+		.gara-14{
+			font-size: 14px;
+			letter-spacing: 1px;
+		}
+		.gara-13{
+			font-size: 13px;
+			letter-spacing: 1px;
+		}
+
+	/*------ end -----*/
+
+	/*---- buttons ----*/
+		
+		.buy-tickets-button{
+			color: white;
+			border: 0px;
+			text-align: center;
+			padding: 5px 8px;
+			background-color: #771D14;
+			text-transform: uppercase;
+			box-shadow: 2px 2px #f5f1f1;
+			font-size: 15px;
+			cursor: pointer;
+		}
+		.plan-visits{
+			margin-top: 15px;
+			margin-bottom: 15px;
+		}
+		.plan-visit-button{
+			background-color: transparent;
+			background: none;
+			border: 1px solid black;
+			font-size: 15px;
+			padding: 5px 8px 8px 5px;
+		}
+		.from-image-content{
+			padding-top: 70px;
+		}
+		.high-para{
+			margin-bottom: 30px;
+		}
+		.sub-para{
+			margin-bottom: 15px;
+		}
+		.side-head-para{
+			margin-bottom: 20px;
+		}
+
+	/*------ end -----*/
+
+	/*---- side-sticky-links ----*/
+		.side-sticky-links{
+			position: sticky;
+			top: 5%;
+			position: -webkit-sticky;
+		}
+	/*------ end -----*/
+
+	.display-image{
+		padding-left: 0px;
+	}
+	#image-row{
+		padding-top: 30px;
+	}
+	.title-page-mob{
+		display: none;
+	}
+
+/* ---------------------------------------------------
+	SIDE MOCA ICON STYLE
+----------------------------------------------------- */
+
+	.moca-icon{
+		top: 0px;
+		right: 0px;
+		max-height: 127px;
+		max-width: 103px;
+		position: absolute;
+		z-index: 100;
+	}
+
+/* ---------------------------------------------------
+	SIDEBAR STYLE
+----------------------------------------------------- */
+
+	.wrapper {
+		display: flex;
+		align-items: stretch;
+	}
+
+	#sidebar {
+		min-width: 400px;
+		max-width: 400px;
+		position: fixed;
+		top: 0;
+		left: 0;
+		height: 100%;
+		z-index: 999;
+		background: #000;
+		color: #fff;
+		transition: all 0.3s;
+		padding: 0px 20px;
+	}
+
+	#sidebar.active {
+		min-width: 32px;
+		max-width: 32px;
+		text-align: center;
+	}
+
+	#sidebar.active .sidebar-header h3,
+	#sidebar.active .sidebarContent{
+		display: none;
+	}
+
+	#sidebar.active .sidebar-header strong {
+		display: block;
+	}
+
+	#sidebar .sidebar-header {
+		padding: 10px 0px 5px 0px;
+		background: none;
+	}
+
+	#sidebar .sidebar-header strong {
+		display: none;
+		font-size: 1.8em;
+	}
+	#sideBarLinks {
+		color: #fff;
+		margin: 0px 10px;
+		border-bottom: 0.5px solid #9a8f80;
+		padding: 10px 0px;
+		font-size: 15px;
+	}
+	
+	#sideBarLinks a:hover, #sideBarLinks a:focus {
+		color: #D3AA59 !important;
+		text-decoration: none;
+		transition: all 0.3s;
+	}
+	
+	#sidebarCollapse {
+		color: #fff;
+		background-color: #000;
+		padding: 5px 0px !important;
+	}
+
+	.sidebar-header, .btn.focus, .btn:focus {
+		outline: 0;
+		box-shadow: none;
+	}
+	.bar1, .bar2, .bar3, .bar4 {
+		width: 25px;
+		height: 3px;
+		background-color: #fff;
+		margin: 5px 0;
+		transition: 0.4s;
+	}
+	.s-icon{
+		height: 25px; 
+		width: 25px; 
+		margin-top: -50px; 
+		margin-left: 45px;
+	}
+
+	span.bar1:hover, span.bar1:hover, span.bar1:hover{
+		background-color: #D3AA59 !important;
+	} 
+
+	.change .s-icon{
+		display: none;
+	}
+	.change .bar1 {
+		-webkit-transform: rotate(-45deg) translate(-4px, 4px);
+		transform: rotate(-45deg) translate(-4px, 4px);
+		float: right;
+		/*background-color: #D3AA59 !important;*/
+	}
+
+	.change .bar2 {opacity: 0;}
+	.change .bar4 {opacity: 0;}
+
+	.change .bar3 {
+		-webkit-transform: rotate(45deg) translate(-5px, -5px);
+		transform: rotate(45deg) translate(-5px, -5px);
+		float: right;
+		/*background-color: #D3AA59 !important;*/
+	}
+	.hamburger-change{
+		cursor: pointer;
+		width: 100%;
+		text-align: -webkit-center;
+	}
+	/*div.change{
+		text-align: -webkit-right !important;
+	}*/
+	#bottom-links{
+		color: white;
+		font-size: 12px;
+		border: none;
+		padding: 0px 25px;
+	}
+	.sidebarContent{
+		padding-bottom: 50px;
+		margin-top: -25px;
+	}
+
+/* ---------------------------------------------------
+	CONTENT STYLE
+----------------------------------------------------- */
+
+	#content {
+		width: 100%;
+		min-height: 100vh;
+		transition: all 0.3s;
+		padding: 0px !important;
+	}
+
+
+/* ---------------------------------------------------
+	FOOTER STYLE
+----------------------------------------------------- */
+
+	.moca-footer{
+		background-color: black;
+	}
+
+	.footer-scroll-btn{
+		border: 1px solid #dedede82;
+		padding: 10px 12px;
+		margin:auto;
+		margin-bottom: 50px;
+		background-color:black;
+	}
+
+	#footer-to-top {
+		display: none;
+		bottom: 20px;
+		z-index: 110;
+		border: none;
+		outline: none;
+		background-color:black;
+		cursor: pointer;
+		font-weight: 400;
+		letter-spacing: 1px;
+		color: #dedede82;
+	}
+
+	.footer-box{
+		border:1px solid white;
+		padding: 10px 10px 10px 10px;
+		
+		color: white;
+	}
+
+	.footer-bank-logo{
+	}
+	.footer-link div.row{
+		color: #598AA5;
+	}
+	.footer-link{
+		padding: 0px 5px;
+	}
+	.bottom-footer{
+		padding: 5px 15px;
+		font-size: 12px;
+	}
+	div.footer-link h6{
+		color: white;
+		padding-bottom: 10px;
+	}
+	#pad-top-learn{
+		padding-top: 40px;
+	}
+	#pad-zero{
+		padding: 0px;
+	}
+	.social-icons{
+		width: 35px;
+		height: auto;
+	}
+	.social-width{
+		max-width: 10%;
+		padding: 5px;
+	}
+	#mob-move{
+		margin: 0px;
+	}
+
+
+	/*------button text hover css/ common for all pages*/
+
+	.oneHvr .hvr-fade:hover, .oneHvr .hvr-fade:focus, .oneHvr .hvr-fade:active {
+			background-color: inherit !important;
+  			color: #771D14 !important;
+  		}
+
+  		.threeHvr .hvr-fade:hover, .threeHvr .hvr-fade:focus, .threeHvr .hvr-fade:active {
+			background-color: #b5a268 !important;
+  		}
+
+  		.buy-tickets-button:hover, .buy-tickets-button:focus, .buy-tickets-button:active {
+			background-color: #b5a268 !important;
+  		}
+
+	/*---------------------end------------------------------------------*/
+
+/* ---------------------------------------------------
+	CUSTOM SCREEN STYLE
+----------------------------------------------------- */
+
+	@media (max-width: 768px) {
+		.hvrbox-layer_top{
+			display: none !important;
+		}
+		.footer-link{
+			width: 50%;
+			padding: 0px 15px 15px 15px;
+		}
+		.img-fluid1 {
+    		height:auto !important;
+		}
+		#sidebar {
+			height: 100%;
+			max-width: -webkit-fill-available;
+			min-width: auto;
+		}
+		#sidebar.active {
+			height: 50px;
+    		border-radius: 50%;
+    		margin-top: 10px;
+    		margin-left: 5px;
+    		background-color: #000000c2;
+    		min-width: 50px;
+    		max-width: 50px;
+		}
+		#sidebarCollapse {
+    		background-color: initial;
+		}
+		.hamburger-change {
+		    margin-top: -12px;
+    		margin-left: 0px;
+		}		
+		.fira-on-image{
+			font-size: 12px;
+		}
+		.big-font-on-image{
+			font-size: 36px;
+			line-height: 40px;
+		}
+		.move-top{
+			top: 30% !important;
+    		left: 10% !important;
+		}
+		#mob-margin-zero{
+			margin: 0px;
+		}
+		#explore-arrow {
+			width: 190px;
+		}
+		.display-image{
+			padding-left: 15px;
+			margin-bottom: 15px;
+		}
+		#mob-50{
+			width: 50%;
+		}
+		.side-sticky-links {
+			margin: 0px;
+		}
+		.hvrbox img {
+  			display: inline-block;
+  			vertical-align: middle;
+  			-webkit-transform: perspective(1px) translateZ(0);
+  			transform: perspective(1px) translateZ(0);
+  			box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+  			-webkit-transition-duration: 0.3s;
+  			transition-duration: 0.3s;
+  			-webkit-transition-property: transform;
+  			transition-property: transform;
+		}
+		.hvrbox img:hover, .hvrbox img:focus, .hvrbox img:active {
+  			-webkit-transform: scale(1.1);
+  			transform: scale(1.1);
+		}
+		/*.footer-social-icons{
+			width: 80%;
+		}
+		.footer-bank-logo{
+			width: 20%;
+		}*/
+		.social-width {
+		    max-width: 20%;
+		    padding-bottom: 20px;
+		    padding-top: 15px;
+		}
+	}
+
+	html {
+  		scroll-behavior: smooth;
+	}
+
+	@media (max-width: 425px) {
+		#footer-member{
+			width: 100%;
+			margin-bottom: 30px;
+			text-align: center;
+		}
+		#pad-top-learn{
+			padding-top: 0px;
+		}
+		.buy-to-end{
+			text-align: end;
+		}
+		/*.hvrbox {
+		    box-shadow: none !important;
+		    -moz-box-shadow: none !important;
+		    -webkit-box-shadow: none !important;
+		    -o-box-shadow: none !important;
+		}*/
+		.moca-icon{
+			max-height: 100px;
+		}
+		.sidebarContent{
+			padding-bottom: 50px;
+			margin-top: -50px;
+		}
+		#sideBarLinks {
+			padding: 8px 0px;
+		}
+		.footer-link{
+			padding: 15px 15px 15px 15px;
+		}
+	}
+	@media (max-width: 767px) {
+		#pad-zero{
+			padding: 0px 15px;
+		}
+		.parallax {
+			min-height: 300px !important;
+		}
+	}
+	@media (max-width: 575px) {
+		.side-sticky-links {
+		    display: none;
+		}
+		.move-top{
+			display: none;
+		}
+		.title-page-mob{
+			display: block;
+			margin: 0px;
+		}
+		.pad-image{
+			width: 100%;
+			text-align: center;
+			margin-bottom: 15px;
+		}
+		.img-fluid1 {
+   			height: auto;
+    		width: 275px !important;
+		}
+		#image-row {
+    		padding-top: 0px;
+		}
+	}

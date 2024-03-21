@@ -1,0 +1,92 @@
+{% extends "museumapp/base.html" %}
+
+{% load static %}
+	
+	<!--- Title --->
+	{% block title %}
+		Museum of Christian Art
+	{% endblock %}
+
+	<!--- Custom CSS --->
+	{% block custom-css-parts %}
+		<link rel="stylesheet" type="text/css" href="{% static 'museumapp/css/featuredDetailMoca.css' %}"/>
+	{% endblock %}
+
+	<!--- Custom Style --->
+	{% block style %}
+	{% endblock %}
+
+	<!--- Body content --->
+	{% block body-content %}
+		<!-- Page Content  -->
+		<div id="content">
+				
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-sm-12" style="padding: 0px;">
+					<div class="parallax" style="background-image: url('../media/{{post.event_cover_image}}');"></div>
+					
+					</div>
+				</div>
+			</div>
+			
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-sm-12">
+					  	<div class="row">
+							<div class="col-sm-8">  </div>
+						 	<div class="col-sm-2 buy-to-end">
+						   		<!--<a href="{% url 'museumapp:ticketMoca' %}"><button type="button" class="buy-tickets-button fira small-heading">BUY TICKETS</button></a>-->
+							</div>
+							<div class="col-sm-2"></div>
+					 	</div>   
+					</div>
+				 </div>
+			</div>
+				
+			<div class="container-fluid from-image-content" >
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="row">
+							<div class="col-sm-3"></div>
+							<div class="col-sm-6">
+								<div class="small-heading fira font-weight-bold sub-para">MoCA JOURNAL / <span style="color:#A9A9A9; text-transform:uppercase;">{{ post.category }}</span></div>
+							</div>
+							<div class="col-sm-3"></div>
+						</div>
+							
+						<div class="row">
+							<div class="col-sm-3"></div>
+							<div class="col-sm-6">
+								<div class="page-heading garamond">{{ post.event_name }}</div>
+								<div class="small-heading fira font-weight-bold high-para" style="color:#A9A9A9; text-transform:uppercase;">BY {{ post.author }}</span> </div>
+								
+							</div>
+							<div class="col-sm-3"></div>
+						</div>
+
+						<div class="row">
+							<div class="col-sm-3"></div>
+							<div class="col-sm-6 bottom-border">
+								<div class="row">
+									<div class="col-sm-12 page-highlights garamond high-para ">
+										{{ post.event_short_description|linebreaks }}
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-12 inner-para garamond sub-para"> 
+										{{ post.event_long_description|safe }}
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-3"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	{% endblock %}
+
+	<!--- Custom Script Block --->
+	{% block custom-script %}
+	{% endblock %}

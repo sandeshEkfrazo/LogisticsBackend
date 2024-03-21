@@ -1,0 +1,125 @@
+
+.parallax {
+	/* The image used */
+	
+
+	/* Set a specific height */
+	min-height: 700px; 
+
+	/* Create the parallax scrolling effect */
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	border-bottom: 5px solid #b5a268;
+}
+
+.side-body{
+	padding: 0px 0px 0px 0px;
+}
+
+/*.side-content{
+	background-color:#F5F5DC;
+	padding-top: 40px ;
+	text-align: center;
+	padding:20px 35px 30px 30px;
+	margin-bottom: 15px;
+}*/
+.side-content{
+	background-color:#b5a268;
+	padding-top: 40px ;
+	text-align: center;
+	padding:20px 35px 30px 30px;
+	margin-bottom: 15px;
+}
+.plan-a-visit{
+	background-color:white;
+	box-shadow: 4px 4px 5px #e6ecd2;
+	border-bottom: 1px solid white;
+}
+
+.img-fluid1{
+	height: 210px;
+	width: 210px;
+	
+
+}
+.img-fluid2
+{
+	height: 210px;
+	width: 210px;
+	border: 1px solid #cecece; 
+	padding: 30px;
+
+}
+
+.become-Friend{
+	border: 1px solid black;
+	margin-left: 10px;
+}
+
+.get-heading{
+	margin-top: 30px;
+	margin-left: 15px;
+}
+
+.learn-text{
+	padding-bottom: 1px;
+	font-weight: bolder;
+	letter-spacing: 1px;
+	width: fit-content;
+}
+
+@media (min-width: 768px) {
+	.side-content{
+		min-width: 230px;
+		max-width: 250px;
+		margin-left: 0px;
+	}
+}
+
+.custom-text {
+	position: absolute;
+	 top: 8px;
+	 left: 16px;
+	 padding: 20px;	
+}
+
+.custom-text2
+{
+	position: absolute;
+	 top:70px;
+	 padding: 0px;
+}
+.move-top {
+	position: absolute;
+	top: 30%;
+	left: 62%;
+	padding: 10px;
+}
+
+.move-top3
+{
+	position: absolute;
+
+	padding: 30px;
+
+}
+.text-content{
+	position: absolute;
+	left: 35%;
+	margin-bottom: 30px;
+}
+.text-content2
+{
+	position: absolute;
+	left: 0%;
+}
+.text-center2
+{
+	left: 0%;
+	right: 80%;
+}
+.top-left{
+	padding: 30px;
+	left: 10%;
+}

@@ -1,0 +1,28 @@
+{% extends "museumapp/base.html" %}
+ {% block body %}
+	<p>Objects that are present:</p>
+	<p>List of all Objects Details</p>
+
+	{{ objects }}
+
+	
+
+	<p> {{ objects.accession_number }} </p>
+    <p> {{ objects.object_name }} </p>
+    <p> {{ objects.collection_name }} </p>
+    <p> {{ objects.object_image }} </p>
+    <p> {{ objects.related_object_Image }} </p>
+    <p> {{ objects.object_Type }} </p>
+    <p> {{ objects.material }} </p>
+    <p> {{ objects.location }} </p>
+    <p> {{ objects.date }} </p>
+    <p> {{ objects.object_Short_Description }} </p>
+    <p> {{ objects.object_details }} </p>
+    <p> {{ objects.provenance }} </p>
+    <p> {{ objects.exhibition_History }} </p>
+    <p> {{ objects.essays }} </p>
+    <p> {{ objects.publication_Keywords }} </p>
+
+objects.
+
+    {% endblock %}

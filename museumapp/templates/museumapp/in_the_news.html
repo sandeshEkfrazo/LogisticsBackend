@@ -1,0 +1,534 @@
+{% extends "museumapp/base.html" %}
+
+{% load static %}
+	
+	<!--- Title --->
+	{% block title %}
+		Museum of Christian Art
+	{% endblock %}
+
+	<!--- Custom CSS --->
+	{% block custom-css-parts %}
+		<link rel="stylesheet" type="text/css" href="{% static 'museumapp/css/eventsMoca.css' %}"/>
+		<link rel="stylesheet" type="text/css" href="{% static 'museumapp/css/toi-css/hover-box.css' %}" />
+		<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	{% endblock %}
+
+	<!--- Custom Style --->
+	{% block style %}
+
+			<link rel="stylesheet" type="text/css" href="{% static 'museumapp/css/planAVisitMoca.css' %}"/>
+		<link rel="stylesheet" type="text/css" href="{% static 'museumapp/css/toi-css/hover-box.css' %}" />
+
+
+		<style type="text/css">
+		
+		.parallax {
+    min-height: 700px;
+    background-attachment: fixed;
+    background-position: top !important;
+	
+	} 
+			#border-line{
+				padding-bottom: 15px;
+    			border-bottom: 1px solid black;
+    			padding-left: 0px;
+    			padding-right: 0px;
+			}
+			.form-group{
+				margin-bottom: 0px;
+			}
+			option.space{
+				margin-bottom: 20px;
+			}
+			span.twitter-typeahead
+			{
+				width: 100%;
+				height: 40px;
+			}
+			input.tt-hint{
+				width: 100%;
+				height: 40px;
+				border: 0px;
+				padding-left: 20px;
+				color: #615f5f82;
+				font-size: 15px;
+				letter-spacing: 0px;
+			}
+			input.tt-input{
+				width: 100%;
+				background-color: #d3d3d35e !important;
+				border: 0px;
+				height: 40px;
+				color: #615f5f82;
+				border-radius: 0px;
+				font-size: 15px;
+				letter-spacing: 0px;
+				padding-left: 20px;
+			}
+			div.tt-menu{
+				background-color: #d3d3d3;
+				width: 100%;
+				padding: 20px;
+			}
+			div.tt-dataset{
+				border-bottom: 1px solid black;
+				margin-bottom: 10px;
+				padding-bottom: 10px;
+			}
+			div.tt-suggestion, div.tt-selectable{
+				cursor: pointer;
+			}
+			#event-title, #event-small-details, #event-big-details{
+				margin-left: 0px;
+				margin-right: 0px;
+			}
+			@media (max-width: 425px) {
+				input.tt-hint {
+				    padding-left: 5px;
+				    font-size: 12px;
+				}
+				input.tt-input {
+				    font-size: 12px;
+				    padding-left: 5px;
+				}
+				div.drp-button-class div.pad_left div.form-group {
+				    margin-bottom: 5px;
+				}
+				#object_type, #material, #time_period, #location{
+					margin-bottom: 5px;
+				}
+				.in-middle{
+					text-align: -webkit-center;
+				}
+			}
+       .ui-datepicker-calendar {
+    display: none;
+    }
+	
+	
+	input#search_topic {
+    width: 100%;
+    background-color: #d3d3d35e !important;
+    border: 0px;
+    height: 40px;
+    border-radius: 0px;
+    font-size: 15px;
+    letter-spacing: 0px;
+    padding-left: 20px;
+	font-weight: 700!important;
+    font-family: 'Fira Sans';
+}
+
+
+	input#select_year{
+    background-color: #d3d3d35e;
+    border: 0px;
+    height: 40px;
+    width: 100%;
+    color: #615f5f82;
+    border-radius: 0px;
+    font-size: 15px;
+    letter-spacing: 0px;
+}
+
+ input#select_month{
+    background-color: #d3d3d35e;
+    border: 0px;
+    height: 40px;
+    width: 100%;
+    color: #615f5f82;
+    border-radius: 0px;
+    font-size: 15px;
+    letter-spacing: 0px;
+}
+ 
+ 
+  select#topic{
+    background-color: #d3d3d35e;
+    border: 0px;
+    height: 40px;
+    width: 100%;
+    color: #615f5f82;
+    border-radius: 0px;
+    font-size: 15px;
+    letter-spacing: 0px;
+}
+
+
+div#all_data_inthenews {
+    margin-left: 70px;
+    margin-right: 100px;
+	 margin-top: 50px;
+}
+
+div#event-title {
+    line-height: 1;
+}
+
+
+.show-more {
+    margin: 15px 0px;
+    cursor: pointer;
+    font-size: 12px;
+    font-family: 'Fira Sans';
+    letter-spacing: 1px;
+    color: #8f0000;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.move-top {
+    position: absolute;
+    color: black;
+    top: 4%;
+    left: 8%;
+}
+		</style>
+		{% endblock %}
+
+			<!--- Custom Style --->
+
+
+	<!--- Body content --->
+	{% block body-content %}
+		<!-- Page Content  -->
+		<div id="content">
+
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-sm-12" style="padding: 0px;">
+						<div class="parallax" style="background-image: url('{% static 'museumapp/image/30-min.jpg' %}');"></div>
+					</div>
+
+					<div class="move-top">
+						<div class="fira-on-image fira font-weight-bold">PRESS</div>
+						<div class="big-font-on-image garamond">In the News</div>
+					</div>
+				</div>
+			</div>
+
+
+			<div class="container-fluid from-image-content">
+				<div class="row">
+
+					<div class="col-sm-12">
+
+						<div class="row">
+							<div class="col-sm-12" style="">
+
+
+							<div class="row">
+							<div class="col-sm-3"></div>
+							<div class="col-sm-6 page-highlights garamond high-para">
+							<!-- <p>MOCA Journal is a platform for articles about the culture of  
+Goa. This is a response to the many wonderful articles on Goa  
+that don't get the visibility they deserve.Articles published in 
+MOCA Journals will be actively promoted and shared.</p> -->
+
+</div>
+
+<div class="col-sm-3"></div>
+</div>
+
+
+								<div class="row">
+									<div class="col-sm-2"></div>
+									<div class="col-sm-8">
+										<div class="page-heading garamond sub-para">Search Articles</div>
+									</div>
+									<div class="col-sm-2"></div>
+								</div>
+
+								<div class="row sub-para">
+
+									<div class="col-sm-2"></div>
+									<div class="col-sm-9" style="padding-right: 0px ">
+
+										<form>
+											<div class="form-group" id="search">
+													<div class="">
+														<div class="" style="margin-right: 0px;justify-content: space-evenly;">
+															<div class="col-sm-11" style="padding-left: 0px;width: 90%;">
+																<input class="form-group" type="text" placeholder="SEARCH BY NAME OR ARTICLE" name="search" id="search_topic" style="color: #615f5f82;background-color: #615f5f82; width: 100%">
+															</div>
+															{% comment %}<div class="col-sm-1" style="padding-left: 0px; width: auto; padding-right: 0px;">
+
+																<button type="button" value="Search" class="search-button" ><img class="search-icon" src="{% static 'museumapp/image/search-icon.png' %}" onclick="searchClick()"></button>
+															</div>{% endcomment %}
+														</div>
+													</div>
+												</div>
+										</form>
+									</div>
+									<div class="col-sm-1"></div>
+								</div>
+
+								<div class="row">
+									<div class="col-sm-2"></div>
+									<div class="col-sm-8">
+										<div class="typeahead small-text font-weight-bold fira sub-para" style="">OR FILTER BY</div>
+									</div>
+									<div class="col-sm-2">
+									</div>
+								</div>
+
+								<div class="row ">
+									<div class="col-sm-2"></div>
+										<div class="col-sm-8 drp-button-class">
+											<div class="row">
+
+
+                                                <div class="col-sm-4 pad_left">
+													<div class="form-group">
+
+														<select class="form-control fira font-weight-bold" id="topic" onchange="selectTopic()">
+                                                            <option value="SELECT TOPIC">BY TOPIC </option>
+                                                            {% for i in topic_filter %}
+                                                                <option value="{{ i.topic }}">{{ i.topic }}</option>
+                                                            {% endfor %}
+
+														</select>
+													</div>
+												</div>
+
+
+
+                                                <div class="col-sm-4 pad_left">
+													<div class="form-group">
+														<input class="form-control fira font-weight-bold" type="text" id="select_year" onchange="selectYear()" value="BY YEAR">
+													</div>
+												</div>
+
+
+
+												<div class="col-sm-4 pad_left">
+													<div class="form-group">
+														<input class="form-control fira font-weight-bold" type="text" id="select_month" onchange="selectYear()" value="BY MONTH">
+													</div>
+												</div>
+
+
+
+
+											</div>
+											<div class="row" style="margin-right: 0px;margin-top: 20px;"></div>
+										</div>
+									<div class="col-sm-2"> </div>
+								</div>
+
+
+
+								<div class="row">
+									<div class="col-sm-2"></div>
+									<div class="col-sm-8">
+										<div class="row" style="margin: 0px;">
+											<div id = "no_results" style="display:none">
+												<h5 class="fira small-heading" style="letter-spacing: 0px;">No results found</h5>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-2"></div>
+
+									<div class="container-fluid" id="list_data" data-toggle="div" >
+										<div class="row">
+											<div class="col-sm-2"></div>
+											<div class="col-sm-8 in-middle">
+												<div class="row" id="listing" style="margin: 0px;">
+
+												</div>
+
+                                                <div id="all_data_inthenews" >
+                                    {% for i in all_data %}
+                                        <div class='col-sm-12 high-para' id='border-line'><div class='row'><div class='col-sm-4 sub-para'><a target='_blank' href='{{ i.link }}'><img class='img-fluid' src='{{ i.event_image.url }}'style='width: 100%; height: auto;'></a></div><div class='col-sm-8 sub-para'><a href='{{ i.link }}' target='_blank'><div class='row side-heading-garamond garamond' id='event-title'>{{ i.event_name }}</div></a><br><div class='row gara-14 garamond font-weight-bold high-para' id='event-small-details'>{{ i.author }}</div><div class='row inner-para garamond' id='event-big-details'>{{ i.event_short_description }}</div><a href='{{ i.link }}' target='_blank'><div class="show-more">READ MORE</div></a></div></div></div>
+                                        <!--<div class='col-sm-12 high-para' id='border-line'><div class='row'><div class='col-sm-4 sub-para'><a href='{{ i.link }}'><img class='img-fluid' src='"+ {{ i.event_image }} +"' href='MoCA' style='width: 100%; height: auto;'></a></div><div class='col-sm-8 sub-para'><a href='{{ i.link }}'><div class='row side-heading-garamond garamond' id='event-title'>{{ i.event_name }}</div></a><div class='row gara-14 garamond font-weight-bold high-para' id='event-small-details'>{{ i.time_duration }}</div><div class='row inner-para garamond' id='event-big-details'>{{ i.event_short_description }}</div></div></div></div>-->
+                                    {% endfor %}
+                                </div>
+											</div>
+											<div class="col-sm-2"></div>
+										</div>
+									</div>
+								</div>
+
+
+
+
+
+
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	{% endblock %}
+
+	<!--- Custom Script Block --->
+	{% block custom-script %}
+
+
+		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+		<script type="text/javascript">
+
+		</script>
+		<script type="text/javascript">
+
+
+            $( function() {
+    			$( "#select_month" ).datepicker({
+
+                    changeMonth: true,
+                    showButtonPanel: true,
+                    dateFormat: 'mm',
+                    onClose: function(dateText, inst) {
+                        var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+                        //var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+                        $(this).datepicker('setDate', new Date(1111, month, 1));
+                        selectYear()
+                    }
+
+    			});
+    		});
+
+            $( function() {
+    			$( "#select_year" ).datepicker({
+                    //changeMonth: true,
+                    changeYear: true,
+                    showButtonPanel: true,
+    				dateFormat: "yy",
+                    yearRange:"-50:+50",
+                    onClose: function(dateText, inst) {
+                        //var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+                        var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+                        $(this).datepicker('setDate', new Date(year, 1, 1));
+                        selectYear()
+                    }
+    			});
+  			} );
+
+
+
+
+
+
+         
+				$(document).ready(function(){
+
+					  $("#search_topic").on("keyup", debounce(function(){
+					  	var value = $(this).val();
+					  		$.ajax({
+                                url: "{% url 'museumapp:in_the_news_search_data' %}",
+                                type: "POST",
+                                async: false,
+                                data: {'search_data': value, csrfmiddlewaretoken: '{{ csrf_token }}'},
+                                success: function (result) {
+                                    let row;
+                                    if(result.length > 0){
+                                        $("#all_data_inthenews").empty();
+                                        $("#no_results").hide();
+                                        $("#list_data").show();
+                                        $("#listing").html("");
+                                        $.each(result, function (a, b) {
+                                            if (b.event_image != null){
+                                            row ="<div id='all_data_inthenews'><div class='col-sm-12 high-para' id='border-line'><div class='row'><div class='col-sm-4 sub-para'><a target='_blank' href='"+b.link+"'><img class='img-fluid' src='/media/"+ b.event_image +"' href='MoCA' style='width: 100%; height: auto;'></a></div><div class='col-sm-8 sub-para'><a target='_blank' href='"+b.link+"'><div class='row side-heading-garamond garamond' id='event-title'>"+ b.event_name +"</div></a><br><div class='row gara-14 garamond font-weight-bold high-para' id='event-small-details'>"+ b.author   +"</div><div class='row inner-para garamond' id='event-big-details'>"+ b.event_short_description +"</div><a target='_blank' href='"+b.link+"'><div class='show-more'>READ MORE</div></a></div></div></div></div>"
+                                            //row ="<div class='col-sm-12 high-para' id='border-line'><div class='row'><div class='col-sm-4 sub-para'><a href='"+b.link+"'><img class='img-fluid' src='"+ b.event_image +"' href='MoCA' style='width: 100%; height: auto;'></a></div><div class='col-sm-8 sub-para'><a href='"+b.link+"'><div class='row side-heading-garamond garamond' id='event-title'>"+ b.event_name +"</div></a><div class='row gara-14 garamond font-weight-bold high-para' id='event-small-details'>"+ b.time_duration  +"</div><div class='row inner-para garamond' id='event-big-details'>"+ b.event_short_description +"</div></div></div></div>"
+
+                                            $("#listing").append(row);
+                                            }
+                                        });
+                                    }
+                                    else{
+                                        // if no result found for the given filter, then display no result
+                                        $("#no_results h5").html("No results found");
+                                        $("#list_data").hide();
+                                        $("#no_results").show();
+                                    }
+
+								}
+							});
+					  },300)
+						);
+					});
+
+
+
+
+
+            function selectTopic() {
+                var topic_input = document.getElementById('topic').value;
+
+                $.ajax({
+					url: "{% url 'museumapp:in_the_news_get_tpoic' %}",
+					type: "POST",
+					async: false,
+					data: {'topic_input': topic_input, csrfmiddlewaretoken: '{{ csrf_token }}'},
+					success: function (result) {
+                        let row;
+				if(result.length > 0){
+					$("#all_data_inthenews").empty();
+					$("#no_results").hide();
+					$("#list_data").show();
+					$("#listing").html("");
+					$.each(result, function (a, b) {
+						if (b.event_image != null){
+						row ="<div id='all_data_inthenews'><div class='col-sm-12 high-para' id='border-line'><div class='row'><div class='col-sm-4 sub-para'><a target='_blank' href='"+b.link+"'><img class='img-fluid' src='/media/"+ b.event_image +"' href='MoCA' style='width: 100%; height: auto;'></a></div><div class='col-sm-8 sub-para'><a target='_blank' href='"+b.link+"'><div class='row side-heading-garamond garamond' id='event-title'>"+ b.event_name +"</div></a><br><div class='row gara-14 garamond font-weight-bold high-para' id='event-small-details'>"+ b.author   +"</div><div class='row inner-para garamond' id='event-big-details'>"+ b.event_short_description +"</div><a target='_blank' href='"+b.link+"'><div class='show-more'>READ MORE</div></a></div></div></div></div>"
+                        //row ="<div class='col-sm-12 high-para' id='border-line'><div class='row'><div class='col-sm-4 sub-para'><a href='"+b.link+"'><img class='img-fluid' src='"+ b.event_image +"' href='MoCA' style='width: 100%; height: auto;'></a></div><div class='col-sm-8 sub-para'><a href='"+b.link+"'><div class='row side-heading-garamond garamond' id='event-title'>"+ b.event_name +"</div></a><div class='row gara-14 garamond font-weight-bold high-para' id='event-small-details'>"+ b.time_duration  +"</div><div class='row inner-para garamond' id='event-big-details'>"+ b.event_short_description +"</div></div></div></div>"
+
+						$("#listing").append(row);
+						}
+					});
+				}
+				else{
+					// if no result found for the given filter, then display no result
+					$("#no_results h5").html("No results found");
+					$("#list_data").hide();
+					$("#no_results").show();
+				}
+
+					}
+				});
+
+            }
+
+            function selectYear() {
+
+                var yr = document.getElementById('select_year').value;
+                var mn = document.getElementById('select_month').value;
+
+
+                $.ajax({
+					url: "{% url 'museumapp:in_the_news_get_mn_year' %}",
+					type: "POST",
+					async: false,
+					data: {'year': yr,'month':mn, csrfmiddlewaretoken: '{{ csrf_token }}'},
+					success: function (result) {
+                        let row;
+                        if(result.length > 0){
+                            $("#all_data_inthenews").empty();
+                            $("#no_results").hide();
+                            $("#list_data").show();
+                            $("#listing").html("");
+                            $.each(result, function (a, b) {
+                                if (b.event_image != null){
+                                row ="<div id='all_data_inthenews'><div class='col-sm-12 high-para' id='border-line'><div class='row'><div class='col-sm-4 sub-para'><a target='_blank' href='"+b.link+"'><img class='img-fluid' src='/media/"+ b.event_image +"' href='MoCA' style='width: 100%; height: auto;'></a></div><div class='col-sm-8 sub-para'><a target='_blank' href='"+b.link+"'><div class='row side-heading-garamond garamond' id='event-title'>"+ b.event_name +"</div></a><br><div class='row gara-14 garamond font-weight-bold high-para' id='event-small-details'>"+ b.author   +"</div><div class='row inner-para garamond' id='event-big-details'>"+ b.event_short_description +"</div><a target='_blank' href='"+b.link+"'><div class='show-more'>READ MORE</div></a></div></div></div></div>"
+                                //row ="<div class='col-sm-12 high-para' id='border-line'><div class='row'><div class='col-sm-4 sub-para'><a href='"+b.link+"'><img class='img-fluid' src='"+ b.event_image +"' href='MoCA' style='width: 100%; height: auto;'></a></div><div class='col-sm-8 sub-para'><a href='"+b.link+"'><div class='row side-heading-garamond garamond' id='event-title'>"+ b.event_name +"</div></a><div class='row gara-14 garamond font-weight-bold high-para' id='event-small-details'>"+ b.time_duration  +"</div><div class='row inner-para garamond' id='event-big-details'>"+ b.event_short_description +"</div></div></div></div>"
+
+                                $("#listing").append(row);
+                                }
+                            });
+                        }
+                        else{
+                            // if no result found for the given filter, then display no result
+                            $("#no_results h5").html("No results found");
+                            $("#list_data").hide();
+                            $("#no_results").show();
+                        }
+					}
+				});
+            }
+
+		</script>
+
+
+	{% endblock %}

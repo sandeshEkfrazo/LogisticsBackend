@@ -1,0 +1,336 @@
+{% extends "museumapp/base.html" %}
+
+{% load readmore %}
+
+{% load static %}
+	
+	<!--- Title --->
+	{% block title %}
+		Museum of Christian Art
+	{% endblock %}
+
+	<!--- Custom CSS --->
+	{% block custom-css-parts %}
+		<link rel="stylesheet" type="text/css" href="{% static 'museumapp/css/objectDetailsMoca.css' %}"/>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+		<link rel="stylesheet" type="text/css" href="{% static 'museumapp/css/carousel-css/owl.carousel.css' %}">
+		<link rel="stylesheet" type="text/css" href="{% static 'museumapp/css/carousel-css/owl.carousel.min.css' %}">
+		<!-- <link rel="stylesheet" type="text/css" href="{% static 'museumapp/css/toi-css/hover-box.css' %}" /> -->
+	{% endblock %}
+
+	<!--- Custom Style --->
+	{% block style %}
+		<style type="text/css">
+			#moreStuff{
+				color: #8f0000;
+				text-transform: uppercase;
+			}
+			.readmore{
+				margin-top: 15px;
+			}
+			div.owl-nav{
+				display: none;
+			}
+			.show-more {
+    			margin: 15px 0px;
+    			cursor: pointer;
+    			font-size: 12px;
+    			font-family: 'Fira Sans';
+    			letter-spacing: 1px;
+    			color: #8f0000;
+    			text-transform: uppercase;
+    			font-weight: bold;
+			}
+			.show-more-height { 
+				height: 247px; 
+				overflow:hidden;
+			}
+			@media (max-width: 575px){
+				.side-sticky-links {
+    				display: block;
+				}
+			}
+		</style>
+	{% endblock %}
+
+	<!--- Body content --->
+	{% block body-content %}
+		<!-- Page Content  -->
+		<div id="content">
+			<div class="row" style="padding-top: 20px;margin: 0px;">
+				
+				<div class="col-sm-1"></div>	
+				
+				<div class="col-md-4">
+					<div class="row side-sticky-links justify-content-center" style="padding-top: 40px;">
+						<img src="{{ object.object_image.url }}" class="img-fluid left-object-image" alt="moca">
+					</div>
+				</div>
+				
+				<div class="col-sm-1"></div>	
+				
+				<div class="col-md-5 mobile-view"> 
+					<a href="{% url 'museumapp:objectsMoca' object.object_type %}" id="hide-mob">
+						<div class="small-text fira high-para" style=" color:brown; letter-spacing: 0px;">Back to search results</div>
+					</a>
+				
+					<div class="inner-para font-weight-bold garamond high-para" style="letter-spacing: 1px;font-size: 18px !important;">
+						{{ object.object_name|upper|safe }}
+					</div>
+
+					<div class="inner-para garamond sub-para text show-more-height">
+						{{ object.object_description|safe }}
+					</div>
+
+					<div class="show-more">...READ MORE</div>
+					
+					<!-- <div class="small-text fira font-weight-bold sub-para" style="color: brown;">
+						READ MORE
+					</div> -->
+
+					<div class="accordion-container">
+						<div id="accordion" class="text-left">			
+							{% if object.object_details %}
+							<div class="card" style="border-top: 1px solid black;">
+								
+								<div class="card">
+									<div class="card-header">
+										<a class="collapsed card-link" data-toggle="collapse" href="#detailedinfo" style="color: black;">
+											<span class="gara-14 garamond font-weight-bold" >OBJECT DETAILS</span>
+										</a>
+									</div>
+															
+									<div id="detailedinfo" class="collapse" data-parent="#accordion">
+										<div class="card-body">
+											{% if object.artist %}
+											<div class="row align-items-center accordion-inner-head">
+												<span class="gara-13 garamond font-weight-bold">ARTIST :</span> 
+												<span class="inner-para garamond accordion-inner-details">{{ object.artisit }}</span>
+											</div>
+											{% endif %}
+											{% if object.time_period %}
+												<div class="row align-items-center accordion-inner-head">
+													<span class="gara-13 garamond font-weight-bold">TIME PERIOD:</span>
+													<span class="inner-para garamond accordion-inner-details">{{ object.time_period }}</span>
+												</div>
+											{% endif %}
+											{% if object.date %}
+												<div class="row align-items-center accordion-inner-head">
+													<span class="gara-13 garamond font-weight-bold">DATE :</span>
+													<span class="inner-para garamond accordion-inner-details">{{ object.date }}<!-- 1794 --></span>
+												</div>
+											{% endif %}
+											{% if object.culture %}
+												<div class="row align-items-center accordion-inner-head">
+													<span class="gara-13 garamond font-weight-bold">CULTURE:</span>
+													<span class="inner-para garamond accordion-inner-details">{{ object.location }}</span>
+												</div>
+											{% endif %}
+											{% if object.medium %}
+												<div class="row align-items-center accordion-inner-head">
+													<span class="gara-13 garamond font-weight-bold">MEDIUM:</span>
+													<span class="inner-para garamond accordion-inner-details">{{ object.medium }}</span>
+												</div>
+											{% endif %}
+											{% if object.material %}
+												<div class="row align-items-center accordion-inner-head">
+													<span class="gara-13 garamond font-weight-bold">MATERIAL:</span>
+													<span class="inner-para garamond accordion-inner-details">{{ object.material }}</span>
+												</div>
+											{% endif %}
+											{% if object.dimensions %}
+												<div class="row align-items-center accordion-inner-head">
+													<span class="gara-13 garamond font-weight-bold">DIMENSIONS:</span>
+													<span class="inner-para garamond accordion-inner-details">{{ object.dimensions }}</span>
+												</div>
+											{% endif %}
+											{% if object.object_type %}
+												<div class="row align-items-center accordion-inner-head">
+													<span class="gara-13 garamond font-weight-bold">CLASSIFICATION:</span>
+													<span class="inner-para garamond accordion-inner-details">{{ object.object_type }}</span>
+												</div>
+											{% endif %}
+											{% if object.accession_number %}
+												<div class="row align-items-center accordion-inner-head">
+													<span class="gara-13 garamond font-weight-bold">INVENTORY NUMBER:</span>
+													<span class="inner-para garamond accordion-inner-details">{{ object.accession_number }}</span> 
+												</div>
+											{% endif %}
+										</div>
+									</div>
+								</div>
+
+
+
+
+
+
+							</div>
+							{% endif %}
+												
+							{% if object.provenance %}
+							<div class="card">
+								<div class="card-header">
+									<a class="collapsed card-link" data-toggle="collapse" href="#collapseTwo" style="color: black;">
+										<span class="gara-14 garamond font-weight-bold" >PROVENANCE</span>
+									</a>
+								</div>
+														
+								<div id="collapseTwo" class="collapse" data-parent="#accordion">
+									<div class="card-body">
+										<div class="row align-items-cen">
+											<span class="inner-para garamond">{{ object.provenance }}</span>
+										</div>
+									</div>
+								</div>
+
+
+							</div>
+							{% endif %}
+												
+							{% if object.exhibition_history %}
+							<div class="card">
+								<div class="card-header">
+									<a class="collapsed card-link" data-toggle="collapse" href="#collapseThree"  style="color: black;">
+										<span class="gara-14 garamond font-weight-bold" >EXHIBITION HISTORY</span>
+									</a>
+								</div>
+								
+								<div id="collapseThree" class="collapse" data-parent="#accordion">
+									<div class="card-body">
+										<div class="row align-items-center accordion-inner-head">
+											<span class="inner-para garamond">{{ object.exhibition_history|safe }}</span>
+										</div>
+									</div>
+								</div>
+
+
+							</div>
+							{% endif %}
+												
+							{% if object.essays_publications %}
+							<div class="card">
+								<div class="card-header">
+									<a class="collapsed card-link" data-toggle="collapse" href="#collapseFour" style="color: black;">
+										<span class="gara-14 garamond font-weight-bold" >RESOURCES AND PUBLICATIONS</span>
+									</a>
+								</div>
+								
+								<div id="collapseFour" class="collapse" data-parent="#accordion">
+									<div class="card-body">
+										<div class="row align-items-center accordion-inner-head">
+											<span class="inner-para garamond">{{ object.essays_publications|safe }}</span>
+										</div>
+									</div>
+								</div>
+							</div>
+							{% endif %}
+												
+							{% if object.keywords %}
+							<div class="card">
+								<div class="card-header">
+									<a class="collapsed card-link" data-toggle="collapse" href="#collapseFive"   style="color: black;">
+										<span class="gara-14 garamond font-weight-bold" >KEYWORDS</span>
+									</a>
+								</div>
+								
+								<div id="collapseFive" class="collapse" data-parent="#accordion">
+									<div class="card-body">
+										<div class="row align-items-center accordion-inner-head">
+											<span class="inner-para garamond">{{ object.keywords }}</span>
+										</div>
+									</div>
+								</div>
+							</div>
+							{% endif %}
+						</div>
+					</div>
+
+					{% if similarItems %}
+					<div class="similar-container" style="margin-bottom: 50px;">
+						<div class="gara-14 garamond font-weight-bold high-para"style="padding-top: 15px;">
+							RELATED OBJECTS
+						</div>
+						<div class="container-fluid">
+							<div class="row">
+							
+								<div class="owl-carousel owl-theme" id="similar">
+									{% for object in similarItems %}
+									{% if object.object_image %}
+									<div class="item" style="margin-left: 5px;margin-right: 2px;">
+										<a href="{% url 'museumapp:objectDetailsMoca' object.slug %}">
+											<img src="{{ object.object_image.url }}" class="img-fluid sub-para" alt="Moca" style="width: 190px;height: 225px;">
+										</a> 
+										<div class="small-text garamond"style="font-weight: bold;letter-spacing: 1px;">{{ object.object_name|upper|safe }}
+											<!--<br>
+											<span style="letter-spacing: 0px;">{{ object.material }}</span><br>
+											<span style="letter-spacing: 0px;">{{ object.time_period }}<br></span>-->
+										</div>
+									</div>
+									{% endif %}
+									{% endfor %}
+								</div>
+								<!-- <div class="col-md" id="similar_item">
+										<a href="single-item.html">
+											<img src="image/Page15b-min.png" class="img-fluid" alt="Cinque Terre" style="width: 200px;height: 200px;">
+										</a>
+										<div class="small-text garamond"style="font-weight: bold;letter-spacing: 1px;">INFANT JESUS SAVIOUR OF THE WORLD<br>
+											<span style="letter-spacing: 0px;">Carved Ivory</span><br><span style="letter-spacing: 0px;">16th Century<br>
+										</div>	
+								</div>
+								<div class="col-md" id="similar_item">
+										<a href="single-item.html">
+											<img src="image/Page15c-min.png" class="img-fluid" alt="Cinque Terre" style="width: 200px;height: 200px;">
+										</a>
+										<div class="small-text garamond"style="font-weight: bold;letter-spacing: 1px;">INFANT JESUS SAVIOUR OF THE WORLD<br>
+											<span style="letter-spacing: 0px;">Carved Ivory</span><br><span style="letter-spacing: 0px;">16th Century<br>
+										</div>
+								</div> -->
+							</div>
+						</div>
+					</div>
+					{% endif %}	
+				</div>
+				
+				<div class="col-sm-1"></div>
+			</div>	
+		</div>
+	{% endblock %}
+
+	<!--- Custom Script Block --->
+	{% block custom-script %}
+		<!-- Font Awesome JS -->
+		<script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
+		<script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
+		<script type="text/javascript" src="{% static 'museumapp/css/carousel-js/owl.carousel.js' %}"></script>
+		<script type="text/javascript" src="{% static 'museumapp/css/carousel-js/owl.carousel.min.js' %}"></script>
+		<script type="text/javascript">
+			data = {{ count }};
+			
+			$('.owl-carousel').owlCarousel({
+				loop:true,
+				nav:true,
+				autoplay:true,
+				autoplayTimeout:6000,
+				responsive:{
+	      			0:{
+						items:2
+					},
+					1024:{
+						items: data
+					}
+				}
+				    
+			});
+		</script>
+		<script type="text/javascript">
+			$(".show-more").click(function () {
+        		if($(".text").hasClass("show-more-height")) {
+            		$(this).text("Read Less");
+        		} else {
+            		$(this).text("...Read More");
+        		}
+       			$(".text").toggleClass("show-more-height");
+    		});
+		</script>
+	{% endblock %}

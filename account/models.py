@@ -1,5 +1,6 @@
 from django.db import models
 from logisticsapp.models import *
+
 # Create your models here.
 
 
@@ -90,7 +91,7 @@ from logisticsapp.models import *
     
 #     # emission_test_img = models.CharField(max_length=100, blank=True, null=True)
 #     insurence_img = models.FileField(blank=True, null=True)
-#     insurence_expire_date = models.DateField(null=True, blank=True)
+#     insurance_expire_date = models.DateField(null=True, blank=True)
 
 #     # rc_img = models.CharField(max_length=100, blank=True, null=True)
 

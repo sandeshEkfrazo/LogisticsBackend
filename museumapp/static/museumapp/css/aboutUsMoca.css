@@ -1,0 +1,55 @@
+.parallax {
+	/* The image used */
+	/*background-image: url('image/50.png');*/
+
+	/* Set a specific height */
+	min-height: 700px; 
+
+	/* Create the parallax scrolling effect */
+	background-attachment: fixed;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	border-bottom: 5px solid #b5a268;
+}
+.move-top {
+	position: absolute;
+	color: white;
+	top: 55%;
+	left: 10%;
+}
+.opacity-para-content
+{
+	padding: 20px;
+	opacity: 1;
+	background-color: #F5F5DC
+}
+
+.inner-text-getting-there{
+	margin: 0px;
+	padding-bottom: 5px;
+}
+
+.text-img{
+	margin: 0px;
+	padding-bottom: 500px;
+	padding-top: 50px;
+}
+.bottom-button
+{
+	padding-bottom: 50px;
+}
+.bottom-border
+{
+	border-bottom:1px solid black; 
+}
+
+#side-links
+{
+	color: #8f0000;
+	border-bottom: 1px solid #8f0000;
+}
+.opacity-para
+{
+	padding: 30px 15px;
+}

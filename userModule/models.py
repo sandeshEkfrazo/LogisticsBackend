@@ -44,6 +44,18 @@ class BookingDetail(models.Model):
 
     is_scheduled = models.BooleanField(default=False)
 
+    vehicle_type = models.ForeignKey(VehicleTypes, on_delete=models.CASCADE, null=True, blank=True)
+    is_all_mobile_number_verified = models.BooleanField(default=False, null=True, blank=True)
+
+    pickup_drop_details = models.CharField(max_length=100, null=True, blank=True)
+
+    assigned = models.JSONField(null=True, blank=True) # on off value for showing the pop of to driver orders after 2 min if the first driver not accepting the ride , initially on 
+    
+
+class CheckOrderOTP(models.Model):
+    order = models.ForeignKey(OrderDetails,on_delete=models.CASCADE, blank=True,null=True)
+    otp_json = models.JSONField(null=True, blank=True)
+
 class ScheduledOrder(models.Model):
     booking = models.ForeignKey(BookingDetail, on_delete=models.CASCADE, blank=True, null=True)
     scheduled_date_and_time = models.DateTimeField(blank=True, null=True)

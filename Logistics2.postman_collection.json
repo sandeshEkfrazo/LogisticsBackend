@@ -1,0 +1,1039 @@
+{
+	"info": {
+		"_postman_id": "44268597-c1ec-46aa-b3e0-060b70136bf4",
+		"name": "Logistics2",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18015643"
+	},
+	"item": [
+		{
+			"name": "User Module",
+			"item": [
+				{
+					"name": "getOrderDetail",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://logisticsdev.thestorywallcafe.com/api/get-order-detail/122/user_id/49?user_id=3",
+							"protocol": "https",
+							"host": [
+								"logisticsdev",
+								"thestorywallcafe",
+								"com"
+							],
+							"path": [
+								"api",
+								"get-order-detail",
+								"122",
+								"user_id",
+								"49"
+							],
+							"query": [
+								{
+									"key": "user_id",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "cancelOrderByUser",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://logistics.thestorywallcafe.com/api/cancel-user-order/17",
+							"protocol": "https",
+							"host": [
+								"logistics",
+								"thestorywallcafe",
+								"com"
+							],
+							"path": [
+								"api",
+								"cancel-user-order",
+								"17"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "user-feedback",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"order_id\": \"2\",\r\n    \"user_id\": \"1\",\r\n    \"review\": \"test\",\r\n    \"ratings\": \"5\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://logistics.thestorywallcafe.com/api/user-feedback",
+							"protocol": "https",
+							"host": [
+								"logistics",
+								"thestorywallcafe",
+								"com"
+							],
+							"path": [
+								"api",
+								"user-feedback"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get user details",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://logistics.thestorywallcafe.com/api/driver?user_id=11",
+							"protocol": "https",
+							"host": [
+								"logistics",
+								"thestorywallcafe",
+								"com"
+							],
+							"path": [
+								"api",
+								"driver"
+							],
+							"query": [
+								{
+									"key": "user_id",
+									"value": "11"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "bookvehicle",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"vehicle_number\": null,\r\n    \"location_details\": {\r\n        \"distance\": {\r\n            \"text\": \"3.3 km\",\r\n            \"value\": 3302\r\n        },\r\n        \"duration\": {\r\n            \"text\": \"10 mins\",\r\n            \"value\": 576\r\n        },\r\n        \"end_address\": \"Byataranyanapura, 104/6, Kempapura Main Rd, Chiranjeevi Layout, Hebbal, Bengaluru, Karnataka 560092, India\",\r\n        \"end_location\": {\r\n            \"lat\": 13.0493235,\r\n            \"lng\": 77.5928765\r\n        },\r\n        \"start_address\": \"3J65+9PM, Dasarahalli, Bengaluru, Karnataka, India\",\r\n        \"start_location\": {\r\n            \"lat\": 13.0609788,\r\n            \"lng\": 77.6094099\r\n        },\r\n        \"steps\": [\r\n            {\r\n                \"distance\": {\r\n                    \"text\": \"0.4 km\",\r\n                    \"value\": 361\r\n                },\r\n                \"duration\": {\r\n                    \"text\": \"1 min\",\r\n                    \"value\": 59\r\n                },\r\n                \"end_location\": {\r\n                    \"lat\": 13.0582387,\r\n                    \"lng\": 77.6104915\r\n                },\r\n                \"polyline\": {\r\n                    \"points\": \"c~unAyauxMb@Eh@Id@QHe@DW@MDMDKLU^QRGTIF?F?P?R@FALADAPAXE`AGdAGr@D\"\r\n                },\r\n                \"start_location\": {\r\n                    \"lat\": 13.0609788,\r\n                    \"lng\": 77.6094099\r\n                },\r\n                \"travel_mode\": \"DRIVING\",\r\n                \"encoded_lat_lngs\": \"c~unAyauxMb@Eh@Id@QHe@DW@MDMDKLU^QRGTIF?F?P?R@FALADAPAXE`AGdAGr@D\",\r\n                \"path\": [\r\n                    {\r\n                        \"lat\": 13.06098,\r\n                        \"lng\": 77.60941000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.0608,\r\n                        \"lng\": 77.60944\r\n                    },\r\n                    {\r\n                        \"lat\": 13.060590000000001,\r\n                        \"lng\": 77.60949000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.060400000000001,\r\n                        \"lng\": 77.60958000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.060350000000001,\r\n                        \"lng\": 77.60977000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.06032,\r\n                        \"lng\": 77.60989000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.060310000000001,\r\n                        \"lng\": 77.60996\r\n                    },\r\n                    {\r\n                        \"lat\": 13.06028,\r\n                        \"lng\": 77.61003000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.060250000000002,\r\n                        \"lng\": 77.61009\r\n                    },\r\n                    {\r\n                        \"lat\": 13.06018,\r\n                        \"lng\": 77.6102\r\n                    },\r\n                    {\r\n                        \"lat\": 13.060020000000002,\r\n                        \"lng\": 77.61029\r\n                    },\r\n                    {\r\n                        \"lat\": 13.059920000000002,\r\n                        \"lng\": 77.61033\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05981,\r\n                        \"lng\": 77.61038\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05977,\r\n                        \"lng\": 77.61038\r\n                    },\r\n                    {\r\n                        \"lat\": 13.059730000000002,\r\n                        \"lng\": 77.61038\r\n                    },\r\n                    {\r\n                        \"lat\": 13.059640000000002,\r\n                        \"lng\": 77.61038\r\n                    },\r\n                    {\r\n                        \"lat\": 13.059540000000002,\r\n                        \"lng\": 77.61037\r\n                    },\r\n                    {\r\n                        \"lat\": 13.059500000000002,\r\n                        \"lng\": 77.61038\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05943,\r\n                        \"lng\": 77.61039000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.059400000000002,\r\n                        \"lng\": 77.61040000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.059310000000002,\r\n                        \"lng\": 77.61041\r\n                    },\r\n                    {\r\n                        \"lat\": 13.059180000000001,\r\n                        \"lng\": 77.61044000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.058850000000001,\r\n                        \"lng\": 77.61048000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.0585,\r\n                        \"lng\": 77.61052000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.058240000000001,\r\n                        \"lng\": 77.61049000000001\r\n                    }\r\n                ],\r\n                \"lat_lngs\": [\r\n                    {\r\n                        \"lat\": 13.06098,\r\n                        \"lng\": 77.60941000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.0608,\r\n                        \"lng\": 77.60944\r\n                    },\r\n                    {\r\n                        \"lat\": 13.060590000000001,\r\n                        \"lng\": 77.60949000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.060400000000001,\r\n                        \"lng\": 77.60958000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.060350000000001,\r\n                        \"lng\": 77.60977000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.06032,\r\n                        \"lng\": 77.60989000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.060310000000001,\r\n                        \"lng\": 77.60996\r\n                    },\r\n                    {\r\n                        \"lat\": 13.06028,\r\n                        \"lng\": 77.61003000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.060250000000002,\r\n                        \"lng\": 77.61009\r\n                    },\r\n                    {\r\n                        \"lat\": 13.06018,\r\n                        \"lng\": 77.6102\r\n                    },\r\n                    {\r\n                        \"lat\": 13.060020000000002,\r\n                        \"lng\": 77.61029\r\n                    },\r\n                    {\r\n                        \"lat\": 13.059920000000002,\r\n                        \"lng\": 77.61033\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05981,\r\n                        \"lng\": 77.61038\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05977,\r\n                        \"lng\": 77.61038\r\n                    },\r\n                    {\r\n                        \"lat\": 13.059730000000002,\r\n                        \"lng\": 77.61038\r\n                    },\r\n                    {\r\n                        \"lat\": 13.059640000000002,\r\n                        \"lng\": 77.61038\r\n                    },\r\n                    {\r\n                        \"lat\": 13.059540000000002,\r\n                        \"lng\": 77.61037\r\n                    },\r\n                    {\r\n                        \"lat\": 13.059500000000002,\r\n                        \"lng\": 77.61038\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05943,\r\n                        \"lng\": 77.61039000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.059400000000002,\r\n                        \"lng\": 77.61040000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.059310000000002,\r\n                        \"lng\": 77.61041\r\n                    },\r\n                    {\r\n                        \"lat\": 13.059180000000001,\r\n                        \"lng\": 77.61044000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.058850000000001,\r\n                        \"lng\": 77.61048000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.0585,\r\n                        \"lng\": 77.61052000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.058240000000001,\r\n                        \"lng\": 77.61049000000001\r\n                    }\r\n                ],\r\n                \"instructions\": \"Head <b>south</b> toward <b>Veeranna Layout</b>\",\r\n                \"maneuver\": \"\",\r\n                \"start_point\": {\r\n                    \"lat\": 13.0609788,\r\n                    \"lng\": 77.6094099\r\n                },\r\n                \"end_point\": {\r\n                    \"lat\": 13.0582387,\r\n                    \"lng\": 77.6104915\r\n                }\r\n            },\r\n            {\r\n                \"distance\": {\r\n                    \"text\": \"0.2 km\",\r\n                    \"value\": 169\r\n                },\r\n                \"duration\": {\r\n                    \"text\": \"1 min\",\r\n                    \"value\": 36\r\n                },\r\n                \"end_location\": {\r\n                    \"lat\": 13.0585532,\r\n                    \"lng\": 77.6089689\r\n                },\r\n                \"maneuver\": \"turn-right\",\r\n                \"polyline\": {\r\n                    \"points\": \"_munAqhuxM]`DAJ]`C\"\r\n                },\r\n                \"start_location\": {\r\n                    \"lat\": 13.0582387,\r\n                    \"lng\": 77.6104915\r\n                },\r\n                \"travel_mode\": \"DRIVING\",\r\n                \"encoded_lat_lngs\": \"_munAqhuxM]`DAJ]`C\",\r\n                \"path\": [\r\n                    {\r\n                        \"lat\": 13.058240000000001,\r\n                        \"lng\": 77.61049000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.058390000000001,\r\n                        \"lng\": 77.60968000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.0584,\r\n                        \"lng\": 77.60962\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05855,\r\n                        \"lng\": 77.60897\r\n                    }\r\n                ],\r\n                \"lat_lngs\": [\r\n                    {\r\n                        \"lat\": 13.058240000000001,\r\n                        \"lng\": 77.61049000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.058390000000001,\r\n                        \"lng\": 77.60968000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.0584,\r\n                        \"lng\": 77.60962\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05855,\r\n                        \"lng\": 77.60897\r\n                    }\r\n                ],\r\n                \"instructions\": \"Turn <b>right</b>\",\r\n                \"start_point\": {\r\n                    \"lat\": 13.0582387,\r\n                    \"lng\": 77.6104915\r\n                },\r\n                \"end_point\": {\r\n                    \"lat\": 13.0585532,\r\n                    \"lng\": 77.6089689\r\n                }\r\n            },\r\n            {\r\n                \"distance\": {\r\n                    \"text\": \"80 m\",\r\n                    \"value\": 80\r\n                },\r\n                \"duration\": {\r\n                    \"text\": \"1 min\",\r\n                    \"value\": 17\r\n                },\r\n                \"end_location\": {\r\n                    \"lat\": 13.0578563,\r\n                    \"lng\": 77.6088449\r\n                },\r\n                \"maneuver\": \"turn-left\",\r\n                \"polyline\": {\r\n                    \"points\": \"}nunAa_uxM\\\\CjB\\\\\"\r\n                },\r\n                \"start_location\": {\r\n                    \"lat\": 13.0585532,\r\n                    \"lng\": 77.6089689\r\n                },\r\n                \"travel_mode\": \"DRIVING\",\r\n                \"encoded_lat_lngs\": \"}nunAa_uxM\\\\CjB\\\\\",\r\n                \"path\": [\r\n                    {\r\n                        \"lat\": 13.05855,\r\n                        \"lng\": 77.60897\r\n                    },\r\n                    {\r\n                        \"lat\": 13.0584,\r\n                        \"lng\": 77.60899\r\n                    },\r\n                    {\r\n                        \"lat\": 13.057860000000002,\r\n                        \"lng\": 77.60884\r\n                    }\r\n                ],\r\n                \"lat_lngs\": [\r\n                    {\r\n                        \"lat\": 13.05855,\r\n                        \"lng\": 77.60897\r\n                    },\r\n                    {\r\n                        \"lat\": 13.0584,\r\n                        \"lng\": 77.60899\r\n                    },\r\n                    {\r\n                        \"lat\": 13.057860000000002,\r\n                        \"lng\": 77.60884\r\n                    }\r\n                ],\r\n                \"instructions\": \"Turn <b>left</b> toward <b>1st Main Rd</b>\",\r\n                \"start_point\": {\r\n                    \"lat\": 13.0585532,\r\n                    \"lng\": 77.6089689\r\n                },\r\n                \"end_point\": {\r\n                    \"lat\": 13.0578563,\r\n                    \"lng\": 77.6088449\r\n                }\r\n            },\r\n            {\r\n                \"distance\": {\r\n                    \"text\": \"0.4 km\",\r\n                    \"value\": 437\r\n                },\r\n                \"duration\": {\r\n                    \"text\": \"2 mins\",\r\n                    \"value\": 92\r\n                },\r\n                \"end_location\": {\r\n                    \"lat\": 13.0579774,\r\n                    \"lng\": 77.60486430000002\r\n                },\r\n                \"maneuver\": \"turn-right\",\r\n                \"polyline\": {\r\n                    \"points\": \"sjunAg~txMAJQf@?@Qz@CJEJALAXAr@FfAB~@@bA@`ABhA?b@@j@@TBbA@r@\"\r\n                },\r\n                \"start_location\": {\r\n                    \"lat\": 13.0578563,\r\n                    \"lng\": 77.6088449\r\n                },\r\n                \"travel_mode\": \"DRIVING\",\r\n                \"encoded_lat_lngs\": \"sjunAg~txMAJQf@?@Qz@CJEJALAXAr@FfAB~@@bA@`ABhA?b@@j@@TBbA@r@\",\r\n                \"path\": [\r\n                    {\r\n                        \"lat\": 13.057860000000002,\r\n                        \"lng\": 77.60884\r\n                    },\r\n                    {\r\n                        \"lat\": 13.057870000000001,\r\n                        \"lng\": 77.60878000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.057960000000001,\r\n                        \"lng\": 77.60858\r\n                    },\r\n                    {\r\n                        \"lat\": 13.057960000000001,\r\n                        \"lng\": 77.60857\r\n                    },\r\n                    {\r\n                        \"lat\": 13.058050000000001,\r\n                        \"lng\": 77.60827\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05807,\r\n                        \"lng\": 77.60821\r\n                    },\r\n                    {\r\n                        \"lat\": 13.058100000000001,\r\n                        \"lng\": 77.60815000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.058110000000001,\r\n                        \"lng\": 77.60808\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05812,\r\n                        \"lng\": 77.60795\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05813,\r\n                        \"lng\": 77.60769\r\n                    },\r\n                    {\r\n                        \"lat\": 13.058090000000002,\r\n                        \"lng\": 77.60733\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05807,\r\n                        \"lng\": 77.60701\r\n                    },\r\n                    {\r\n                        \"lat\": 13.058060000000001,\r\n                        \"lng\": 77.60667000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.058050000000001,\r\n                        \"lng\": 77.60634\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05803,\r\n                        \"lng\": 77.60597000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05803,\r\n                        \"lng\": 77.60579000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05802,\r\n                        \"lng\": 77.60557\r\n                    },\r\n                    {\r\n                        \"lat\": 13.058010000000001,\r\n                        \"lng\": 77.60546000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05799,\r\n                        \"lng\": 77.60512\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05798,\r\n                        \"lng\": 77.60486\r\n                    }\r\n                ],\r\n                \"lat_lngs\": [\r\n                    {\r\n                        \"lat\": 13.057860000000002,\r\n                        \"lng\": 77.60884\r\n                    },\r\n                    {\r\n                        \"lat\": 13.057870000000001,\r\n                        \"lng\": 77.60878000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.057960000000001,\r\n                        \"lng\": 77.60858\r\n                    },\r\n                    {\r\n                        \"lat\": 13.057960000000001,\r\n                        \"lng\": 77.60857\r\n                    },\r\n                    {\r\n                        \"lat\": 13.058050000000001,\r\n                        \"lng\": 77.60827\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05807,\r\n                        \"lng\": 77.60821\r\n                    },\r\n                    {\r\n                        \"lat\": 13.058100000000001,\r\n                        \"lng\": 77.60815000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.058110000000001,\r\n                        \"lng\": 77.60808\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05812,\r\n                        \"lng\": 77.60795\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05813,\r\n                        \"lng\": 77.60769\r\n                    },\r\n                    {\r\n                        \"lat\": 13.058090000000002,\r\n                        \"lng\": 77.60733\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05807,\r\n                        \"lng\": 77.60701\r\n                    },\r\n                    {\r\n                        \"lat\": 13.058060000000001,\r\n                        \"lng\": 77.60667000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.058050000000001,\r\n                        \"lng\": 77.60634\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05803,\r\n                        \"lng\": 77.60597000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05803,\r\n                        \"lng\": 77.60579000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05802,\r\n                        \"lng\": 77.60557\r\n                    },\r\n                    {\r\n                        \"lat\": 13.058010000000001,\r\n                        \"lng\": 77.60546000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05799,\r\n                        \"lng\": 77.60512\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05798,\r\n                        \"lng\": 77.60486\r\n                    }\r\n                ],\r\n                \"instructions\": \"Turn <b>right</b> onto <b>1st Main Rd</b>\",\r\n                \"start_point\": {\r\n                    \"lat\": 13.0578563,\r\n                    \"lng\": 77.6088449\r\n                },\r\n                \"end_point\": {\r\n                    \"lat\": 13.0579774,\r\n                    \"lng\": 77.60486430000002\r\n                }\r\n            },\r\n            {\r\n                \"distance\": {\r\n                    \"text\": \"0.3 km\",\r\n                    \"value\": 278\r\n                },\r\n                \"duration\": {\r\n                    \"text\": \"1 min\",\r\n                    \"value\": 55\r\n                },\r\n                \"end_location\": {\r\n                    \"lat\": 13.0554989,\r\n                    \"lng\": 77.6045477\r\n                },\r\n                \"maneuver\": \"turn-left\",\r\n                \"polyline\": {\r\n                    \"points\": \"kkunAketxMtFZTBvDXj@B\"\r\n                },\r\n                \"start_location\": {\r\n                    \"lat\": 13.0579774,\r\n                    \"lng\": 77.60486430000002\r\n                },\r\n                \"travel_mode\": \"DRIVING\",\r\n                \"encoded_lat_lngs\": \"kkunAketxMtFZTBvDXj@B\",\r\n                \"path\": [\r\n                    {\r\n                        \"lat\": 13.05798,\r\n                        \"lng\": 77.60486\r\n                    },\r\n                    {\r\n                        \"lat\": 13.056750000000001,\r\n                        \"lng\": 77.60472\r\n                    },\r\n                    {\r\n                        \"lat\": 13.056640000000002,\r\n                        \"lng\": 77.60470000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05572,\r\n                        \"lng\": 77.60457000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.0555,\r\n                        \"lng\": 77.60455\r\n                    }\r\n                ],\r\n                \"lat_lngs\": [\r\n                    {\r\n                        \"lat\": 13.05798,\r\n                        \"lng\": 77.60486\r\n                    },\r\n                    {\r\n                        \"lat\": 13.056750000000001,\r\n                        \"lng\": 77.60472\r\n                    },\r\n                    {\r\n                        \"lat\": 13.056640000000002,\r\n                        \"lng\": 77.60470000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05572,\r\n                        \"lng\": 77.60457000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.0555,\r\n                        \"lng\": 77.60455\r\n                    }\r\n                ],\r\n                \"instructions\": \"Turn <b>left</b> onto <b>14th Cross Rd</b>\",\r\n                \"start_point\": {\r\n                    \"lat\": 13.0579774,\r\n                    \"lng\": 77.60486430000002\r\n                },\r\n                \"end_point\": {\r\n                    \"lat\": 13.0554989,\r\n                    \"lng\": 77.6045477\r\n                }\r\n            },\r\n            {\r\n                \"distance\": {\r\n                    \"text\": \"1.2 km\",\r\n                    \"value\": 1236\r\n                },\r\n                \"duration\": {\r\n                    \"text\": \"4 mins\",\r\n                    \"value\": 221\r\n                },\r\n                \"end_location\": {\r\n                    \"lat\": 13.0558583,\r\n                    \"lng\": 77.5936105\r\n                },\r\n                \"maneuver\": \"turn-right\",\r\n                \"polyline\": {\r\n                    \"points\": \"{{tnAmctxMDl@Fx@B~@?bAAr@@H?T?H@H@B@HFLDHNNDFBD@@?B@F@H@n@?f@?XA\\\\?Z@|@@l@@R@f@@V@V?NAX@H?P?XCRETEb@ANAHADQb@AFI\\\\ELCFSp@_@r@Sd@GRAFAHADAV@^?B?F?J@H@HBDBBBBD@FBFBFBHBDBB@@@BB?@@B?B@D?HAVOzAC\\\\OrCQ`DA^ABCf@C^MrC\"\r\n                },\r\n                \"start_location\": {\r\n                    \"lat\": 13.0554989,\r\n                    \"lng\": 77.6045477\r\n                },\r\n                \"travel_mode\": \"DRIVING\",\r\n                \"encoded_lat_lngs\": \"{{tnAmctxMDl@Fx@B~@?bAAr@@H?T?H@H@B@HFLDHNNDFBD@@?B@F@H@n@?f@?XA\\\\?Z@|@@l@@R@f@@V@V?NAX@H?P?XCRETEb@ANAHADQb@AFI\\\\ELCFSp@_@r@Sd@GRAFAHADAV@^?B?F?J@H@HBDBBBBD@FBFBFBHBDBB@@@BB?@@B?B@D?HAVOzAC\\\\OrCQ`DA^ABCf@C^MrC\",\r\n                \"path\": [\r\n                    {\r\n                        \"lat\": 13.0555,\r\n                        \"lng\": 77.60455\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055470000000001,\r\n                        \"lng\": 77.60432\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055430000000001,\r\n                        \"lng\": 77.60403000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05541,\r\n                        \"lng\": 77.60371\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05541,\r\n                        \"lng\": 77.60337000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055420000000002,\r\n                        \"lng\": 77.60311\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05541,\r\n                        \"lng\": 77.60306\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05541,\r\n                        \"lng\": 77.60295\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05541,\r\n                        \"lng\": 77.6029\r\n                    },\r\n                    {\r\n                        \"lat\": 13.0554,\r\n                        \"lng\": 77.60285\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055390000000001,\r\n                        \"lng\": 77.60283000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055380000000001,\r\n                        \"lng\": 77.60278000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055340000000001,\r\n                        \"lng\": 77.60271\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05531,\r\n                        \"lng\": 77.60266\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055230000000002,\r\n                        \"lng\": 77.60258\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055200000000001,\r\n                        \"lng\": 77.60254\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055180000000002,\r\n                        \"lng\": 77.60251000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05517,\r\n                        \"lng\": 77.6025\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05517,\r\n                        \"lng\": 77.60248\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05516,\r\n                        \"lng\": 77.60244\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055150000000001,\r\n                        \"lng\": 77.60239\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055140000000002,\r\n                        \"lng\": 77.60215000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055140000000002,\r\n                        \"lng\": 77.60195\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055140000000002,\r\n                        \"lng\": 77.60182\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055150000000001,\r\n                        \"lng\": 77.60167000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055150000000001,\r\n                        \"lng\": 77.60153000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055140000000002,\r\n                        \"lng\": 77.60122000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055130000000002,\r\n                        \"lng\": 77.60099000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05512,\r\n                        \"lng\": 77.60089\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05511,\r\n                        \"lng\": 77.60069\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055100000000001,\r\n                        \"lng\": 77.60057\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055090000000002,\r\n                        \"lng\": 77.60045000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055090000000002,\r\n                        \"lng\": 77.60037000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055100000000001,\r\n                        \"lng\": 77.60024\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055090000000002,\r\n                        \"lng\": 77.60019000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055090000000002,\r\n                        \"lng\": 77.60010000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055090000000002,\r\n                        \"lng\": 77.59997000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05511,\r\n                        \"lng\": 77.59987000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055140000000002,\r\n                        \"lng\": 77.59976\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05517,\r\n                        \"lng\": 77.59958\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055180000000002,\r\n                        \"lng\": 77.5995\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055190000000001,\r\n                        \"lng\": 77.59945\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055200000000001,\r\n                        \"lng\": 77.59942000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055290000000001,\r\n                        \"lng\": 77.59924000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.0553,\r\n                        \"lng\": 77.59920000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05535,\r\n                        \"lng\": 77.59905\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055380000000001,\r\n                        \"lng\": 77.59898000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.0554,\r\n                        \"lng\": 77.59894000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.0555,\r\n                        \"lng\": 77.59869\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055660000000001,\r\n                        \"lng\": 77.59843000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055760000000001,\r\n                        \"lng\": 77.59824\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055800000000001,\r\n                        \"lng\": 77.59814\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055810000000001,\r\n                        \"lng\": 77.5981\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05582,\r\n                        \"lng\": 77.59805\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05583,\r\n                        \"lng\": 77.59802\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055840000000002,\r\n                        \"lng\": 77.59790000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05583,\r\n                        \"lng\": 77.59774\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05583,\r\n                        \"lng\": 77.59772000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05583,\r\n                        \"lng\": 77.59768000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05583,\r\n                        \"lng\": 77.59762\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05582,\r\n                        \"lng\": 77.59757\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055810000000001,\r\n                        \"lng\": 77.59752\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055790000000002,\r\n                        \"lng\": 77.59749000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05577,\r\n                        \"lng\": 77.59747\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055750000000002,\r\n                        \"lng\": 77.59745000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05572,\r\n                        \"lng\": 77.59744\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05568,\r\n                        \"lng\": 77.59742\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05564,\r\n                        \"lng\": 77.59740000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055600000000002,\r\n                        \"lng\": 77.59738\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05555,\r\n                        \"lng\": 77.59736000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055520000000001,\r\n                        \"lng\": 77.59734\r\n                    },\r\n                    {\r\n                        \"lat\": 13.0555,\r\n                        \"lng\": 77.59733\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05549,\r\n                        \"lng\": 77.59732000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055470000000001,\r\n                        \"lng\": 77.5973\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055470000000001,\r\n                        \"lng\": 77.59729\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055460000000002,\r\n                        \"lng\": 77.59727000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055460000000002,\r\n                        \"lng\": 77.59725\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05545,\r\n                        \"lng\": 77.59722000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05545,\r\n                        \"lng\": 77.59717\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055460000000002,\r\n                        \"lng\": 77.59705000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05554,\r\n                        \"lng\": 77.59659\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055560000000002,\r\n                        \"lng\": 77.59644\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05564,\r\n                        \"lng\": 77.59570000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05573,\r\n                        \"lng\": 77.59489\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055740000000002,\r\n                        \"lng\": 77.59473000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055750000000002,\r\n                        \"lng\": 77.59471\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05577,\r\n                        \"lng\": 77.59451\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055790000000002,\r\n                        \"lng\": 77.59435\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055860000000001,\r\n                        \"lng\": 77.59361000000001\r\n                    }\r\n                ],\r\n                \"lat_lngs\": [\r\n                    {\r\n                        \"lat\": 13.0555,\r\n                        \"lng\": 77.60455\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055470000000001,\r\n                        \"lng\": 77.60432\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055430000000001,\r\n                        \"lng\": 77.60403000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05541,\r\n                        \"lng\": 77.60371\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05541,\r\n                        \"lng\": 77.60337000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055420000000002,\r\n                        \"lng\": 77.60311\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05541,\r\n                        \"lng\": 77.60306\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05541,\r\n                        \"lng\": 77.60295\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05541,\r\n                        \"lng\": 77.6029\r\n                    },\r\n                    {\r\n                        \"lat\": 13.0554,\r\n                        \"lng\": 77.60285\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055390000000001,\r\n                        \"lng\": 77.60283000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055380000000001,\r\n                        \"lng\": 77.60278000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055340000000001,\r\n                        \"lng\": 77.60271\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05531,\r\n                        \"lng\": 77.60266\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055230000000002,\r\n                        \"lng\": 77.60258\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055200000000001,\r\n                        \"lng\": 77.60254\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055180000000002,\r\n                        \"lng\": 77.60251000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05517,\r\n                        \"lng\": 77.6025\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05517,\r\n                        \"lng\": 77.60248\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05516,\r\n                        \"lng\": 77.60244\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055150000000001,\r\n                        \"lng\": 77.60239\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055140000000002,\r\n                        \"lng\": 77.60215000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055140000000002,\r\n                        \"lng\": 77.60195\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055140000000002,\r\n                        \"lng\": 77.60182\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055150000000001,\r\n                        \"lng\": 77.60167000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055150000000001,\r\n                        \"lng\": 77.60153000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055140000000002,\r\n                        \"lng\": 77.60122000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055130000000002,\r\n                        \"lng\": 77.60099000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05512,\r\n                        \"lng\": 77.60089\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05511,\r\n                        \"lng\": 77.60069\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055100000000001,\r\n                        \"lng\": 77.60057\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055090000000002,\r\n                        \"lng\": 77.60045000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055090000000002,\r\n                        \"lng\": 77.60037000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055100000000001,\r\n                        \"lng\": 77.60024\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055090000000002,\r\n                        \"lng\": 77.60019000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055090000000002,\r\n                        \"lng\": 77.60010000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055090000000002,\r\n                        \"lng\": 77.59997000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05511,\r\n                        \"lng\": 77.59987000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055140000000002,\r\n                        \"lng\": 77.59976\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05517,\r\n                        \"lng\": 77.59958\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055180000000002,\r\n                        \"lng\": 77.5995\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055190000000001,\r\n                        \"lng\": 77.59945\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055200000000001,\r\n                        \"lng\": 77.59942000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055290000000001,\r\n                        \"lng\": 77.59924000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.0553,\r\n                        \"lng\": 77.59920000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05535,\r\n                        \"lng\": 77.59905\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055380000000001,\r\n                        \"lng\": 77.59898000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.0554,\r\n                        \"lng\": 77.59894000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.0555,\r\n                        \"lng\": 77.59869\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055660000000001,\r\n                        \"lng\": 77.59843000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055760000000001,\r\n                        \"lng\": 77.59824\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055800000000001,\r\n                        \"lng\": 77.59814\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055810000000001,\r\n                        \"lng\": 77.5981\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05582,\r\n                        \"lng\": 77.59805\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05583,\r\n                        \"lng\": 77.59802\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055840000000002,\r\n                        \"lng\": 77.59790000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05583,\r\n                        \"lng\": 77.59774\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05583,\r\n                        \"lng\": 77.59772000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05583,\r\n                        \"lng\": 77.59768000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05583,\r\n                        \"lng\": 77.59762\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05582,\r\n                        \"lng\": 77.59757\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055810000000001,\r\n                        \"lng\": 77.59752\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055790000000002,\r\n                        \"lng\": 77.59749000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05577,\r\n                        \"lng\": 77.59747\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055750000000002,\r\n                        \"lng\": 77.59745000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05572,\r\n                        \"lng\": 77.59744\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05568,\r\n                        \"lng\": 77.59742\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05564,\r\n                        \"lng\": 77.59740000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055600000000002,\r\n                        \"lng\": 77.59738\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05555,\r\n                        \"lng\": 77.59736000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055520000000001,\r\n                        \"lng\": 77.59734\r\n                    },\r\n                    {\r\n                        \"lat\": 13.0555,\r\n                        \"lng\": 77.59733\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05549,\r\n                        \"lng\": 77.59732000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055470000000001,\r\n                        \"lng\": 77.5973\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055470000000001,\r\n                        \"lng\": 77.59729\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055460000000002,\r\n                        \"lng\": 77.59727000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055460000000002,\r\n                        \"lng\": 77.59725\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05545,\r\n                        \"lng\": 77.59722000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05545,\r\n                        \"lng\": 77.59717\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055460000000002,\r\n                        \"lng\": 77.59705000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05554,\r\n                        \"lng\": 77.59659\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055560000000002,\r\n                        \"lng\": 77.59644\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05564,\r\n                        \"lng\": 77.59570000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05573,\r\n                        \"lng\": 77.59489\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055740000000002,\r\n                        \"lng\": 77.59473000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055750000000002,\r\n                        \"lng\": 77.59471\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05577,\r\n                        \"lng\": 77.59451\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055790000000002,\r\n                        \"lng\": 77.59435\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055860000000001,\r\n                        \"lng\": 77.59361000000001\r\n                    }\r\n                ],\r\n                \"instructions\": \"Turn <b>right</b> after Ganga Bakers (on the right)<div style=\\\"font-size:0.9em\\\">Pass by CANARA BANK - BENGALURU BHUVANESWARINAGAR (on the left in 600m)</div>\",\r\n                \"start_point\": {\r\n                    \"lat\": 13.0554989,\r\n                    \"lng\": 77.6045477\r\n                },\r\n                \"end_point\": {\r\n                    \"lat\": 13.0558583,\r\n                    \"lng\": 77.5936105\r\n                }\r\n            },\r\n            {\r\n                \"distance\": {\r\n                    \"text\": \"0.7 km\",\r\n                    \"value\": 741\r\n                },\r\n                \"duration\": {\r\n                    \"text\": \"2 mins\",\r\n                    \"value\": 96\r\n                },\r\n                \"end_location\": {\r\n                    \"lat\": 13.0493235,\r\n                    \"lng\": 77.5928765\r\n                },\r\n                \"maneuver\": \"turn-left\",\r\n                \"polyline\": {\r\n                    \"points\": \"c~tnAa_rxMfAALAN?nACp@CXAvCMbBGh@?h@@`@Bf@B~@Jr@JrARNB`APHBH@f@FhAPtAVVJPFTDHBTF\\\\HJ@\"\r\n                },\r\n                \"start_location\": {\r\n                    \"lat\": 13.0558583,\r\n                    \"lng\": 77.5936105\r\n                },\r\n                \"travel_mode\": \"DRIVING\",\r\n                \"encoded_lat_lngs\": \"c~tnAa_rxMfAALAN?nACp@CXAvCMbBGh@?h@@`@Bf@B~@Jr@JrARNB`APHBH@f@FhAPtAVVJPFTDHBTF\\\\HJ@\",\r\n                \"path\": [\r\n                    {\r\n                        \"lat\": 13.055860000000001,\r\n                        \"lng\": 77.59361000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.0555,\r\n                        \"lng\": 77.59362\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055430000000001,\r\n                        \"lng\": 77.59363\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05535,\r\n                        \"lng\": 77.59363\r\n                    },\r\n                    {\r\n                        \"lat\": 13.054950000000002,\r\n                        \"lng\": 77.59365000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.0547,\r\n                        \"lng\": 77.59367\r\n                    },\r\n                    {\r\n                        \"lat\": 13.054570000000002,\r\n                        \"lng\": 77.59368\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05381,\r\n                        \"lng\": 77.59375\r\n                    },\r\n                    {\r\n                        \"lat\": 13.053310000000002,\r\n                        \"lng\": 77.59379000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.0531,\r\n                        \"lng\": 77.59379000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.052890000000001,\r\n                        \"lng\": 77.59378000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05272,\r\n                        \"lng\": 77.59376\r\n                    },\r\n                    {\r\n                        \"lat\": 13.052520000000001,\r\n                        \"lng\": 77.59374000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.052200000000001,\r\n                        \"lng\": 77.59368\r\n                    },\r\n                    {\r\n                        \"lat\": 13.051940000000002,\r\n                        \"lng\": 77.59362\r\n                    },\r\n                    {\r\n                        \"lat\": 13.051520000000002,\r\n                        \"lng\": 77.59352000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.051440000000001,\r\n                        \"lng\": 77.5935\r\n                    },\r\n                    {\r\n                        \"lat\": 13.051110000000001,\r\n                        \"lng\": 77.59341\r\n                    },\r\n                    {\r\n                        \"lat\": 13.051060000000001,\r\n                        \"lng\": 77.59339\r\n                    },\r\n                    {\r\n                        \"lat\": 13.051010000000002,\r\n                        \"lng\": 77.59338000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05081,\r\n                        \"lng\": 77.59334000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.050440000000002,\r\n                        \"lng\": 77.59325000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05001,\r\n                        \"lng\": 77.59313\r\n                    },\r\n                    {\r\n                        \"lat\": 13.049890000000001,\r\n                        \"lng\": 77.59307000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.049800000000001,\r\n                        \"lng\": 77.59303000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.049690000000002,\r\n                        \"lng\": 77.593\r\n                    },\r\n                    {\r\n                        \"lat\": 13.049640000000002,\r\n                        \"lng\": 77.59298000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.04953,\r\n                        \"lng\": 77.59294000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.049380000000001,\r\n                        \"lng\": 77.59289000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.049320000000002,\r\n                        \"lng\": 77.59288000000001\r\n                    }\r\n                ],\r\n                \"lat_lngs\": [\r\n                    {\r\n                        \"lat\": 13.055860000000001,\r\n                        \"lng\": 77.59361000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.0555,\r\n                        \"lng\": 77.59362\r\n                    },\r\n                    {\r\n                        \"lat\": 13.055430000000001,\r\n                        \"lng\": 77.59363\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05535,\r\n                        \"lng\": 77.59363\r\n                    },\r\n                    {\r\n                        \"lat\": 13.054950000000002,\r\n                        \"lng\": 77.59365000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.0547,\r\n                        \"lng\": 77.59367\r\n                    },\r\n                    {\r\n                        \"lat\": 13.054570000000002,\r\n                        \"lng\": 77.59368\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05381,\r\n                        \"lng\": 77.59375\r\n                    },\r\n                    {\r\n                        \"lat\": 13.053310000000002,\r\n                        \"lng\": 77.59379000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.0531,\r\n                        \"lng\": 77.59379000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.052890000000001,\r\n                        \"lng\": 77.59378000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05272,\r\n                        \"lng\": 77.59376\r\n                    },\r\n                    {\r\n                        \"lat\": 13.052520000000001,\r\n                        \"lng\": 77.59374000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.052200000000001,\r\n                        \"lng\": 77.59368\r\n                    },\r\n                    {\r\n                        \"lat\": 13.051940000000002,\r\n                        \"lng\": 77.59362\r\n                    },\r\n                    {\r\n                        \"lat\": 13.051520000000002,\r\n                        \"lng\": 77.59352000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.051440000000001,\r\n                        \"lng\": 77.5935\r\n                    },\r\n                    {\r\n                        \"lat\": 13.051110000000001,\r\n                        \"lng\": 77.59341\r\n                    },\r\n                    {\r\n                        \"lat\": 13.051060000000001,\r\n                        \"lng\": 77.59339\r\n                    },\r\n                    {\r\n                        \"lat\": 13.051010000000002,\r\n                        \"lng\": 77.59338000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05081,\r\n                        \"lng\": 77.59334000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.050440000000002,\r\n                        \"lng\": 77.59325000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.05001,\r\n                        \"lng\": 77.59313\r\n                    },\r\n                    {\r\n                        \"lat\": 13.049890000000001,\r\n                        \"lng\": 77.59307000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.049800000000001,\r\n                        \"lng\": 77.59303000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.049690000000002,\r\n                        \"lng\": 77.593\r\n                    },\r\n                    {\r\n                        \"lat\": 13.049640000000002,\r\n                        \"lng\": 77.59298000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.04953,\r\n                        \"lng\": 77.59294000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.049380000000001,\r\n                        \"lng\": 77.59289000000001\r\n                    },\r\n                    {\r\n                        \"lat\": 13.049320000000002,\r\n                        \"lng\": 77.59288000000001\r\n                    }\r\n                ],\r\n                \"instructions\": \"Turn <b>left</b><div style=\\\"font-size:0.9em\\\">Pass by Manipal Hospital Hebbal (on the left in 550m)</div><div style=\\\"font-size:0.9em\\\">Destination will be on the left</div>\",\r\n                \"start_point\": {\r\n                    \"lat\": 13.0558583,\r\n                    \"lng\": 77.5936105\r\n                },\r\n                \"end_point\": {\r\n                    \"lat\": 13.0493235,\r\n                    \"lng\": 77.5928765\r\n                }\r\n            }\r\n        ],\r\n        \"traffic_speed_entry\": [],\r\n        \"via_waypoint\": [],\r\n        \"via_waypoints\": []\r\n    },\r\n    \"user_id\": \"299\",\r\n    \"travel_details\": \"1p1d\",\r\n    \"vehicle_type\": 4,\r\n    \"total_estimated_cost\": 1882,\r\n    \"sub_user_ph_number\": [\r\n        {\r\n            \"pickup1_otp\": \"8971290497\"\r\n        },\r\n        {\r\n            \"pickup2_otp\": null\r\n        },\r\n        {\r\n            \"drop1_otp\": \"8971290497\"\r\n        },\r\n        {\r\n            \"drop2_otp\": null\r\n        }\r\n    ],\r\n    \"is_scheduled\": true,\r\n    \"schedule\": {\r\n        \"scheduled_datetime\": \"2023-08-29T13:40:00+05:30\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://logistics.thestorywallcafe.com/api/book-user-vehicle",
+							"protocol": "https",
+							"host": [
+								"logistics",
+								"thestorywallcafe",
+								"com"
+							],
+							"path": [
+								"api",
+								"book-user-vehicle"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "biiling-request",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"is_bill_required\": null,\r\n    \"is_bill_recived\": false,\r\n    \"order_id\": 3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api-domain}}/api/biiling-request/",
+							"host": [
+								"{{api-domain}}"
+							],
+							"path": [
+								"api",
+								"biiling-request",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "user-login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"mobile_number\": \"918971290497\",\r\n    \"user_role_name\": \"Driver\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://logistics.thestorywallcafe.com/api/user-login/",
+							"protocol": "https",
+							"host": [
+								"logistics",
+								"thestorywallcafe",
+								"com"
+							],
+							"path": [
+								"api",
+								"user-login",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getuserOrders",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user_id\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://logistics.thestorywallcafe.com/api/getuserOrders",
+							"protocol": "https",
+							"host": [
+								"logistics",
+								"thestorywallcafe",
+								"com"
+							],
+							"path": [
+								"api",
+								"getuserOrders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "recipt-details",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"user_id\": null,\n    \"driver_id\": 44,\n    \"order_id\": 4\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://logistics.thestorywallcafe.com/api/recipt-details",
+							"protocol": "https",
+							"host": [
+								"logistics",
+								"thestorywallcafe",
+								"com"
+							],
+							"path": [
+								"api",
+								"recipt-details"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "schedule booking",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"location_detail\": [],\n    \"vehicle_number\": null,\n    \"user_id\": 1,\n    \"travel_details\": \"1p1d\", \n    \"sub_user_ph_number\": {},\n    \"vehicle_type\": 1,\n    \"total_estimated_cost\": 2940.0,\n    \"is_scheduled\": true,\n    \"schedule\": {\n        \"scheduled_datetime\": \"2023-03-10T07:58:10.585622Z\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "all-scheduled-orders",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://logistics.thestorywallcafe.com/api/all-scheduled-orders",
+							"protocol": "https",
+							"host": [
+								"logistics",
+								"thestorywallcafe",
+								"com"
+							],
+							"path": [
+								"api",
+								"all-scheduled-orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "select the order by driver",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"driver_id\": 1,\n    \"order_id\": 53\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://logistics.thestorywallcafe.com/api/all-scheduled-orders",
+							"protocol": "https",
+							"host": [
+								"logistics",
+								"thestorywallcafe",
+								"com"
+							],
+							"path": [
+								"api",
+								"all-scheduled-orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "https://logistics.thestorywallcafe.com/api/all-scheduled-orders?driver_id=1",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://logistics.thestorywallcafe.com/api/all-scheduled-orders?driver_id=1",
+							"protocol": "https",
+							"host": [
+								"logistics",
+								"thestorywallcafe",
+								"com"
+							],
+							"path": [
+								"api",
+								"all-scheduled-orders"
+							],
+							"query": [
+								{
+									"key": "driver_id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "list of drivers with distance between order start location and driver live location",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://logistics.thestorywallcafe.com/api/driver-list-with-distance?order_id=44",
+							"protocol": "https",
+							"host": [
+								"logistics",
+								"thestorywallcafe",
+								"com"
+							],
+							"path": [
+								"api",
+								"driver-list-with-distance"
+							],
+							"query": [
+								{
+									"key": "order_id",
+									"value": "44"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "all users",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo0MzQsInVzZXJuYW1lIjoiQXJwaXRoYSIsImVtYWlsIjpudWxsLCJyb2xlX25hbWUiOiJBRE1JTiIsInJvbGVfaWQiOjEwfQ.ZK40-Sw3rzUX4oCvHpiG97WW25onirmEOybTASF5O44",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo0MTUsInVzZXJuYW1lIjoiQXJwaXRoYSIsImVtYWlsIjpudWxsLCJyb2xlX25hbWUiOiJBRE1JTiIsInJvbGVfaWQiOjEzfQ.K9dwyFbK_BjmQ9j8FVH24esNLnnm_5ssNnFrAF4vCfs",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{api-domain}}/api/driver?page=1&page_size=5&is_online=True&search_key=bh",
+							"host": [
+								"{{api-domain}}"
+							],
+							"path": [
+								"api",
+								"driver"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "page_size",
+									"value": "5"
+								},
+								{
+									"key": "start_date",
+									"value": "2024-01-04",
+									"disabled": true
+								},
+								{
+									"key": "is_scheduled",
+									"value": "True",
+									"disabled": true
+								},
+								{
+									"key": "search_key",
+									"value": "In",
+									"disabled": true
+								},
+								{
+									"key": "status_id",
+									"value": "[2,3]",
+									"disabled": true
+								},
+								{
+									"key": "is_online",
+									"value": "True"
+								},
+								{
+									"key": "search_key",
+									"value": "bh"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "activate or deactive user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"user_active_status\": \"Active\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api-domain}}/api/activate-or-deactivate-user/?user_id=431",
+							"host": [
+								"{{api-domain}}"
+							],
+							"path": [
+								"api",
+								"activate-or-deactivate-user",
+								""
+							],
+							"query": [
+								{
+									"key": "user_id",
+									"value": "431"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "DriverModule",
+			"item": [
+				{
+					"name": "get driver orders",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo0NDV9.jdg9zLe3reEj5BAyo23n9mA69Nc99N5IEpzJ6xOtNIg",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/vehicle_subscription/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"vehicle_subscription",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateStatusByDriver",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"otp\": null,\r\n    \"update_status\": \"5\",\r\n    \"order_id\": 22,\r\n    \"order_detail\": null\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://logistics.thestorywallcafe.com/api/driver-order-detail",
+							"protocol": "https",
+							"host": [
+								"logistics",
+								"thestorywallcafe",
+								"com"
+							],
+							"path": [
+								"api",
+								"driver-order-detail"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get single driver order details",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://logistics.thestorywallcafe.com/api/drivers-order-detail?driver_id=1&order_id=1",
+							"protocol": "https",
+							"host": [
+								"logistics",
+								"thestorywallcafe",
+								"com"
+							],
+							"path": [
+								"api",
+								"drivers-order-detail"
+							],
+							"query": [
+								{
+									"key": "driver_id",
+									"value": "1"
+								},
+								{
+									"key": "order_id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add Driver vehicle",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"reg_certifiacte_front\": \"\",\r\n    \"reg_certifiacte_back\": \"\",\r\n    \"pollution_certifiactae_front\": \"\",\r\n    \"fitness_certifiacte_front\": \"\",\r\n    \"fitness_certifiacte_back\": \"\",\r\n    \"permit_image\": \"\",\r\n    \"insurance_image\": \"\",\r\n    \"driver_id\": \"\",\r\n    \"vehicle_type\": \"\",\r\n    \"vehicle_name\": \"\",\r\n    \"vehicle_number\":\"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api-domain}}/api/vehicle",
+							"host": [
+								"{{api-domain}}"
+							],
+							"path": [
+								"api",
+								"vehicle"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update-driver-online-status",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"driver_id\": \"1\",\r\n    \"is_online\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://logistics.thestorywallcafe.com/api/update-driver-online-status/",
+							"protocol": "https",
+							"host": [
+								"logistics",
+								"thestorywallcafe",
+								"com"
+							],
+							"path": [
+								"api",
+								"update-driver-online-status",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update driver profile",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"full_name\": \"\",\r\n    \"driving_licence_number\": \"\",\r\n    \"badge\": \"\",\r\n    \"mobile_number\": \"\",\r\n    \"adhar_front_image\": \"\",\r\n    \"adhar_back_image\": \"\",\r\n    \"licence_image\": \"\",\r\n    \"passbook_image\": \"\",\r\n    \"driver_id\": \"\",\r\n    \"owner_details\": {\r\n        \"owner_name\": \"\",\r\n        \"owner_mobile_number\": \"\",\r\n        \"owner_drivering_licence_number\": \"\",\r\n        \"owner_adhar_front_image\": \"\",\r\n        \"owner_adhar_back_image\": \"\"\r\n    }\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api-domain}}/api/updateDriverDetails/2",
+							"host": [
+								"{{api-domain}}"
+							],
+							"path": [
+								"api",
+								"updateDriverDetails",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "sign-up",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{api-domain}}/api/sign-up",
+							"host": [
+								"{{api-domain}}"
+							],
+							"path": [
+								"api",
+								"sign-up"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update-driver-location",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"driver_id\": 2,\r\n    \"lat\": \"\",\r\n    \"lng\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://logistics.thestorywallcafe.com/api/update-driver-location",
+							"protocol": "https",
+							"host": [
+								"logistics",
+								"thestorywallcafe",
+								"com"
+							],
+							"path": [
+								"api",
+								"update-driver-location"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get driver by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://logistics.thestorywallcafe.com/api/DriverSignup/?user_id=44",
+							"protocol": "https",
+							"host": [
+								"logistics",
+								"thestorywallcafe",
+								"com"
+							],
+							"path": [
+								"api",
+								"DriverSignup",
+								""
+							],
+							"query": [
+								{
+									"key": "user_id",
+									"value": "44"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "calculation",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"vehicle_type_id\": 3,\n    \"location_details\": {\n            \"distance\": {\n                \"text\": \"30.0 km\",\n                \"value\": 3995\n            },\n            \"duration\": {\n                \"text\": \"60 mins\",\n                \"value\": 659\n            },\n            \"end_address\": \"Byataranyanapura, 104/6, Kempapura Main Rd, Chiranjeevi Layout, Hebbal, Bengaluru, Karnataka 560092, India\",\n            \"end_location\": {\n                \"lat\": 13.0493239,\n                \"lng\": 77.5928813\n            },\n            \"via_waypoint\": [],\n            \"start_address\": \"880, Railway Parallel Rd, Nti Layout, Rajiv Gandhi Nagar, Kodigehalli, Bengaluru, Karnataka 560097, India\",\n            \"via_waypoints\": [],\n            \"start_location\": {\n                \"lat\": 13.0659342,\n                \"lng\": 77.5797836\n            },\n            \"traffic_speed_entry\": []\n        }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api-domain}}/api/Vehicle_estimation_cost/",
+							"host": [
+								"{{api-domain}}"
+							],
+							"path": [
+								"api",
+								"Vehicle_estimation_cost",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "driver-overall-ratings",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api-domain}}/api/driver-overall-ratings/44",
+							"host": [
+								"{{api-domain}}"
+							],
+							"path": [
+								"api",
+								"driver-overall-ratings",
+								"44"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "drivertotal_earning",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api-domain}}/api/drivertotal_earning/?year=2022&driver_id=92",
+							"host": [
+								"{{api-domain}}"
+							],
+							"path": [
+								"api",
+								"drivertotal_earning",
+								""
+							],
+							"query": [
+								{
+									"key": "year",
+									"value": "2022",
+									"description": "3"
+								},
+								{
+									"key": "month",
+									"value": "12",
+									"disabled": true
+								},
+								{
+									"key": "week",
+									"value": "4",
+									"disabled": true
+								},
+								{
+									"key": "driver_id",
+									"value": "92"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-sub-user-phone-number-by-orer-id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://logistics.thestorywallcafe.com/api/get-sub-user-phone-number/452",
+							"protocol": "https",
+							"host": [
+								"logistics",
+								"thestorywallcafe",
+								"com"
+							],
+							"path": [
+								"api",
+								"get-sub-user-phone-number",
+								"452"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "send-otp",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"phone_number\": 918073596430\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://logistics.thestorywallcafe.com/api/send-otp-to-sub-user",
+							"protocol": "https",
+							"host": [
+								"logistics",
+								"thestorywallcafe",
+								"com"
+							],
+							"path": [
+								"api",
+								"send-otp-to-sub-user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "verify-otp",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"phone_number\": 918971290497,\n    \"otp\": 9819\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://logistics.thestorywallcafe.com/api/send-otp-to-sub-user",
+							"protocol": "https",
+							"host": [
+								"logistics",
+								"thestorywallcafe",
+								"com"
+							],
+							"path": [
+								"api",
+								"send-otp-to-sub-user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "assign-vehicle-to-new-driver",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"vehicle_id\": 1,\n    \"driver_id\": 2\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://logistics.thestorywallcafe.com/api/assign-vehicle-to-new-driver",
+							"protocol": "https",
+							"host": [
+								"logistics",
+								"thestorywallcafe",
+								"com"
+							],
+							"path": [
+								"api",
+								"assign-vehicle-to-new-driver"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Masters",
+			"item": [
+				{
+					"name": "status",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status_name\": \"tetse\",\n    \"colour\": \"ew\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8000/api/status",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"status"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "api-domain",
+			"value": "https://logisticsdev.thestorywallcafe.com",
+			"type": "string"
+		},
+		{
+			"key": "api-domain",
+			"value": "localhost:8000",
+			"type": "string",
+			"disabled": true
+		}
+	]
+}

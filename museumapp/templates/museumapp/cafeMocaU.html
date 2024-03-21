@@ -1,0 +1,153 @@
+{% extends "museumapp/base.html" %}
+
+{% load static %}
+	
+	<!--- Title --->
+	{% block title %}	{% endblock %}
+
+	<!--- Custom CSS --->
+	{% block custom-css-parts %}
+	{% endblock %}
+
+	<!--- Custom Style --->
+	{% block style %}
+		<link rel="stylesheet" type="text/css" href="{% static 'museumapp/css/cafeMoca.css' %}"/>
+		<link rel="stylesheet" type="text/css" href="{% static 'museumapp/css/toi-css/hover-box.css' %}" />
+		
+			<style type="text/css">
+	.move-top1 {
+    position: absolute;
+    top: 30%;
+    left: 15%;
+    color: white;
+
+</style>
+	
+
+		
+	{% endblock %}
+
+	<!--- Body content --->
+	{% block body-content %}
+		<!-- Page Content  -->
+		<div id="content">
+
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-sm-12" style="padding: 0px;">
+						<div class="parallax" style="background-image: url('{% static 'museumapp/image/cafebanner.jpg' %}');"></div>
+					</div>
+					
+					<div class="move-top1">
+						<div class="fira-on-image fira font-weight-bold">PLAN A VISIT / <span style="color: white;">ALFRESCO CAFE</span></div>
+						<div class="big-font-on-image garamond">Freshly Baked Snacks and Sweets</div>
+					</div>
+				</div>
+			</div>
+				
+			<div class="container-fluid from-image-content">
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="row">
+								<div class="col-sm-3"></div>
+								<div class="col-sm-6 high-para display-image">
+									<div class="page-highlights garamond">
+								Enjoy a wide selection of freshly-prepared, snacks, sweets and drinks in our Alfresco Cafe. These items are made especially for the museum by local-community chefs, bakers and pastry-makers in Goa
+								
+								<br><br>
+								
+									<img src="{% static 'museumapp/image/iwt/cafenew-min.jpg' %}" alt="MoCA" class="img-fluid">
+									
+									
+									</div>
+								</div>
+								<div class="col-sm-3"></div>
+							</div>
+
+							<div class="row high-para">
+								<div class="container-fluid">
+									<div class="row moca-cafe-text">
+										<div class="col-sm-3"></div>
+										<div class="col-sm-3 display-image">
+											<div class="row small-heading fira font-weight-bold sub-para" style="margin-top: 30px;margin-left: 0px;">OPENING TIMES</div>
+											<div class="inner-para garamond inner-text-getting-there sub-para">
+												{% comment %} Open daily 10 am–5 pm.  {% endcomment %}
+											</div>
+											
+											<div class="inner-para garamond inner-text-getting-there sub-para" >
+												{% comment %} The Alfesco Café is open all year, weather dependent.  {% endcomment %}
+												The Alfesco Café is temporarily closed. 
+											</div>
+											
+											<!--<div class="inner-para garamond inner-text-getting-there sub-para">
+												<b class="gara-14" style="letter-spacing: 0px;">PLEASE NOTE</b>: Occasionally the Alfesco Café will not open until 10.00 due to museum events.
+											</div>-->
+											<div class="inner-para garamond inner-text-getting-there sub-para">
+												{% comment %} For more information, please call<br> 8308805399 {% endcomment %}
+											</div>
+										</div>
+										<div class="col-sm-6"></div>
+									</div>	
+								</div>
+							</div>
+
+							<div class="row next-links">
+								<div class="col-sm-3"></div>
+									
+								<div class="col-sm pad-image">
+									<a href="{% url 'museumapp:accessibilityMoca' %}">
+										<div class="hvrbox">
+											<img src="{% static 'museumapp/image/iwt/access-min.png' %}" class="img-fluid" alt="Moca">
+											<!-- <div class="hvrbox-layer_top">
+												<div class="hvrbox-text hvrbox-layer_slideup">
+													<div class="text-center garamond inner-para sub-para"><span class="font-weight-bold">ACCESSIBILITY</div>
+													<div class="text-left garamond" style="font-size: 16px; font-weight: normal;">To make your visit as comfortable as possible, here are the facilities available at the museum.</div>
+												</div>
+											</div> -->
+										</div>
+									</a>
+								</div>
+
+								<div class="col-sm pad-image">
+									<!-- <a href="http://www.selfdefence.co.in/mocashop" target="_blank">-->
+									<a href="{% url 'museumapp:shopAlert' %}" target="_blank">
+										<div class="hvrbox">
+											<img src="{% static 'museumapp/image/iwt/shop-min.png' %}" class="img-fluid" alt="Moca" >
+											<!-- <div class="hvrbox-layer_top">
+												<div class="hvrbox-text hvrbox-layer_slideup">
+													<div class="text-center garamond inner-para sub-para"><span class="font-weight-bold">KNOWLEDGE CENTER</div>
+													<div class="text-left garamond" style="font-size: 16px; font-weight: normal;">Museum staff are constantly engaged in new research all over the world.</div>
+												</div>
+											</div> -->
+										</div>
+									</a>
+								</div>
+
+								<div class=" col-sm display-image">
+									<!-- <a href="{% url 'museumapp:knowledgeCenterMoca' %}">
+										<div class="hvrbox">
+											<img src="{% static 'museumapp/image/KC03.jpeg' %}" class="img-fluid1 img-fluid" alt="Moca">
+											<div class="hvrbox-layer_top">
+												<div class="hvrbox-text hvrbox-layer_slideup">
+													<div class="text-center garamond inner-para sub-para"><span class="font-weight-bold">KNOWLEDGE CENTER</div>
+													<div class="text-left garamond" style="font-size: 16px; font-weight: normal;">Museum staff are constantly engaged in new research all over the world, from archaeological excavations or studies.</div>
+												</div>
+											</div>
+										</div>
+									</a> -->
+								</div>
+
+								<div class="col-sm-3"></div>	
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		</div>
+	{% endblock %}
+
+	<!--- Custom Script Block --->
+	{% block custom-script %}	{% endblock %}								

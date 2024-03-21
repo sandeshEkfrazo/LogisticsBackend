@@ -1,0 +1,308 @@
+{% extends "museumapp/base.html" %}
+
+{% load static %}
+
+	<!--- Title --->
+	{% block title %}
+		Museum of Christian Art
+	{% endblock %}
+
+	<!--- Custom CSS --->
+	{% block custom-css-parts %}
+		<link rel="stylesheet" type="text/css" href="{% static 'museumapp/css/objectsMoca.css' %}"/>
+		<link rel="stylesheet" type="text/css" href="{% static 'museumapp/css/toi-css/hover-box.css' %}" />
+	{% endblock %}
+
+	<!--- Custom Style --->
+	{% block style %}
+		<style type="text/css">
+			.form-group{
+				margin-bottom: 0px;
+			}
+			option.space{
+				margin-bottom: 20px;
+			}
+			span.twitter-typeahead
+			{
+				width: 100%;
+				height: 40px;
+			}
+			input.tt-hint{
+				width: 100%;
+				height: 40px;
+				border: 0px;
+				padding-left: 20px;
+				color: #615f5f82;
+				font-size: 15px;
+				letter-spacing: 0px;
+			}
+			input.tt-input{
+				width: 100%;
+				background-color: #d3d3d35e !important;
+				border: 0px;
+				height: 40px;
+				color: #615f5f82;
+				border-radius: 0px;
+				font-size: 15px;
+				letter-spacing: 0px;
+				padding-left: 20px;
+			}
+			div.tt-menu{
+				background-color: #d3d3d3;
+				width: 100%;
+				padding: 20px;
+			}
+			div.tt-dataset{
+				border-bottom: 1px solid black;
+				margin-bottom: 10px;
+				padding-bottom: 10px;
+			}
+			div.tt-suggestion, div.tt-selectable{
+				cursor: pointer;
+			}
+			@media (max-width: 425px) {
+				input.tt-hint {
+				    padding-left: 5px;
+				    font-size: 12px;
+				}
+				input.tt-input {
+				    font-size: 12px;
+				    padding-left: 5px;
+				}
+				div.drp-button-class div.pad_left div.form-group {
+				    margin-bottom: 5px;
+				}
+				#object_type, #material, #time_period, #location{
+					margin-bottom: 5px;
+				}
+				.in-middle{
+					text-align: -webkit-center;
+				}
+			}
+
+
+.image-container {
+    max-width: 204px;
+    max-height: 200px;
+    min-width: 204px;
+    min-height: 200px;
+    vertical-align: top;
+}
+
+.image-container1 {
+   max-width: 204px;
+    max-height: 236px;
+    min-width: 204px;
+    min-height: 236px;
+    vertical-align: top;
+}
+		</style>
+		{% endblock %}
+
+	<!--- Body content --->
+	{% block body-content %}
+		<!-- Page Content  -->
+		<div id="content">
+			<div class="container-fluid from-image-content">
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="row">
+							<div class="col-sm-12" style="">
+
+
+								<div class="row">
+									<div class="col-sm-2"></div>
+									<div class="col-sm-8">
+										<div class="page-heading garamond sub-para">Search Results</div>
+                                        <br>
+										 {% if journals_data %}
+                                        <h2 class="page-highlights garamond">Journals</h2>
+                                        <div class="row" id="listing">
+
+
+
+															
+                                           
+                                                {% for i in journals_data %}
+                                                    <div class='col-sm-4' style='margin-bottom:30px;'>
+                                                        <a href='https://museumofchristianart.com/journal_detailed_view/{{ i.slug }}'>
+                                                        <!--<a href='http://127.0.0.1:8000/journal_detailed_view/{{ i.slug }}'>-->
+                                                            <div class='image-container sub-para'>
+                                                                <img class='img-fluid' src='/media/{{ i.event_image }}' href='MoCA'>
+                                                            </div>
+                                                            <div class='gara-14 font-weight-bold garamond text-uppercase'>
+                                                                {{ i.event_name }}
+                                                            </div>
+															
+                                                        </a>
+                                                    </div>
+                                                {% endfor %}
+                                        
+                                            {% endif %}
+                                        </div>
+                                    <br><br>
+									</div>
+									<div class="col-sm-2"></div>
+								</div>
+
+
+                                <div class="row">
+									<div class="col-sm-2"></div>
+									<div class="col-sm-8">
+ {% if in_the_news_data %}
+                                        <h2 class="page-highlights garamond">Press</h2>
+                                        <div class="row" id="listing">
+
+                                           
+                                                {% for i in in_the_news_data %}
+                                                    <div class='col-sm-4' style='margin-bottom:30px;'>
+                                                        <a href='{{ i.link }}'>
+                                                            <div class='image-container sub-para'>
+                                                                <img class='img-fluid' src='/media/{{ i.event_image }}' href='MoCA' style='width: 100%; height: auto;'>
+                                                            </div>
+                                                            <div class='gara-14 font-weight-bold garamond text-uppercase'>
+                                                                {{ i.event_name }}
+                                                            </div>
+                                                        </a>
+                                                    </div>
+                                                {% endfor %}
+                                         
+                                            {% endif %}
+
+                                        </div>
+									</div>
+									<div class="col-sm-2"></div>
+
+								</div>
+
+
+                                <div class="row">
+									<div class="col-sm-2"></div>
+									<div class="col-sm-8">
+     {% if featured_event_data %}
+                                        <h2 class="page-highlights garamond"> Events & Exhibitions </h2>
+                                        <div class="row" id="listing">
+
+                                       
+                                                {% for i in featured_event_data %}
+                                                    <div class='col-sm-4' style='margin-bottom:30px;'>
+                                                        <a href='https://museumofchristianart.com/whatsOn_detailed_view/"+ {{ i.slug }} +"'>
+                                                        <!--<a href='http://127.0.0.1:8000/whatsOn_detailed_view/"+ {{ i.slug }} +"'>-->
+                                                            <div class='image-container sub-para'>
+                                                                <img class='img-fluid' src='/media/{{ i.event_image }}' href='MoCA' style='width: 100%; height: auto;'>
+                                                            </div>
+                                                            <div class='gara-14 font-weight-bold garamond text-uppercase'>
+                                                                {{ i.event_name }}
+                                                            </div>
+                                                        </a>
+                                                    </div>
+
+                                                {% endfor %}
+                                        
+                                            {% endif %}
+
+                                        </div>
+									</div>
+									<div class="col-sm-2"></div>
+
+								</div>
+
+
+                                <div class="row">
+									<div class="col-sm-2"></div>
+									<div class="col-sm-8">
+
+                                            {% if object_data %}
+                                        <h2 class="page-highlights garamond"> Objects - Collections</h2>
+                                        <div class="row" id="listing">
+
+                                                {% for i in object_data %}
+
+                                                    <div class='col-sm-4' style='margin-bottom:30px;'>
+                                                        <a href='https://museumofchristianart.com/moca-object-detailed-view/{{ i.slug }}'>
+                                                        <!--<a href='http://127.0.0.1:8000/moca-object-detailed-view/{{ i.slug }}'>-->
+                                                            <div class='image-container1 sub-para'>
+                                                                <img src= '/media/{{ i.object_image }}' class='img-fluid' alt='MoCA'>
+                                                            </div>
+                                                            <div class='gara-14 font-weight-bold garamond text-uppercase'>
+                                                                {{ i.object_name }}
+                                                            </div>
+                                                        </a>
+                                                    </div>
+
+                                                {% endfor %}
+                                         
+                                            {% endif %}
+
+                                        </div>
+									</div>
+									<div class="col-sm-2"></div>
+
+								</div>
+
+
+                                <div class="row">
+									<div class="col-sm-2"></div>
+									<div class="col-sm-8">
+
+   {% if story_data %}
+                                        <h2 class="page-highlights garamond"> Stories </h2>
+                                        <div class="row" id="listing">
+
+                                         
+                                                {% for i in story_data %}
+
+                                                    <div class='col-sm-4' style='margin-bottom:30px;'>
+                                                        <a href='https://museumofchristianart.com/moca-story/{{ i.slug }}'>
+                                                        <!--<a href='http://127.0.0.1:8000/moca-object-detailed-view/{{ i.slug }}'>-->
+                                                            <div class='image-container sub-para'>
+                                                                <img src= '/media/{{ i.story_thumbnail }}' class='img-fluid' alt='MoCA'>
+                                                            </div>
+                                                            <div class='gara-14 font-weight-bold garamond text-uppercase'>
+                                                                {{ i.story_title }}
+                                                            </div>
+                                                        </a>
+                                                    </div>
+
+                                                {% endfor %}
+                                       
+                                            {% endif %}
+
+                                        </div>
+									</div>
+									<div class="col-sm-2"></div>
+
+								</div>
+
+
+								<div class="row">
+									<div class="col-sm-2"></div>
+									<div class="col-sm-8">
+                                        {% if journals_data|length <= 0 and in_the_news_data|length <= 0  and featured_event_data|length <= 0  and object_data|length <= 0  and story_data|length <= 0 %}
+                                        <div class="row" id="listing">
+                                            <div class='col-sm-4' style='margin-bottom:30px;'>
+                                                <div class='gara-25 font-weight-bold garamond text-uppercase'>
+                                                    No Results Found.
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {% endif %}
+
+                                    </div>
+								</div>
+
+
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	{% endblock %}
+
+	<!--- Custom Script Block --->
+	{% block custom-script %}
+
+	{% endblock %}

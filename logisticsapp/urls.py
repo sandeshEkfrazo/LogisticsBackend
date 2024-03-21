@@ -13,20 +13,8 @@ app_name = 'logisticsapp'
 urlpatterns = [
 #!------------------    ACCOUNT TABLE    ------------------#!
 
-    path('sign-up/', UserLoginView.as_view()),  # driver sign up
-    path('user-login/', LoginApi.as_view()),    # driver login
-
-    path('verify-otp', VerifyOtpPhoneNumberApiView.as_view()), # verify otp for driver and user after entering mobile number
-
-    path('DriverSignup/',DriverSignup.as_view()), # Add and Get Driver Personal details
-    path('DriverSignup/<int:user_id>',DriverSignup.as_view()),  # Driver Personal details
-
-    path('vehicle/', VehicleView.as_view()), # add vehicle for driver by passing the driver id in the body and their details
-    path('vehicle/<int:pk>', VehicleView.as_view()), # get vehicle details 
-
-
-
     path("custom-tempate", templateView),
+
     path('register', RegistrationApiVew.as_view()),
     path('login', LoginView.as_view()),
     path('forgot-password-send-otp', ForgotPasswordSendOtp.as_view()),
@@ -34,11 +22,11 @@ urlpatterns = [
     path('password-reset', ForgotPasswordReset.as_view()),
     path('change-password', ChangePassword.as_view()),
 
-    path('signup-phone-number', SignUpPhoneNumberApiView.as_view()), # user registration
+    path('signup-phone-number', SignUpPhoneNumberApiView.as_view()),
 
     path('login-view', LoginApiView.as_view()),
 
-    
+    path('verify-otp', VerifyOtpPhoneNumberApiView.as_view()),
 
     path('signup-user', SignupUserApiView.as_view()),
 
@@ -77,7 +65,8 @@ urlpatterns = [
     path('review', ReviewApiView.as_view()),
     path('review/<int:pk>', ReviewApiView.as_view()),
 
-    
+    path('vehicle/', VehicleView.as_view()),
+    path('vehicle/<int:pk>', VehicleView.as_view()),
 
     path('customer-address', CustomerAddressView.as_view()),
     path('customer-address/<int:pk>', CustomerAddressView.as_view()),
@@ -107,7 +96,7 @@ urlpatterns = [
     path('latitude_longitude', DriverLatitudeLongitudeView.as_view()),
 
     path('user_destination', UserDestinationsView.as_view()),
-    
+    path('sign-up/', UserLoginView.as_view()),
     path('VerifyOtp/', OtpVerificationApi.as_view()),
 
     path('BookingVehicle/', BookingVehicleApi.as_view()),
@@ -119,10 +108,11 @@ urlpatterns = [
     path('UserSignup/<int:pk>',UserSignup.as_view()),
     # path('profile_image/<int:pk>', views.profile_image, name='profile_image'),
 
-    
+    path('DriverSignup/',DriverSignup.as_view()),
+    path('DriverSignup/<int:user_id>',DriverSignup.as_view()),
     path('updateDriverDetails/<int:driver_id>',DriverSignup.as_view()),
     path('driver', DriverSignup.as_view()),
-    
+    path('user-login/', LoginApi.as_view()),
     path('customised_message/', Customised_messageApi.as_view()),
     path('customised_message/<int:pk>', Customised_messageApi.as_view()),
     path('accept_or_decline/<int:pk>', accept_or_declineApi.as_view()),

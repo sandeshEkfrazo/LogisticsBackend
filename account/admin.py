@@ -18,7 +18,7 @@ from .models import *
 
 # @admin.register(Driver)
 # class Driver(admin.ModelAdmin):
-#     list_display =['id','user','account','vehicle','owner_id','subcription','account','notification_history','driver_driving_license','badge','driving_license_image_path','validity_start_date_time','validity_end_date_time','driver_status','license_expire_date','fitness_certificate_expire_date','insurence_expire_date','license_img_front','license_img_back','insurence_img','passbook_img','fitness_certificate_front_side_img_path','fitness_certificate_back_side_img_path','live_lattitude','live_longitude','date_online','date_offline','is_online','time','create_timestamp','last_update_timestamp']
+#     list_display =['id','user','account','vehicle','owner_id','subcription','account','notification_history','driver_driving_license','badge','driving_license_image_path','validity_start_date_time','validity_end_date_time','driver_status','license_expire_date','fitness_certificate_expire_date','insurance_expire_date','license_img_front','license_img_back','insurence_img','passbook_img','fitness_certificate_front_side_img_path','fitness_certificate_back_side_img_path','live_lattitude','live_longitude','date_online','date_offline','is_online','time','create_timestamp','last_update_timestamp']
 
 # @admin.register(PaymentDetails)
 # class PaymentDetails(admin.ModelAdmin):

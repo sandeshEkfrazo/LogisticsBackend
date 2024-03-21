@@ -1,0 +1,152 @@
+{% extends "museumapp/base.html" %}
+
+{% load static %}
+	
+	<!--- Title --->
+	{% block title %}	{% endblock %}
+
+	<!--- Custom CSS --->
+	{% block custom-css-parts %}
+	{% endblock %}
+
+	<!--- Custom Style --->
+	{% block style %}
+		<link rel="stylesheet" type="text/css" href="{% static 'museumapp/css/connectionsMoca.css' %}"/>
+		<link rel="stylesheet" type="text/css" href="{% static 'museumapp/css/toi-css/hover-box.css' %}" />
+	{% endblock %}
+
+	<!--- Body content --->
+	{% block body-content %}
+		<!-- Page Content  -->
+		<div id="content">
+				
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-sm-12" style="padding: 0px;">
+						<div class="parallax" style="background-image: url('{% static 'museumapp/image/31.png' %}');"></div>
+					</div>
+					
+					<div class="move-top">
+						<div class="fira-on-image fira font-weight-bold">MOCA COMMUNITY</div>
+						<div class="big-font-on-image garamond">Connecting through Discovery</div>
+					</div>
+				</div>
+			</div>
+				
+			<div class="container-fluid from-image-content">
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="row">
+							<div class="col-sm-12">
+								<div class="row">
+									<div class="col-sm-3"></div>
+									<div class="col-sm-6" style="padding-left: 0px;">
+										<div class="page-highlights garamond high-para"> The Museum of Christian Art is at the centre of many aspects of Goan culture. The museum aims to build communities through creating a deeper understanding of the unique culture of Goa
+										</div>
+									</div>
+									<div class="col-sm-3"></div>
+								</div>
+									
+								<div class="row">
+									<div class="col-sm-3"></div>
+									<div class="col-sm-6" style="padding-left: 0px;">		
+										<div class="inner-para garamond font-weight-bolder  sub-para"> Lorem ipsum dolor sit amet, possim commodo mea eu, ex eam nobis antiopam. Ullum partiendo endrerit te mei, impetus salutandi id has, principes euripidis sed cu. Habeo torquatos has an. Cum elitr possit detraxit at, ex magna luptatum lucilius eos. Quo at harum vitae honestatis, cu tale veri torquatos mea, graeci singulis erroribus ne sit. Ea sed inani</div>	
+									</div>
+									<div class="col-sm-3"></div>
+								</div>
+
+								<div class="row">
+									<div class="col-sm-3"></div>
+									<div class="col-sm-6" style="padding-left: 0px;">	
+										<div class="inner-para garamond font-weight-bolder high-para"> Lorem ipsum dolor sit amet, possim commodo mea eu, ex eam nobis antiopam. Ullum partiendo hendrerit te mei, impetus salutandi id has, principes euripidis sed cu. Habeo torquatos has an. Cum elitr possit detraxit at, ex magna luptatum lucilius eos. Quo at harum vitae honestatis, cu tale veri torquatos mea, graeci singulis erroribus ne sit. Ea sed inani</div>
+									</div>
+									<div class="col-sm-3"></div>
+								</div>
+
+								<div class="row next-links">
+									<div class="col-sm-3"></div>
+
+									<div class="col-sm display-image">
+										<a href="{% url 'museumapp:learnMoca' %}">
+											<div class="hvrbox">
+												<img src="{% static 'museumapp/image/iwt/learn.png' %}" class="img-fluid1 img-fluid" alt="Moca">
+												<div class="hvrbox-layer_top">
+													<div class="hvrbox-text hvrbox-layer_slideup">Stories of Faith, through the museum collection.</div>
+												</div>
+											</div>
+										</a>
+									</div>
+
+									<!-- <div class="col-sm display-image">
+										<a href="{% url 'museumapp:knowledgeCenterMoca' %}">
+											<div class="hvrbox">
+												<img src="{% static 'museumapp/image/families.png' %}" class="img-fluid1 img-fluid" alt="Moca">
+												<div class="hvrbox-layer_top">
+													<div class="hvrbox-text hvrbox-layer_slideup">Stories of Faith, through the museum collection.</div>
+												</div>
+											</div>
+										</a>
+									</div>
+
+									<div class="col-sm display-image">
+										<a href="{% url 'museumapp:knowledgeCenterMoca' %}">
+											<div class="hvrbox">
+												<img src="{% static 'museumapp/image/comunity.png' %}" class="img-fluid1 img-fluid" alt="Moca">
+												<div class="hvrbox-layer_top">
+													<div class="hvrbox-text hvrbox-layer_slideup">Stories of Faith, through the museum collection.</div>
+												</div>
+											</div>
+										</a>
+									</div> -->
+
+									<div class="col-sm-3"></div>	
+								</div>
+
+								<div class="row next-links" style="padding-top: 30px;">
+									<div class="col-sm-3"></div>
+
+									<!-- <div class="col-sm display-image">
+										<a href="{% url 'museumapp:knowledgeCenterMoca' %}">
+											<div class="hvrbox">
+												<img src="{% static 'museumapp/image/whats-min.png' %}" class="img-fluid1 img-fluid" alt="Moca">
+												<div class="hvrbox-layer_top">
+													<div class="hvrbox-text hvrbox-layer_slideup">Stories of Faith, through the museum collection.</div>
+												</div>
+											</div>
+										</a>
+									</div>
+
+									<div class="col-sm display-image">
+										<a href="{% url 'museumapp:knowledgeCenterMoca' %}">
+											<div class="hvrbox">
+												<img src="{% static 'museumapp/image/guided t.png' %}" class="img-fluid1 img-fluid" alt="Moca">
+												<div class="hvrbox-layer_top">
+													<div class="hvrbox-text hvrbox-layer_slideup">Stories of Faith, through the museum collection.</div>
+												</div>
+											</div>
+										</a>
+									</div> -->
+
+									<!-- <div class="col-sm display-image">
+										<a href="{% url 'museumapp:knowledgeCenterMoca' %}">
+											<div class="hvrbox">
+												<img src="{% static 'museumapp/image/learn-min.png' %}" class="img-fluid1 img-fluid" alt="Moca">
+												<div class="hvrbox-layer_top">
+													<div class="hvrbox-text hvrbox-layer_slideup">Stories of Faith, through the museum collection.</div>
+												</div>
+											</div>
+										</a>
+									</div> -->
+
+									<div class="col-sm-3"></div>	
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	{% endblock %}
+
+	<!--- Custom Script Block --->
+	{% block custom-script %}	{% endblock %}

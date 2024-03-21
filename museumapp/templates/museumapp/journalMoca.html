@@ -1,0 +1,194 @@
+{% extends "museumapp/base.html" %}
+
+{% load static %}
+	
+	<!--- Title --->
+	{% block title %}
+		Museum of Christian Art
+	{% endblock %}
+
+	<!--- Custom CSS --->
+	{% block custom-css-parts %}
+	{% endblock %}
+
+	<!--- Custom Style --->
+	{% block style %}
+
+		<link rel="stylesheet" type="text/css" href="{% static 'museumapp/css/journalMoca.css' %}"/>
+
+	{% endblock %}
+
+	<!--- Body content --->
+	{% block body-content %}
+		<!-- Page Content  -->
+		<div id="content">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-sm-12" style="padding: 0px;">
+						<div class="parallax" style="background-image: url('{% static 'museumapp/image/2067.jpg' %}');"></div>
+					</div>
+				
+			<div class="move-top">
+				<div class="fira-on-image fira font-weight-bold" id="mj-main-image">MOCA JOURNALS</div>
+				<div class="big-font-on-image garamond" id="mj-main-image">Writings On<br> Goan Culture</div>
+			</div>
+		</div>
+
+		<div class="container-fluid from-image-content">
+			<div class="row">
+				<div class="col-sm-12 high-para">
+					<div class="row high-para">
+						<div class="col-sm-3"></div>
+						<div class="col-sm-6">
+							<div class="page-highlights  garamond"> MOCA Journal is a platform for articles about the culture of Goa. This is a response to the many wonderful articles on Goa that don't get the visibility they deserve.Articles published in MOCA Journals will be actively promoted and shared.
+							</div>
+						</div>
+						<div class="col-sm-3"></div>
+					</div>
+
+					<div class="row">
+						<div class="col-sm-2"></div>
+						<div class="col-sm-8">
+							<div class="page-heading garamond sub-para">Search the Collection</div>
+						</div>
+						<div class="col-sm-2"></div>
+					</div>
+
+					<div class="row">
+						<div class="col-sm-2"></div>
+						<div class="col-sm-8" style="padding-right: 0px ">
+							<input type="text" class="search-area fira small-text font-weight-bold sub-para" placeholder="Search by Object, Style, Material, Accession Number" name="search" style="width:100%;  color:#615f5f82; text-transform: uppercase;">
+						</div>
+						<div class="col-sm-2" style="padding-left: 0px ">
+							<button type="submit" style="padding: 0px;margin: 0px 0px 0px 2px;border: none;">
+								<img  src="image/search-icon.png" style="height: 43px; width: 43px;">
+							</button>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-sm-2"></div>
+						<div class="col-sm-8">
+							<div class="small-text font-weight-bold fira sub-para" style="">FILTER BY</div>
+						</div>
+						<div class="col-sm-2"></div>
+					</div>
+
+					<div class="row ">
+						<div class="col-sm-2"></div>
+						<div class="col-sm-8 drp-button-class">
+							<div class="row">
+								<div class="col-sm-6" style="padding-left: 0px;">
+									<div class="dropdown">
+										<button class="drop-button font-weight-bold fira text-left small-text" style="width: 100%;padding-left: 15px;">BY TOPIC</button>
+										<div class="dropdown-content">
+											<a href="#">Link 1</a>
+											<a href="#">Link 2</a>
+											<a href="#">Link 3</a>
+										</div>
+									</div>
+								</div>
+
+									<!-- <div class="col-sm-3 class-for-border">
+										<div class="dropdown">
+											<button class="drop-button font-weight-bold fira text-left small-text" style="width: 100%;padding-left: 15px;">MATERIAL</button>
+											<div class="dropdown-content">
+												<a href="#">Link 1</a>
+												<a href="#">Link 2</a>
+												<a href="#">Link 3</a>
+											</div>
+										</div>
+									</div> -->
+
+								<div class="col-sm-3" style="padding-left: 0px;">
+									<div class="dropdown">
+										<button class="drop-button font-weight-bold fira text-left small-text" style="width: 100%;padding-left: 15px;">BY MONTH</button>
+										<div class="dropdown-content">
+											<a href="#">Link 1</a>
+											<a href="#">Link 2</a>
+											<a href="#">Link 3</a>
+										</div>
+									</div>
+								</div>
+
+								<div class="col-sm-3" style="padding-left: 0px;">
+									<div class="dropdown">
+										<button class="drop-button font-weight-bold fira text-left small-text" style="width: 100%;padding-left: 15px;padding-right: 0px;">BY YEAR</button>
+										<div class="dropdown-content">
+											<a href="#">Link 1</a>
+											<a href="#">Link 2</a>
+											<a href="#">Link 3</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>			
+						<div class="col-sm-2"> </div>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-sm-12">
+					<div class="row">
+						<div class="col-sm-3"></div>
+						<div class="col-sm-6 high-para" style="padding-bottom: 15px;border-bottom: 1px solid black;">
+							<div class="row">
+								<div class="col-sm-4 moca-journals-color"></div>
+								<div class="col-sm-8">
+									<div class="side-heading-garamond garamond">Lorem ipsum dolor sit</div>
+									<div class="gara-14 garamond font-weight-bold high-para">HABEO TORQUATOS</div>
+									<div class="inner-para garamond">  amet, possim commodo mea eu, ex eam nobis antiopam. Ullum partiendo hendrerit te mei, impetus salutandi id has, principes euripidis sed cu. Habeo torquatos has an. Cum elitr possit detraxit at, ex magna
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<div class="col-sm-3"></div>
+					</div>
+				</div>
+
+				<div class="col-sm-12">
+					<div class="row">
+						<div class="col-sm-3"></div>
+						<div class="col-sm-6 high-para" style="padding-bottom: 15px;border-bottom: 1px solid black;">
+							<div class="row">
+								<div class="col-sm-4 moca-journals-color"></div>
+								<div class="col-sm-8">
+									<div class="side-heading-garamond garamond">Lorem ipsum dolor sit</div>
+									<div class="gara-14 garamond font-weight-bold high-para">HABEO TORQUATOS</div>
+									<div class="inner-para garamond">  amet, possim commodo mea eu, ex eam nobis antiopam. Ullum partiendo hendrerit te mei, impetus salutandi id has, principes euripidis sed cu. Habeo torquatos has an. Cum elitr possit detraxit at, ex magna
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<div class="col-sm-3"></div>
+					</div>
+				</div>
+
+				<div class="col-sm-12">
+					<div class="row">
+						<div class="col-sm-3"></div>
+						<div class="col-sm-6 high-para" style="padding-bottom: 15px;border-bottom: 1px solid black;">
+							<div class="row">
+								<div class="col-sm-4 moca-journals-color"></div>
+								<div class="col-sm-8">
+									<div class="side-heading-garamond garamond">Lorem ipsum dolor sit</div>
+									<div class="gara-14 garamond font-weight-bold high-para">HABEO TORQUATOS</div>
+									<div class="inner-para garamond">  amet, possim commodo mea eu, ex eam nobis antiopam. Ullum partiendo hendrerit te mei, impetus salutandi id has, principes euripidis sed cu. Habeo torquatos has an. Cum elitr possit detraxit at, ex magna
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<div class="col-sm-3"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+													
+					
+	{% endblock %}
+
+	<!--- Custom Script Block --->
+	{% block custom-script %}	{% endblock %}

@@ -1,0 +1,41 @@
+
+.parallax {
+	/* Set a specific height */
+	min-height: 700px; 
+
+	/* Create the parallax scrolling effect */
+	background-attachment: fixed;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	border-bottom: 5px solid #b5a268;
+}
+.move-top {
+	position: absolute;
+	color: black;
+	top: 25%;
+	left: 15%;
+}
+.plan-a-visit{
+	background-color: #F5F5DC;
+	box-shadow: 4px 4px 5px #e6ecd2;
+	border-bottom: 1px solid white;
+}
+.inner-text-getting-there{
+	margin: 0px;
+	padding-bottom: 5px;
+}
+.gold-content{
+	background-color:#b5a268;
+	padding:25px 30px;
+	margin: 8px 2px 2px 2px;
+	max-width: 245px;
+}
+.img-fluid1{
+	height: 188px;
+	width: 188px;
+}
+.next-links{
+	margin: 0px;
+	padding-top: 50px;
+}

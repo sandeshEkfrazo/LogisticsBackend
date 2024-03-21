@@ -1,0 +1,80 @@
+{% extends "museumapp/base.html" %}
+
+{% load static %}
+	
+	<!--- Title --->
+	{% block title %}	{% endblock %}
+
+	<!--- Custom CSS --->
+	{% block custom-css-parts %}
+		<link rel="stylesheet" type="text/css" href="{% static 'museumapp/css/collectionsMoca.css' %}"/>
+		<link rel="stylesheet" type="text/css" href="{% static 'museumapp/css/toi-css/hover-box.css' %}" />
+	{% endblock %}
+
+	<!--- Custom Style --->
+	{% block style %}	{% endblock %}
+
+	<!--- Body content --->
+	{% block body-content %}
+		<!-- Page Content  -->
+		<div id="content">
+
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-sm-12" style="padding: 0px;">
+						<div class="parallax" style="background-image: url('{% static 'museumapp/image/42.png' %}');"></div>
+					</div>
+					
+					<div class="move-top">
+						<div class="fira-on-image fira font-weight-bold" style="color:white;">EXPLORE ART</div>
+						<div class="big-font-on-image garamond" id="c-main-image" style="color:white;">Collection</div>
+					</div>
+				</div>
+			</div>
+				
+			<div class="container-fluid from-image-content" >
+				<div class="row">
+					
+					<div class="col-sm-12">
+						<div class="row">
+							<div class="col-sm-3"></div>
+							<div class="col-sm-6 display-image">
+								<div class="page-highlights garamond explore-art-para high-para text-left">The collection embraces nearly five centuries of extraordinary Indian artistry and craftsmanship inspired by a uniquely syncretic culture. Works from different periods of religious imagination, and in a variety of forms, styles and genres, include sculpture, painting, liturgical objects, jewellery, furniture and embroidery, in materials such as stone, wood, metal, ivory and textiles. 
+							<br><br>
+								</div>
+							</div>
+							<div class="col-sm-3"></div>
+						</div>
+					</div>
+					
+					<div class="col-sm-12">
+						<div class="row high-para">
+							<div class="col-sm-3"></div>
+							<div class="col-sm-6">
+								<div class="row">
+									{% for collection in collections %}
+										<div class=" col-sm-4 display-image" id="pad-bottom">
+											<a href="{% url 'museumapp:objectsMoca' collection.slug %}">
+												<div class="hvrbox">
+													<img src="{{ collection.collection_image.url }}" class="img-fluid" alt="Moca">
+													<!-- <div class="hvrbox-layer_top">
+														<div class="hvrbox-text hvrbox-layer_slideup" style="text-align: left;">{{ collection.collection_name }}</div>
+													</div> -->
+												</div>
+											</a>
+										</div>
+									{% endfor %}
+								</div>
+							</div>
+							<div class="col-sm-3"></div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+		</div>
+	{% endblock %}
+
+	<!--- Custom Script Block --->
+	{% block custom-script %}	{% endblock %}

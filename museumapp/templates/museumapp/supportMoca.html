@@ -1,0 +1,115 @@
+{% extends "museumapp/base.html" %}
+
+{% load static %}
+	
+	<!--- Title --->
+	{% block title %}
+		Museum of Christian Art
+	{% endblock %}
+
+	<!--- Custom CSS --->
+	{% block custom-css-parts %}
+	{% endblock %}
+
+	<!--- Custom Style --->
+	{% block style %}
+		<link rel="stylesheet" type="text/css" href="{% static 'museumapp/css/supportMoca.css' %}"/>
+	{% endblock %}
+
+	<!--- Body content --->
+	{% block body-content %}
+		<!-- Page Content  -->
+		<div id="content">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-sm-12" style="padding: 0px;">
+						<div class="parallax" style="background-image: url('{% static 'museumapp/image/206.png' %}');"></div>
+					</div>
+					
+					<div class="move-top">
+						<div class="fira-on-image fira font-weight-bold">SUPPORT THE MUSEUM</div>
+					<div class="big-font-on-image garamond">Become a <br>Friend of MoCA</div>
+					</div>
+				</div>
+			</div>
+				
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-sm-12">
+					  	<div class="row">
+							<div class="col-sm-8"></div>
+						 	<div class="col-sm-2">
+						   		<a href="{% url 'museumapp:buy_tickets' %}"><button type="button" class="buy-tickets-button fira small-heading">BOOK TICKETS</button></a>
+							</div>
+							<div class="col-sm-2"></div>
+					 	</div>   
+					</div>
+				</div>
+			</div>
+
+			<div class="container-fluid from-image-content">
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="row">
+							<div class="col-sm-12">
+								<div class="row">
+									<div class="col-sm-3"></div>
+									<div class="col-sm-6">
+										<div class="page-highlights garamond high-para">As a 'Friend of MoCA' you enjoy unlimited entry to the museum. You can become a Friend for just Rs.5000 a year. By becoming a Friend, you contribute positively to the building of our understanding of Goan culture.</div>
+										<div class="page-highlights garamond side-head-para">
+											Join today Become a Friend
+										</div>
+									</div>
+									<div class="col-sm-3"></div>
+								</div>
+
+								<div class="row">
+									<div class="col-sm-3"></div>
+									<div class="col-sm-6">	
+										<div class="page-highlights garamond side-head-para">All the Friends of MOCA Benefits</div>	
+										<div class="inner-para garamond high-para"> Unlimited free entry to the museum and exhibitions and exclusive use of the Friends lane Easy access to all exhibitions without booking a start time Previews of major exhibitions Private evening views and lectures (see our Activities for Friends) Priority booking for public activities (lectures, courses, workshops) Use of the Friends cloakroom Invitations to special events throughout the year, such as yoga in the museum, speed dating with experts and more Click to download Activity Calendar for Rijks Friends
+										</div>			
+									</div>
+									<div class="col-sm-3"></div>
+								</div>
+
+								<div class="row">
+									<div class="col-sm-3"></div>
+									<div class="col-sm-6">		
+										<div class="side-heading-size35 garamond"></div>
+										<div class="inner-para garamond"> Please note that if you want to visit museum within one week we recommend to purchase your membership at ticket desk 1 or in the museum shop.
+										</div>		
+									</div>
+									<div class="col-sm-3"></div>
+								</div>
+
+								<div class="row">
+									<div class="col-sm-3"></div>
+									<div class="col-sm-6">	
+										<div class="side-heading-size35 garamond"></div>
+										<div class="inner-para garamond high-para">Cost of Rijks Friend membership<br> €50 annually for individual membership<br> €75 annually for joint membership<br> If you become a Friend for €75 you will get one personal card and one card for guests.
+										</div>		
+									</div>
+									<div class="col-sm-3"></div>
+								</div>
+
+								<div class="row">
+									<div class="col-sm-3"></div>
+									<div class="col-sm-6">	
+										<div class="side-heading-size35 garamond"></div>	
+										<div class="inner-para garamond high-para">
+											Questions? Get in touch!tours.
+										</div>			
+									</div>
+									<div class="col-sm-3"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	{% endblock %}
+
+	<!--- Custom Script Block --->
+	{% block custom-script %}	{% endblock %}

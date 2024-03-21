@@ -1,0 +1,284 @@
+{% extends "museumapp/base.html" %}
+
+{% load static %}
+
+	<!--- Title --->
+	{% block title %}
+		Museum of Christian Art
+	{% endblock %}
+
+	<!--- Custom CSS --->
+	{% block custom-css-parts %}
+	{% endblock %}
+
+	<!--- Custom Style --->
+	{% block style %}
+		<link rel="stylesheet" type="text/css" href="{% static 'museumapp/css/planAVisitMoca.css' %}"/>
+		<link rel="stylesheet" type="text/css" href="{% static 'museumapp/css/toi-css/hover-box.css' %}" />
+
+		<style>
+
+
+		@media screen and (min-width: 600px)  {
+        .mobile-break { display: none; }
+    }
+
+
+
+		.move-top{
+		color:white;
+		top:28% !important;
+		}
+
+		.plan-a-visit {
+    background-color: #F2f2da;
+	}
+
+		</style>
+	{% endblock %}
+
+	<!--- Body content --->
+	{% block body-content %}
+		<!-- Page Content  -->
+		<div id="content">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-sm-12" style="padding: 0px;">
+						<div class="parallax" style="background-image: url('{% static 'museumapp/image/206.png' %}');"></div>
+					</div>
+
+					<div class="move-top">
+						<div class="fira-on-image fira font-weight-bold">PLAN A VISIT</div>
+						<!--<div class="big-font-on-image garamond">Where, When <br>and How</div>-->
+						<div class="big-font-on-image garamond">Where, When and How</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="container-fluid">
+
+				<div class="row">
+					<div class="col-sm-12">
+					  	<div class="row">
+							<div class="col-sm-3">
+							</div>
+						 	<div class="col-sm-6 buy-to-end" style="text-align: end;">
+						   		<a href="{% url 'museumapp:buy_tickets' %}"><button type="button" class="buy-tickets-button fira small-heading">BOOK TICKETS</button></a>
+							</div>
+							<div class="col-sm-3"></div>
+					 		</div>
+						</div>
+					</div>
+				</div>
+
+
+
+			<!-- 	<div class="row title-page-mob">
+					<div class="col-sm-3"></div>
+					<div class="col-sm-6 fira fira-on-image" id="mini-title-mob">
+					ABOUT MOCA
+					</div>
+					<div class="col-sm-3"></div>
+				</div> -->
+
+				<div class="container-fluid section-page-start from-image-content" style="">
+					<div class="row">
+						<div class="col-sm-12" style="">
+							<div class="row">
+								<div class="col-sm-3"></div>
+								<div class="col-sm-6" style="">
+
+				<!-- 				<div class="side-heading-garamond garamond side-head-para">Plan Your Visit</div> -->
+
+									<div class="page-highlights garamond high-para">
+										<!-- Welcome to the museum. Come and experience our new
+										exhibition on the story of mothers in Christianity – "Scenes from
+										a Mother's Life". Discover new perspectives at the museum and
+										the Holy Hill with our specially-curated guided walks and tours.
+										Take a break with traditional Goan snacks at the Museum Cafe. -->
+										Welcome to MoCA. A visit to the museum is the best way to reconnect with 500 years of Goa’s unique art and culture. With a collection unlike any in the world, a visit to the Museum of Christian Art is the best way to start your journey through Old Goa.
+									</div>
+								</div>
+								<div class="col-sm-3"></div>
+							</div>
+
+							<div class="row">
+								<div class="col-sm-3"></div>
+								<div class="col-sm-6" style="">
+
+									<div class="side-heading-garamond garamond side-head-para">How to book your ticket? </div>
+
+									<div class="inner-para garamond sub-para">
+									Museum's admission fee is Rs 100 for adults and Rs 50 for students.  For more details, visit our <a style="color:#8f0000;" href="{% url 'museumapp:buy_tickets' %}">Book Ticket</a> or <a style="color:#8f0000;" href="{% url 'museumapp:guidedToursMoca' %}">Guided Tour</a> page. Book your ticket in advance to make sure you don't miss out!
+
+
+									</div>
+
+									<div class="fira small-heading font-weight-bold sub-para">
+										<br>CHURCH OF SANTA MONICA – FREE ADMISSION<br><br>MoCA SHOP – FREE ADMISSION
+										<br><br>
+									</div>
+
+								</div>
+								<div class="col-sm-3"></div>
+							</div>
+
+							<div class="row">
+								<div class="col-sm-3"></div>
+								<div class="col-sm-6">
+									<div class="">
+									<!-- 	<a href="{% url 'museumapp:buy_tickets' %}"><button type="button" class="buy-tickets-button small-heading fira high-para">BOOK TICKETS</button></a> -->
+									</div>
+								</div>
+								<div class="col-sm-3"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="container-fluid">
+					<div class="row plan-a-visit">
+						<div class="col-sm-3"></div>
+						<div class="col-sm-4" style="margin-bottom: 15px;">
+							<div class="side-heading-garamond garamond side-head-para" style="margin-top: 30px;">Getting here</div>
+								<div class="row small-heading fira font-weight-bold" style="margin-top: 10px;
+    margin-left: 0px;
+    text-transform: uppercase;">
+									Public Transport:
+								</div>
+								<div class="row inner-para garamond inner-text-getting-there" style="max-width: 450px;">
+									Local bus to Old Goa – short walk from the bus stop (Direct buses- Panjim, Ponda, Pilar)
+								</div>
+								<div class="row small-heading fira font-weight-bold" style="margin-top: 10px;
+    margin-left: 0px;text-transform: uppercase;">
+									Motorbike Pilot:
+								</div>
+								<div class="row inner-para garamond inner-text-getting-there">
+									From Panjim Bus stand
+								</div>
+							<!-- 	<div class="row small-heading fira font-weight-bold" style="margin: 0px; text-transform: uppercase;">
+									Bicycle :
+								</div>
+								<div class="row inner-para garamond inner-text-getting-there">
+									Tours from Panjim and Old Goa
+								</div> -->
+								<div class="row small-heading fira font-weight-bold" style="margin-top: 10px;
+    margin-left: 0px; text-transform: uppercase;">
+									Hop on Hop off Buses :
+								</div>
+								<div class="row inner-para garamond inner-text-getting-there">
+									GTDC regulated tours from Panjim
+								</div>
+								<div class="row small-heading fira font-weight-bold" style="margin-top: 10px;
+    margin-left: 0px; text-transform: uppercase;">
+									In Old Goa :
+								</div>
+								<div class="row inner-para garamond inner-text-getting-there">
+									Walk up the Holy Hill
+								</div>
+						</div>
+						<div class="col-sm-3" style="margin-top: 30px; margin-bottom: 30px;">
+							<div class="gold-content">
+								<div class="row small-heading fira font-weight-bold" style="color: white;">
+									MUSEUM HOURS
+								</div>
+								 <div class="row inner-para garamond" style="padding-bottom: 15px;">
+									Open daily <br class="mobile-break"> 10 am–5 pm.<br><br>
+								</div>
+								<!--<div class="row inner-para garamond" style="padding-bottom: 15px;">
+									Temporarily Closed<br class="mobile-break"> <br>
+								</div> -->
+								<div class="row small-heading fira font-weight-bold" style="color: white;">
+									LOCATION
+								</div>
+								<div class="row inner-para garamond" style="padding-bottom: 15px;">Convent of Santa Monica, Holy Hill, next to the ruins of the St. Augustine Monastery, Old Goa.
+								</div>
+								<div class="row small-heading fira font-weight-bold" style="color: white;">
+									GOOGLE MAPS
+								</div>
+								<div class="row inner-para garamond">
+									<a href="https://goo.gl/maps/tgmSbbBNsJozF5SY7" target="_blank">Santa Monica, Old Goa.</a>
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-2"></div>
+					</div>
+				</div>
+
+
+
+
+				<div class="row next-links">
+					<div class="col-sm-3"></div>
+
+					<div class="col-sm pad-image">
+						<a href="{% url 'museumapp:eventsMoca' %}">
+							<div class="hvrbox">
+								<img src="{% static 'museumapp/image/iwt/whats-min.png' %}" class="img-fluid" alt="Moca" >
+								<!-- <div class="hvrbox-layer_top">
+									<div class="hvrbox-text hvrbox-layer_slideup">
+										<div class="text-center garamond inner-para sub-para"><span class="font-weight-bold">GUIDED TOURS</div>
+										<div class="text-left garamond" style="font-size: 16px; font-weight: normal;">The guided tour that takes you on a journey from the early days of the Portuguese in India to the present day through the collection at the museum.</div>
+									</div>
+								</div> -->
+							</div>
+						</a>
+					</div>
+
+					<div class="col-sm pad-image">
+						<a href="{% url 'museumapp:guidedToursMoca' %}">
+							<div class="hvrbox">
+								<img src="{% static 'museumapp/image/iwt/guided.png' %}" class="img-fluid" alt="Moca" >
+								<!-- <div class="hvrbox-layer_top">
+									<div class="hvrbox-text hvrbox-layer_slideup" style="padding-left: 19px;">
+										<div class="text-center garamond inner-para sub-para"><span class="font-weight-bold">GUIDED TOURS</div>
+										<div class="text-left garamond" style="font-size: 16px; font-weight: normal;">The guided tour that takes you on a journey from the early days of the Portuguese in India to the present day.</div>
+									</div>
+								</div> -->
+							</div>
+						</a>
+					</div>
+
+					<div class="col-sm pad-image">
+						<a href="{% url 'museumapp:accessibilityMoca' %}">
+							<div class="hvrbox">
+								<img src="{% static 'museumapp/image/iwt/access-min.png' %}" class="img-fluid" alt="Moca" >
+								<!-- <div class="hvrbox-layer_top">
+									<div class="hvrbox-text hvrbox-layer_slideup">
+										<div class="text-center garamond inner-para sub-para"><span class="font-weight-bold">ACCESSIBILITY</div>
+										<div class="text-left garamond" style="font-size: 16px; font-weight: normal;">To make your visit as comfortable as possible, here are the facilities available at the museum.</div>
+									</div>
+								</div> -->
+							</div>
+						</a>
+					</div>
+
+
+	<div class="col-sm pad-image">
+						<a href="{% url 'museumapp:cafeMoca' %}">
+							<div class="hvrbox">
+								<img src="{% static 'museumapp/image/iwt/cafe-button.jpg' %}" class="img-fluid" alt="Moca" >
+								<!-- <div class="hvrbox-layer_top">
+									<div class="hvrbox-text hvrbox-layer_slideup">
+										<div class="text-center garamond inner-para sub-para"><span class="font-weight-bold">ACCESSIBILITY</div>
+										<div class="text-left garamond" style="font-size: 16px; font-weight: normal;">To make your visit as comfortable as possible, here are the facilities available at the museum.</div>
+									</div>
+								</div> -->
+							</div>
+						</a>
+					</div>
+
+
+					<div class="col-sm-2"></div>
+				</div>
+
+
+
+
+
+			</div>
+		</div>
+	{% endblock %}
+
+	<!--- Custom Script Block --->
+	{% block custom-script %}	{% endblock %}

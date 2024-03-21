@@ -1,0 +1,191 @@
+{% extends "museumapp/base.html" %}
+
+{% load static %}
+	
+	<!--- Title --->
+	{% block title %}	{% endblock %}
+
+	<!--- Custom CSS --->
+	{% block custom-css-parts %}
+	{% endblock %}
+
+	<!--- Custom Style --->
+	{% block style %}
+			<link rel="stylesheet" type="text/css" href="{% static 'museumapp/css/planAVisitMoca.css' %}"/>
+	
+		<style type="text/css">
+.move-top1 {
+    position: absolute;
+    color: white;
+    top: 70%;
+    left: 10%;
+}
+
+
+.map-responsive{
+    overflow:hidden;
+    padding-bottom:50%;
+    position:relative;
+    height:0;
+}
+.map-responsive iframe{
+    left:0;
+    top:0;
+    height:100%;
+    width:100%;
+    position:absolute;
+}
+
+
+
+
+</style>
+	{% endblock %}
+
+	<!--- Body content --->
+	{% block body-content %}
+		<!-- Page Content  -->
+		<div id="content">
+				
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-sm-12" style="padding: 0px;">
+						<div class="parallax" style="background-image: url('{% static 'museumapp/image/contactus.jpg' %}');"></div>
+					</div>
+					
+					 <div class="move-top1">
+						<div class="fira-on-image fira font-weight-bold">CONTACT</div>
+						<div class="big-font-on-image garamond">Get in Touch</div>
+					</div>
+				</div>
+			</div>
+			
+				<div class="container-fluid">
+			   	<div class="row">
+					<div class="col-sm-12">
+				  		<div class="row">
+							<div class="col-sm-8">  
+							</div>
+					 		<div class="col-sm-2 buy-to-end">
+					   			<a href="{% url 'museumapp:buy_tickets' %}"><button type="button" class="buy-tickets-button fira small-heading"><b>BOOK TICKETS</b></button></a>
+							</div>
+							<div class="col-sm-2"></div>
+				 		 </div>   
+					</div>
+			 	 </div>
+			</div>
+			
+				<div class="container-fluid from-image-content" >
+					<div class="row">
+						<div class="col-sm-12">
+								<div class="row">
+										<div class="col-sm-3">
+											
+										</div>
+										<div class="col-sm-6">
+											<!-- <div class="page-heading garamond high-para">Contact Us</div> -->
+										</div>
+										<div class="col-sm-3"></div>
+									</div>
+
+									<div class="row">
+										<div class="col-sm-1"></div>
+										<div class="col-sm-2">
+											
+										</div>
+										<div class="col-sm-6">
+											<p class="inner-para garamond sub-para" style="border-bottom: 1px solid black; margin-bottom:30px;">
+											
+												
+												<!-- Phone- (91+)0832-2285299      <br>     -->
+												Mobile (Whatsapp): (91+)8308805399<br><br>
+												
+											</p>
+											
+											<p class="inner-para garamond sub-para" style="border-bottom: 1px solid black; margin-bottom:30px;">
+
+												Email (Admin): <a href="mailto:museumofchristianart@gmail.com" style="color: #8f0000;">museumofchristianart@gmail.com</a><br>
+												Email (Events): <a href="mailto:mocagoaevents@gmail.com" style="color: #8f0000;">mocagoaevents@gmail.com</a><br><br>
+												
+											</p>
+											
+											<p class="inner-para garamond sub-para" style="border-bottom: 1px solid black; margin-bottom:30px;">
+												Address: <br>Museum of Christian Art, Convent of Santa Monica, Holy Hill, Old Goa,<br>
+												Goa, India 403402</a><br><br>
+												
+												  <div class="map-responsive">
+												<iframe style="border-bottom: 1px solid black; margin-bottom:30px;" src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15378.74766769197!2d73.9070678!3d15.5012638!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x754b5fb076af5f02!2sMuseum%20Of%20Christian%20Art!5e0!3m2!1sen!2sin!4v1604550561196!5m2!1sen!2sin" width="600" height="450" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+												</div>
+												
+												
+												<br><br>
+												
+											</p>
+											
+											<p class="inner-para garamond sub-para" style="border-top:1px; border-bottom: 1px solid black; margin-bottom:30px;">
+											
+											<div class="col-sm-6 footer-social-icons" style="align-self: center;">
+							<div class="row" style="margin: 0px;">
+								<div class="col-sm social-width" style="max-width: 50% !important;">
+									<a href="https://www.facebook.com/mocagoaofficial" target="_blank"><img class="social-icons img-fluid" src="{% static 'museumapp/image/fb_moca1.png' %}" alt="MoCA"></a>
+								</div>
+								<div class="col-sm social-width" style="max-width: 50% !important;">
+									<a href="https://www.instagram.com/mocagoaofficial" target="_blank"><img class="social-icons img-fluid" src="{% static 'museumapp/image/insta_moca1.png' %}" alt="MoCA"></a>
+								</div>
+								<div class="col-sm social-width" style="max-width: 50% !important;">
+									<a href="https://www.youtube.com/channel/UC3ey9WrWekk4T6fyX2pEtow" target="_blank"><img class="social-icons img-fluid" src="{% static 'museumapp/image/pinterest_moca1.png' %}" alt="MoCA"></a>
+								</div>
+								<div class="col-sm social-width" style="max-width: 50% !important;">
+									<a href="https://www.tripadvisor.in/Attraction_Review-d2534673?m=55595" target="_blank"><img class="social-icons img-fluid" src="{% static 'museumapp/image/owl_moca1.png' %}" alt="MoCA"></a>
+								</div>
+								<div class="col-sm social-width" style="max-width: 50% !important;">
+									<a href="https://twitter.com/MoCA_GOA" target="_blank"><img class="social-icons img-fluid" src="{% static 'museumapp/image/twitter_moca1.png' %}" alt="MoCA"></a>
+								</div>
+							</div>
+						</div>
+<!-- 												Google Map: <a href='https://goo.gl/maps/8uPzgdWts82wDiPo6' style="color: blue;">https://goo.gl/maps/8uPzgdWts82wDiPo6</a><br> -->
+												<!-- Instagram: <a target="_blank" href='https://www.instagram.com/mocagoaofficial/' style="color: #8f0000;">https://www.instagram.com/mocagoaofficial/</a><br>
+												Twitter: <a href='https://twitter.com/MoCA_GOA' style="color: #8f0000;">https://twitter.com/MoCA_GOA</a><br>
+												Facebook: <a target="_blank" href='https://www.facebook.com/mocagoaofficial' style="color: #8f0000;">https://www.facebook.com/mocagoaofficial</a><br>
+												Youtube: <a target="_blank" href='https://www.youtube.com/channel/UC3ey9WrWekk4T6fyX2pEtow?view_as=subscriber' style="color: #8f0000;">https://www.youtube.com/channel/UC3ey9WrWekk4T6fyX2pEtow?view_as=subscriber</a><br><br> -->
+											</p>
+											
+											
+					<!-- 	<div class="col-sm-6 footer-social-icons" style="align-self: center;">
+							<div class="row" style="margin: 0px;">
+								<div class="col-sm social-width">
+									<a href="https://www.facebook.com/mocagoaofficial" target="_blank"><img class="social-icons img-fluid" src="{% static 'museumapp/image/fb_moca.png' %}" alt="MoCA"></a>
+								</div>
+								<div class="col-sm social-width">
+									<a href="https://www.instagram.com/mocagoaofficial" target="_blank"><img class="social-icons img-fluid" src="{% static 'museumapp/image/insta_moca.png' %}" alt="MoCA"></a>
+								</div>
+								<div class="col-sm social-width">
+									<a href=""><img class="social-icons img-fluid" src="{% static 'museumapp/image/pinterest_moca.png' %}" alt="MoCA"></a>
+								</div>
+								<div class="col-sm social-width">
+									<a href=""><img class="social-icons img-fluid" src="{% static 'museumapp/image/owl_moca.png' %}" alt="MoCA"></a>
+								</div>
+								<div class="col-sm social-width">
+									<a href="https://twitter.com/MoCA_GOA" target="_blank"><img class="social-icons img-fluid" src="{% static 'museumapp/image/twitter_moca.png' %}" alt="MoCA"></a>
+								</div>
+							</div>
+						</div> -->
+						
+						
+										
+										</div>
+										<div class="col-sm-3"></div>
+									</div>						
+								</div>
+							</div>
+						</div>
+					</div>
+				</p>
+			</div></div></div></div></div></div>
+					
+									
+					
+	{% endblock %}
+
+	<!--- Custom Script Block --->
+	{% block custom-script %}	{% endblock %}

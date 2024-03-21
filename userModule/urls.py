@@ -16,8 +16,9 @@ urlpatterns = [
     path('resend-otp', ResendOTP.as_view()),
     path('all-scheduled-orders', AllScheduledOrder.as_view()),
     path('driver-list-with-distance', DriverWithDistanceAPI.as_view()),
-    
+    path('get-otp-details', GetOTPDetails.as_view()),
     path('call-b', CallAPI.as_view()),
-
-    path("delete-tasks", DeleteTasks.as_view())
+    path("delete-tasks", DeleteTasks.as_view()),
+    path('all-user', UsersAPIView.as_view()),
+    path('activate-or-deactivate-user/', ActivateorDeactivateUserAPIView.as_view())
 ]

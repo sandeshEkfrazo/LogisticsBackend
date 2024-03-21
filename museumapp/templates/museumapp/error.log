@@ -1,0 +1,61 @@
+[Fri Jan 27 10:53:37.156043 2023] [wsgi:error] [pid 2675703:tid 139853093246720] /instantInsight/venv/lib/python3.8/site-packages/openpyxl/compat/numbers.py:9: UserWarning: NumPy was imported from a Python sub-interpreter but NumPy does not properly support sub-interpreters. This will likely work for most users but might cause hard to track down issues or subtle bugs. A common user of the rare sub-interpreter feature is wsgi which also allows single-interpreter mode.
+[Fri Jan 27 10:53:37.156127 2023] [wsgi:error] [pid 2675703:tid 139853093246720] Improvements in the case of bugs are welcome, but is not on the NumPy roadmap, and full support may require significant effort to achieve.
+[Fri Jan 27 10:53:37.156131 2023] [wsgi:error] [pid 2675703:tid 139853093246720]   import numpy
+[Fri Jan 27 10:53:38.334259 2023] [wsgi:error] [pid 2675703:tid 139853093246720] [remote 103.104.223.114:46040] d==>
+[Fri Jan 27 10:53:38.334326 2023] [wsgi:error] [pid 2675703:tid 139853093246720] [remote 103.104.223.114:46040]  
+[Fri Jan 27 10:53:38.334340 2023] [wsgi:error] [pid 2675703:tid 139853093246720] [remote 103.104.223.114:46040] 1
+[Fri Jan 27 10:53:38.334350 2023] [wsgi:error] [pid 2675703:tid 139853093246720] [remote 103.104.223.114:46040]  
+[Fri Jan 27 10:53:38.334360 2023] [wsgi:error] [pid 2675703:tid 139853093246720] [remote 103.104.223.114:46040] Copy(2)
+[Fri Jan 27 10:53:38.334369 2023] [wsgi:error] [pid 2675703:tid 139853093246720] [remote 103.104.223.114:46040] 
+[Fri Jan 27 10:53:38.450535 2023] [wsgi:error] [pid 2675703:tid 139853093246720] [remote 103.104.223.114:46040] 10 di
+[Fri Jan 27 10:53:38.450568 2023] [wsgi:error] [pid 2675703:tid 139853093246720] [remote 103.104.223.114:46040]  
+[Fri Jan 27 10:53:38.450578 2023] [wsgi:error] [pid 2675703:tid 139853093246720] [remote 103.104.223.114:46040] c10fa3f6-9e
+[Fri Jan 27 10:53:38.450587 2023] [wsgi:error] [pid 2675703:tid 139853093246720] [remote 103.104.223.114:46040] 
+[Fri Jan 27 10:53:38.451565 2023] [wsgi:error] [pid 2675703:tid 139853093246720] [remote 103.104.223.114:46040] cuurent time==>
+[Fri Jan 27 10:53:38.451584 2023] [wsgi:error] [pid 2675703:tid 139853093246720] [remote 103.104.223.114:46040]  
+[Fri Jan 27 10:53:38.451592 2023] [wsgi:error] [pid 2675703:tid 139853093246720] [remote 103.104.223.114:46040] 10:53:38
+[Fri Jan 27 10:53:38.451599 2023] [wsgi:error] [pid 2675703:tid 139853093246720] [remote 103.104.223.114:46040] 
+[Fri Jan 27 10:53:38.561134 2023] [wsgi:error] [pid 2675703:tid 139853093246720] [remote 103.104.223.114:46040] c10fa
+[Fri Jan 27 10:53:38.561171 2023] [wsgi:error] [pid 2675703:tid 139853093246720] [remote 103.104.223.114:46040] 
+[Fri Jan 27 10:53:38.645176 2023] [wsgi:error] [pid 2675703:tid 139853093246720] [remote 103.104.223.114:46040] pbkdf2_sha256$260000$CTty5vksbDGDVx9QLarVdJ$PxCL3B92q6sahHXfug8t91PzCBYHjM2bL9eb9qAFKcY=
+[Fri Jan 27 10:53:38.645224 2023] [wsgi:error] [pid 2675703:tid 139853093246720] [remote 103.104.223.114:46040] 
+[Fri Jan 27 10:53:38.725547 2023] [wsgi:error] [pid 2675703:tid 139853093246720] [remote 103.104.223.114:46040] True
+[Fri Jan 27 10:53:38.725599 2023] [wsgi:error] [pid 2675703:tid 139853093246720] [remote 103.104.223.114:46040] 
+[Fri Jan 27 10:53:47.442501 2023] [wsgi:error] [pid 2675703:tid 139853034497792] [remote 103.104.223.114:46084] request==>>header=
+[Fri Jan 27 10:53:47.442559 2023] [wsgi:error] [pid 2675703:tid 139853034497792] [remote 103.104.223.114:46084]  
+[Fri Jan 27 10:53:47.442569 2023] [wsgi:error] [pid 2675703:tid 139853034497792] [remote 103.104.223.114:46084] {}
+[Fri Jan 27 10:53:47.442577 2023] [wsgi:error] [pid 2675703:tid 139853034497792] [remote 103.104.223.114:46084] 
+[Fri Jan 27 10:53:47.442677 2023] [wsgi:error] [pid 2675703:tid 139853034497792] [remote 103.104.223.114:46084] django-insecure-#r$4&mw@h+(svs^bopg^*hni5)nvgnk-skn1@o*@sdc6#f+^!b+robas
+[Fri Jan 27 10:53:47.442688 2023] [wsgi:error] [pid 2675703:tid 139853034497792] [remote 103.104.223.114:46084]  
+[Fri Jan 27 10:53:47.442697 2023] [wsgi:error] [pid 2675703:tid 139853034497792] [remote 103.104.223.114:46084] ======hello2====secret-key===========
+[Fri Jan 27 10:53:47.442722 2023] [wsgi:error] [pid 2675703:tid 139853034497792] [remote 103.104.223.114:46084] 
+[Fri Jan 27 10:53:47.444075 2023] [wsgi:error] [pid 2675703:tid 139853110032128] [remote 103.104.223.114:46050] request==>>header=
+[Fri Jan 27 10:53:47.444122 2023] [wsgi:error] [pid 2675703:tid 139853110032128] [remote 103.104.223.114:46050]  
+[Fri Jan 27 10:53:47.444136 2023] [wsgi:error] [pid 2675703:tid 139853110032128] [remote 103.104.223.114:46050] {}
+[Fri Jan 27 10:53:47.444143 2023] [wsgi:error] [pid 2675703:tid 139853110032128] [remote 103.104.223.114:46050] 
+[Fri Jan 27 10:53:47.444680 2023] [wsgi:error] [pid 2675703:tid 139853110032128] [remote 103.104.223.114:46050] django-insecure-#r$4&mw@h+(svs^bopg^*hni5)nvgnk-skn1@o*@sdc6#f+^!b+robas
+[Fri Jan 27 10:53:47.444712 2023] [wsgi:error] [pid 2675703:tid 139853110032128] [remote 103.104.223.114:46050]  
+[Fri Jan 27 10:53:47.444724 2023] [wsgi:error] [pid 2675703:tid 139853110032128] [remote 103.104.223.114:46050] ======hello2====secret-key===========
+[Fri Jan 27 10:53:47.444731 2023] [wsgi:error] [pid 2675703:tid 139853110032128] [remote 103.104.223.114:46050] 
+[Fri Jan 27 10:53:47.578813 2023] [wsgi:error] [pid 2675703:tid 139853110032128] [remote 103.104.223.114:46050] [{'masked_url': 'https://instantinsightz.com/pid=136&sid=10&mid=4922f12519584658bce69952b8f69ca4&vid=XXXX', 'supplier_name': 'Fulcrum', 'supplier_id': 10}, {'masked_url': 'https://instantinsightz.com/pid=136&sid=253&mid=b379e2204335402f824e6f9d8bfe9c40&vid=XXXX', 'supplier_name': 'PANELVIEW', 'supplier_id': 253}, {'masked_url': 'https://instantinsightz.com/pid=136&sid=276&mid=e1f31beaad13420c971c4965705c36ff&vid=XXXX', 'supplier_name': 'Mas insight', 'supplier_id': 276}]
+[Fri Jan 27 10:53:47.578864 2023] [wsgi:error] [pid 2675703:tid 139853110032128] [remote 103.104.223.114:46050] 
+[Fri Jan 27 10:54:01.788645 2023] [wsgi:error] [pid 2675703:tid 139853034497792] [remote 103.104.223.114:33894] str(vid)==>>
+[Fri Jan 27 10:54:01.788704 2023] [wsgi:error] [pid 2675703:tid 139853034497792] [remote 103.104.223.114:33894]  
+[Fri Jan 27 10:54:01.788714 2023] [wsgi:error] [pid 2675703:tid 139853034497792] [remote 103.104.223.114:33894] 344
+[Fri Jan 27 10:54:01.788722 2023] [wsgi:error] [pid 2675703:tid 139853034497792] [remote 103.104.223.114:33894] 
+[Fri Jan 27 10:54:01.788757 2023] [wsgi:error] [pid 2675703:tid 139853034497792] [remote 103.104.223.114:33894] updated_link
+[Fri Jan 27 10:54:01.788766 2023] [wsgi:error] [pid 2675703:tid 139853034497792] [remote 103.104.223.114:33894]  
+[Fri Jan 27 10:54:01.788779 2023] [wsgi:error] [pid 2675703:tid 139853034497792] [remote 103.104.223.114:33894] https://ups.surveyrouter.com/TrafficUI/MSCUI/Page.aspx?pgtid=19&cid=1&bid=43&golsoid=a2628237f27741428bfb7945b2b365f8&uid=cef8c061-9e
+[Fri Jan 27 10:54:01.788787 2023] [wsgi:error] [pid 2675703:tid 139853034497792] [remote 103.104.223.114:33894] 
+[Fri Jan 27 10:54:28.441146 2023] [wsgi:error] [pid 2675703:tid 139852992534272] [remote 49.37.249.102:48612] str(vid)==>>
+[Fri Jan 27 10:54:28.441199 2023] [wsgi:error] [pid 2675703:tid 139852992534272] [remote 49.37.249.102:48612]  
+[Fri Jan 27 10:54:28.441208 2023] [wsgi:error] [pid 2675703:tid 139852992534272] [remote 49.37.249.102:48612] 324234dsa
+[Fri Jan 27 10:54:28.441216 2023] [wsgi:error] [pid 2675703:tid 139852992534272] [remote 49.37.249.102:48612] 
+[Fri Jan 27 10:54:28.441248 2023] [wsgi:error] [pid 2675703:tid 139852992534272] [remote 49.37.249.102:48612] updated_link
+[Fri Jan 27 10:54:28.441257 2023] [wsgi:error] [pid 2675703:tid 139852992534272] [remote 49.37.249.102:48612]  
+[Fri Jan 27 10:54:28.441270 2023] [wsgi:error] [pid 2675703:tid 139852992534272] [remote 49.37.249.102:48612] https://ups.surveyrouter.com/TrafficUI/MSCUI/Page.aspx?pgtid=19&cid=1&bid=43&golsoid=a2628237f27741428bfb7945b2b365f8&uid=dedb99d1-9e
+[Fri Jan 27 10:54:28.441277 2023] [wsgi:error] [pid 2675703:tid 139852992534272] [remote 49.37.249.102:48612] 
+[Fri Jan 27 10:54:47.113831 2023] [wsgi:error] [pid 2675703:tid 139853093246720] [remote 49.37.249.102:55848] printing vendor id true or false==>
+[Fri Jan 27 10:54:47.113991 2023] [wsgi:error] [pid 2675703:tid 139853093246720] [remote 49.37.249.102:55848]  
+[Fri Jan 27 10:54:47.114002 2023] [wsgi:error] [pid 2675703:tid 139853093246720] [remote 49.37.249.102:55848] True
+[Fri Jan 27 10:54:47.114010 2023] [wsgi:error] [pid 2675703:tid 139853093246720] [remote 49.37.249.102:55848] 

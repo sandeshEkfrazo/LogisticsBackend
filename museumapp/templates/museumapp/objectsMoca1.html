@@ -1,0 +1,640 @@
+{% extends "museumapp/base.html" %}
+
+{% load static %}
+
+	<!--- Title --->
+	{% block title %}
+		Museum of Christian Art
+	{% endblock %}
+
+	<!--- Custom CSS --->
+	{% block custom-css-parts %}
+		<link rel="stylesheet" type="text/css" href="{% static 'museumapp/css/objectsMoca.css' %}"/>
+		<link rel="stylesheet" type="text/css" href="{% static 'museumapp/css/toi-css/hover-box.css' %}" />
+	{% endblock %}
+
+	<!--- Custom Style --->
+	{% block style %}
+		<style type="text/css">
+			.form-group{
+				margin-bottom: 0px;
+			}
+			option.space{
+				margin-bottom: 20px;
+			}
+			span.twitter-typeahead
+			{
+				width: 100%;
+				height: 40px;
+			}
+			input.tt-hint{
+				width: 100%;
+				height: 40px;
+				border: 0px;
+				padding-left: 20px;
+				color: #615f5f82;
+				font-size: 15px;
+				letter-spacing: 0px;
+			}
+			input.tt-input{
+				width: 100%;
+				background-color: #d3d3d35e !important;
+				border: 0px;
+				height: 40px;
+				color: #615f5f82;
+				border-radius: 0px;
+				font-size: 15px;
+				letter-spacing: 0px;
+				padding-left: 20px;
+			}
+			div.tt-menu{
+				background-color: #d3d3d3;
+				width: 100%;
+				padding: 20px;
+			}
+			div.tt-dataset{
+				border-bottom: 1px solid black;
+				margin-bottom: 10px;
+				padding-bottom: 10px;
+			}
+			div.tt-suggestion, div.tt-selectable{
+				cursor: pointer;
+			}
+			@media (max-width: 425px) {
+				input.tt-hint {
+				    padding-left: 5px;
+				    font-size: 12px;
+				}
+				input.tt-input {
+				    font-size: 12px;
+				    padding-left: 5px;
+				}
+				div.drp-button-class div.pad_left div.form-group {
+				    margin-bottom: 5px;
+				}
+				#object_type, #material, #time_period, #location{
+					margin-bottom: 5px;
+				}
+				.in-middle{
+					text-align: -webkit-center;
+				}
+			}
+
+
+input#search_obj_mat_per_loc {
+    background-color: #d3d3d35e !important;
+    border: 0px;
+    height: 40px;
+    border-radius: 0px;
+    font-size: 15px;
+    letter-spacing: 0px;
+    padding-left: 20px;
+    font-weight: 700!important;
+    font-family: 'Fira Sans';
+}
+
+
+		</style>
+		{% endblock %}
+
+	<!--- Body content --->
+	{% block body-content %}
+		<!-- Page Content  -->
+		<div id="content">
+			<div class="container-fluid from-image-content">
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="row">
+							<div class="col-sm-12" style="">
+								<div class="row">
+									<div class="col-sm-2"></div>
+									<div class="col-sm-8">
+										<!-- <div class="page-heading garamond sub-para">Search The Collection</div> -->
+										<div class="page-heading garamond sub-para">Search</div>
+									</div>
+									<div class="col-sm-2"></div>
+								</div>
+
+								<div class="row sub-para">
+									<div class="col-sm-2"></div>
+									<div class="col-sm-9" style="padding-right: 0px ">
+										<form>
+											<div class="form-group" id="search">
+												<div id="multiple-datasets">
+													<div class="container-fluid">
+														<div class="row" style="margin-right: 0px;justify-content: space-evenly;">
+															<div class="col-sm-11" style="padding-left: 0px;width: 90%;">
+																<input class="fira small-text font-weight-bold" type="text" placeholder="SEARCH BY OBJECT" name="search" id="search_obj_mat_per_loc" style="color: rgba(97,95,95,0.51);width: 100%">
+															</div>
+															<div class="col-sm-1">
+															<!--<div class="col-sm-1" style="padding-left: 0px; width: auto; padding-right: 0px;">
+																<button type="submit" value="Search" class="search-button"><img class="search-icon" src="{% static 'museumapp/image/search-icon.png' %}"></button>
+															</div>-->
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</form>
+									</div>
+									<div class="col-sm-1"></div>
+								</div>
+
+								<div class="row">
+									<div class="col-sm-2"></div>
+									<div class="col-sm-8">
+										<div class="small-text font-weight-bold fira sub-para" style="">FILTER BY</div>
+									</div>
+									<div class="col-sm-2">
+									</div>
+								</div>
+
+								<div class="row ">
+									<div class="col-sm-2"></div>
+										<div class="col-sm-8 drp-button-class">
+											<div class="row">
+												<div class="col-sm-3 pad_left">
+													<div class="form-group">
+
+														<select class="form-control fira font-weight-bold text-uppercase" id="object_type" onchange="selectObjectType(this)">
+                                                            <option  class='fira small-heading space' value='OBJECT TYPE'>OBJECT TYPE</option>
+                                                            {% for i in obj_material_data %}
+                                                                {% if i.object_type == obj_type %}
+                                                                    <option class="text-uppercase high-para" value="{{ i.object_type }}" selected>{{ i.object_type }}</option>
+                                                                {% else %}
+                                                                    <option class="text-uppercase high-para" value="{{ i.object_type }}">{{ i.object_type }}</option>
+                                                                {% endif %}
+                                                            {% endfor %}
+														</select>
+													</div>
+												</div>
+
+												<div class="col-sm-3 pad_left">
+													<div class="form-group">
+
+														<select class="form-control fira font-weight-bold" id="material" onchange="selectMaterial(this)">
+                                                            <option  class='fira small-heading space' value='all' selected>MATERIAL</option>
+                                                            <!-- {% for i in data %}
+                                                                <option class="text-uppercase high-para" value="{{ i.material }}">{{ i.material }}</option>
+															{% endfor %} -->
+															{{data}}
+															{% for i in data %}
+                                                                <option class="text-uppercase high-para" value="{{ i }}">{{ i }}</option>
+                                                            {% endfor %}
+														</select>
+													</div>
+												</div>
+
+												<div class="col-sm-3 pad_left">
+													<div class="form-group">
+
+														<select class="form-control fira font-weight-bold" id="location" onchange="selectLocation()">
+															<!-- <option  class='fira small-heading space' value='all' selected>LOCATION</option> -->
+															<option  class='fira small-heading space' value='all' selected>PROVENANCE</option>
+															{% for i in provenance_data %}
+                                                                <option class="text-uppercase high-para" value="{{ i.provenance }}">{{ i.provenance }}</option>
+                                                            {% endfor %}
+														</select>
+													</div>
+												</div>
+
+												<div class="col-sm-3 pad_left">
+													<div class="form-group">
+
+														<select class="form-control fira font-weight-bold" id="time_period" onchange="selectTimePeriod()">
+															<option  class='fira small-heading space' value='all' selected>PERIOD</option>
+															{% for i in time_period_data %}
+                                                                <option class="text-uppercase high-para" value="{{ i.time_period }}">{{ i.time_period }}</option>
+                                                            {% endfor %}
+														</select>
+													</div>
+												</div>
+											</div>
+											<div class="row" style="margin-right: 0px;border-bottom: 1px solid black;margin-top: 20px;"></div>
+										</div>
+									<div class="col-sm-2"> </div>
+								</div>
+
+								<div class="row applied">
+									<div class="col-sm-2"></div>
+									<div class="col-sm-6">
+										<div class="small-heading fira font-weight-bold high-para">APPLIED FILTERS: <span id="filterType"></span></div>
+									</div>
+									<div class="col-sm-3"></div>
+								</div>
+
+								<div class="row">
+									<div class="col-sm-2"></div>
+									<div class="col-sm-8">
+										<div class="row" style="margin: 0px;">
+											<div id = "no_results">
+												<!--<h5 class="fira small-heading" style="letter-spacing: 0px;">No results found</h5>-->
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-2"></div>
+
+									<div class="container-fluid" id="list_data" data-toggle="div" ">
+										<div class="row">
+											<div class="col-sm-2"></div>
+											<div class="col-sm-8 in-middle">
+												<div class="row" id="listing">
+                                                    <!--{% for i in data %}
+                                                        <div class='col-sm-3' style='margin-bottom:30px;'><a href='https://museumofchristianart.com/moca-object-detailed-view/{{ i.slug }}'><div class='image-container sub-para'><img src='/media/{{i.object_image}}' class='img-fluid' alt='MoCA'></div><div class='gara-14 font-weight-bold garamond text-uppercase'>{{ i.object_name }}</div></a></div>-->
+                                                        <!--<div class='col-sm-3' style='margin-bottom:30px;'><a href='http://127.0.0.1:8000/moca-object-detailed-view/{{ i.slug }}'><div class='image-container sub-para'><img src= '{{ i.object_image.url }}' class='img-fluid' alt='MoCA'></div><div class='gara-14 font-weight-bold garamond text-uppercase'>{{ i.object_name }}</div></a></div>-->
+													<!--{% endfor %}-->
+													
+													{% for i in heightlight_data %}
+														<div class='col-sm-3' style='margin-bottom:30px;'><a href='https://museumofchristianart.com/moca-object-detailed-view/{{ i.slug }}'><div class='image-container sub-para'><img src='/media/{{i.object_image}}' class='img-fluid' alt='MoCA'></div><div class='gara-14 font-weight-bold garamond text-uppercase'>{{ i.object_name }}</div></a></div>
+													{% endfor %}
+
+												</div>
+											</div>
+											<div class="col-sm-2"></div>
+										</div>
+									</div>
+								</div>
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	{% endblock %}
+
+	<!--- Custom Script Block --->
+	{% block custom-script %}
+
+
+		<script type="text/javascript">
+
+        
+			$(document).ready(function(){
+
+					  $("#search_obj_mat_per_loc").on("keyup", debounce(function(){
+					  	var value = $(this).val();
+					  		$.ajax({
+                                url: "{% url 'museumapp:objectsMoca' 'test' %}",
+                                type: "POST",
+                                async: false,
+                                data: {'search_data': value, csrfmiddlewaretoken: '{{ csrf_token }}'},
+                                success: function (result) {
+                                    let row;
+                                    if(result.length > 0){
+                                        $("#no_results").hide();
+                                        $("#list_data").show();
+                                        $("#listing").html("");
+                                        $.each(result, function (a, b) {
+                                            if (b.object_image != null){
+                                            row ="<div class='col-sm-3' style='margin-bottom:30px;'><a href='https://museumofchristianart.com/moca-object-detailed-view/"+ b.slug +"'><div class='image-container sub-para'><img src='/media/"+ b.object_image +"' class='img-fluid' alt='MoCA'></div><div class='gara-14 font-weight-bold garamond'>"+ b.object_name.toUpperCase() +"</div></a></div>"
+                                            //row ="<div class='col-sm-3' style='margin-bottom:30px;'><a href='http://127.0.0.1:8000/moca-object-detailed-view/"+ b.slug +"'><div class='image-container sub-para'><img src= '"+ b.object_image.url +"' class='img-fluid' alt='MoCA'></div><div class='gara-14 font-weight-bold garamond'>"+ b.object_name.toUpperCase() +"</div></a></div>"
+
+                                            //removed from display of row : <div class='gara-14 garamond' style='letter-spacing: 0px;'>"+ b.time_period +"<br>"+ b.material +"</div>
+
+                                            $("#listing").append(row);
+                                            }
+                                        });
+                                    }else{
+                                        // if no result found for the given filter, then display no result
+                                        $("#no_results h5").html("No results found");
+                                        $("#list_data").hide();
+                                        $("#no_results").show();
+                                    }
+								}
+							});
+					  },300)
+						);
+					});
+
+
+            function selectObjectType(val) {
+
+                var object_tpye_data = val.value;
+
+                $.ajax({
+					url: "{% url 'museumapp:filter_object_type' %}",
+					method: 'POST',
+					data: {object_type:object_tpye_data, csrfmiddlewaretoken: '{{ csrf_token }}'},
+					success: function (res) {
+
+						let result = res.result
+						let result1 = res.material
+
+
+                        var material_options = ''
+						material_options = material_options + "<option  class='fira small-heading space' value='all'>MATERIAL</option>";
+
+                        $('#material').empty()
+						$.each(result1, function (a, b) {
+							if(object_tpye_data != 'none'){
+								// material_options += "<option  class='fira small-heading space text-uppercase' value='"+ b.material +"'>" + b.material + "</option>"
+								material_options += "<option  class='fira small-heading space text-uppercase' value='"+ b +"'>" + b + "</option>"
+							}
+							else{
+								material_options += "<option class='fira small-heading space'>" + b.toUpperCase() + "</option>"
+							}
+						});
+
+						$("#material").html(material_options)
+
+                        var location_options = ''
+                        // location_options = location_options + "<option  class='fira small-heading space' value='all' selected>LOCATION</option>";
+						location_options = location_options + "<option  class='fira small-heading space' value='all' selected>PROVENANCE</option>";
+                        {% comment %}$.each(result, function (a, b) {
+
+							if(object_tpye_data != 'none'){
+								location_options += "<option  class='fira small-heading space text-uppercase' value='"+ b.location +"'>" + b.location + "</option>"
+							}
+							else{
+								location_options += "<option class='fira small-heading space'>" + b.toUpperCase() + "</option>"
+							}
+						});{% endcomment %}
+
+						$("#location").html(location_options)
+
+                        var time_peiod_options = ''
+                        time_peiod_options = time_peiod_options + "<option  class='fira small-heading space' value='all' selected>PERIOD</option>";
+                        {% comment %}$.each(result, function (a, b) {
+
+							if(object_tpye_data != 'none'){
+								time_peiod_options += "<option  class='fira small-heading space text-uppercase' value='"+ b.time_period +"'>" + b.time_period + "</option>"
+							}
+							else{
+								time_peiod_options += "<option class='fira small-heading space'>" + b.toUpperCase() + "</option>"
+							}
+						});{% endcomment %}
+
+						$("#time_period").html(time_peiod_options)
+                        if(result.length > 0){
+                            $("#no_results").hide();
+                            $("#list_data").show();
+                            $("#listing").html("");
+                            $.each(result, function (a, b) {
+                                if (b.object_image != null){
+                                row ="<div class='col-sm-3' style='margin-bottom:30px;'><a href='https://museumofchristianart.com/moca-object-detailed-view/"+ b.slug +"'><div class='image-container sub-para'><img src='/media/"+ b.object_image +"' class='img-fluid' alt='MoCA'></div><div class='gara-14 font-weight-bold garamond'>"+ b.object_name.toUpperCase() +"</div></a></div>"
+                                //row ="<div class='col-sm-3' style='margin-bottom:30px;'><a href='http://127.0.0.1:8000/moca-object-detailed-view/"+ b.slug +"'><div class='image-container sub-para'><img src= '"+ b.object_image.url +"' class='img-fluid' alt='MoCA'></div><div class='gara-14 font-weight-bold garamond'>"+ b.object_name.toUpperCase() +"</div></a></div>"
+
+                                //removed from display of row : <div class='gara-14 garamond' style='letter-spacing: 0px;'>"+ b.time_period +"<br>"+ b.material +"</div>
+
+                                $("#listing").append(row);
+                                }
+                            });
+                        }
+
+                        else{
+                            // if no result found for the given filter, then display no result
+                            $("#no_results h5").html("No results found");
+                            $("#list_data").hide();
+                            $("#no_results").show();
+                        }
+
+					},
+					error: function(response){
+						console.log(response)
+					}
+				});
+			}
+
+
+			function selectMaterial(val) {
+
+                var object_type = document.getElementById('object_type').value;
+                var material = document.getElementById('material').value;
+                var location = document.getElementById('location').value;
+				var time_period = document.getElementById('time_period').value;
+				
+				if (object_type == 'OBJECT TYPE'){
+					let url = window.location.href.split('/')
+					object_type = url[url.length - 1];
+				}
+
+                $.ajax({
+					url: "{% url 'museumapp:filter_object_mat_loc_time' %}",
+					method: 'POST',
+					data: {object_type:object_type,material:material, location:location, time_period:time_period, csrfmiddlewaretoken: '{{ csrf_token }}'},
+					success: function (result) {
+
+					    $('#location').empty()
+                        var location_options = ''
+                        // location_options = location_options + "<option  class='fira small-heading space' value='all' selected>LOCATION</option>";
+						location_options = location_options + "<option  class='fira small-heading space' value='all' selected>PROVENANCE</option>";
+                        $.each(result, function (a, b) {
+
+							if(object_type != 'none'){
+								location_options += '<option  class="fira small-heading space text-uppercase" value="'+ b.provenance+'">' + b.provenance + "</option>"
+							}
+							else{
+								location_options += "<option class='fira small-heading space'>" + b.toUpperCase() + "</option>"
+							}
+						});
+						$("#location").html(location_options)
+
+                        $('#time_period').empty()
+                        var time_peiod_options = ''
+                        time_peiod_options = time_peiod_options + "<option  class='fira small-heading space' value='all' selected>PERIOD</option>";
+
+						{% comment %}$.each(result, function (a, b) {
+
+							if(object_type != 'none'){
+								time_peiod_options += "<option  class='fira small-heading space text-uppercase' value='"+ b.time_period +"'>" + b.time_period + "</option>"
+							}
+							else{
+								time_peiod_options += "<option class='fira small-heading space'>" + b.toUpperCase() + "</option>"
+							}
+						});{% endcomment %}
+
+						$("#time_period").html(time_peiod_options)
+
+                        if(result.length > 0){
+
+                            $("#no_results").hide();
+                            $("#list_data").show();
+                            $("#listing").html("");
+                            $('#listing').empty()
+                            $.each(result, function (a, b) {
+                                if (b.object_image != null){
+                                row ="<div class='col-sm-3' style='margin-bottom:30px;'><a href='https://museumofchristianart.com/moca-object-detailed-view/"+ b.slug +"'><div class='image-container sub-para'><img src='/media/"+ b.object_image +"' class='img-fluid' alt='MoCA'></div><div class='gara-14 font-weight-bold garamond'>"+ b.object_name.toUpperCase() +"</div></a></div>"
+                                //row ="<div class='col-sm-3' style='margin-bottom:30px;'><a href='http://127.0.0.1:8000/moca-object-detailed-view/"+ b.slug +"'><div class='image-container sub-para'><img src= '"+ b.object_image.url +"' class='img-fluid' alt='MoCA'></div><div class='gara-14 font-weight-bold garamond'>"+ b.object_name.toUpperCase() +"</div></a></div>"
+
+                                //removed from display of row : <div class='gara-14 garamond' style='letter-spacing: 0px;'>"+ b.time_period +"<br>"+ b.material +"</div>
+
+                                $("#listing").append(row);
+                                }
+                            });
+                        }
+                        else{
+                            // if no result found for the given filter, then display no result
+                            $("#no_results h5").html("No results found");
+                            $("#list_data").hide();
+                            $("#no_results").show();
+                        }
+					},
+					error: function(response){
+						console.log(response)
+					}
+				});
+            }
+
+
+            function selectLocation(val) {
+
+                var object_type = document.getElementById('object_type').value;
+                var material = document.getElementById('material').value;
+				var location = document.getElementById('location').value;
+				
+
+				if (object_type == 'OBJECT TYPE'){
+					let url = window.location.href.split('/')
+					object_type = url[url.length - 1];
+				}
+
+
+				$('#time_period').empty()
+				var time_peiod_options = ''
+				time_peiod_options = time_peiod_options + "<option  class='fira small-heading space' value='all' onchange='selectTimePeriod()' selected>PERIOD</option>";
+				$("#time_period").html(time_peiod_options)
+
+
+
+
+                var time_period = document.getElementById('time_period').value;
+
+                $.ajax({
+					url: "{% url 'museumapp:filter_object_mat_loc_time' %}",
+					method: 'POST',
+					data: {object_type:object_type,material:material, location:location, time_period:time_period, csrfmiddlewaretoken: '{{ csrf_token }}'},
+					success: function (result) {
+
+
+                        $('#time_period').empty()
+                        var time_peiod_options = ''
+                        time_peiod_options = time_peiod_options + "<option  class='fira small-heading space' value='all' onchange='selectTimePeriod()' selected>PERIOD</option>";
+
+						$.each(result, function (a, b) {
+
+							if(object_type != 'none'){
+								time_peiod_options += "<option  class='fira small-heading space text-uppercase' value='"+ b.time_period +"'>" + b.time_period + "</option>"
+							}
+							else{
+								time_peiod_options += "<option class='fira small-heading space'>" + b.toUpperCase() + "</option>"
+							}
+						});
+
+						$("#time_period").html(time_peiod_options)
+
+                        if(result.length > 0){
+
+                            $("#no_results").hide();
+                            $("#list_data").show();
+                            $("#listing").html("");
+                            $('#listing').empty()
+                            $.each(result, function (a, b) {
+                                if (b.object_image != null){
+                                row ="<div class='col-sm-3' style='margin-bottom:30px;'><a href='https://museumofchristianart.com/moca-object-detailed-view/"+ b.slug +"'><div class='image-container sub-para'><img src='/media/"+ b.object_image +"' class='img-fluid' alt='MoCA'></div><div class='gara-14 font-weight-bold garamond'>"+ b.object_name.toUpperCase() +"</div></a></div>"
+                                //row ="<div class='col-sm-3' style='margin-bottom:30px;'><a href='http://127.0.0.1:8000/moca-object-detailed-view/"+ b.slug +"'><div class='image-container sub-para'><img src= '"+ b.object_image.url +"' class='img-fluid' alt='MoCA'></div><div class='gara-14 font-weight-bold garamond'>"+ b.object_name.toUpperCase() +"</div></a></div>"
+
+                                //removed from display of row : <div class='gara-14 garamond' style='letter-spacing: 0px;'>"+ b.time_period +"<br>"+ b.material +"</div>
+
+                                $("#listing").append(row);
+                                }
+                            });
+                        }
+                        else{
+                            // if no result found for the given filter, then display no result
+                            $("#no_results h5").html("No results found");
+                            $("#list_data").hide();
+                            $("#no_results").show();
+                        }
+
+
+
+					},
+					error: function(response){
+						console.log(response)
+					}
+				});
+
+            }
+
+
+
+
+
+
+			function selectTimePeriod(val) {
+
+				var object_type = document.getElementById('object_type').value;
+				var material = document.getElementById('material').value;
+				var location = document.getElementById('location').value;
+				var time_period = document.getElementById('time_period').value;
+
+
+				if (object_type == 'OBJECT TYPE'){
+					let url = window.location.href.split('/')
+					object_type = url[url.length - 1];
+				}
+
+				$.ajax({
+					url: "{% url 'museumapp:filter_object_mat_loc_time' %}",
+					method: 'POST',
+					data: {object_type:object_type,material:material, location:location, time_period:time_period, csrfmiddlewaretoken: '{{ csrf_token }}'},
+					success: function (result) {
+
+
+						// $('#time_period').empty()
+						// var time_peiod_options = ''
+						// time_peiod_options = time_peiod_options + "<option  class='fira small-heading space' value='all' onchange='selectTimePeriod()' selected>PERIOD</option>";
+
+						// $.each(result, function (a, b) {
+
+						// 	if(object_type != 'none'){
+						// 		time_peiod_options += "<option  class='fira small-heading space text-uppercase' value='"+ b.time_period +"'>" + b.time_period + "</option>"
+						// 	}
+						// 	else{
+						// 		time_peiod_options += "<option class='fira small-heading space'>" + b.toUpperCase() + "</option>"
+						// 	}
+						// });
+
+						// $("#time_period").html(time_peiod_options)
+
+						if(result.length > 0){
+
+							$("#no_results").hide();
+							$("#list_data").show();
+							$("#listing").html("");
+							$('#listing').empty()
+							$.each(result, function (a, b) {
+								if (b.object_image != null){
+								row ="<div class='col-sm-3' style='margin-bottom:30px;'><a href='https://museumofchristianart.com/moca-object-detailed-view/"+ b.slug +"'><div class='image-container sub-para'><img src='/media/"+ b.object_image +"' class='img-fluid' alt='MoCA'></div><div class='gara-14 font-weight-bold garamond'>"+ b.object_name.toUpperCase() +"</div></a></div>"
+								//row ="<div class='col-sm-3' style='margin-bottom:30px;'><a href='http://127.0.0.1:8000/moca-object-detailed-view/"+ b.slug +"'><div class='image-container sub-para'><img src= '"+ b.object_image.url +"' class='img-fluid' alt='MoCA'></div><div class='gara-14 font-weight-bold garamond'>"+ b.object_name.toUpperCase() +"</div></a></div>"
+
+								//removed from display of row : <div class='gara-14 garamond' style='letter-spacing: 0px;'>"+ b.time_period +"<br>"+ b.material +"</div>
+
+								$("#listing").append(row);
+								}
+							});
+						}
+						else{
+							// if no result found for the given filter, then display no result
+							$("#no_results h5").html("No results found");
+							$("#list_data").hide();
+							$("#no_results").show();
+						}
+
+
+
+					},
+					error: function(response){
+						console.log(response)
+					}
+				});
+
+				}
+
+
+
+
+			</script>
+
+	{% endblock %}

@@ -1,0 +1,337 @@
+/* ---------------------------------------------------
+	COMMON EFFECTS STYLE
+----------------------------------------------------- */
+
+	a, a:hover, a:active{
+		text-decoration: none;
+		color: inherit;
+	}
+
+	/*---- font & size ----*/
+	
+		.garamond{
+			font-family: 'EB Garamond', serif;
+		}
+		.fira{
+			font-family: 'Fira Sans';
+			letter-spacing: 1px;
+		}
+		.fira-on-image{
+			font-size: 18px;
+			font-weight: 900 !important;
+		}
+		.big-font-on-image{
+			font-size: 70px;
+			line-height: 65px;
+		}
+		.page-highlights{
+			font-size: 26px;
+			line-height: 36px;
+		}
+		.side-heading-garamond{
+			font-size: 33px;
+		}
+		.inner-para{
+			font-size: 20px;
+			line-height: 28px;
+		}
+		.small-heading{
+			font-size: 15px;
+		}
+		.page-heading{
+			font-size: 42px;
+		}
+		.side-heading-size35-index{
+			font-size: 45px;
+			line-height: 56px;
+		}
+		.small-text{
+			font-size: 12px;
+		}
+		.gara-14{
+			font-size: 14px;
+			letter-spacing: 1px;
+		}
+		.gara-13{
+			font-size: 13px;
+			letter-spacing: 1px;
+		}
+
+	/*------ end -----*/
+
+	/*---- buttons ----*/
+		
+		.buy-tickets-button{
+			color: white;
+			border: 0px;
+			text-align: center;
+			padding: 5px 8px;
+			background-color: #8f0000;
+			text-transform: uppercase;
+			box-shadow: 2px 2px #f5f1f1;
+			font-size: 15px;
+		}
+		.plan-visits{
+			margin-top: 30px;
+			margin-bottom: 15px;
+		}
+		.plan-visit-button{
+			background-color: transparent;
+			background: none;
+			border: 1px solid black;
+			font-size: 15px;
+			padding: 5px 8px 8px 5px;
+		}
+		.from-image-content{
+			padding-top: 70px;
+		}
+		.high-para{
+			margin-bottom: 30px;
+		}
+		.sub-para{
+			margin-bottom: 15px;
+		}
+		.side-head-para{
+			margin-bottom: 20px;
+		}
+
+	/*------ end -----*/
+
+	/*---- images ----*/
+		.pad-image{
+			padding: 20px 0px;
+		}
+	/*------ end -----*/
+
+/* ---------------------------------------------------
+	SIDE MOCA ICON STYLE
+----------------------------------------------------- */
+
+	.moca-icon{
+		top: 0px;
+		right: 0px;
+		max-height: 127px;
+		max-width: 103px;
+		position: absolute;
+		z-index: 100;
+	}
+
+/* ---------------------------------------------------
+	SIDEBAR STYLE
+----------------------------------------------------- */
+
+	.wrapper {
+		display: flex;
+		align-items: stretch;
+	}
+
+	#sidebar {
+		min-width: 400px;
+		max-width: 400px;
+		position: fixed;
+		top: 0;
+		left: 0;
+		height: 100vh;
+		z-index: 999;
+		background: #000;
+		color: #fff;
+		transition: all 0.3s;
+		padding: 0px 20px;
+	}
+
+	#sidebar.active {
+		min-width: 32px;
+		max-width: 32px;
+		text-align: center;
+	}
+
+	#sidebar.active .sidebar-header h3,
+	#sidebar.active .sidebarContent{
+		display: none;
+	}
+
+	#sidebar.active .sidebar-header strong {
+		display: block;
+	}
+
+	#sidebar .sidebar-header {
+		padding: 10px 0px 5px 0px;
+		background: #000;
+	}
+
+	#sidebar .sidebar-header strong {
+		display: none;
+		font-size: 1.8em;
+	}
+	#sideBarLinks {
+		color: #fff;
+		margin: 0px 10px;
+		border-bottom: 0.5px solid #9a8f80;
+		padding: 10px 0px;
+		font-size: 15px;
+	}
+	
+	#sideBarLinks a:hover, #sideBarLinks a:focus {
+		color: orange !important;
+		text-decoration: none;
+		transition: all 0.3s;
+	}
+	
+	#sidebarCollapse {
+		color: #fff;
+		background-color: #000;
+		padding: 5px 0px !important;
+	}
+
+	.sidebar-header, .btn.focus, .btn:focus {
+		outline: 0;
+		box-shadow: none;
+	}
+	.bar1, .bar2, .bar3, .bar4 {
+		width: 25px;
+		height: 3px;
+		background-color: #fff;
+		margin: 5px 0;
+		transition: 0.4s;
+	}
+	.s-icon{
+		height: 25px; 
+		width: 25px; 
+		margin-top: -50px; 
+		margin-left: 45px;
+	}
+
+	span.bar1:hover, span.bar1:hover, span.bar1:hover{
+		background-color: orange !important;
+	} 
+
+	.change .s-icon{
+		display: none;
+	}
+	.change .bar1 {
+		-webkit-transform: rotate(-45deg) translate(-9px, 6px);
+		transform: rotate(-45deg) translate(-4px, 4px);
+		/*background-color: orange !important;*/
+	}
+
+	.change .bar2 {opacity: 0;}
+	.change .bar4 {opacity: 0;}
+
+	.change .bar3 {
+		-webkit-transform: rotate(45deg) translate(-8px, -8px);
+		transform: rotate(45deg) translate(-7px, -8px);
+		/*background-color: orange !important;*/
+	}
+	.hamburger-change{
+		cursor: pointer;
+		width: 100%;
+		text-align: -webkit-center;
+	}
+	div.change{
+		text-align: -webkit-right !important;
+	}
+	#bottom-links{
+		color: white;
+		font-size: 12px;
+		border: none;
+		padding: 0px 25px;
+	}
+
+/* ---------------------------------------------------
+	CONTENT STYLE
+----------------------------------------------------- */
+
+	#content {
+		width: 100%;
+		min-height: 100vh;
+		transition: all 0.3s;
+		padding: 0px !important;
+	}
+
+
+/* ---------------------------------------------------
+	FOOTER STYLE
+----------------------------------------------------- */
+
+	.moca-footer{
+		background-color: black;
+		padding-top: 100px;
+	}
+
+	.footer-scroll-btn{
+		border: 1px solid #dedede82;
+		padding: 10px 12px;
+		margin:auto;
+		margin-top: -120px;
+		background-color:black;
+	}
+
+	#footer-to-top {
+		display: none;
+		bottom: 20px;
+		z-index: 110;
+		border: none;
+		outline: none;
+		background-color:black;
+		color: white;
+		cursor: pointer;
+		font-weight: 400;
+		letter-spacing: 1px;
+		color: #dedede82;
+	}
+
+	.footer-box{
+		border:1px solid white;
+		padding: 10px 10px 10px 10px;
+		
+		color: white;
+	}
+
+	.footer-bank-logo{
+	}
+	.footer-link div.row{
+		color: #64a391;
+	}
+	.footer-link{
+		padding: 0px 5px;
+	}
+	.bottom-footer{
+		padding: 5px 15px;
+		font-size: 12px;
+	}
+	div.footer-link h6{
+		color: white;
+		padding-bottom: 10px;
+	}
+
+
+	/*------button text hover css/ common for all pages*/
+
+	.oneHvr .hvr-fade:hover, .oneHvr .hvr-fade:focus, .oneHvr .hvr-fade:active {
+			background-color: inherit !important;
+  			color: maroon !important;
+  		}
+
+  		.threeHvr .hvr-fade:hover, .threeHvr .hvr-fade:focus, .threeHvr .hvr-fade:active {
+			background-color: #b5a268 !important;
+  		}
+
+  		.buy-tickets-button:hover, .buy-tickets-button:focus, .buy-tickets-button:active {
+			background-color: #b5a268 !important;
+  		}
+
+	/*---------------------end------------------------------------------*/
+
+/* ---------------------------------------------------
+	CUSTOM SCREEN STYLE
+----------------------------------------------------- */
+
+	@media (max-width: 768px) {
+		*{
+			font-size: 12px !important;
+		}
+	}
+
+	html {
+  		scroll-behavior: smooth;
+	}

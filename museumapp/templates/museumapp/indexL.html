@@ -1,0 +1,786 @@
+{% extends "museumapp/base.html" %}
+
+{% load static %}
+	
+	<!--- Title --->
+	{% block title %}
+		Museum of Christian Art
+	{% endblock %}
+
+	<!--- Custom CSS --->
+	{% block custom-css-parts %}
+		<link rel="stylesheet" type="text/css" href="{% static 'museumapp/css/indexL.css' %}"/>
+		<link rel="stylesheet" type="text/css" href="{% static 'museumapp/css/toi-css/hover-box.css' %}" />
+		<link rel="stylesheet" type="text/css" href="{% static 'museumapp/css/hover.css' %}"/>
+		<link rel="stylesheet" type="text/css" href="{% static 'museumapp/css/hover-min.css' %}"/>
+		<link rel="stylesheet" type="text/css" href="{% static 'museumapp/css/carousel-css/owl.carousel.css' %}">
+		<link rel="stylesheet" type="text/css" href="{% static 'museumapp/css/carousel-css/owl.carousel.min.css' %}">
+	{% endblock %}
+
+	<!--- Custom Style --->
+	{% block style %}
+		<style>
+
+
+@media screen and (min-width: 600px)  {
+        .mobile-break { display: none; }
+    }
+	
+	
+			.carousel-image{
+				width: 100%;
+				padding: 20px;
+				height: 50%;
+				border-bottom: 1px solid #b5a268;
+			}
+			.owl-carousel .owl-dots.disabled{
+				display: block !important;
+			}
+			.small-img-text{
+				font-size: 28px;
+			}
+			.owl-nav{
+				display: none;
+			}
+
+
+.custom-text {
+    top: 15%;
+    left: 65%;
+	} 
+	
+	#footer-height {
+    margin-top: 0px !important;
+}
+	
+.hover-details {
+    font-size: 20px !important;
+
+}
+	
+		</style>
+	{% endblock %}
+
+	<!--- Body content --->
+	{% block body-content %}
+
+	<!-- <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<h3 id="myModalLabel">Modal header</h3>
+		</div>
+		<div class="modal-body">
+			<p>One fine body…</p>
+		</div>
+		<div class="modal-footer">
+			<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+			<button class="btn btn-primary">Save changes</button>
+		</div>
+	</div> -->
+
+	{% comment %} <marquee> <b class="fs-2">The Museum of Christian Art will remain closed on 7th April-Good Friday and 9th April- Easter Sunday.</b> </marquee>
+	<div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+		  <div class="modal-content">
+			  <div class="modal-body p-5 ">
+				<div class="garamond" style="font-size:25px;">
+					The Museum of Christian Art will remain closed on 7th April-Good Friday and 9th April- Easter Sunday.
+				</div>
+			</div>
+		  </div>
+		</div>
+	  </div>  {% endcomment %}
+	  
+		
+		<!-- Page Content  -->
+		<div id="content">
+
+			<div class="owl-carousel owl-theme" id="demo">
+				<div class="item">
+				    <div class="container-fluid">
+						<div class="row">
+							<div class="col-sm-12" style="padding: 0px;">
+								<div class="parallax" style="background-image: url('{% static 'museumapp/image/new/main1.png' %}');">		
+								</div>
+							</div>
+
+							<div class="col-sm-12" style="margin-top: -35%;">
+								<div class="row">
+									<div class="col-sm-6 text-center">
+									</div>
+
+									<div class="move-top" style="justify-content:flex-end;">
+										<div class="inner-para garamond  font-weight-bold">EXPLORE THE</div>
+										<div class="big-font-on-image garamond" style="font-size:65px;">Indian-Influenced<br> Christian Art<br> of Goa</div>
+										<a href="{% url 'museumapp:planAVisitMoca' %}">
+											<div class="small-text oneHvr fira font-weight-bold " style="margin-top: 20px;">
+												<span class="hvr-fade" style="text-decoration: underline;">VISIT THE MUSEUM</span>
+											</div>
+										</a>
+									</div>
+									<div class="col-sm-1"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				
+				<div class="item">
+				    <div class="container-fluid">
+						<div class="row">
+							<div class="col-sm-12" style="padding: 0px;">
+								<div class="parallax" id="carousel-image" style="background-image: url('{% static 'museumapp/image/new/main2.png' %}');">	
+								</div>
+							</div>
+							<div class="col-sm-12" style="margin-top: -35%;">
+								<div class="row">
+									<div class="col-sm-6 text-center">
+									</div>
+									<div class="move-top" style="justify-content:flex-end;">
+										<div class="inner-para garamond  font-weight-bold">EXPLORE THE</div>
+										<div class="big-font-on-image garamond" style="font-size:65px;">Indian-Influenced<br> Christian Art<br> of Goa</div>
+										<a href="{% url 'museumapp:planAVisitMoca' %}">
+											<div class="small-text fira font-weight-bold oneHvr" style="margin-top: 20px;">
+												<span class="hvr-fade" style="text-decoration: underline;">VISIT THE MUSEUM</span>
+											</div>
+										</a>
+									</div>
+								</div>
+				    		</div>
+				    	</div>
+				    </div>
+				</div>
+				
+				
+				<div class="item">
+				    <div class="container-fluid">
+						<div class="row">
+							<div class="col-sm-12" style="padding: 0px;">
+								<div class="parallax" id="carousel-image" style="background-image: url('{% static 'museumapp/image/new/main3.png' %}');">			
+								</div>
+							</div>
+
+							<div class="col-sm-12" style="margin-top: -35%;">
+								<div class="row">
+									<div class="col-sm-6 text-center">
+									</div>
+									<div class="move-top" style="justify-content:flex-end;">
+										<div class="inner-para garamond  font-weight-bold">EXPLORE THE</div>
+										<div class="big-font-on-image garamond" style="font-size:65px;">Indian-Influenced<br> Christian Art<br> of Goa</div>
+										<a href="{% url 'museumapp:planAVisitMoca' %}">
+											<div class="small-text fira font-weight-bold oneHvr" style="margin-top: 20px;">
+												<span class="hvr-fade" style="text-decoration: underline;">VISIT THE MUSEUM</span>
+											</div>
+										</a>
+									</div>
+								</div>
+				    		</div>
+				   		</div>
+					</div>
+				</div>
+				
+			</div>
+			
+	<!-- 		<div class="container-fluid">
+				<div class="row justify-content-center" style="margin-top: -150px; margin-bottom: 70px;">
+					
+					<img class="image-to-content hvr-pulse-grow" style="color: white; z-index: 1;height: 40px; width: 70px;" src="{% static 'museumapp/image/to-down.png' %}" alt="">
+				</div>
+			</div> -->
+
+			
+
+			<div class="section2 container-fluid plan-a-visit from-image-content">
+				<div class="row">
+					<div class="col-sm-1 col-md-1 for-mob"></div>
+					<div class="col-sm-6 col-md-6 garamond">
+						<div class="side-heading-size35-index high-para learn-text-heading" style="line-height: 50px;">Welcome to the Museum of Christian Art, 
+									the first of its kind in Asia.
+									Celebrate Goa’s artistic and cultural heritage with us.
+						
+						<!-- Welcome to MoCA. Celebrate 
+							the artistic and cultural heritage of the Indian-influenced Christian art of Goa. -->
+						</div>
+						
+						
+						<div>
+							<a href="{% url 'museumapp:aboutUsMoca' %}">
+								<div class="fira small-text font-weight-bold oneHvr sub-para learn-text">
+									<span class="hvr-fade" style="text-decoration: underline;">FIND OUT MORE ABOUT THE MUSEUM </span>
+								</div>
+							</a>
+						</div>		 
+					</div>
+					<div class="col-sm-1"></div>
+					
+					<div class="col-sm-3 col-md-3 side-body garamond">
+						<div class="row mob-half"> 
+							<div class="col-sm-12 left-part">
+								<div class="container side-content">
+									<div class="row">
+										<br>
+										<div class="fira small-heading time-headings" style=" color: white;">MUSEUM HOURS</div>
+										 <div class="inner-para sub-para" style="margin-bottom: 10px; text-align: start; color: black;">Open daily <br class="mobile-break"> 10 am–5 pm.<br></div>
+										<!--<div class="inner-para sub-para" style="margin-bottom: 10px; text-align: start; color: black;">Temporarily Closed<br class="mobile-break"> <br></div> -->
+										<div class="fira small-heading time-headings" style=" color: white;">LOCATION</div>
+										<div class="inner-para sub-para" style="margin-bottom: 10px; text-align:start; color: black;">Convent of Santa Monica, Holy Hill, next to the ruins of the St Augustine Monastery, Old Goa<br></div>
+										<div class="fira small-heading time-headings" style=" color: white;">
+									GOOGLE MAPS
+								</div>
+								<div class="inner-para sub-para" style="margin-bottom: 10px; text-align:start; color: black;">
+									<a href="https://goo.gl/maps/tgmSbbBNsJozF5SY7" target="_blank">Santa Monica, Old Goa.</a>
+								</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="col-sm-12 right-part">
+								<div class="row" style="margin: 0px;">
+									<div class="container btn-tickets">
+									<div class="row threeHvr">
+										<a href="{% url 'museumapp:buy_tickets' %}"><div class="buy-tickets-button fira hvr-fade" style="border:0px;"><b>BOOK TICKETS</b></div></a>
+										<!-- <div class="buy-tickets-button fira hvr-fade" style="border:0px;"><b>BOOK TICKETS</b></div> -->
+									</div>
+									</div>
+									<div class="container plan-visits">
+										<div class="row threeHvr">
+											<a href="{% url 'museumapp:planAVisitMoca' %}">
+												<div class="plan-visit-button fira hvr-fade sub-para"><b>PLAN A VISIT</b></div>
+											</a>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="col-sm-12">
+								
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-1"></div>
+				</div>
+			</div>
+			
+			
+			<div class="row" style="margin-left:0px; margin-right:0px;">
+			
+			<div class="col-md-6" style="padding-right: 0px;
+    padding-left: 0px;">
+			<a href="/whatsOn_detailed_view/portugal-president-visits-old-goa-churches"><img src="{% static 'museumapp/image/iwt/caro3half1.jpg' %}" alt="moca" class="img-fluid" id="featured-events"></a>
+			
+			</div>
+			
+			<div class="col-md-6" style="padding-right: 0px;
+    padding-left: 0px;">
+			<a href="/whatsOn_detailed_view/portugal-president-visits-old-goa-churches"><img src="{% static 'museumapp/image/iwt/caro3half2.jpg' %}" alt="moca" class="img-fluid" id="featured-events"></a>
+			
+			</div>
+			
+			</div>
+			
+			<!-- 
+
+			<div class="owl-carousel owl-theme" id="demo">
+				<div class="item">
+				    <div class="container-fluid">
+						<div class="row">
+							<div class="col-sm-12" style="padding: 0px;">
+								<!-- <div class="eventsParallax" id="carousel-image" style="background-image: url('{% static 'museumapp/image/iwt/caro1.png' %}');">			
+								</div> -->
+							<!-- 	<a href="/whatsOn_detailed_view/portugal-president-visits-old-goa-churches"><img src="{% static 'museumapp/image/iwt/caro3.png' %}" alt="moca" class="img-fluid" id="featured-events"></a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div> --> 
+				<!-- <div class="item">
+				    <div class="container-fluid">
+						<div class="row">
+							<div class="col-sm-12" style="padding: 0px;">
+							
+								<img src="{% static 'museumapp/image/iwt/caro1.png' %}" alt="moca" class="img-fluid" id="featured-events">
+							</div>
+				    	</div>
+				    </div>
+				</div>
+				<div class="item">
+				    <div class="container-fluid">
+						<div class="row">
+							<div class="col-sm-12" style="padding: 0px;">
+						
+								<img src="{% static 'museumapp/image/iwt/caro2.png' %}" alt="moca" class="img-fluid" id="featured-events">
+							</div>
+						</div>
+					</div>
+				</div> -->
+			<!-- </div> -->
+
+			<!-- <div class="container-fluid display"> 
+									<div class="row">
+										<div class="col-sm-12 garamond" style="margin-bottom: 50px;">
+											<div class="row">
+												<div class="col-sm-2"></div>
+												<div class="col-sm-10">
+													<div class="row">
+														<div class="side-heading-size35-index side-head-para get-heading">Get to know the Museum</div>
+													</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-sm-2"></div>
+												<div class="col-sm-8">
+													<div class="row">
+														<div class="col-sm-1"></div>
+														<div class="col-sm pad-image">
+															<a href="{% url 'museumapp:storiesMoca' %}"> -->
+																<!-- <img src="image/iwt/story-min.png" class="img-fluid1 img-fluid" alt="MOCA " id="display-image1"> -->
+																<!-- <div class="hvrbox">
+																	<img src="{% static 'museumapp/image/new/MoCA Stories.png' %}" alt="MoCA" class="img-fluid1">
+																	<div class="custom-text2" style="top: 170px; left: 6px;">
+																	<div class=" small-img-text"><b>MoCA </b> Stories</div> </div>
+																	<div class="hvrbox-layer_top">
+																		<div class="hvrbox-text hvrbox-layer_slideup">Stories of Faith, through the museum collection.</div>
+																	</div>
+																</div>
+															</a>
+														</div>					   
+												<div class="col-sm pad-image">
+													<a href="{% url 'museumapp:collectionsMoca' %}"> -->
+																<!-- <img src="image/iwt/the coll-min.png" class="img-fluid1 img-fluid" alt="MOCA " id="display-image1">-->		
+														<!-- <div class="hvrbox">
+															<img src="{% static 'museumapp/image/new/The Collection.png' %}" alt="MoCA" class="img-fluid2">
+																<div class="custom-text2" style="top: 170px; left: 6px;">
+																	<div class="small-img-text">The <b>Collection</b></div>
+																 </div>
+																<div class="hvrbox-layer_top">
+																	<div class="hvrbox-text hvrbox-layer_slideup">Lorem ipsum dolor sit 
+																		amet, consectetur adipiscing elit. Fusce porttitor ligula 
+																		porttitor, lacinia sapien non.
+																	</div>
+																</div>
+														</div>
+													</a>
+												</div>		
+												<div class="col-sm pad-image">
+													<a href="{% url 'museumapp:knowledgeCenterMoca' %}"> -->
+																<!-- <img src="image/iwt/what'son-min.png" class="img-fluid1 img-fluid" alt="MOCA " id="display-image1"> -->
+														<!-- <div class="hvrbox">
+															<img src="{% static 'museumapp/image/new/Knowledge Centre.png' %}" alt="MoCA" class="img-fluid1">
+																<div class="custom-text2" style="top: 170px; left:0px; font-size: 28">
+																	<div style="font-size: 28px;"><b>Knowledge </b> Center</div>
+																 </div>
+																<div class="hvrbox-layer_top">
+																	<div class="hvrbox-text hvrbox-layer_slideup">
+																		Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce porttitor ligula porttitor, lacinia sapien non.
+																	</div>
+																</div>
+														</div>
+													</a> 
+														</div>
+														<div class="col-sm-1"></div>
+													</div>
+												</div>
+												<div class="col-sm-2"></div>
+											</div>
+										</div>
+									</div>
+			</div> -->
+
+			<!-- <div class="container-fluid display"> 
+									<div class="row">
+										<div class="col-sm-12 garamond" style="margin-bottom: 50px; background-color:#FFF7EE">
+											<div class="row">
+												<div class="col-sm-2"></div>
+												<div class="col-sm-8">
+													<div class="row">
+														<div class="side-heading-size35-index side-head-para get-heading">In the Museum</div>
+													</div>
+												</div>
+											</div>
+										<div class="row">
+											<div class="col-sm-2"></div>
+											<div class="col-sm-8">
+												<div class="row">
+													<div class="col-sm-1"></div>
+													<div class="col-sm pad-image">
+														<a href="#"> -->
+																<!-- <img src="image/iwt/story-min.png" class="img-fluid1 img-fluid" alt="MOCA " id="display-image1"> -->
+															<!-- <div class="hvrbox">
+																<img src="{% static 'museumapp/image/new/Whats-On.png' %}" alt="MoCA" class="img-fluid1">
+																<div class="custom-text2" style="top: 160px; left: 10px; color: white;">
+																	<div class="small-img-text">What's <b>On</b></div>
+															</div>
+															<div class="hvrbox-layer_top">
+																<div class="hvrbox-text hvrbox-layer_slideup">
+																	Stories of Faith, through the museum collection.</div>
+																</div>
+															</div>
+														</a>
+													</div>
+
+														<div class="col-sm pad-image">
+															<a href="{% url 'museumapp:connectionsMoca' %}"> -->
+																<!-- <img src="image/iwt/the coll-min.png" class="img-fluid1 img-fluid" alt="MOCA " id="display-image1">-->		
+																<!-- <div class="hvrbox">
+																	<img src="{% static 'museumapp/image/new/MoCA Community.png' %}" alt="MoCA" class="img-fluid1">
+																	<div class="custom-text2" style="top: 160px; left: 0px; color: white;">
+																		<div class="small-img-text" style="font-size: 26px;">MoCA<b> Community</b></div>
+																 	</div>
+																	<div class="hvrbox-layer_top">
+																		<div class="hvrbox-text hvrbox-layer_slideup">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce porttitor ligula porttitor, lacinia sapien non.</div>
+																	</div>
+																</div>
+															</a>
+														</div>		
+														<div class="col-sm pad-image">
+															<a href="{% url 'museumapp:guidedToursMoca' %}"> -->
+																<!-- <img src="image/iwt/what'son-min.png" class="img-fluid1 img-fluid" alt="MOCA " id="display-image1"> -->
+																<!-- <div class="hvrbox">
+																	<img src="{% static 'museumapp/image/new/Guided Tours.png' %}" alt="MoCA" class="img-fluid1">
+																	<div class="custom-text2" style="top: 160px; left: 50px; color: white;">
+																		<div class="small-img-text">Guide <b> Tours</b></div>
+																 	</div>
+																	<div class="hvrbox-layer_top">
+																		<div class="hvrbox-text hvrbox-layer_slideup">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce porttitor ligula porttitor, lacinia sapien non.</div>
+																	</div>
+																</div>
+															</a> 
+														</div>
+													<div class="col-sm-1"></div>
+												</div>
+											</div>
+										<div class="col-sm-2"></div>
+									</div>
+				</div>
+				</div>
+				</div>
+			</div> -->
+			<div class="container-fluid display"> 
+				<div class="row">
+					<div class="col-sm-12 garamond before-friend">
+						<div class="row">
+							<div class="col-sm-2"></div>
+							<div class="col-sm-10">
+						
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-2"></div>
+							<div class="col-md-8">
+								<div class="row pad-big-screen">
+									<div class="col-sm-1"></div>
+									<div class="col-sm-10">
+										<div class="row">
+												<div class="col-sm-12 display-image-heading">
+									<div class="side-heading-size35-index side-head-para" style="margin-top: 30px;font-size:33px">Get to know the Museum</div>
+								</div>
+											<div class="col-sm-4 pad-image">
+												<a href="{% url 'museumapp:storiesMoca' %}">
+													<div class="hvrbox">
+														<img src="{% static 'museumapp/image/iwt/story-button.jpg' %}" alt="MoCA" class="img-fluid">
+														<div class="hvrbox-layer_top">
+															<div class="hvrbox-text hvrbox-layer_slideup">
+															<!-- 	<div class="text-center garamond page-highlights sub-para">
+																	<span class="font-weight-bold">MoCA </span> Stories
+																</div> -->
+																<div class="text-center garamond hover-details"><!-- Learn about the stories of faith through the museum collection. --> Stories told by Objects</div>
+															</div>
+														</div>
+													</div>
+												</a>
+											</div>					   
+											<div class="col-sm-4 pad-image">
+												<a href="{% url 'museumapp:collectionsMoca' %}">	
+													<div class="hvrbox">
+														<img src="{% static 'museumapp/image/iwt/collection-button.jpg' %}" alt="MoCA" class="img-fluid">
+														<div class="hvrbox-layer_top">
+															<div class="hvrbox-text hvrbox-layer_slideup">
+															<!-- 	<div class="text-center garamond page-highlights sub-para">
+																	The <span class="font-weight-bold">Collection </span>
+																</div> -->
+																<div class="text-center garamond hover-details"><!-- Investigate and interpret the art and culture of Goa through the museum collection. --> 500 years of Christian Art in Goa</div>
+															</div>
+														</div>
+													</div>
+												</a>
+											</div>		
+											<div class="col-sm-4 pad-image">
+												<a href="{% url 'museumapp:knowledgeCenterMoca' %}">
+													<div class="hvrbox">
+														<img src="{% static 'museumapp/image/iwt/knowledge-button.jpg' %}" alt="MoCA" class="img-fluid">
+														<div class="hvrbox-layer_top">
+															<div class="hvrbox-text hvrbox-layer_slideup">
+																<!-- <div class="row justify-content-center garamond page-highlights sub-para">
+																	<span class="font-weight-bold">Knowledge</span> Centre
+																</div> -->
+																<div class="text-center garamond hover-details"><!-- Support the research, understanding and appreciation of the Indian-<br>influenced Christian art and culture of Goa --> Building Knowledge and Understanding of Goa’s Heritage </div>
+															</div>
+														</div>
+													</div>
+												</a> 
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-1"></div>
+								</div>
+
+								<div class="row pad-big-screen">
+									<div class="col-sm-1"></div>
+									<div class="col-sm-10">
+										<div class="row">					   
+											<div class="col-sm-4 pad-image">
+												<a href="{% url 'museumapp:eventsMoca' %}">
+													<div class="hvrbox">
+														<img src="{% static 'museumapp/image/iwt/whatson-button.jpg' %}" alt="MoCA" class="img-fluid">
+														<div class="hvrbox-layer_top">
+															<div class="hvrbox-text hvrbox-layer_slideup" style="padding-left: 14px; padding-right: 15px;">
+																<!-- <div class="text-center garamond page-highlights sub-para">
+																	<span class="font-weight-bold">What's </span> On
+																</div> -->
+																<div class="text-center garamond hover-details"><!-- Discover different aspects of the Indian-influenced Christian Art of Goa through out events, exhibitions and ongoing programmes. -->Events and Exhibitions</div>
+															</div>
+														</div>
+													</div>
+												</a>
+											</div>
+											<div class="col-sm-4 pad-image">
+												<a href="{% url 'museumapp:connectionsMoca' %}">
+													<div class="hvrbox">
+														<img src="{% static 'museumapp/image/iwt/community-button.jpg' %}" alt="MoCA" class="img-fluid">
+														<div class="hvrbox-layer_top">
+															<div class="hvrbox-text hvrbox-layer_slideup" style="padding-left: 19px;">
+																<!-- <div class="row garamond page-highlights sub-para justify-content-center">
+																	<span class="font-weight-bold">MoCA</span> Community
+																</div> -->
+																<div class="text-center garamond hover-details">Community Lead Initiatives<!-- Find out about the different ways in which you can engage as a community or an educational institution - with the museum. --></div>
+															</div>
+														</div>
+													</div>
+												</a>
+											</div>		
+											<div class="col-sm-4 pad-image">
+												<a href="{% url 'museumapp:guidedToursMoca' %}">
+													<div class="hvrbox">
+														<img src="{% static 'museumapp/image/iwt/guided-button.jpg' %}" alt="MoCA" class="img-fluid">
+														<div class="hvrbox-layer_top">
+															<div class="hvrbox-text hvrbox-layer_slideup">
+																<!-- <div class="text-center garamond page-highlights sub-para">Guided <span class="font-weight-bold">Tours </span></div> -->
+																<div class="text-center garamond hover-details">Guided Tours through Art, History and Architecture <!-- Choose from a a variety of tours designed to give you a deeper understanding of the Indian-infleuenced Goan heritage. --></div>
+															</div>
+														</div>
+													</div>
+												</a> 
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-1"></div>
+								</div>
+
+								<div class="row pad-big-screen">
+									<div class="col-sm-1"></div>
+									<div class="col-sm-10">
+										<div class="row">
+											<div class="col-sm-4 pad-image">
+												<a href="{% url 'museumapp:journals_search_data' %}">
+													<div class="hvrbox">
+														<img src="{% static 'museumapp/image/iwt/journal-button.jpg' %}" alt="MoCA" class="img-fluid">
+														<div class="hvrbox-layer_top">
+															<div class="hvrbox-text hvrbox-layer_slideup">
+																<!-- <div class="text-center garamond page-highlights sub-para"><span class="font-weight-bold">MoCA </span> Journals</div> -->
+																<div class="text-center garamond hover-details">New Writing on Goan Culture<!-- A platform for writers,<br> historians and researchers documenting the Indian-<br>influenced art and culture of Goa --></div>
+															</div>
+														</div>
+													</div>
+												</a>
+											</div>					   
+											<div class="col-sm-4 pad-image">
+												<!--<a href="http://www.selfdefence.co.in/mocashop" target="_blank">-->	
+													<a href="{% url 'museumapp:shopAlert' %}" target="_blank">
+													<div class="hvrbox">
+														<img src="{% static 'museumapp/image/iwt/shop-button.jpg' %}" alt="MoCA" class="img-fluid">
+														<div class="hvrbox-layer_top">
+															<div class="hvrbox-text hvrbox-layer_slideup" style="width: 100%;">
+																<!-- <div class="text-center garamond page-highlights sub-para"><span class="font-weight-bold">MoCA </span> Shop</div> -->
+																<div class="text-center garamond hover-details">Beautifully Designed Products Inspired by the Museum’s Collection<!-- Enjoy a wide selection of products. --></div>
+															</div>
+														</div>
+													</div>
+												</a>
+											</div>		
+											<div class="col-sm-4 pad-image">
+												<a href="{% url 'museumapp:cafeMoca' %}">
+													<div class="hvrbox">
+														<img src="{% static 'museumapp/image/iwt/cafe-button.jpg' %}" alt="MoCA" class="img-fluid">
+														<div class="hvrbox-layer_top">
+															<div class="hvrbox-text hvrbox-layer_slideup">
+																<!-- <div class="text-center garamond page-highlights sub-para"><span class="font-weight-bold">MoCA </span> Cafe</div> -->
+																<div class="text-center garamond hover-details">Freshly baked Snacks and Sweets<!-- Enjoy a wide selection of freshly-prepared, traditional homemade Goan snacks and drink in a beautiful outdoor cafe. --></div>
+															</div>
+														</div>
+													</div>
+												</a> 
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-1"></div>
+								</div>
+							</div>
+							<div class="col-md-2"></div>
+						</div>		
+					</div>
+				</div>
+			</div>
+
+			<!-- <div class="container-fluid">
+				<div class="row">
+					<div class="col-sm-12 col-md-2"></div>
+					<div class="col-sm-12 col-md-8">
+						<div class="row justify-content-center">								
+							<div class="col-sm-1"></div>
+							<div class="col-sm-10">
+								<a href="{% url 'museumapp:supportMoca' %}">
+									<div class="hvrbox" style="box-shadow: none;">
+										<img src="{% static 'museumapp/image/new/Become a Friend.png' %}" alt="MoCA" class="become-Friend" style="box-shadow: none;">
+										<div class="custom-text"> 
+											<div class="small-heading sub-para fira">SUPPORT/ FRIEND OF MOCA</div>
+											<div class="page-heading  garamond">Become a Friend</div>
+										</div>
+										<div class="hvrbox-layer_top">
+											<div class="hvrbox-text hvrbox-layer_slideup become-a-friend" style="width: 100%;">
+												<div class="row">
+													<div class="col-sm-12 text-center garamond page-highlights sub-para">
+														<span class="font-weight-bold">Become a Friend</span>
+													</div>
+													<div class="col-sm-12 justify-content-center garamond text-center hover-details">
+													Experience Member benefits that <br>include unlimited free admission, private tours, <br>discounts at the Museum Shop and much more
+													<!-- Experience the exclusive member benefits that<br>include unlimited free admission, private tours,<br>discounts at the Museum shop, and much more. --></div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</a>
+							</div>
+							<div class="col-sm-1"></div>
+						</div>
+					</div>
+					<div class="col-md-2 col-sm-12"></div>
+				</div>
+			</div> 
+			
+		
+			
+		
+			
+			
+	
+			
+				
+						<div class="justify-content-center" style="margin-bottom: -10px;">								
+						<br><br><br><br><br><br>
+						
+								<a href="{% url 'museumapp:supportMoca' %}">
+									<div class="hvrbox" style="box-shadow: none;">
+										<img src="{% static 'museumapp/image/new/supportmoca.jpg' %}" alt="MoCA" class="img-fluid become-Friend" style="box-shadow: none;">
+										<div class="custom-text"> 
+											<div class="small-heading sub-para fira mobile" style="color:white; margin-bottom: 0px;">FRIENDS OF MoCA / SUPPORT</div>
+											<div class="page-heading  garamond mobile1" style="color:white;font-size:45px;">Become a Friend</div>
+											<p style="color:white; font-size:20px; padding-right:70px;" class="garamond mobile2">Experience the exclusive member benefits that
+include unlimited free admission,private tours,
+discounts at the Museum shop, and much more.</p>
+
+	<div>
+							<a href="{% url 'museumapp:supportMoca' %}">
+								<div class="fira small-text font-weight-bold oneHvr sub-para learn-text">
+									<span class="hvr-fade" style="text-decoration: underline; color:white;">LEARN MORE </span>
+								</div>
+							</a>
+						</div>	
+
+										</div>
+								
+									</div>
+								</a>
+							
+						
+						</div>
+					
+		
+			
+		</div>	
+
+	{% endblock %}
+
+	<!--- Custom Script Block --->
+	{% block custom-script %}
+		<script type="text/javascript" src="{% static 'museumapp/css/carousel-js/owl.carousel.js' %}"></script>
+		<script type="text/javascript" src="{% static 'museumapp/css/carousel-js/owl.carousel.min.js' %}"></script>
+
+		<script src="{% static 'museumapp/css/tickets-form/jquery.steps.js' %}"></script>
+		<script src="{% static 'museumapp/css/tickets-form/jquery.steps.min.js' %}"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.js"></script>
+		<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
+
+		<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+		<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+
+		<script type="text/javascript">
+			$('#myModal').modal('show');
+			// $(".buy-tickets-button").click(function(){
+			// 	$('#myModal').modal('show');
+			// })
+
+			$('.owl-carousel').owlCarousel({
+				loop:true,
+				nav:false,
+    			responsiveClass:true,
+				autoplay:true,
+				autoplayTimeout:6000,
+				responsive:{
+	      			0:{
+						items:1
+					}
+				}	    
+			})
+		</script>
+		<script type="text/javascript">
+		$(".image-to-content").click(function() {
+    		$('html,body').animate({
+        		scrollTop: $(".from-image-content").offset().top},
+        	'slow');
+		});
+
+
+
+		// window.onload = popUp();
+
+		// function popUp(){
+		// 				// var message = "The Museum is reopening on 23rd January 2021. You can book your visit on this page.";
+		// 				var message = "The Museum will remain temporarily closed for visitors till further notice as a precautionary measure to prevent the spread of COVID-19";
+		// 				var content = document.createElement('div');
+		// 				content.innerHTML = '<strong>'+ message +'</strong>'; //<br><strong>'+ message2 +'</strong><br><strong>'+ message3 +'</strong>';
+		// 				swal({
+		// 					// button: false,
+		// 					buttons: {
+		// 						cancel: false,
+		// 						confirm: true,
+		// 					},
+		// 					timer: 10000,
+		// 					showCancelButton: true,
+   		// 					cancelButtonText: 'OK',	
+		// 					content: content,
+		// 					closeOnEsc: false,
+		// 					closeOnClickOutside: false,
+
+		// 				})
+		// 			};
+
+
+
+
+
+		</script>
+	{% endblock %}

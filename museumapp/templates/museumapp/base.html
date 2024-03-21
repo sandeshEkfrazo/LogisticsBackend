@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	{% load static %}
+	<title>
+		{% block title %}Museum of Christian Art - Goa{% endblock %}
+	</title>
+
+	<link rel="icon" type="image/svg+xml" href="{% static 'museumapp/image/FAVICON.svg' %}">
+
+	<!---- common parts for all pages ----->
+
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+	<!-- Bootstrap CSS CDN -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<!-- jQuery CDN - Slim version (=without AJAX) -->
+	<!-- <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> -->
+	<!-- Popper.JS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+	<!-- Bootstrap JS -->
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+
+	<!-- Commom CSS Block-->
+
+	<link rel="stylesheet" type="text/css" href="{% static 'museumapp/css/head-foot.css' %}"/>
+	<!-- <link rel="stylesheet" type="text/css" href="" /> -->
+	<link href='https://fonts.googleapis.com/css?family=Fira Sans' rel='stylesheet'>
+	<link href="https://fonts.googleapis.com/css?family=EB+Garamond&display=swap" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="{% static 'museumapp/css/hover.css' %}" />
+
+	<!--for loading the pdf files -->
+	<script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@2.7.570/build/pdf.min.js"></script>
+
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-27VVM7L6Q0"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+
+		gtag('config', 'G-27VVM7L6Q0');
+	</script>
+
+
+	<!--- Custom CSS Block--->
+	{% block custom-css-parts %}	{% endblock %}
+
+	<!--- Custom Style Block--->
+	{% block style %}	{% endblock %}
+	<style type="text/css">
+
+	@media screen and (min-width: 600px)  {
+        .mobile-break { display: none; }
+    }
+
+
+		.row{
+  			display: -webkit-flex; /* Safari */
+			-webkit-flex-wrap: wrap; /* Safari 6.1+ */
+		}
+		.row:before, .row:after{
+			display: none !important;
+		}
+
+		#bottom-links {
+    color: white;
+    font-size: 12px;
+    border: none;
+    padding: 3px 25px;
+}
+
+#footer-height{
+margin-top: 200px;}
+
+
+.test {
+    margin-right: 20px;
+}
+
+
+
+
+
+
+
+@media (max-width: 425px) {
+.mobile {
+
+       margin-top: 10px;
+}}
+
+@media (max-width: 425px) {
+#nav_bar_search {
+height: 25px;
+}}
+
+	</style>
+
+
+</head>
+<body>
+
+	<!--- Header SiderBar+Icon Block---->
+	{% block sidebar %}
+
+		<!--- moca-icon --->
+		<a href="{% url 'museumapp:indexMoca' %}">
+			<img src="{% static 'museumapp/image/moca-logo.png' %}" alt="moca" class="moca-icon img-fluid">
+		</a>
+
+		<!-- Sidebar  -->
+		<nav id="sidebar" class="active fira">
+
+			<div class="sidebar-header">
+				<button type="button" id="sidebarCollapse" class="btn" style="width: 100%;height: 0px;">
+					<div class="row">
+						<div class="hamburger-change" onclick="myFunction(this)">
+						 	<div class="bar1"></div>
+						 	<div class="bar2"></div>
+						 	<div class="bar3"></div>
+						 	<!-- <div class="bar4"></div> -->
+						 	<img src="{% static 'museumapp/image/side-search.png' %}"class="s-icon img-fluid" alt="search">
+						</div>
+					</div>
+
+				</button>
+			</div>
+			<!-- <div class="search-icon">S</div>
+				 -->
+			<div class="sidebarContent">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-sm-12">
+
+							<!-- for getting dropdowns menu options -->
+							<!-- <ul class="list-unstyled components">
+								<li class="active">
+									<a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+											Home
+									</a>
+									<ul class="collapse list-unstyled" id="homeSubmenu">
+										<li>
+											<a href="#">Home 1</a>
+										</li>
+										<li>
+											<a href="#">Home 2</a>
+										</li>
+										<li>
+											<a href="#">Home 3</a>
+										</li>
+									</ul>
+								</li>
+								<li>
+									<a href="#">
+										About
+									</a>
+									<a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+											Pages
+									</a>
+									<ul class="collapse list-unstyled" id="pageSubmenu">
+										<li>
+											<a href="#">Page 1</a>
+										</li>
+										<li>
+											<a href="#">Page 2</a>
+										</li>
+										<li>
+											<a href="#">Page 3</a>
+										</li>
+									</ul>
+								</li>
+								<li>
+									<a href="#">
+										Portfolio
+									</a>
+								</li>
+								<li>
+									<a href="#">
+										FAQ
+									</a>
+								</li>
+								<li>
+									<a href="#">
+										Contact
+									</a>
+								</li>
+							</ul>  -->
+							<div class="row" id="sideBarLinks">
+								<div class="col-md-10 col-lg-10 col-sm-10 col-10 mobile" style="padding-left: 0px;padding-right: 0px;">
+									<input type="text" id="nav_bar_search" name="search" style="width: 100%;padding-left: 0px;background-color: transparent;border: none;color: white;">
+								</div>
+								<div class="col-md-2 col-lg-2 col-sm-2 col-2 mobile">
+									<a href="{% url 'museumapp:nav_search' %}"  id="nav_bar_search_btn_a">
+										<div class="row justify-content-end">
+											<img src="{% static 'museumapp/image/side-search.png' %}" class="img-fluid" alt="search" style="height: 25px; width: auto;">
+										</div>
+									</a>
+								</div>
+							</div>
+
+
+
+
+
+							<div class="row" id="sideBarLinks">
+								<a href="{% url 'museumapp:planAVisitMoca' %}">PLAN A VISIT</a>
+							</div>
+							<div class="row" id="sideBarLinks">
+								<a href="{% url 'museumapp:aboutUsMoca' %}">ABOUT THE MUSEUM</a>
+							</div>
+							<div class="row" id="sideBarLinks">
+								<a href="#exploreMenu" data-toggle="collapse" aria-expanded="false" style="width: 100%;">
+									<div class="row">
+										<div class="col-sm-10" id="explore-arrow">EXPLORE ART</div>
+										<div class="col-sm-2" style="width: auto;"><span class="dropdown-toggle"></span></div>
+									</div>
+								</a>
+							</div>
+							<ul class="collapse list-unstyled" id="exploreMenu" style="margin-bottom: 0px;">
+								<div class="row" id="sideBarLinks">
+									<a href="{% url 'museumapp:collectionsMoca' %}" style="color:#8b8178;">THE COLLECTION</a>
+								</div>
+								<div class="row" id="sideBarLinks">
+									<a href="{% url 'museumapp:storiesMoca' %}" style="color:#8b8178;">STORIES</a>
+								</div>
+							</ul>
+							<div class="row" id="sideBarLinks">
+								<a href="{% url 'museumapp:eventsMoca' %}">WHATS ON</a>
+							</div>
+							<div class="row" id="sideBarLinks">
+								<a href="{% url 'museumapp:knowledgeCenterMoca' %}">MoCA KNOWLEDGE CENTER</a>
+							</div>
+							<div class="row" id="sideBarLinks">
+								<a href="{% url 'museumapp:connectionsMoca' %}">MoCA COMMUNITY</a>
+							</div>
+							<div class="row" id="sideBarLinks">
+								<a href="{% url 'museumapp:supportMoca' %}">FRIENDS OF MoCA</a>
+							</div>
+							<div class="row" id="sideBarLinks">
+								<a href="{% url 'museumapp:journals_search_data' %}">MoCA JOURNAL</a>
+							</div>
+							<div class="row" id="sideBarLinks">
+								<!--<a href="http://www.selfdefence.co.in/mocashop" target="_blank">MoCA SHOP</a>-->
+								<a href="https://shop.museumofchristianart.com/product/museum-of-christian-art-convent-of-santa-monica-goa-india/" target="_blank">MoCA SHOP</a>
+							</div>
+							<div class="row" style="padding: 25px;">
+								<a href="{% url 'museumapp:buy_tickets' %}"><button type="button" class="buy-tickets-button fira" style="border:0px;box-shadow: none;margin-top:5px;">BOOK TICKETS</button></a>
+							</div>
+							<div class="row" id="bottom-links"><a href="{% url 'museumapp:artCultureMoca' %}">Google Arts & Culture</a></div>
+							<div class="row" id="bottom-links"><a href="{% url 'museumapp:in_the_news_search_data' %}">Press</a></div>
+			<!-- 				<div class="row" id="bottom-links"><a href="{% url 'museumapp:careerMoca' %}">Work at MoCA</a></div> -->
+							<!--<div class="row" id="bottom-links"><a href="{% url 'museumapp:contactUsMoca' %}">Contact/Careers</a></div>-->
+							<div class="row" id="bottom-links"><a href="{% url 'museumapp:careerMoca' %}">Careers</a></div>
+							<div class="row" id="bottom-links"><a href="{% url 'museumapp:contactUsMoca' %}">Contact</a></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</nav>
+
+	{% endblock %}
+
+	<!--- Body Content Block --->
+	{% block body-content %}	{% endblock %}
+
+	<!--- Footer Content block ---->
+	{% block footer %}
+
+		<div class="container-fluid" id="footer-height">
+			<div class="row moca-footer fira">
+				<div class="container-fluid">
+					<div class="col-sm-12">
+						<div class="row">
+							<div class="footer-scroll-btn">
+								<button onclick="topFunction()" class="small-text fira font-weight-normal" id="footer-to-top"><b>BACK TO THE TOP</b></button>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-12">
+						<div class="row">
+							<div class="col-sm-12 col-md-1"></div>
+							<div class="col-sm-12 col-md-4" style="color: white;">
+								<div class="row">
+									<div class="col-sm-6" id="mob-50">
+										<div class="row">
+											<div class="col-sm-12">
+												<div class="small-heading fira font-weight-bold">TIMINGS</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-sm-12">
+												<div class="small-heading fira side-head-para" style="letter-spacing: 0px;">
+													Open daily  <br class="mobile-break"> 10 am–5 pm.<br><br>
+
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-sm-12">
+												<div class="small-heading fira font-weight-bold">LOCATION</div>
+											</div>
+											<div class="col-sm-12">
+												<div class="small-heading fira high-para" style="letter-spacing: 0px;">
+													Convent of Santa Monica,<br>
+													Holy Hill, <br>
+													next to the ruins of the<br>
+													St. Augustine Monastery, <br>
+													Old Goa.
+												</div>
+
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-6" id="mob-50">
+										<div class="row">
+											<a href="{% url 'museumapp:supportMoca' %}" id="footer-member">
+												<div class="col-sm footer-box">
+												<div class="small-heading font-weight-bold">MEMBERSHIP</div>
+												<div class="garamond page-highlights side-head-para"style="letter-spacing: 0px;">Become a<br> Friend of MoCA <br>Today !</div>
+												<div class="small-text font-weight-bold pad-top-learn">LEARN MORE</div>
+											</div>
+										</a>
+											<!-- <div class="col-sm-7"></div> -->
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-12">
+										<div class="btn-tickets">
+											<div class="row" id="mob-move">
+												<a href="{% url 'museumapp:buy_tickets' %}">
+													<button type="button" class="buy-tickets-button fira" style="border:0px;box-shadow: none;">BOOK TICKETS</button>
+												</a>
+											</div>
+										</div>
+
+										<div class="plan-visits">
+											<div class="row" id="mob-move">
+												<a href="{% url 'museumapp:planAVisitMoca' %}">
+													<div class="plan-visit-button fira" style="border-color: white; color: white;"><b>PLAN A VISIT</b></div>
+												</a>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="col-sm-12 col-md-2"></div>
+							<div class="col-sm-12 col-md-4" id="pad-zero">
+								<div class="row">
+									<div class="col-sm footer-link test">
+										<h6 class="font-weight-bold small-text">ABOUT THE MUSEUM</h6>
+										<div class="row bottom-footer" >
+											<a href="{% url 'museumapp:aboutUsMoca' %}">ABOUT US</a>
+										</div>
+
+										<div class="row bottom-footer" >
+											<a href="{% url 'museumapp:pressMoca' %}">PRESS</a>
+										</div>
+										<div class="row bottom-footer" >
+											<a href="{% url 'museumapp:careerMoca' %}">JOBS</a>
+										</div>
+										<div class="row bottom-footer" >
+											<a href="{% url 'museumapp:contactUsMoca' %}">CONTACT US</a>
+										</div>
+									</div>
+									<div class="col-sm footer-link test">
+										<h6 class="font-weight-bold small-text">PLAN A VISIT</h6>
+										<div class="row bottom-footer" >
+											<a href="{% url 'museumapp:planAVisitMoca' %}">GETTING HERE</a>
+										</div>
+										<div class="row bottom-footer" >
+											<a href="{% url 'museumapp:guidedToursMoca' %}">GUIDED TOURS</a>
+										</div>
+										<div class="row bottom-footer" >
+											<a href="{% url 'museumapp:accessibilityMoca' %}">AMENITIES</a>
+										</div>
+										<!--<div class="row bottom-footer" >
+											<a href="#">GALLERY MAP</a>
+										</div>-->
+										<div class="row bottom-footer" >
+											<a href="{% url 'museumapp:connectionsMoca' %}">COMMUNITY</a>
+										</div>
+										<div class="row bottom-footer" >
+											<a href="{% url 'museumapp:eventsMoca' %}">WHAT'S ON </a>
+										</div>
+										<div class="row bottom-footer" >
+											<!--<a href="http://www.selfdefence.co.in/mocashop" target="_blank">MOCA SHOP</a>-->
+											<a href="https://shop.museumofchristianart.com/product/museum-of-christian-art-convent-of-santa-monica-goa-india/" target="_blank">MOCA SHOP</a>
+										</div>
+										<div class="row bottom-footer" >
+											<a href="{% url 'museumapp:cafeMoca' %}">MoCA CAFE</a>
+										</div>
+									</div>
+									<div class="col-sm footer-link">
+										<h6 class="font-weight-bold small-text">EXPLORE</h6>
+										<div class="row bottom-footer" >
+											<a href="{% url 'museumapp:collectionsMoca' %}">COLLECTION</a>
+										</div>
+										<div class="row bottom-footer" >
+											<a href="{% url 'museumapp:storiesMoca' %}">STORIES</a>
+										</div>
+										<div class="row bottom-footer" >
+											<a href="{% url 'museumapp:journals_search_data' %}">JOURNAL</a>
+										</div>
+									</div>
+									<div class="col-sm footer-link">
+										<h6 class="font-weight-bold small-text">KNOWLEDGE</h6>
+										<div class="row bottom-footer" >
+											<a href="{% url 'museumapp:knowledgeCenterMoca' %}">MoCA PRESS</a>
+										</div>
+										<div class="row bottom-footer" >
+											<a href="{% url 'museumapp:knowledgeCenterMoca' %}">LIBRARY</a>
+										</div>
+										<div class="row bottom-footer" >
+											<a href="{% url 'museumapp:knowledgeCenterMoca' %}">CONSERVATION</a>
+										</div>
+										<div class="row bottom-footer" >
+											<a href="{% url 'museumapp:knowledgeCenterMoca' %}">RESTORATION</a>
+										</div>
+										<div class="row bottom-footer" >
+											<a href="{% url 'museumapp:knowledgeCenterMoca' %}">RESEARCH</a>
+										</div>
+										<div class="row bottom-footer" >
+											<a href="{% url 'museumapp:knowledgeCenterMoca' %}">REPOSITORY</a>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-12 col-md-1"></div>
+						</div>
+					</div>
+				</div>
+				<!-- <div class="col-sm-12">
+					<p style="float:right;padding-right: 10px;margin-bottom: 0px;">POWERED BY</p>
+				</div> -->
+				<div class="col-sm-12">
+					<div class="row">
+						<div class="col-sm-1"></div>
+						<div class="col-sm-6 footer-social-icons" style="align-self: center;">
+							<div class="row" style="margin: 0px;">
+								<div class="col-sm social-width">
+									<a href="https://www.facebook.com/mocagoaofficial" target="_blank"><img class="social-icons img-fluid" src="{% static 'museumapp/image/fb_moca.png' %}" alt="MoCA"></a>
+								</div>
+								<div class="col-sm social-width">
+									<a href="https://www.instagram.com/mocagoaofficial" target="_blank"><img class="social-icons img-fluid" src="{% static 'museumapp/image/insta_moca.png' %}" alt="MoCA"></a>
+								</div>
+								<div class="col-sm social-width">
+									<a href="https://www.youtube.com/channel/UC3ey9WrWekk4T6fyX2pEtow" target="_blank"><img class="social-icons img-fluid" src="{% static 'museumapp/image/pinterest_moca.png' %}" alt="MoCA"></a>
+								</div>
+								<div class="col-sm social-width">
+									<a href="https://www.tripadvisor.in/Attraction_Review-d2534673?m=55595" target="_blank"><img class="social-icons img-fluid" src="{% static 'museumapp/image/owl_moca.png' %}" alt="MoCA"></a>
+								</div>
+								<div class="col-sm social-width">
+									<a href="https://twitter.com/MoCA_GOA" target="_blank"><img class="social-icons img-fluid" src="{% static 'museumapp/image/twitter_moca.png' %}" alt="MoCA"></a>
+								</div>
+							</div>
+						</div>
+						<!-- <div class="col-sm-5 footer-bank-logo">
+							<p style="text-align: end;padding-right: 10px;margin-bottom: 0px; color:#dedede82;">POWERED BY</p>
+								<img src="{% static 'museumapp/image/3.png' %}" alt="moca" style="width: 120px; float: right;">
+						</div> -->
+					</div>
+				</div>
+			</div>
+		</div>
+
+	{% endblock %}
+
+	<!--- Common Script Block ---->
+	{% block common-script %}
+
+		<script type="text/javascript">
+			$(document).ready(function () {
+				$('#sidebarCollapse').on('click', function () {
+					$('#sidebar').toggleClass('active');
+					$('#sidebarContent').toggleClass('');
+				});
+			});
+
+			function myFunction(x) {
+				x.classList.toggle("change");
+			}
+
+			// When the user scrolls down 20px from the top of the document, show the button
+			window.onscroll = function() {scrollFunction()};
+
+			function scrollFunction() {
+			  if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+			    document.getElementById("footer-to-top").style.display = "block";
+			  } else {
+			    document.getElementById("footer-to-top").style.display = "none";
+			  }
+			}
+
+			// When the user clicks on the button, scroll to the top of the document
+			function topFunction() {
+			  document.body.scrollTop = 0;
+			  document.documentElement.scrollTop = 0;
+			}
+
+
+			const debounce = (func, delay) => {
+					let debounceTimer
+					return function() {
+						const context = this
+						const args = arguments
+							clearTimeout(debounceTimer)
+								debounceTimer
+							= setTimeout(() => func.apply(context, args), delay)
+					}
+				}
+			$(document).ready(function(){
+
+					  $("#nav_bar_search").on("keyup", debounce(function(){
+					  	var value = $(this).val();
+
+					  		$.ajax({
+                                url: "{% url 'museumapp:nav_search_ajax' %}",
+                                type: "POST",
+                                async: false,
+                                data: {'search_data': value, csrfmiddlewaretoken: '{{ csrf_token }}'},
+                                success: function (result) {
+
+								}
+							});
+					  },200)
+						);
+					});
+
+
+
+
+					$("#nav_bar_search").keydown(function(e){
+						if(e.which === 13){
+							$('#nav_bar_search_btn_a')[0].click();
+						}
+					});
+
+
+		</script>
+
+	{% endblock %}
+
+	<!--- Custom Script Block --->
+	{% block custom-script %}	{% endblock %}
+
+</body>
+</html>

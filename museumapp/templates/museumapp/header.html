@@ -1,0 +1,150 @@
+{% load static %}
+<!--- moca-icon --->
+	<a href="index.html">
+		<img src="image/moca-logo.png" alt="moca" class="moca-icon img-fluid">
+	</a>
+	
+	
+	<!-- Sidebar  -->
+	<nav id="sidebar" class="active fira">
+		
+		<div class="sidebar-header">
+			<button type="button" id="sidebarCollapse" class="btn" style="width: 100%;">
+				<div class="row">
+					<div class="hamburger-change" onclick="myFunction(this)">
+					 	<div class="bar1"></div>
+					 	<div class="bar2"></div>
+					 	<div class="bar3"></div>
+					 	<div class="bar4"></div>
+					 	<img src="image/Search.png" class="s-icon" alt="search">
+					</div>
+				</div>
+				
+			</button>
+		</div>
+		<!-- <div class="search-icon">S</div>
+			 -->
+		<div class="sidebarContent" style="padding-bottom: 50px;">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-sm-12">
+					
+						<!-- for getting dropdowns menu options -->
+						<!-- <ul class="list-unstyled components">
+							<li class="active">
+								<a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+										Home
+								</a>
+								<ul class="collapse list-unstyled" id="homeSubmenu">
+									<li>
+										<a href="#">Home 1</a>
+									</li>
+									<li>
+										<a href="#">Home 2</a>
+									</li>
+									<li>
+										<a href="#">Home 3</a>
+									</li>
+								</ul>
+							</li>
+							<li>
+								<a href="#">
+									About
+								</a>
+								<a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+										Pages
+								</a>
+								<ul class="collapse list-unstyled" id="pageSubmenu">
+									<li>
+										<a href="#">Page 1</a>
+									</li>
+									<li>
+										<a href="#">Page 2</a>
+									</li>
+									<li>
+										<a href="#">Page 3</a>
+									</li>
+								</ul>
+							</li>
+							<li>
+								<a href="#">
+									Portfolio
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									FAQ
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									Contact
+								</a>
+							</li>
+						</ul>  -->
+						<div class="row" id="sideBarLinks">
+							<div class="col-md-10 col-lg-10 col-sm-12" style="padding-left: 0px;padding-right: 0px;">
+								<input type="text" name="search" style="width: 100%;padding-left: 0px;background-color: transparent;border: none;color: white;">
+							</div>
+							<div class="col-md-2 col-lg-2 col-sm-0">
+								<a href="#">
+									<div class="row justify-content-end">
+										<img src="image/Search.png" alt="search" style="height: 25px; width: auto;">
+									</div>
+								</a>
+							</div>
+						</div>
+						<div class="row" id="sideBarLinks">
+							<a href="plan-a-visit.html">PLAN A VISIT</a>
+						</div>
+						<div class="row" id="sideBarLinks">
+							<a href="about-moca.html">ABOUT THE MUSEUM</a>
+						</div>
+						<div class="row" id="sideBarLinks">
+							<a href="#exploreMenu" data-toggle="collapse" aria-expanded="false" style="width: 100%;">
+								<div class="row">
+									<div class="col-sm-10">EXPLORE ART</div>
+									<div class="col-sm-2"><span class="dropdown-toggle"></span></div>
+								</div>
+							</a>
+						</div>
+						<ul class="collapse list-unstyled" id="exploreMenu" style="margin-bottom: 0px;">
+							<div class="row" id="sideBarLinks">
+								<a href="collection.html" style="color:#8b8178;">THE COLLECTIONS</a>
+							</div>
+							<div class="row" id="sideBarLinks">
+								<a href="explore-art.html" style="color:#8b8178;">THE STORIES</a>
+							</div>
+						</ul>
+						<div class="row" id="sideBarLinks">
+							<a href="{% url 'museumapp:whatsOnMoca' %}">WHATS ON</a>
+						</div>
+						<div class="row" id="sideBarLinks">
+							<a href="knowledge-center.html">MOCA KNOWLEDGE CENTER</a>
+						</div>
+						<div class="row" id="sideBarLinks">
+							<a href="moca-connection.html">CONNECT AT MOCA</a>
+						</div>
+						<div class="row" id="sideBarLinks">
+							<a href="support-moca.html">FRIENDS OF MOCA</a>
+						</div>
+						<div class="row" id="sideBarLinks">
+							<a href="moca-journals.html">MOCA JOURNALS</a>
+						</div>
+						<div class="row" id="sideBarLinks">
+							<!--<a href="http://www.selfdefence.co.in/mocashop" target="_blank">MOCA SHOP</a>-->
+							<a href="https://shop.museumofchristianart.com/product/museum-of-christian-art-convent-of-santa-monica-goa-india/" target="_blank">MOCA SHOP</a>
+
+						</div>
+						<div class="row" style="padding: 25px;">
+							<button type="button" class="buy-tickets-button fira" style="border:0px;box-shadow: none;"><b>BOOK TICKETS</b></button>
+						</div>
+						<div class="row" id="sideBarLinks" style="color: white;padding: 5px 0px 2px 0px;font-size: 12px;border: none;"><a href="#">Archives</a></div>
+						<div class="row" id="sideBarLinks" style="color: white;padding: 5px 0px 2px 0px;font-size: 12px;border: none;"><a href="#">Press</a></div>
+						<div class="row" id="sideBarLinks" style="color: white;padding: 5px 0px 2px 0px;font-size: 12px;border: none;"><a href="#">Work at MOCA</a></div>
+						<div class="row" id="sideBarLinks" style="color: white;padding: 5px 0px 2px 0px;font-size: 12px;border: none;"><a href="#">Contact</a></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</nav>

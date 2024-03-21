@@ -1,0 +1,492 @@
+{% extends "museumapp/base.html" %}
+
+{% load static %}
+
+<!--- Title --->
+{% block title %}
+Museum of Christian Art
+{% endblock %}
+
+<!--- Custom CSS --->
+{% block custom-css-parts %}
+{% endblock %}
+
+<!--- Custom Style --->
+{% block style %}
+<link rel="stylesheet" type="text/css" href="{% static 'museumapp/css/supportMoca.css' %}" />
+{% endblock %}
+
+<!--- Body content --->
+{% block body-content %}
+
+<style>
+	.box {
+		width: 300px;
+		height: auto;
+		/*background-color:#d9d9d9;*/
+		/*position:absolute;*/
+		margin-left: -150px;
+		/* half of width */
+		margin-top: -150px;
+		/* half of height */
+		top: 50%;
+		left: 50%;
+	}
+</style>
+<!-- Page Content  -->
+<div id="content">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-sm-12" style="padding: 0px;">
+				<div class="parallax" style="background-image: url('{% static 'museumapp/image/2068.jpg' %}');"></div>
+			</div>
+
+			<div class="move-top">
+				<div class="fira-on-image fira font-weight-bold" style="color:white;">SUPPORT THE MUSEUM</div>
+				<div class="big-font-on-image garamond" style="color:white;">Become a <br>Friend of MoCA</div>
+			</div>
+		</div>
+	</div>
+
+	{% comment %}<div class="container-fluid">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="row">
+					<div class="col-sm-8"></div>
+					<div class="col-sm-2 buy-to-end">
+						<a href="#"><button type="button" class="buy-tickets-button fira small-heading">BUY
+								TICKETS</button></a>
+					</div>
+					<div class="col-sm-2"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container-fluid from-image-content">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="row">
+							<div class="col-sm-1"></div>
+							<div class="col-sm-2">
+								<div class="side-sticky-links">
+
+									<a href="#Lifetime">
+										<span class="small-text fira font-weight-bold"
+											id="side-links">LIFETIME</span><br>
+									</a>
+
+									<a href="#family">
+										<span class="small-text fira font-weight-bold" id="side-links">FAMILY</span><br>
+									</a>
+
+
+									<a href="#Individual"><span class="small-text fira font-weight-bold"
+											id="side-links">INDIVIDUAL</span><br>
+									</a>
+
+
+									<a href="#student">
+										<span class="small-text fira font-weight-bold"
+											id="side-links">STUDENT</span><br>
+									</a>
+
+
+
+
+									<a href="#Corporate">
+										<span class="small-text fira font-weight-bold"
+											id="side-links">CORPORATE</span><br>
+									</a>
+
+
+									<a href="{% url 'museumapp:supportMoca' %}" target="_blank">
+										<span class="small-text fira font-weight-bold" id="side-links">Become a Friend
+											of MoCA</span><br>
+									</a>
+
+
+
+									<a href="{% static 'museumapp/pdf/list_of_donors.pdf' %}" target="_blank">
+										<span class="small-text fira font-weight-bold" id="side-links">DONORS
+											LIST</span>
+									</a>
+
+
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div class="row" id="mob-margin-zero">
+									<div class="page-highlights garamond high-para">
+										By becoming a Friend, you contribute positively to preserving our rich cultural
+										heritage for posterity, and our mission to widen our understanding of it. Our
+										programme also aims to support the Museum's refurbishment project and its vital
+										activities in the fields of research, education, outreach, conservation, and
+										publication.
+									</div>
+									<div class="page-highlights garamond side-head-para">
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-12 page-highlights garamond side-head-para">As a 'Friend of MoCA'
+										you enjoy unlimited entry to the museum as well as all of our member
+										benefits.<br><br>
+
+										Go on. Join today. Become a Friend of MoCA.
+									</div>
+
+								</div>
+
+
+								<div class="row">
+									<div class="col-sm-12 page-highlights garamond" id="Lifetime"
+										style="margin-bottom: 0px;"> Lifetime Membership</div>
+									<div class="col-sm-12 inner-para garamond high-para">
+										Rs. 1,00,000/- and above<br>
+										Name of the donor on the Donor Board<br>
+										Name of the member on MoCA’s Website<br>
+										Exemption under Section 80G of the Income Tax Act<br>
+										Unlimited free admission to the Museum<br>
+										Membership Card<br>
+										Introductory gift<br>
+										One guided tour of the Museum <br>
+										One Heritage walk of the Holy Hill for a group of up to 10 people<br>
+										Discount on MoCA’s Merchandise<br>
+										Discount for workshops and public lectures<br>
+										Invitation to our Special Events<br>
+										Invitation to MoCA launch<br>
+
+									</div>
+								</div>
+
+
+
+
+
+
+
+								<div class="row">
+									<div class="col-sm-12 page-highlights garamond" id="family"
+										style="margin-bottom: 0px;"> Family Membership upto- 4 members</div>
+									<div class="col-sm-12 inner-para garamond high-para">
+										One Year Rs. 10,000/-<br>
+										Membership Card<br>
+										Unlimited free admission to the Museum<br>
+										Introductory gift<br>
+										Discount on MoCA’s Merchandise<br>
+										Discount for workshops and public lectures<br>
+										Name of the member on MoCA’s Website<br>
+										One guided tour of the Museum<br>
+										Exemption under Section 80G of the Income Tax Act<br>
+										One Heritage walk of the Holy Hill for the family<br>
+
+									</div>
+								</div>
+
+
+
+
+
+
+								<div class="row">
+									<div class="col-sm-12 page-highlights garamond" id="Individual"
+										style="margin-bottom: 0px;"> Individual Membership</div>
+									<div class="col-sm-12 inner-para garamond high-para">
+										One Year Rs. 5000/-<br>
+										Membership Card<br>
+										Unlimited free admission to the Museum<br>
+										Introductory gift<br>
+										Discount on MoCA’s Merchandise<br>
+										Discount for workshops and public lectures<br>
+										Name of the member on MoCA’s Website<br>
+										One guided tour of the Museum<br>
+										Exemption under Section 80G of the Income Tax Act.<br>
+
+
+
+
+
+
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="col-sm-12 page-highlights garamond" id="student"
+										style="margin-bottom: 0px;"> Student Membership</div>
+									<div class="col-sm-12 inner-para garamond high-para">
+
+										One Year Rs. 1000/- <br>
+										Membership Card<br>
+										Unlimited free admission to the Museum<br>
+										Introductory gift<br>
+										Discount on MoCA’s Merchandise<br>
+										Discount for workshops and public lectures<br>
+										Name of the member on MoCA’s Website<br>
+										One guided tour of the Museum<br>
+
+
+
+									</div>
+								</div>
+
+
+
+
+
+								<div class="row">
+									<div class="col-sm-12 page-highlights garamond" id="Corporate"
+										style="margin-bottom: 0px;"> Corporate Partners</div>
+									<div class="col-sm-12 inner-para garamond high-para">
+										1. Yes Bank<br>
+
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="col-sm-12 page-highlights garamond" id="Corporate"
+										style="margin-bottom: 0px;">Collaborators</div>
+									<div class="col-sm-12 inner-para garamond high-para">
+										2. Fundacao Oriente<br>
+										3. Ministry of Culture, India<br>
+
+									</div>
+								</div>
+
+
+							</div>
+							<div class="col-sm-3"></div>
+						</div>
+
+						<!-- <div class="row">
+									<div class="col-sm-3"></div>
+									<div class="col-sm-6">
+										<div class="side-heading-size35 garamond"></div>
+										<div class="inner-para garamond"> Please note that if you want to visit museum within one week we recommend to purchase your membership at ticket desk 1 or in the museum shop.
+										</div>
+									</div>
+									<div class="col-sm-3"></div>
+								</div>
+
+								<div class="row">
+									<div class="col-sm-3"></div>
+									<div class="col-sm-6">
+										<div class="side-heading-size35 garamond"></div>
+										<div class="inner-para garamond high-para">Cost of Rijks Friend membership<br> €50 annually for individual membership<br> €75 annually for joint membership<br> If you become a Friend for €75 you will get one personal card and one card for guests.
+										</div>
+									</div>
+									<div class="col-sm-3"></div>
+								</div>
+
+								<div class="row">
+									<div class="col-sm-3"></div>
+									<div class="col-sm-6">
+										<div class="side-heading-size35 garamond"></div>
+										<div class="inner-para garamond high-para">
+											Questions? Get in touch!tours.
+										</div>
+									</div>
+									<div class="col-sm-3"></div>
+								</div> -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>{% endcomment %}
+
+
+<div class="row">
+	<div class="container" align="center">
+		<br><br><br>
+		<div align="left" id="alert_data"></div>
+
+
+		<table class="centerTable inner-para garamond" id="form_table" style="left: 50%">
+
+			<br><br>
+			<tbody>
+				<tr>
+					<td class="page-highlights garamond">Donor Form<br><br></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Full Name</td>
+					<td><input class="form-control" type="text" id="full_name" name="full_name" required></td>
+
+				</tr>
+				<tr>
+					<td><br></td>
+				</tr>
+				<tr>
+					<td>Email ID</td>
+					<td><input class="form-control" type="text" id="email" name="email" required></td>
+
+				</tr>
+				<tr>
+					<td><br></td>
+				</tr>
+				<tr>
+					<td>Phone Number</td>
+					<td><input class="form-control" type="text" id="phone_number" name="phone_number" required></td>
+
+				</tr>
+				<tr>
+					<td><br></td>
+				</tr>
+				<tr>
+					<td>Type of Membership</td>
+					<td>
+						<select class="form-control" id="type_of_membership" name="type_of_membership"
+							onchange="MemberShipType()">
+							<option value="">Select Membership</option>
+							<option value="Student">Student</option>
+							<option value="Individual">Individual</option>
+							<option value="Family">Family</option>
+							<option value="Lifetime">Lifetime</option>
+							<option value="Lifetime">Patrons</option>
+
+
+
+
+							<option value="Corporate">Corporate</option>
+						</select>
+					</td>
+
+				</tr>
+				<tr>
+					<td><br></td>
+				</tr>
+				<tr>
+					<td id="append_content" colspan="2"></td>
+				</tr>
+				<tr>
+					<td><br></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><input type="button" value="Submit" class="buy-tickets-button fira small-heading"
+							onclick="SubmitCall()"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<script>
+
+	var membership_amount
+
+	function MemberShipType() {
+
+		var type_of_mem = $('#type_of_membership').val();
+		if (type_of_mem == 'Family') {
+			$('#append_content').empty()
+			$('#append_content').append('Family Membership upto 4 members One Year Rs. 25,000/-<br>Membership Card<br>Unlimited free admission to the Museum<br>Introductory gift<br>Discount on MoCA’s Merchandise<br>Discount for workshops and public lectures<br>Name of the member on MoCA’s Website<br>One guided tour of the Museum<br>Exemption under Section 80G of the Income Tax Act<br>One Heritage walk of the Holy Hill for the family<br>');
+			membership_amount = 25000
+
+
+
+
+
+
+		} else if (type_of_mem == 'Individual') {
+			$('#append_content').empty()
+			$('#append_content').append('Individual Membership One Year Rs. 5000/-<br>Membership Card<br>Unlimited free admission to the Museum<br>Introductory gift<br>Discount on MoCA’s Merchandise<br>Discount for workshops and public lectures<br>Name of the member on MoCA’s Website<br>One guided tour of the Museum<br>Exemption under Section 80G of the Income Tax Act.<br>');
+			membership_amount = 5000
+
+
+
+
+
+
+
+		} else if (type_of_mem == 'Student') {
+			$('#append_content').empty()
+			$('#append_content').append('Student Membership One Year Rs. 1000/-<br>Membership Card<br>Unlimited free admission to the Museum<br>Introductory gift<br>Discount on MoCA’s Merchandise<br>Discount for workshops and public lectures<br>Name of the member on MoCA’s Website<br>One guided tour of the Museum<br>');
+			membership_amount = 1000
+
+
+
+
+
+		} else if (type_of_mem == 'Lifetime') {
+			$('#append_content').empty()
+			$('#append_content').append('Lifetime Membership Rs. 1,00,000/- and above <br>Name of the donor on the Donor Board<br>Name of the member on MoCA’s Website<br>Exemption under Section 80G of the Income Tax Act<br>Unlimited free admission to the Museum<br>Membership Card<br>Introductory gift<br>One guided tour of the Museum <br>One Heritage walk of the Holy Hill for a group of up to 10 people<br>Discount on MoCA’s Merchandise<br>Discount for workshops and public lectures<br>Invitation to our Special Events<br>Invitation to MoCA launch<br>');
+			membership_amount = 100000
+
+
+
+
+
+		} else if (type_of_mem == 'Corporate') {
+			$('#append_content').empty()
+			$('#append_content').append('Corporate Membership Rs. 5,00,000/- and above<br>Name of the donor on the Donor Board<br>Name of the member on MoCA’s Website<br>Exemption under Section 80G of the Income Tax Act<br>Membership Card<br>Introductory gift<br>Discount on MoCA’s Merchandise<br>One guided tour of the Museum for a group of upto 10 people<br>One Heritage walk of the Holy Hill for a group of up to 10 people<br>Invitation to our Special Events<br>Invitation to MoCA launch<br>');
+			membership_amount = 500000
+
+		}
+
+	}
+
+	function SubmitCall() {
+		var full_name = $('#full_name').val();
+		var email = $('#email').val();
+		var ph_no = $('#phone_number').val();
+		var type_of_mem = $('#type_of_membership').val();
+		if (full_name != '' & email != '' & ph_no != '' & type_of_mem != '') {
+			$.ajax({
+				url: "{% url 'museumapp:membership' %}",
+				type: "POST",
+				async: false,
+				data: { full_name: full_name, email: email, ph_no: ph_no, type_of_mem: type_of_mem, membership_amount: membership_amount, csrfmiddlewaretoken: '{{ csrf_token }}' },
+				success: function (data) {
+
+					$('#form_table').remove()
+					$('#alert_data').append(`<p class='inner-para garamond'>Thank you for joining us. <br><br>Please transfer the payment to the bank account details or by cheque to the postal address provided below. <br><br><br>
+<strong>FOR DONATIONS IN INDIAN RUPEES</strong><br>
+Account Name: MUSEUM OF CHRISTIAN ART GOA<br>
+Account Type: CURRENT ACCOUNT<br>
+Account No. 0321201000753<br>
+Bank: CANARA BANK<br>
+Branch: OLD GOA BRANCH<br>
+Address: Near Gandhi Circle, Old Goa, Goa, 403402<br>
+State: GOA<br>
+IFSC Code: CNRB0000321<br>
+Cheque in favour of 'Museum of Christian Art'<br><br><strong>FOR DONATIONS IN INTERNATIONAL CURRENCY</strong><br>
+Account Name: MUSEUM OF CHRISTIAN ART GOA<br>
+Account Type: SAVINGS ACCOUNT<br>
+Account No. 40121915242<br>
+Bank: State Bank of India New Delhi, Main Branch<br>
+Address:  11, Parliament Street, New Delhi, NCT of Delhi, 110001<br>
+State: New Delhi<br>
+IFSC Code: SBIN0000691<br>
+
+Cheque in favour of 'Museum of Christian Art'
+<br><br>
+<strong>ADDRESS</strong><br>
+Museum of Christian Art <br>
+Convent of Santa Monica,<br>
+Holy Hill,<br>
+Old Goa, Old Goa,<br>
+India 403402<br></p>`)
+
+
+				}
+			});
+		} else {
+
+			//alert('Please Fill all the input fields.')
+			swal("Please Fill all the input fields.");
+
+		}
+	}
+
+
+</script>
+
+
+{% endblock %}
+
+<!--- Custom Script Block --->
+{% block custom-script %} {% endblock %}

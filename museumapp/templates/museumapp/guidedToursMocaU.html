@@ -1,0 +1,295 @@
+{% extends "museumapp/base.html" %}
+
+{% load static %}
+
+	<!--- Title --->
+	{% block title %}	{% endblock %}
+
+	<!--- Custom CSS --->
+	{% block custom-css-parts %}
+	{% endblock %}
+
+	<!--- Custom Style --->
+	{% block style %}
+		<link rel="stylesheet" type="text/css" href="{% static 'museumapp/css/guidedToursMoca.css' %}"/>
+		<link rel="stylesheet" type="text/css" href="{% static 'museumapp/css/toi-css/hover-box.css' %}" />
+	{% endblock %}
+
+	<!--- Body content --->
+	{% block body-content %}
+		<!-- Page Content  -->
+		<div id="content">
+
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-sm-12" style="padding: 0px;">
+						<div class="parallax" style="background-image: url('{% static 'museumapp/image/guided-tour.jpg' %}');"></div>
+					</div>
+
+					<!-- <div class="move-top">
+						<div class="fira-on-image fira font-weight-bold">PLAN A VISIT</div>
+						<div class="big-font-on-image garamond">Where, When <br>& How</div>
+					</div> -->
+				</div>
+			</div>
+
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-sm-12">
+					  	<div class="row">
+							<div class="col-sm-3"></div>
+						 	<div class="col-sm-6" style="text-align: end;">
+						   		<a href="{% url 'museumapp:buy_tickets' %}">
+						   			<button type="button" class="buy-tickets-button fira small-heading">BOOK TICKETS</button>
+						   		</a>
+							</div>
+							<div class="col-sm-3"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="container-fluid from-image-content" >
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="row">
+							<div class="col-sm-3"></div>
+							<div class="col-sm-6">
+								<!--<div class="small-heading fira font-weight-bold sub-para">PLAN A VISIT / <span style="color:#A9A9A9">GUIDED TOURS</span></div>-->
+								<div class="small-heading fira font-weight-bold sub-para">Plan A Visit / <span style="color:#A9A9A9">Guided Tours</span></div>
+							</div>
+							<div class="col-sm-3"></div>
+						</div>
+
+						<div class="row">
+							<div class="col-sm-3"></div>
+							<div class="col-sm-6">
+								<div class="page-heading garamond high-para">Guided Group Tours</div>
+							</div>
+							<div class="col-sm-3"></div>
+						</div>
+
+						<div class="row">
+							<div class="col-sm-1"></div>
+							<div class="col-sm-2">
+								<div class="side-sticky-links">
+									<a href="#highlights"><span class="small-text fira font-weight-bold" id="side-links">Highlights of MoCA</span><br>
+									</a>
+
+									<a href="#retracing"><span class="small-text fira font-weight-bold" id="side-links">Retracing Monte Santo</span><br>
+									</a>
+
+									<a href="#special"><span class="small-text fira font-weight-bold" id="side-links">Special Tours</span><br>
+									</a>
+									<a href="#education"><span class="small-text fira font-weight-bold" id="side-links">Educational Institutions</span>
+									<br></a>
+
+
+
+								</div>
+							</div>
+							<div class="col-sm-6 bottom-border">
+								<div class="row">
+									<div class="col-sm-12 page-highlights garamond high-para ">
+
+								At MoCA we are proud of our specially curated guided group tours designed for all ages to engage with the museum’s collection as well as the extraordinary monuments of Holy Hill of Old Goa. Our tours cover art, history and architecture and are for anyone interested in learning about Goa’s unique heritage.
+									<!-- MoCA welcomes groups of all ages to our specially curated
+									Guided Group tours to engage with the Museum collection.
+									Our tours cover history, architecture and contemporary
+									exhibitions. MoCA works in collaboration with various
+									travelling experiences to bring various exciting tours, keep
+									checking the updates on What’s On Calendar. -->
+
+									<br><br>
+										<img src="{% static 'museumapp/image/iwt/5-min.jpg' %}" alt="MoCA" class="img-fluid">
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="col-sm-12 side-heading-garamond garamond side-head-para" style="margin-top: 15px;"> Customize your visit with the following guided-tour
+options.
+									</div>
+							<!-- 		<div class="col-sm-12 inner-para garamond high-para"> Please schedule all tours at least three weeks in advance. If you are interested in Curriculum-based Programs or booking directly from a school please visit our education area.
+									</div> -->
+								</div>
+								<div class="row" id="museumHighlites">
+									<div class="col-sm-12 small-heading fira font-weight-bold side-head-para">
+										FEATURED TOURS
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-12 page-highlights garamond" style="margin-bottom: 0px;" id="highlights">
+										Highlights of the Museum of Christian Art
+									</div>
+									<div class="col-sm-12 inner-para garamond high-para">This guided tour takes you on a journey from the early days of the Portuguese in India to present day Goa through the museum’s collection of unique objects and contemporary exhibitions. Here we will take you through the finest examples of five centuries of Indo-Portuguese imagination and the intense artistic productivity of the Indian craftsmen of that period.
+
+									<br>Tours will be conducted every Sunday starting at 11:30 hrs and lasting about an hour. Schedule a date and time for your <i>Museum Highlights</i> guided tour from our <a style="color:#771D14;" href="{% url 'museumapp:ticketMoca' %}"> Book Tickets </a> page.
+									<!-- The morning tour starts at 11 am and the afternoon tour at 2 pm and lasts about an hour. -->
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="col-sm-12 page-highlights garamond" style="margin-bottom: 0px;" id="retracing">
+										Retracing Monte Santo (the Holy Hill Tour)
+									</div>
+									<div class="col-sm-12 inner-para garamond high-para">Join us on a two hour specially curated walk of the Holy Hill (or <i>Monte Santo</i>), in Old Goa, where we take you through the ruins of the imposing Augustinian Monastery, and let you soak in the blue interiors of the Royal Chapel of St Anthony. Stroll down the historic pathway that connects the Augustinian monuments through the flying buttresses of the Church of Santa Monica. While listening to enthralling stories about the cloistered nuns who once lived in the Convent of Santa Monica, explore the hidden artistic treasures discovered during the restoration of the Church and take a short walk-through the highlights of MoCA. And finally, marvel at the navigational influences on the Manuelian styled Church of Our Lady of the Rosary set against the dramatic backdrop of that river that enabled Old Goa to become a great global trading center of the 16th century.
+									<br><br>
+									The walk is aimed at students of art, architecture and history and anyone who is interested in being introduced to the heritage of Old Goa. This is ideal for groups of 15 or more. Schedule the date for your group tour from our <a style="color:#771D14;" href="{% url 'museumapp:ticketMoca' %}"> Book Tickets </a> page.
+
+
+
+									</div>
+								</div>
+
+
+
+
+
+
+								<div class="row" id="museumtour">
+									<div class="col-sm-12 small-heading fira font-weight-bold side-head-para" id="special">
+										SPECIAL TOURS
+									</div>
+								</div>
+								<div class="row" style="border-bottom: 1px solid black;
+    margin-bottom: 30px;">
+								<!-- 	<div class="col-sm-12 page-highlights garamond" style="margin-bottom: 0px;"> Holy Hill Tour</div> -->
+									<div class="col-sm-12 inner-para garamond sub-para">
+
+
+								MoCA works in collaboration with historians, local academics and scholars and experienced travel organizations, to bring out the specialized curated walks which occur outside our featured tours. For more information on these, keep checking the updates on our <a style="color:#771D14;" href="{% url 'museumapp:eventsMoca' %}">What’s On!</a> Calendar and our social media feed, or <a style="color:#771D14;" href="{% url 'museumapp:contactUsMoca' %}">Contact Us</a>.
+									</div>
+								</div>
+						<!-- 		<div class="row">
+									<div class="col-sm-12 inner-para garamond sub-para">
+									Besides the Museum’s primary responsibility of showcasing and preserving Christian
+									art, the Museum also conducts heritage walks of the Holy Hill (Monte Santo) The
+									walk is focused on the architectural and artistic wonders of the monuments which
+									include the ruins of St. Augustine's Monastery, the Royal Chapel of St Anthony,
+									Church of Santa Monica, Museum of Christian Art, and Chapel of Our Lady of the
+									Rosary. The walks are aimed at students of art, architecture, history as well as the
+									general public to create awareness of Goa’s unique heritage.
+									Schedule the date for your group tour from Bookyourticket page
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-12 inner-para garamond sub-para">
+									For exclusive tours, recommended for hotels and tourism agencies, kindly
+									contact1234567890. If you are a school or educational institute we have special
+									programs for you here.
+									</div>
+								</div> -->
+
+
+							<!-- 	<div class="row">
+									<div class="col-sm-12 side-heading-garamond garamond side-head-para" id="group" style="margin-top: 15px;">
+									Group Check in
+									</div>
+								</div>
+
+								<div class="row" style="border-bottom: 1px solid black;
+    margin-bottom: 30px;">
+									<div class="col-sm-12 inner-para garamond sub-para ">
+
+
+									Groups scheduled for guided tours and curated walks should plan to arrive well in advance of the scheduled time slot. Kindly collect your tickets and deposit your baggage at the baggage counter. Please note: Arrival on time is crucial, due to the booked time slot. Please schedule all tours at least 10 days in advance.
+
+									</div>
+								</div>
+								 -->
+								<div class="row">
+									<div class="col-sm-12 side-heading-garamond garamond side-head-para" id="education" style="margin-top: 15px;">
+									Educational Institutions
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="col-sm-12 inner-para garamond sub-para ">
+
+
+									If you are an educational institution and are interested in Curriculum-based Programs or bookings, we have special programs for students of all age groups. Stay updated on <a style="color:#8f0000;" href="{% url 'museumapp:eventsMoca' %}"> What’s On!</a> Or <a style="color:#8f0000;" href="{% url 'museumapp:contactUsMoca' %}"> Contact Us</a>
+
+									<!-- Groups scheduled for a curated walk should plan to arrive well in advance to the
+									scheduled time slot, kindly collect your passes from the ticket counter and deposit
+									your baggage in the counter.
+									Please note: Arrival on time is crucial, due to booked time slot.
+									Please schedule all tours at least 10 days in advance.
+									Customize your visit with the following guided-tour options -->
+									</div>
+								</div>
+
+
+
+
+							</div>
+							<div class="col-sm-3"></div>
+						</div>
+
+						<!-- <div class="row">
+							<div class="col-sm-3">
+							</div>
+							<div class="col-sm-6">
+								<div class="inner-para garamond sub-para"> The museum is wheelchair accessible. Minivan and car parking is available on the premises. Your driver may drop off and pick up your group at the museum’s main entrance.
+								</div>
+							</div>
+							<div class="col-sm-3"></div>
+						</div>
+
+						<div class="row ">
+							<div class="col-sm-3"></div>
+							<div class="col-sm-6 bottom-border" >
+								<div class="inner-para garamond high-para" id="for-border">
+									For more information, call the Group Tour Department at 123456789
+								</div>
+							</div>
+							<div class="col-sm-3"></div>
+						</div>	 -->
+
+						<!-- <div class="row">
+							<div class="col-sm-3"></div>
+							<div class="col-sm-6 bottom-border">
+								<div class="inner-para garamond high-para"> Please note: It is important to arrive on time. Docents will wait only 15 minutes past the scheduled start time unless notified that the group will be late.
+								</div>
+							</div>
+							<div class="col-sm-3"></div>
+						</div>	 -->
+
+						<!--
+						<div class="row">
+							<div class="col-sm-3"></div>
+							<div class="col-sm-6" >
+								<div class="small-heading fira font-weight-bold side-head-para">
+									FEATURED STORY
+								</div>
+							</div>
+							<div class="col-sm-3"></div>
+						</div>
+									 -->
+						<!-- <div class="row">
+							<div class="col-sm-3"></div>
+							<div class="col-sm-6">
+							<div class="page-highlights garamond" style="margin-bottom: 0px;">
+								Scenes from a Mother's Life</div>
+								<div class="inner-para garamond high-para"> An experienced docent introduces your group to the collection through a story. Length: 30 minutes to one hour, depending on the story. Lorem ipsum dolor sit amet, possim commodo mea eu, ex eam nobis antiopam. Ullum partiendo hendrerit te mei, impetus salutandi id has, principes euripidis sed cu. Habeo torquatos has an. Cum elitr possit detraxit at, ex magna luptatum lucilius eos. Quo at harum vitae honestatis, cu tale veri torquatos mea, graeci singulis erroribus ne sit. Ea sed inani Length: 30 minutes to 1 hour.
+								</div>
+							</div>
+							<div class="col-sm-3"></div>
+						</div>	 -->
+
+						<!-- <div class="row bottom-button ">
+							<div class="col-sm-3"></div>
+							<div class="col-sm-6">
+								<div class="row" style= "margin-left: 0px;margin-top: 30px;">
+									<a href="{% url 'museumapp:ticketMoca' %}"><button type="button" class="buy-tickets-button small-heading fira">BUY TICKETS</button></a>
+								</div>
+							</div>
+							<div class="col-sm-3"></div>
+						</div> -->
+					</div>
+				</div>
+			</div>
+		</div>
+	{% endblock %}
+
+	<!--- Custom Script Block --->
+	{% block custom-script %}	{% endblock %}

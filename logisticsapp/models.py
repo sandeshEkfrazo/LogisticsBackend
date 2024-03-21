@@ -58,7 +58,7 @@ class Vehicle(models.Model):
 
     pollution_certificate_front_side_img_path= models.FileField(blank=True, null=True)
     # pollution_certificate_front_side_img_mandatory=models.BooleanField(default=True)
-    emission_test_expire_date = models.DateField(null=True, blank=True)
+    emission_certificate_expire_date = models.DateField(null=True, blank=True)
 
     # registration_certificate_back_side_img = models.TextField(blank=True, null=True)
     # registration_certificate_front_side_img = models.TextField(blank=True, null=True)
@@ -116,6 +116,7 @@ class CustomUser(models.Model):
     whatsup_number  = models.CharField(max_length=100, null=True, blank=True)
 
     user_status = models.CharField(max_length=100, null=True, blank=True)
+    user_active_status = models.CharField(max_length=100, null=True, blank=True)
 
     
 
@@ -153,7 +154,7 @@ class Driver(models.Model):
     
     # emission_test_img = models.CharField(max_length=100, blank=True, null=True)
     insurence_img = models.FileField(blank=True, null=True)
-    insurence_expire_date = models.DateField(null=True, blank=True)
+    insurance_expire_date = models.DateField(null=True, blank=True)
 
     # rc_img = models.CharField(max_length=100, blank=True, null=True)
 

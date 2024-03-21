@@ -9,6 +9,8 @@ from django.db.models import Q
 import geopy.distance
 from userModule.views import *
 import datetime
+from account.auth import *
+from django.utils.decorators import method_decorator
 
 coords_1 = (52.2296756, 21.0122287)
 coords_2 = (52.406374, 16.9251681)
@@ -47,12 +49,30 @@ def estimationCostCalculation(order_id, update_status):
 	# BookingDetail.objects.filter(order_id=order_id).update(status=update_status, total_amount=total_estimated_cost)
 	BookingDetail.objects.filter(order_id=order_id).update(status=update_status)
 
-
+@method_decorator([authorization_required], name='dispatch')
 class DriverAPI(APIView):
 	def get(self, request):    
 		bookingDetail = BookingDetail.objects.filter(driver_id=request.query_params['driver_id']).order_by('-id').values(
 				'id','order_id', 'total_amount', 'order__user__first_name', 'order__user__last_name', 'order__user__mobile_number', 'status__status_name', 'order__location_detail', 'travel_details', 'order__total_estimated_cost',
-				'ordered_time','pickedup_time','order_accepted_time','canceled_time','order_droped_time')
+				'ordered_time','pickedup_time','order_accepted_time','canceled_time','order_droped_time', 'driver_id', 'order__user__profile_image', 'assigned')
+
+		for i in list(bookingDetail):
+			if i['total_amount'] is not None:
+				i['total_amount'] = round(float(i['total_amount']), 1)
+
+				
+			if UserFeedback.objects.filter(Q(driver_id=request.query_params['driver_id']) & Q(order_id=i['order_id']) & Q(rating_given_by="user")).exists():
+				user_feedback_obj = UserFeedback.objects.filter(Q(driver_id=request.query_params['driver_id']) & Q(order_id=i['order_id']) & Q(rating_given_by="user")).values()
+				for j in list(user_feedback_obj):
+					if i['driver_id'] == j['driver_id']:
+						i['ratings'] = j['rating']
+				# 	print()
+				# i['ratings_by_user'] = user_feedback_obj.rating
+
+			elif i['status__status_name'] == 'Trip Ended':
+				i['ratings'] = None
+            
+
 		return Response({'message': 'your orders are', 'data': bookingDetail})
 			
 	def post(self, request):
@@ -62,15 +82,20 @@ class DriverAPI(APIView):
 		update_status = data['update_status']
 		# driver_id = data['driver_id']
 		otp = request.data['otp']
+
+		otp_json = request.data.get('otp_json')
 		
 		phone_number = request.data['phone_number']
 		is_last_number = request.data['is_last_number']
+
+		pickup_drop_details = request.data.get('pickup_drop_details')
                
 
 		if phone_number is not None and otp is not None:
-			verified_otp = verifyOTP(phone_number, otp, datetime.datetime.now().timestamp())
+			verified_otp = verifyOTP(phone_number, otp, datetime.now().timestamp(), order_id, otp_json, pickup_drop_details)
 
 			if is_last_number == True:
+				BookingDetail.objects.filter(order_id=order_id).update(is_all_mobile_number_verified=True)
 				return Response({'status': '11', 'data': verified_otp})
 
 			BookingDetail.objects.filter(order_id=order_id).update(status_id=update_status)
@@ -92,7 +117,7 @@ class DriverAPI(APIView):
 		if(update_status == str(4)): #Trip Ended status id is 4
 			estimationCostCalculation(order_id, update_status)
 
-			BookingDetail.objects.filter(order_id=order_id).update(status=update_status, order_droped_time=datetime.datetime.now())
+			BookingDetail.objects.filter(order_id=order_id).update(status=update_status, order_droped_time=datetime.now())
 
 			order_accepted_time = BookingDetail.objects.get(order_id=order_id).order_accepted_time
 			order_dopped_time = BookingDetail.objects.get(order_id=order_id).order_droped_time
@@ -103,10 +128,10 @@ class DriverAPI(APIView):
 			start_time = str(order_accepted_start_time).split("+")[0].split(':')
 			end_time = str(order_dopped_time_end_time).split("+")[0].split(':')
 
-			t1 = datetime.datetime.strptime(start_time[0]+":"+start_time[1]+":"+str(00), "%H:%M:%S")
+			t1 = datetime.strptime(start_time[0]+":"+start_time[1]+":"+str(00), "%H:%M:%S")
 			# print('Start time:', t1.time())
 
-			t2 = datetime.datetime.strptime(end_time[0]+":"+end_time[1]+":"+str(00), "%H:%M:%S")
+			t2 = datetime.strptime(end_time[0]+":"+end_time[1]+":"+str(00), "%H:%M:%S")
 			# print('End time:', t2.time())
 
 			actual_time_taken_by_driver = t2 - t1
@@ -116,14 +141,14 @@ class DriverAPI(APIView):
 			return Response({'message': 'order updated successfully'})
 		if (update_status == str(5)):
 			estimationCostCalculation(order_id, update_status)
-			BookingDetail.objects.filter(order_id=order_id).update(status=update_status, canceled_time=datetime.datetime.now())
+			BookingDetail.objects.filter(order_id=order_id).update(status=update_status, canceled_time=datetime.now())
 			return Response({'message': 'order updated successfully'})
 		if(update_status == str(3)):
-			BookingDetail.objects.filter(order_id=order_id).update(status_id=update_status, declined_time=datetime.datetime.now())
+			BookingDetail.objects.filter(order_id=order_id).update(status_id=update_status, declined_time=datetime.now())
 			return Response({'message': 'order updated successfully'})
 		if(update_status == str(2)):
 			if data['driver_id'] is not None:
-				BookingDetail.objects.filter(order_id=order_id).update(status=update_status, order_accepted_time=datetime.datetime.now(), driver_id=data['driver_id'])
+				BookingDetail.objects.filter(order_id=order_id).update(status=update_status, order_accepted_time=datetime.now(), driver_id=data['driver_id'])
 				estimationCostCalculation(order_id, update_status)
 
 			# driver_obj = Driver.objects.get(user_id=data['driver_id'])
@@ -135,32 +160,35 @@ class DriverAPI(APIView):
 			request.session['user_order_otp'] = otp
 			OrderDetails.objects.filter(id=order_id).update(otp=otp)
 			
-			BookingDetail.objects.filter(order_id=order_id).update(status=update_status, order_accepted_time=datetime.datetime.now())
+			BookingDetail.objects.filter(order_id=order_id).update(status=update_status, order_accepted_time=datetime.now())
 			location_details = OrderDetails.objects.get(id=order_id)
 			return Response({'message': 'order updated successfully', 'location_details': location_details.location_detail})
 		if data['otp'] is not None:
 			if OrderDetails.objects.get(id=order_id).otp == data['otp']:
-				BookingDetail.objects.filter(order_id=order_id).update(status=update_status, pickedup_time=datetime.datetime.now())
+				BookingDetail.objects.filter(order_id=order_id).update(status=update_status, pickedup_time=datetime.now())
 				return Response({'message': 'order updated successfully'})
 			else:
 				return Response({'message': 'otp doesnt match'}, status=status.HTTP_406_NOT_ACCEPTABLE)
 		else:
-			BookingDetail.objects.filter(order_id=order_id).update(status_id=update_status, canceled_time=datetime.datetime.now())
+			BookingDetail.objects.filter(order_id=order_id).update(status_id=update_status, canceled_time=datetime.now())
 			return Response({'message': 'order updated successfully'})
 
+@method_decorator([authorization_required], name='dispatch')
 class UpdateDriveOnlineApi(APIView):
+	# from datetime import datetime
 	def post(self, request):
 		data = request.data
 
 		driver_id = data['driver_id']
 		is_online = data['is_online']
-
+		
 		if is_online:
-			Driver.objects.filter(user_id=driver_id).update(is_online=is_online, date_online=datetime.datetime.now())
+			Driver.objects.filter(user_id=driver_id).update(is_online=is_online, date_online=datetime.now())
 		else:
-			Driver.objects.filter(user_id=driver_id).update(is_online=is_online, date_offline=datetime.datetime.now())
+			Driver.objects.filter(user_id=driver_id).update(is_online=is_online, date_offline=datetime.now())
 		return Response({'message': 'user online status updated successfully'})
 
+@method_decorator([authorization_required], name='dispatch')
 class DriverOrderAPI(APIView):
 	def get(self, request):
 		data=request.data
@@ -169,13 +197,25 @@ class DriverOrderAPI(APIView):
 		bookingDetail = BookingDetail.objects.filter(driver_id=request.query_params['driver_id'],order_id=request.query_params['order_id']).values(
 				'order_id', 'total_amount', 'order__user__first_name','order__user_id', 'order__user__last_name', 'order__user__mobile_number', 'status__status_name', 'order__location_detail', 'travel_details', 'order__total_estimated_cost', 'request_cancel', 'order__user__profile_image_path','sub_user_phone_numbers'
 			)
-		user_rating=UserFeedback.objects.filter(rating_given_by="driver",driver_id=driver_id).values('rating')
+		
+		for i in bookingDetail:
+			user_id = i['order__user_id']
+
+		print(user_id)
+
+
+		user_rating=UserFeedback.objects.filter(rating_given_by="driver", user_id=user_id).values('rating')
+		print("user_rating==>", user_rating)
 		average_rating=user_rating.aggregate(Avg('rating'))
-		if rating==None:
+		print("average_rating==>", average_rating)
+		if average_rating['rating__avg'] is None:
 			rating =5
 			return Response({'message': 'your orders are', 'data': bookingDetail,'rating':rating})
-		return Response({'message': 'your orders are', 'data': bookingDetail,'rating':average_rating})
+		
+		return Response({'message': 'your orders are', 'data': bookingDetail,'rating': round(average_rating['rating__avg'], 1)})
 
+
+@method_decorator([authorization_required], name='dispatch')
 class updateDriverLocation(APIView):
 	def get(self, request):
 		driver_obj = Driver.objects.filter(user_id=request.query_params['driver_id']).values(
@@ -247,6 +287,8 @@ class updateDriverLocation(APIView):
 
 from django.db.models import Avg
 # qs.filter(amount=Floor('amount'))
+
+@method_decorator([authorization_required], name='dispatch')
 class DriverEarningsAndratingAPI(APIView):
 	def get(self, request):
 		data=request.data
@@ -262,25 +304,21 @@ class DriverEarningsAndratingAPI(APIView):
 			# print("id_obj",id_obj)
 			return Response({'data':id_obj})
 		if driver_id:
-			driver_obj=UserFeedback.objects.filter(driver_id=driver_id).values('rating')
+			driver_obj=UserFeedback.objects.filter(Q(driver_id=driver_id) & Q(rating_given_by="user")).values('rating')
 			# print("driver_obj",driver_obj)
 			average_rating=driver_obj.aggregate(Avg('rating'))
-			# print("average_rating",average_rating)
-			for i in average_rating: 
-				if i==None:
-					i=5
-				return Response({'average_rating':5})
-			return Response (average_rating)
+			print("average_rating",average_rating)
+			if average_rating['rating__avg'] is None:
+				return Response({'average_rating': 5.0})
+			return Response({'average_rating': round(average_rating['rating__avg'], 1)})
 		if user_id:
-			user_obj=UserFeedback.objects.filter(user_id=user_id).values('rating')
-			# print("user_obj",user_obj)
+			user_obj=UserFeedback.objects.filter(Q(user_id=user_id) & Q(rating_given_by="driver")).values('rating')
+			print("user_obj",user_obj)
 			average_rating=user_obj.aggregate(Avg('rating'))
-			# print("average_rating",average_rating)
-			for i in average_rating: 
-				if i==None:
-					i=5
-				return Response({'average_rating':5})
-			return Response (average_rating)
+			# print("==>>",average_rating)
+			if average_rating['rating__avg'] is None:
+				return Response({'average_rating': 5.0})
+			return Response({'average_rating': round(average_rating['rating__avg'], 1)})
 		else:
 			obj=UserFeedback.objects.all().values()
 			return Response({'data':obj})
@@ -307,6 +345,7 @@ class DriverEarningsAndratingAPI(APIView):
 # remaining_days = datetime.datetime.strptime("2022-12-14", "%Y-%m-%d").date() - datetime.datetime.now().date()
 # print(remaining_days)
 
+@method_decorator([authorization_required], name='dispatch')
 class NotifyDriverDocumentExpiry(APIView):
 	def get(self, request):
 		driver_id = request.query_params['driver_id']
@@ -314,7 +353,7 @@ class NotifyDriverDocumentExpiry(APIView):
 		driver_o = Driver.objects.filter(user_id=driver_id)
 		print(driver_o,"gggg")
 
-		driver_obj = Driver.objects.filter(user_id=driver_id).values('license_expire_date', 'insurence_expire_date','fitness_certificate_expire_date', 'vehicle__permit_expire_date', 'vehicle__rc_expire_date', 'vehicle__emission_test_expire_date')
+		driver_obj = Driver.objects.filter(user_id=driver_id).values('license_expire_date', 'insurance_expire_date','fitness_certificate_expire_date', 'vehicle__permit_expire_date', 'vehicle__rc_expire_date', 'vehicle__emission_certificate_expire_date')
 		print(driver_obj,"ooooobbbb")
 
 		# temp = min(dict(driver_obj[0]).values())
@@ -327,7 +366,7 @@ class NotifyDriverDocumentExpiry(APIView):
 		for k, v in dict(driver_obj[0]).items():
 			# print("values===>>>",v, type(v))
 
-			remaining_days = v - datetime.datetime.now().date()
+			remaining_days = v - datetime.now().date()
 
 			# print("remaining_days==>", remaining_days)
 
@@ -365,6 +404,8 @@ class NotifyDriverDocumentExpiry(APIView):
 
 		return Response({'data':dateList}) 
 
+
+# @method_decorator([authorization_required], name='dispatch')
 class DriverEarningReport(APIView):
 	def get(self,request):
 		year = request.query_params.get('year')
@@ -403,18 +444,22 @@ class DriverEarningReport(APIView):
 			return Response({'message': 'you have not started any earnigs', 'data': {}, 'is_data': 0})
 		
 
-		query = BookingDetail.objects.select_related('order').filter(order__vehicle_number=Vehicle_number).values('order__total_estimated_cost', 'order_accepted_time')
+		# query = BookingDetail.objects.select_related('order').filter(order__vehicle_number=Vehicle_number).values('order__total_estimated_cost', 'order_accepted_time')
+		query = BookingDetail.objects.filter(Q(driver_id=driver_id) & Q(status_id=4)).values('order__total_estimated_cost', 'order_accepted_time', 'total_amount')
+
 
 		# query = BookingDetail.objects.filter(driver_id=driver_id).values('order__total_estimated_cost', 'order_accepted_time')
 		if driver_id and year is not None:
-			year_query = BookingDetail.objects.select_related('order').filter(order__vehicle_number=Vehicle_number, order_accepted_time__year=year).values('order__total_estimated_cost', 'order_accepted_time')
+			# year_query = BookingDetail.objects.select_related('order').filter(order__vehicle_number=Vehicle_number, order_accepted_time__year=year).values('order__total_estimated_cost', 'order_accepted_time')
+			year_query = BookingDetail.objects.filter(Q(driver_id=driver_id) & Q(status_id=4)).values('order__total_estimated_cost', 'order_accepted_time', 'total_amount')
 			for i in year_query:
-				# print("year=========,",i)
+				print("year=========,",i)
 				if i['order_accepted_time'] == None:
 					pass
 				else:					
 					#dayDict['date'] = i['order_accepted_time'].year
-					dayDict['amount_earned'] = i['order__total_estimated_cost']
+					# dayDict['amount_earned'] = i['order__total_estimated_cost'] #dev server
+					dayDict['amount_earned'] = float(i['total_amount']) # testing server
 					dayDict['month']=i['order_accepted_time'].month
 					dayDict['month_name']=i['order_accepted_time'].strftime("%B")
 					# dayDict['vehicle_number'] = i['order__vehicle_number']
@@ -454,7 +499,8 @@ class DriverEarningReport(APIView):
 					pass
 				else:					
 					dayDict['date'] = i['order_accepted_time'].date()
-					dayDict['amount_earned'] = i['order__total_estimated_cost']
+					# dayDict['amount_earned'] = i['order__total_estimated_cost'] #dev server
+					dayDict['amount_earned'] = float(i['total_amount']) # testing server
 					dayDict['month']=i['order_accepted_time'].month
 					# dayDict['vehicle_number'] = i['order__vehicle_number']
 					dayList.append(dayDict)
@@ -498,16 +544,24 @@ class DriverEarningReport(APIView):
 			return Response ({'message': 'your earnings are','data':finaloutput, 'is_data': 1})
 
 
-
+@method_decorator([authorization_required], name='dispatch')
 class AssignVehicleToDriver(APIView):
 	def post(self, request):
 		vehicle_id = request.data['vehicle_id']
 		# old_driver_id = request.data['old_driver_id']
 		new_driver_id = request.data['driver_id']
 
+		# print(vehicle_id, new_driver_id)
+
 		old_driver_id = Driver.objects.get(vehicle_id=vehicle_id).user_id
 
+		new_driver_vehicle_id = Driver.objects.get(user_id=new_driver_id).vehicle_id
+
+		# print("new_driver_id==>", new_driver_id, "vehicle_id=>", vehicle_id, "old_driver_id=>", old_driver_id, "new_driver_vehicle_id==>",new_driver_vehicle_id)
+
 		if VehicleAssingedToDriver.objects.filter(Q(vehicle_id_id=vehicle_id) & Q(old_driver_id=old_driver_id) & Q(new_driver_id=new_driver_id)).exists():
+			print("HI")
+			
 			VehicleAssingedToDriver.objects.filter(vehicle_id_id = vehicle_id).update(
 				old_driver_id = old_driver_id,
 				new_driver_id = new_driver_id
@@ -518,11 +572,20 @@ class AssignVehicleToDriver(APIView):
 				is_active = True
 			)
 
+			Driver.objects.filter(user_id=old_driver_id).update(
+				vehicle_id=new_driver_vehicle_id,
+				is_active = True
+			)
+
+			Vehicle.objects.filter(id=new_driver_vehicle_id).update(
+				is_active = True
+			)
+
 			Vehicle.objects.filter(id=vehicle_id).update(
 				is_active = True
 			)
 		else:
-
+			print("Hello")
 			VehicleAssingedToDriver.objects.create(
 				vehicle_id_id = vehicle_id,
 				old_driver_id = old_driver_id,
@@ -534,6 +597,15 @@ class AssignVehicleToDriver(APIView):
 				is_active = True
 			)
 
+			Driver.objects.filter(user_id=old_driver_id).update(
+				vehicle_id=new_driver_vehicle_id,
+				is_active = True
+			)
+
+			Vehicle.objects.filter(id=new_driver_vehicle_id).update(
+				is_active = True
+			)
+
 			Vehicle.objects.filter(id=vehicle_id).update(
 				is_active = True
 			)
@@ -541,3 +613,7 @@ class AssignVehicleToDriver(APIView):
 
 
 		return Response({'message', "vehicle assigned successfully !"})
+
+
+
+

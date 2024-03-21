@@ -1,0 +1,14 @@
+{% extends "museumapp/base.html" %}
+	{% block body %}
+	
+	    List of all Objects
+	
+	{{ objectslist }}
+
+	{% for i in objectslist %}
+
+	<li> <a href="{% url 'museumapp:objectdetails' i.slug %}">{{ i.object_name }}</a> </li>
+	
+	{% endfor %}
+
+	 {% endblock %}
