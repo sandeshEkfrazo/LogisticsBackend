@@ -13,16 +13,16 @@ app.conf.update(timezone = 'Asia/Kolkata')
 
 app.config_from_object('django.conf:settings', namespace='CELERY')
 
+app.conf.beat_schedule = {
+    'export-database': {
+        'task': 'userModule.tasks.export_database_task',
+        'schedule': 10.0,  # Every 10 seconds
+    },
+}
 
 
 # Load task modules from all registered Django apps.
 app.autodiscover_tasks()
 
 
-
-@app.task(bind=True)
-def debug_task(self):
-    print("hello im printing in celery.py file")
     
-    
-  

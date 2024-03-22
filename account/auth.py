@@ -36,7 +36,7 @@ def authorization_required(func):
             return Response({'error': {'message': e}})
 
         try:
-            #print(settings.SECRET_KEY, '======hello2====secret-key===========')
+            # print(settings.SECRET_KEY, '======hello2====secret-key===========')
             payload = jwt.decode(auth_data, str(
                 settings.JWT_SECRET_KEY), algorithms="HS256")
             payload_id = payload['user_id']

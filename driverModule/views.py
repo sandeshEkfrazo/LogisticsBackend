@@ -54,7 +54,7 @@ class DriverAPI(APIView):
 	def get(self, request):    
 		bookingDetail = BookingDetail.objects.filter(driver_id=request.query_params['driver_id']).order_by('-id').values(
 				'id','order_id', 'total_amount', 'order__user__first_name', 'order__user__last_name', 'order__user__mobile_number', 'status__status_name', 'order__location_detail', 'travel_details', 'order__total_estimated_cost',
-				'ordered_time','pickedup_time','order_accepted_time','canceled_time','order_droped_time', 'driver_id', 'order__user__profile_image')
+				'ordered_time','pickedup_time','order_accepted_time','canceled_time','order_droped_time', 'driver_id', 'order__user__profile_image', 'assigned')
 
 		for i in list(bookingDetail):
 			if i['total_amount'] is not None:
@@ -87,10 +87,12 @@ class DriverAPI(APIView):
 		
 		phone_number = request.data['phone_number']
 		is_last_number = request.data['is_last_number']
+
+		pickup_drop_details = request.data.get('pickup_drop_details')
                
 
 		if phone_number is not None and otp is not None:
-			verified_otp = verifyOTP(phone_number, otp, datetime.now().timestamp(), order_id, otp_json)
+			verified_otp = verifyOTP(phone_number, otp, datetime.now().timestamp(), order_id, otp_json, pickup_drop_details)
 
 			if is_last_number == True:
 				BookingDetail.objects.filter(order_id=order_id).update(is_all_mobile_number_verified=True)
@@ -179,7 +181,7 @@ class UpdateDriveOnlineApi(APIView):
 
 		driver_id = data['driver_id']
 		is_online = data['is_online']
-
+		
 		if is_online:
 			Driver.objects.filter(user_id=driver_id).update(is_online=is_online, date_online=datetime.now())
 		else:
@@ -403,7 +405,7 @@ class NotifyDriverDocumentExpiry(APIView):
 		return Response({'data':dateList}) 
 
 
-@method_decorator([authorization_required], name='dispatch')
+# @method_decorator([authorization_required], name='dispatch')
 class DriverEarningReport(APIView):
 	def get(self,request):
 		year = request.query_params.get('year')
@@ -443,20 +445,21 @@ class DriverEarningReport(APIView):
 		
 
 		# query = BookingDetail.objects.select_related('order').filter(order__vehicle_number=Vehicle_number).values('order__total_estimated_cost', 'order_accepted_time')
-		query = BookingDetail.objects.filter(Q(driver_id=driver_id) & Q(status_id=4)).values('order__total_estimated_cost', 'order_accepted_time')
+		query = BookingDetail.objects.filter(Q(driver_id=driver_id) & Q(status_id=4)).values('order__total_estimated_cost', 'order_accepted_time', 'total_amount')
 
 
 		# query = BookingDetail.objects.filter(driver_id=driver_id).values('order__total_estimated_cost', 'order_accepted_time')
 		if driver_id and year is not None:
 			# year_query = BookingDetail.objects.select_related('order').filter(order__vehicle_number=Vehicle_number, order_accepted_time__year=year).values('order__total_estimated_cost', 'order_accepted_time')
-			year_query = BookingDetail.objects.filter(Q(driver_id=driver_id) & Q(status_id=4)).values('order__total_estimated_cost', 'order_accepted_time')
+			year_query = BookingDetail.objects.filter(Q(driver_id=driver_id) & Q(status_id=4)).values('order__total_estimated_cost', 'order_accepted_time', 'total_amount')
 			for i in year_query:
-				# print("year=========,",i)
+				print("year=========,",i)
 				if i['order_accepted_time'] == None:
 					pass
 				else:					
 					#dayDict['date'] = i['order_accepted_time'].year
-					dayDict['amount_earned'] = i['order__total_estimated_cost']
+					# dayDict['amount_earned'] = i['order__total_estimated_cost'] #dev server
+					dayDict['amount_earned'] = float(i['total_amount']) # testing server
 					dayDict['month']=i['order_accepted_time'].month
 					dayDict['month_name']=i['order_accepted_time'].strftime("%B")
 					# dayDict['vehicle_number'] = i['order__vehicle_number']
@@ -496,7 +499,8 @@ class DriverEarningReport(APIView):
 					pass
 				else:					
 					dayDict['date'] = i['order_accepted_time'].date()
-					dayDict['amount_earned'] = i['order__total_estimated_cost']
+					# dayDict['amount_earned'] = i['order__total_estimated_cost'] #dev server
+					dayDict['amount_earned'] = float(i['total_amount']) # testing server
 					dayDict['month']=i['order_accepted_time'].month
 					# dayDict['vehicle_number'] = i['order__vehicle_number']
 					dayList.append(dayDict)
