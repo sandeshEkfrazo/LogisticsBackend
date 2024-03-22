@@ -258,7 +258,6 @@ class BookVehicleAPI(APIView):
                         # if i['user_id'] is not None:
                         if ScheduledOrder.objects.filter(booking__driver_id=i['user_id']).exists():
                             s = ScheduledOrder.objects.filter(booking__driver_id=i['user_id']).values('scheduled_date_and_time').last()['scheduled_date_and_time']
-                                
                             if BookingDetail.objects.filter((Q(driver_id=i['user_id']) & (Q(status_id=1) | Q(status_id=2) | Q(status_id=6) | Q(status_id=8) | Q(status_id=10) | Q(status_id=5))) & Q(is_scheduled=True)).exists():
                                 if s.date() == datetime.datetime.today().date():
 
