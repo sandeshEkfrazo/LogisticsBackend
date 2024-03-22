@@ -1,4 +1,4 @@
-from django.contrib import admin
+yfrom django.contrib import admin
 from django.contrib.auth.models import User
 from .models import *
 from import_export.admin import ImportExportModelAdmin
@@ -16,7 +16,7 @@ class CustomUser(admin.ModelAdmin):
     # def vehicle_name(self, obj):
     #     return obj.vehicle.vehicle_name
 
-    list_display =['id','user_role_name','city','vehicle','first_name','last_name','mobile_number','company_name','email','alternate_number','zip_code','address','adhar_card','reset_otp','profile_image_path','base64','adhar_card_front_side_img','adhar_card_front_side_img_path','adhar_card_back_side_img','adhar_card_back_side_img_path','pan_card','pan_image_path','pan_card_base64','whatsup_number', 'user_status']
+    list_display =['id','user_role_name','city','vehicle','first_name','last_name','mobile_number','company_name','email','alternate_number','zip_code','address','adhar_card','reset_otp','profile_image_path','base64','adhar_card_front_side_img','adhar_card_front_side_img_path','adhar_card_back_side_img','adhar_card_back_side_img_path','pan_card','pan_image_path','pan_card_base64','whatsup_number', 'user_status', 'user_active_status']
 
 @admin.register(VehicleTypes)
 class VehicleTypes(ImportExportModelAdmin):

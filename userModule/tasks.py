@@ -169,7 +169,6 @@ def updateScheduleRideExpiration(self, *args, **kwargs):
 @shared_task(bind=True)
 def call_api_task(self):
     response = VehicleTypes.objects.all()
-
     result = []
     for item in response:
         result.append(item.id)
@@ -203,7 +202,6 @@ def UpdateSubscriptionStatus(self, *args, **kwargs):
 
 @shared_task(bind=True)
 def AssignDrivertoUser(self, *args, **kwargs):
-
     print("session booking id", args, kwargs)
     booking_id = args[0]
 

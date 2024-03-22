@@ -116,6 +116,7 @@ class CustomUser(models.Model):
     whatsup_number  = models.CharField(max_length=100, null=True, blank=True)
 
     user_status = models.CharField(max_length=100, null=True, blank=True)
+    user_active_status = models.CharField(max_length=100, null=True, blank=True)
 
     
 

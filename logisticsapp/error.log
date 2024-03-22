@@ -1,0 +1,14 @@
+[Mon Mar 06 12:29:28.498663 2023] [wsgi:error] [pid 26216:tid 140080407799552] /logistics/logi/lib/python3.6/site-packages/django/db/models/base.py:321: RuntimeWarning: Model 'logisticsapp.paymentdetails' was already registered. Reloading models is not advised as it can lead to inconsistencies, most notably with related models.
+[Mon Mar 06 12:29:28.498759 2023] [wsgi:error] [pid 26216:tid 140080407799552]   new_class._meta.apps.register_model(new_class._meta.app_label, new_class)
+[Mon Mar 06 12:29:28.918284 2023] [wsgi:error] [pid 26216:tid 140080407799552] [remote 103.176.235.50:38318] 279.35290160430094
+[Mon Mar 06 12:29:29.250270 2023] [wsgi:error] [pid 26216:tid 140080407799552] [remote 103.176.235.50:38318] total km 279.35290160430094
+[Mon Mar 06 12:32:43.624046 2023] [wsgi:error] [pid 26562:tid 139777983809280] /logistics/logi/lib/python3.6/site-packages/django/db/models/base.py:321: RuntimeWarning: Model 'logisticsapp.paymentdetails' was already registered. Reloading models is not advised as it can lead to inconsistencies, most notably with related models.
+[Mon Mar 06 12:32:43.624121 2023] [wsgi:error] [pid 26562:tid 139777983809280]   new_class._meta.apps.register_model(new_class._meta.app_label, new_class)
+[Mon Mar 06 12:32:44.109226 2023] [wsgi:error] [pid 26562:tid 139777983809280] [remote 103.176.235.50:40496] 279.35290160430094
+[Mon Mar 06 12:32:44.432922 2023] [wsgi:error] [pid 26562:tid 139777983809280] [remote 103.176.235.50:40496] total km 279.35290160430094
+[Mon Mar 06 12:32:44.444782 2023] [wsgi:error] [pid 26562:tid 139777983809280] [remote 103.176.235.50:40496] calling notify fun
+[Mon Mar 06 12:35:22.305254 2023] [wsgi:error] [pid 26900:tid 139708146181888] /logistics/logi/lib/python3.6/site-packages/django/db/models/base.py:321: RuntimeWarning: Model 'logisticsapp.paymentdetails' was already registered. Reloading models is not advised as it can lead to inconsistencies, most notably with related models.
+[Mon Mar 06 12:35:22.305325 2023] [wsgi:error] [pid 26900:tid 139708146181888]   new_class._meta.apps.register_model(new_class._meta.app_label, new_class)
+[Mon Mar 06 12:35:22.819930 2023] [wsgi:error] [pid 26900:tid 139708146181888] [remote 103.176.235.50:46344] 279.35290160430094
+[Mon Mar 06 12:35:23.189919 2023] [wsgi:error] [pid 26900:tid 139708146181888] [remote 103.176.235.50:46344] total km 279.35290160430094
+[Mon Mar 06 12:35:23.202781 2023] [wsgi:error] [pid 26900:tid 139708146181888] [remote 103.176.235.50:46344] calling notify fun

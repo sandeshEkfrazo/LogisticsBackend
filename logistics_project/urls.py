@@ -22,7 +22,6 @@ urlpatterns = [
     # url(r'^(?!/?static/)(?!/?media/)(?P<path>.\..)$',RedirectView.as_view(url='/static/%(path)s', permanent=False)),
     
 
-
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

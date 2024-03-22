@@ -181,7 +181,7 @@ class UpdateDriveOnlineApi(APIView):
 
 		driver_id = data['driver_id']
 		is_online = data['is_online']
-
+		
 		if is_online:
 			Driver.objects.filter(user_id=driver_id).update(is_online=is_online, date_online=datetime.now())
 		else:
