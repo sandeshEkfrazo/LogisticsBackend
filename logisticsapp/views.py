@@ -457,9 +457,8 @@ class LoginApiView(APIView):
                     'detail': 'Login successfull',
 
                     'cuser_id':cuser.id,
-                    'user_active_status'='Active',
                     "mobile_number":mobile_number,
-                    
+                    'user_active_status':'Active',
                     'user_role_name':user_role_name,
                     
                     'role_id':role.id,
