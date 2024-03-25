@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-ksl6&0_jeh0c$0_avne%l6z=e_e$&eg1_#5)%yqpj=9d@qpga&
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*','logisticsdev.thestorywallcafe.com','www.logisticsdev.thestorywallcafe.com']
+ALLOWED_HOSTS = ['*','logistics.thestorywallcafe.com','www.logistics.thestorywallcafe.com']
 # ALLOWED_HOSTS=[]
 
 # Application definition
@@ -37,7 +37,6 @@ DEFAULT_APPS = [
     # 'jazzmin',
     #'jet.dashboard',
     #'jet',
-    'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -75,7 +74,6 @@ APPEND_SLASH=False
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.cache.UpdateCacheMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -122,13 +120,18 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'OPTIONS': {
-            'read_default_file': '/logistics_dev/auth/mysql.cnf',
+            'read_default_file': '/logistics/auth/mysql.cnf',
         },
     }
 }
 
 
-
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'unique-snowflake',  # A unique cache identifier
+    }
+}
 
 
 
@@ -168,14 +171,6 @@ CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Asia/Kolkata'
 CELERY_ACCEPT_CONTENT = ['application/json']
-
-CELERY_BEAT_SCHEDULE = {
-    'call-api-task': {
-        'task': 'userModule.tasks.call_api_task',
-        'schedule': 1.0  # Every 1 second
-    },
-}
-
 
 
 
@@ -227,8 +222,8 @@ STATIC_URL = '/statics/'
 MEDIA_URL = '/media/'
 
 
-STATIC_ROOT="/logistics_dev/site/public/static"
-MEDIA_ROOT="/logistics_dev/site/public/media"
+STATIC_ROOT="/logistics/site/public/static"
+MEDIA_ROOT="/logistics/site/public/media"
 
 CORS_ORIGIN_ALLOW_ALL   = True
 CORS_ALLOW_CREDENTIALS  = True
@@ -238,15 +233,6 @@ CORS_ALLOW_CREDENTIALS  = True
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
-
-
-RAZOR_KEY_ID = 'rzp_test_GxaJhvoS78ZpIz'
-RAZOR_KEY_SECRET = 'SYBvWXndjCMdfCk7VBJ6pZei'
-
-
-#CORS_ALLOW_ALL_ORIGINS = False  
-#CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOW_HEADERS = [
 'accept',
@@ -260,42 +246,24 @@ CORS_ALLOW_HEADERS = [
 'x-requested-with',
 ]
 
-
 CORS_ALLOW_METHODS = [
-    'GET',
-    'POST',
-    'PUT',
-    'PATCH',
-    'DELETE',
-    'OPTIONS',
+'DELETE',
+'GET',
+'OPTIONS',
+'PATCH',
+'POST',
+'PUT',
 ]
 
 CORS_ALLOWED_ORIGINS = [
-"https://logisticsdev.thestorywallcafe.com",
-"https://logisticsuser.thestorywallcafe.com",
-"https://logisticsdriver.thestorywallcafe.com",
-"https://logisticsadmindev.thestorywallcafe.com",
-"https://logisticsadmin.thestorywallcafe.com",
+"https://logistics.thestorywallcafe.com",
 "http://localhost:4200",
-"http://localhost:8000",
-"http://localhost:8100",
-"http://localhost:8101",
+"http://127.0.0.1:8000",
 ]
 
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels.layers.InMemoryChannelLayer"
-    }
-}
+
+RAZOR_KEY_ID = 'rzp_test_GxaJhvoS78ZpIz'
+RAZOR_KEY_SECRET = 'SYBvWXndjCMdfCk7VBJ6pZei'
 
 
-
-#CHANNEL_LAYERS = {
-#    "default": {
-#        "BACKEND": "channels_redis.core.RedisChannelLayer",
-#        "CONFIG": {
-#            "hosts": [("127.0.0.1", 6379)],
-#        },
-#    },
-#}
 

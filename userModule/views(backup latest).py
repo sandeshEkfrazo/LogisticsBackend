@@ -11,8 +11,6 @@ import sys
 from rest_framework import status
 import random
 import http.client
-from logistics_project.pagination import CustomPagination
-from .serializers import *
 import json
 from django_celery_beat.models import ClockedSchedule, CrontabSchedule, PeriodicTask
 from logisticsapp import views
@@ -89,13 +87,13 @@ from datetime import timedelta
 from django.shortcuts import render
 from django.db.models import Avg
 
+
+
 def renderTemplate(request):
     return render(request, 'orderTemplate.html')
 # import datetime
 # from datetime import timedelta
 # from dateutil import parser
-
-
 # @method_decorator([authorization_required], name='dispatch')
 class BookVehicleAPI(APIView):
     def get(self, request, order_id, user_id):
@@ -104,7 +102,7 @@ class BookVehicleAPI(APIView):
             'driver__mobile_number', 'status__status_name', 'order__otp', 'driver__vehicle__vehicle_name',
             'order__total_estimated_cost', 'order__location_detail', 'request_cancel',
             'driver__profile_image', 'driver__vehicle__vehicletypes__vehicle_type_image',
-            'driver__driver_id__rating', 'travel_details', 'driver__vehicle_id', 'is_all_mobile_number_verified'
+            'driver__driver_id__rating', 'travel_details', 'driver__vehicle_id', 'is_all_mobile_number_verified', 'pickup_drop_details'
             )
     
         final_order_detail = list(order_detail)
@@ -152,196 +150,247 @@ class BookVehicleAPI(APIView):
         is_scheduled = data['is_scheduled']
 
 
-        if Vehicle.objects.filter(vehicle_number=vehicle_number).exists():
+        # if Vehicle.objects.filter(vehicle_number=vehicle_number).exists():
 
-            if data['vehicle_number'] is not None:
-                if Driver.objects.filter(is_online=True).exists():
-                    if Driver.objects.filter(vehicle__vehicle_number=vehicle_number , is_online=True):
-                        vehicle_obj = Vehicle.objects.get(vehicle_number=data['vehicle_number'])
+        if data['vehicle_number'] is not None:
+            if Vehicle.objects.filter(vehicle_number=vehicle_number).exists():
+                if Driver.objects.filter(vehicle__vehicle_number=vehicle_number, is_online=True).exists():
+                    # if Driver.objects.filter(vehicle__vehicle_number=vehicle_number, is_online=True):
+                    vehicle_obj = Vehicle.objects.get(vehicle_number=data['vehicle_number'])
 
-                        get_est_cost = views.find_vehicle_estimation_cost(data, vehicle_obj.vehicletypes_id, location_detail)
+                    get_est_cost = views.find_vehicle_estimation_cost(data, vehicle_obj.vehicletypes_id, location_detail)
 
-                        # print("get_est_cost by vehicle number book by number ==>>", get_est_cost)
+                    # print("get_est_cost by vehicle number book by number ==>>", get_est_cost)
 
-                        order_obj = OrderDetails.objects.create(user_id=user_id, vehicle_number=vehicle_number, location_detail=location_detail,total_estimated_cost = get_est_cost['total_fare_amount'])
+                    order_obj = OrderDetails.objects.create(user_id=user_id, vehicle_number=vehicle_number, location_detail=location_detail,total_estimated_cost = get_est_cost['total_fare_amount'])
 
-                        total_amount_without_actual_time_taken = get_est_cost['final_km_charge'] + get_est_cost['base_fee']
+                    total_amount_without_actual_time_taken = get_est_cost['final_km_charge'] + get_est_cost['base_fee']
 
-                        driver_obj = Driver.objects.get(vehicle__vehicle_number=vehicle_number)
+                    driver_obj = Driver.objects.get(vehicle__vehicle_number=vehicle_number)
 
-                        booking_obj = BookingDetail.objects.create(order_id=order_obj.id, driver_id=driver_obj.user_id, status_id=1, travel_details=travel_details, ordered_time=datetime.datetime.now(), sub_user_phone_numbers=sub_user_ph_number, total_amount_without_actual_time_taken=total_amount_without_actual_time_taken)
+                    booking_obj = BookingDetail.objects.create(order_id=order_obj.id, driver_id=driver_obj.user_id, status_id=1, travel_details=travel_details, ordered_time=datetime.datetime.now(), sub_user_phone_numbers=sub_user_ph_number, total_amount_without_actual_time_taken=total_amount_without_actual_time_taken)
 
-                        return Response({'message': 'wait till the driver accepts your order', 'order_id':order_obj.id,'user':sub_user_ph_number, 'vehicle_type_id': vehicle_obj.vehicletypes_id})
-                    return Response({'message': 'The driver with the vehicle number is not online right now', 'status': "NOT FOUND"}, status=status.HTTP_404_NOT_FOUND)
+                    return Response({'message': 'wait till the driver accepts your order', 'order_id':order_obj.id,'user':sub_user_ph_number, 'vehicle_type_id': vehicle_obj.vehicletypes_id})
+                    # return Response({'message': 'The driver with the vehicle number is not online right now', 'status': "NOT FOUND"}, status=status.HTTP_404_NOT_FOUND)
                 else:
-                    return Response({'message': 'This driver is not online', 'status': "NOT FOUND"},
+                    return Response({'message': 'The driver with the vehicle number is not online right now', 'status': "NOT FOUND"},
                             status=status.HTTP_404_NOT_FOUND)
 
-
             else:
-                if data['schedule'] is not None:
-                    dt = parser.isoparse(data['schedule']['scheduled_datetime'])
-                    current_time = datetime.datetime.now()
+                return Response({'message': 'This vechicle is not registered', 'status': "NOT FOUND"}, status=status.HTTP_404_NOT_FOUND)
 
-                    scheduled_time_timestamp = dt.timestamp()
-                    after_one_hour = current_time + timedelta(hours=1)
-                    after_one_hour_timestamp = after_one_hour.timestamp()
 
-                    if scheduled_time_timestamp < after_one_hour_timestamp:
-                        return Response({"message": "The schedule time is less than 1 hour"},
-                                        status=status.HTTP_406_NOT_ACCEPTABLE)
-                                        
+
+        else:
+            if data['schedule'] is not None:
+                dt = parser.isoparse(data['schedule']['scheduled_datetime'])
+                current_time = datetime.datetime.now()
+
+                scheduled_time_timestamp = dt.timestamp()
+                after_one_hour = current_time + timedelta(hours=1)
+                after_one_hour_timestamp = after_one_hour.timestamp()
+
+                if scheduled_time_timestamp < after_one_hour_timestamp:
+                    return Response({"message": "The schedule time is less than 1 hour"},
+                                    status=status.HTTP_406_NOT_ACCEPTABLE)
+                                    
+                order_obj = OrderDetails.objects.create(user_id=user_id, location_detail=location_detail, total_estimated_cost=data['total_estimated_cost'])
+
+                get_est_cost = views.find_vehicle_estimation_cost(data, data['vehicle_type'], location_detail)
+
+                total_amount_without_actual_time_taken = get_est_cost['final_km_charge'] + get_est_cost['base_fee']
+
+                booking_obj = BookingDetail.objects.create(order_id=order_obj.id, status_id=1, travel_details=travel_details, ordered_time=datetime.datetime.now(), sub_user_phone_numbers=sub_user_ph_number,total_amount_without_actual_time_taken=total_amount_without_actual_time_taken, is_scheduled=is_scheduled, vehicle_type_id=data['vehicle_type'])
+
+
+                last_hour_date_time = dt - timedelta(hours = 1)
+
+                # scheduled_date_and_time = ScheduledOrder.objects.get(booking_id=booking_obj.id).scheduled_date_and_time
+
+
+                clocked_obj = ClockedSchedule.objects.create(
+                    clocked_time = last_hour_date_time
+                )
+
+                user_email = CustomUser.objects.get(id=user_id)
+
+                #executes when on the given time
+                task_start = PeriodicTask.objects.create(name="scheduleForAssignDriver"+str(clocked_obj.id), task="userModule.tasks.AssignDrivertoUser",clocked_id=clocked_obj.id, one_off=True, args=json.dumps([int(booking_obj.id)],), kwargs=json.dumps({'booking_id': booking_obj.id, 'vehicle_type_id': data['vehicle_type'], 'user_email': user_email.email, 'username': user_email.first_name, 'location_details': location_detail}))
+
+                ScheduledOrder.objects.create(booking_id=booking_obj.id, scheduled_date_and_time=data['schedule']['scheduled_datetime'], periodic_task_id=task_start.id)
+
+
+                expiration_time = dt + timedelta()
+                # expiration_time = datetime.datetime.now() + timedelta(minutes=3)
+                expiration_clocked_time = ClockedSchedule.objects.create(
+                    clocked_time = expiration_time
+                )
+
+                expiration_periodic_time = PeriodicTask.objects.create(
+                    name="ExpirationScheduledOrder"+str(expiration_clocked_time.id),
+                    task="userModule.tasks.updateScheduleRideExpiration",
+                    clocked_id=expiration_clocked_time.id,
+                    one_off=True,
+                    kwargs=json.dumps({
+                        'booking_id': booking_obj.id
+                    })
+                )
+
+                request.session['user_booking_id'] = booking_obj.id
+
+                return Response({'message': 'order scheduled successfully'})
+
+
+            # below query checking the type of the vehicle of particular driver along with he is online or not.
+            # print("first=>",Driver.objects.filter(vehicle__vehicletypes_id=data['vehicle_type'], is_online=True))
+            # print("second=>", Driver.objects.filter(vehicle__vehicletypes_id=data['vehicle_type']))
+            # print("third==>", Driver.objects.filter(is_online=True))
+
+            if Driver.objects.filter(vehicle__vehicletypes_id=data['vehicle_type'], is_online=True):
+                driver_obj_location = Driver.objects.filter(vehicle__vehicletypes_id=data['vehicle_type'], is_online=True).values()
+
+                finalArr = []
+                final_obj = {}
+
+                randomly_assigning_driver = []
+
+                if type(location_detail) == dict:
+                    start_location = (location_detail['start_location']['lat'], location_detail['start_location']['lng'])
+                else:
+                    start_location = (location_detail[0]['start_location']['lat'], location_detail[0]['start_location']['lng'])
+
+                for i in driver_obj_location:
+                    # print("i---------->>>>>---->>>>", i)
+
+                    end_location = (i['live_lattitude'], i['live_longitude'])
+
+                    final_obj['lat'] = i['live_lattitude']
+                    final_obj['lng'] = i['live_longitude']
+                    final_obj['total_km'] = geopy.distance.geodesic(start_location, end_location).km
+                    # print("km===>>>",geopy.distance.geodesic(start_location, end_location).km)
+                    final_obj['driver_id'] = i['user_id']
+                    finalArr.append(final_obj)
+                    final_obj = {}
+
+                    # print("i==>", i['live_lattitude'], i['live_longitude'])
+
+                    # print("total km==>",geopy.distance.geodesic(start_location, end_location).km)
+                    # print("finalArr=========>>>>--->>", finalArr)
+                    # print("Hi==>>",BookingDetail.objects.filter((Q(driver_id=i['user_id']) & (Q(status_id=1) | Q(status_id=2) | Q(status_id=6) | Q(status_id=8) | Q(status_id=10))) & Q(is_scheduled=True)).values('driver__first_name'))
+
+                    print("sss==>>",i['user_id'])
+
+                    # if i['user_id'] is not None:
+                    if ScheduledOrder.objects.filter(Q(booking__driver_id=i['user_id'])).exists():
+                        
+                        s = ScheduledOrder.objects.filter(booking__driver_id=i['user_id']).values('scheduled_date_and_time').last()['scheduled_date_and_time']
+
+                        if BookingDetail.objects.filter((Q(driver_id=i['user_id']) & (Q(status_id=1) | Q(status_id=2) | Q(status_id=6) | Q(status_id=8) | Q(status_id=10))) & Q(is_scheduled=True)).exists():
+
+                            if s.date() == datetime.datetime.today().date():
+                                
+                                print("dont assign1", i['user_id'])
+                                # print("finalArr1==>", finalArr)
+                                for j in finalArr:
+                                    if j.get('driver_id') == i['user_id']:
+                                        finalArr.remove(j)
+                                        break
+                            else:
+                                # print("assign")
+                                print("finalArr2==>", finalArr)
+                                min_km = min(finalArr, key=lambda x:x['total_km'])
+
+                                print("min km==>", min_km)
+                                randomly_assigning_driver.append(min_km)
+
+                        else:
+                            # print("assign")
+                            print("finalArr3==>", finalArr)
+                            min_km = min(finalArr, key=lambda x:x['total_km'])
+
+                            # print("min km==>", min_km)
+
+                                # print("min km==>", min_km)
+                            randomly_assigning_driver.append(min_km)
+
+
+                    else:
+                        # print("1", i)
+                        if BookingDetail.objects.filter(Q(driver_id=i['user_id']) & (Q(status_id=1) | Q(status_id=2) | Q(status_id=6) | Q(status_id=8) | Q(status_id=10))).exists():
+
+                            print("final arryy==>", finalArr)
+                            print("dont assign 2", i['user_id'])
+                            for j in finalArr:
+                                if j.get('driver_id') == i['user_id']:
+                                    finalArr.remove(j)
+                                    break
+                        else:
+                            # print("assign", i['user_id'])
+                            print("finalArr4==>", finalArr)
+                            min_km = min(finalArr, key=lambda x:x['total_km'])
+
+                            # print("min km==>", min_km)
+                            randomly_assigning_driver.append(min_km)
+
+                                
+
+
+                # print("randomly_assigning_driver", randomly_assigning_driver)
+
+                if (randomly_assigning_driver == [] or len(randomly_assigning_driver) == 0):
+                    return Response({'message': "all vehicles are busy in state please try after some time", 'status': 'ALREADY RESERVED'},status=status.HTTP_404_NOT_FOUND)
+                else:
                     order_obj = OrderDetails.objects.create(user_id=user_id, location_detail=location_detail, total_estimated_cost=data['total_estimated_cost'])
 
                     get_est_cost = views.find_vehicle_estimation_cost(data, data['vehicle_type'], location_detail)
 
                     total_amount_without_actual_time_taken = get_est_cost['final_km_charge'] + get_est_cost['base_fee']
 
-                    booking_obj = BookingDetail.objects.create(order_id=order_obj.id, status_id=1, travel_details=travel_details, ordered_time=datetime.datetime.now(), sub_user_phone_numbers=sub_user_ph_number,total_amount_without_actual_time_taken=total_amount_without_actual_time_taken, is_scheduled=is_scheduled, vehicle_type_id=data['vehicle_type'])
+                    print("randomly_assigning_driver",randomly_assigning_driver)
+
+                    seen_driver_ids = set()
+
+                    # Filter out duplicates based on 'driver_id'
+                    filtered_data = [d for d in randomly_assigning_driver if d['driver_id'] not in seen_driver_ids and (seen_driver_ids.add(d['driver_id']) or True)]
 
 
-                    last_hour_date_time = dt - timedelta(hours = 1)
+                    min_object = min(filtered_data, key=lambda x: x['total_km'])
+
+                    booking_obj = BookingDetail.objects.create(order_id=order_obj.id, driver_id=min_object['driver_id'], status_id=1, travel_details=travel_details, ordered_time=datetime.datetime.now(), sub_user_phone_numbers=sub_user_ph_number,total_amount_without_actual_time_taken=total_amount_without_actual_time_taken, is_scheduled=is_scheduled, assigned = None)
+
+
+
+                    # time_search = 1
+                    current_time = datetime.datetime.now()
+
+                    new_time = current_time + timedelta(minutes=2, seconds=30)
 
                     clocked_obj = ClockedSchedule.objects.create(
-                        clocked_time = last_hour_date_time
+                        clocked_time = new_time
                     )
 
-                    user_email = CustomUser.objects.get(id=user_id)
+                    old_driver_id = BookingDetail.objects.get(order_id=order_obj.id).driver_id
 
-                    task_start = PeriodicTask.objects.create(name="scheduleForAssignDriver"+str(clocked_obj.id), task="userModule.tasks.AssignDrivertoUser",clocked_id=clocked_obj.id, one_off=True, args=json.dumps([int(booking_obj.id)],), kwargs=json.dumps({'booking_id': booking_obj.id, 'vehicle_type_id': data['vehicle_type'], 'user_email': user_email.email, 'username': user_email.first_name, 'location_details': location_detail}))
+                    task_start = PeriodicTask.objects.create(name="assignNewDriverAftertwoMinutes"+str(clocked_obj.id), task="userModule.tasks.assignNewDriverAftertwoMinutes",clocked_id=clocked_obj.id, one_off=True, kwargs=json.dumps(
+                        {
+                            'booking_id': booking_obj.id,
+                            'location_detail': location_detail,
+                            'data': data,
+                            'travel_details': travel_details,
+                            'sub_user_ph_number': sub_user_ph_number,
+                            'is_scheduled': is_scheduled,
+                            'old_driver_id': old_driver_id,
+                            'order_id': order_obj.id
+                        }
+                    ))
 
-                    ScheduledOrder.objects.create(booking_id=booking_obj.id, scheduled_date_and_time=data['schedule']['scheduled_datetime'], periodic_task_id=task_start.id)
-
-                    request.session['user_booking_id'] = booking_obj.id
-
-                    return Response({'message': 'order scheduled successfully'})
-
-
-                # below query checking the type of the vehicle of particular driver along with he is online or not.
-                # print("first=>",Driver.objects.filter(vehicle__vehicletypes_id=data['vehicle_type'], is_online=True))
-                # print("second=>", Driver.objects.filter(vehicle__vehicletypes_id=data['vehicle_type']))
-                # print("third==>", Driver.objects.filter(is_online=True))
-
-                if Driver.objects.filter(vehicle__vehicletypes_id=data['vehicle_type'], is_online=True):
-
-                    driver_obj_location = Driver.objects.filter(vehicle__vehicletypes_id=data['vehicle_type'], is_online=True).values()
-
-                    finalArr = []
-                    final_obj = {}
-
-                    randomly_assigning_driver = []
-
-                    if type(location_detail) == dict:
-                        start_location = (location_detail['start_location']['lat'], location_detail['start_location']['lng'])
-                    else:
-                        start_location = (location_detail[0]['start_location']['lat'], location_detail[0]['start_location']['lng'])
-
-                    for i in driver_obj_location:
-                        # print("i---------->>>>>---->>>>", i)
-
-                        end_location = (i['live_lattitude'], i['live_longitude'])
-
-                        final_obj['lat'] = i['live_lattitude']
-                        final_obj['lng'] = i['live_longitude']
-                        final_obj['total_km'] = geopy.distance.geodesic(start_location, end_location).km
-                        # print("km===>>>",geopy.distance.geodesic(start_location, end_location).km)
-                        final_obj['driver_id'] = i['user_id']
-                        finalArr.append(final_obj)
-                        final_obj = {}
-
-                        # print("i==>", i['live_lattitude'], i['live_longitude'])
-
-                        # print("total km==>",geopy.distance.geodesic(start_location, end_location).km)
-                        # print("finalArr=========>>>>--->>", finalArr)
-                        # print("Hi==>>",BookingDetail.objects.filter((Q(driver_id=i['user_id']) & (Q(status_id=1) | Q(status_id=2) | Q(status_id=6) | Q(status_id=8) | Q(status_id=10))) & Q(is_scheduled=True)).values('driver__first_name'))
-
-                        # if i['user_id'] is not None:
-                        if ScheduledOrder.objects.filter(booking__driver_id=i['user_id']).exists():
-                            s = ScheduledOrder.objects.filter(booking__driver_id=i['user_id']).values('scheduled_date_and_time').last()['scheduled_date_and_time']
-                            if BookingDetail.objects.filter((Q(driver_id=i['user_id']) & (Q(status_id=1) | Q(status_id=2) | Q(status_id=6) | Q(status_id=8) | Q(status_id=10) | Q(status_id=5))) & Q(is_scheduled=True)).exists():
-                                if s.date() == datetime.datetime.today().date():
-
-                                    print("dont assign", i['user_id'])
-                                    for j in finalArr:
-                                        if j.get('driver_id') == i['user_id']:
-                                            finalArr.remove(j)
-                                            break
-                                else:
-                                    print("assign")
-                                    min_km = min(finalArr, key=lambda x:x['total_km'])
-
-                                    # print("min km==>", min_km)
-                                    randomly_assigning_driver.append(min_km)
-
-                            else:
-                                print("assign")
-                                min_km = min(finalArr, key=lambda x:x['total_km'])
-
-                                    # print("min km==>", min_km)
-                                randomly_assigning_driver.append(min_km)
-
-
-                        else:
-                            if BookingDetail.objects.filter(Q(driver_id=i['user_id']) & (Q(status_id=1) | Q(status_id=2) | Q(status_id=6) | Q(status_id=8) | Q(status_id=10))).exists():
-
-                                print("printing here")
-
-                                print("dont assign", i['user_id'])
-                                for j in finalArr:
-                                    if j.get('driver_id') == i['user_id']:
-                                        finalArr.remove(j)
-                                        break
-                            else:
-                                print("assign")
-                                min_km = min(finalArr, key=lambda x:x['total_km'])
-
-                                # print("min km==>", min_km)
-                                randomly_assigning_driver.append(min_km)
-
-                                    
-
-
-                    # print("randomly_assigning_driver", randomly_assigning_driver)
-
-                    if (randomly_assigning_driver == [] or len(randomly_assigning_driver) == 0):
-                        return Response({'message': "all vehicles are busy in state please try after some time", 'status': 'ALREADY RESERVED'},status=status.HTTP_404_NOT_FOUND)
-                    else:
-                        order_obj = OrderDetails.objects.create(user_id=user_id, location_detail=location_detail, total_estimated_cost=data['total_estimated_cost'])
-
-                        get_est_cost = views.find_vehicle_estimation_cost(data, data['vehicle_type'], location_detail)
-
-                        # print("get_est_cost by vehicle number random vehicle ==>>", get_est_cost)
-
-                        total_amount_without_actual_time_taken = get_est_cost['final_km_charge'] + get_est_cost['base_fee']
-
-                        print("randomly_assigning_driver",randomly_assigning_driver)
-
-
-                        min_object = min(randomly_assigning_driver, key=lambda x: x['total_km'])
-                        print("min_object",min_object)
-
-                        # booking_obj = BookingDetail.objects.create(order_id=order_obj.id, driver_id=randomly_assigning_driver[-1]['driver_id'], status_id=1, travel_details=travel_details, ordered_time=datetime.datetime.now(), sub_user_phone_numbers=sub_user_ph_number,total_amount_without_actual_time_taken=total_amount_without_actual_time_taken, is_scheduled=is_scheduled)
-                        booking_obj = BookingDetail.objects.create(order_id=order_obj.id, driver_id=min_object['driver_id'], status_id=1, travel_details=travel_details, ordered_time=datetime.datetime.now(), sub_user_phone_numbers=sub_user_ph_number,total_amount_without_actual_time_taken=total_amount_without_actual_time_taken, is_scheduled=is_scheduled)
-
-
-                        # time_search = 1
-                        # current_time = datetime.datetime.now()
-                        # # Add two minutes to the current time this shuld come from admin panel
-                        # new_time = current_time + timedelta(minutes=2)
-
-                        # clocked_obj = ClockedSchedule.objects.create(
-                        #     clocked_time = new_time
-                        # )
-
-                        # task_start = PeriodicTask.objects.create(name="UpdateDriverSearchResult"+str(clocked_obj.id), task="userModule.tasks.UpdateDriverSearchResult",clocked_id=clocked_obj.id, one_off=True, kwargs=json.dumps({'booking_id': booking_obj.id}))
-
-                        return Response({'message': 'wait till the driver accepts your order', 'data': finalArr, 'order_id':order_obj.id})
-                return Response({'message': 'no vehicle found near you', 'status': "NOT FOUND"}, status=status.HTTP_404_NOT_FOUND)
+                    return Response({'message': 'wait till the driver accepts your order', 'data': finalArr, 'order_id':order_obj.id})
+            return Response({'message': 'no vehicle found near you', 'status': "NOT FOUND"}, status=status.HTTP_404_NOT_FOUND)
             
 
-        else:
-            return Response({'message': 'This vechicle is not registered', 'status': "NOT FOUND"},
-                            status=status.HTTP_404_NOT_FOUND)
+        # else:
+        #     return Response({'message': 'This vechicle is not registered', 'status': "NOT FOUND"},
+        #                     status=status.HTTP_404_NOT_FOUND)
 
 @method_decorator([authorization_required], name='dispatch')
 class CancelOrderByUser(APIView):
@@ -585,22 +634,28 @@ class GetOTPDetails(APIView):
     def get(self, request):
         order_id = request.query_params.get('order_id')
 
-        if CheckOrderOTP.objects.filter(order_id=order_id).exists():
-            data = CheckOrderOTP.objects.filter(order_id=order_id).values()
-
-            return Response({'data': data})
-        else:
-            otp_json = {
+        otp_json = {
                 "pick1": True,
                 "drop1": False,
                 'pick2':False,
                 'drop2':False
             }
+
+        if CheckOrderOTP.objects.filter(order_id=order_id).exists():
+            if CheckOrderOTP.objects.get(order_id=order_id).otp_json is None:
+                CheckOrderOTP.objects.filter(order_id=order_id).update(otp_json=otp_json)
+            else:
+                pass
+            
+            data = CheckOrderOTP.objects.filter(order_id=order_id).values()
+
+            return Response({'data': data})
+        else:
             data = CheckOrderOTP.objects.create(order_id=order_id, otp_json=otp_json)
         
             return Response({'data': CheckOrderOTP.objects.filter(order_id=data.order_id).values()})
 
-def verifyOTP(mobile_number, otp, logged_in_time, order_id=None, otp_json=None):
+def verifyOTP(mobile_number, otp, logged_in_time, order_id=None, otp_json=None, pickup_drop_details=None):
     looged_in_time = datetime.datetime.fromtimestamp(float(logged_in_time))
     new_time = looged_in_time + timedelta(minutes=2)
 
@@ -619,6 +674,8 @@ def verifyOTP(mobile_number, otp, logged_in_time, order_id=None, otp_json=None):
         if json.loads(data)['type'] != "error":
 
             if order_id is not None:
+
+                BookingDetail.objects.filter(order_id=order_id).update(pickup_drop_details=pickup_drop_details)
 
                 if CheckOrderOTP.objects.filter(order_id=order_id).exists():
                     CheckOrderOTP.objects.filter(order_id=order_id).update(otp_json=otp_json)
@@ -792,6 +849,13 @@ from django.core.exceptions import ObjectDoesNotExist
 class AllScheduledOrder(APIView):
 
     def get(self, request):
+
+        scheduled_order_obj = ScheduledOrder.objects.all().values(
+            'booking__order__user__first_name', 'booking__order__location_detail', 'booking__order_id', 'booking__total_amount', 'booking__travel_details', 'booking__ordered_time', 'booking__driver__first_name', 'booking__driver_id', 'scheduled_date_and_time', 'booking__order__user__mobile_number', 'booking__order__total_estimated_cost', 'booking__status_id', 'booking__sub_user_phone_numbers', 'booking__order__user_id', 'booking__status__status_name', 'booking__status_id', 'booking__driver__vehicle__vehicle_number', 'booking__driver__mobile_number', 'booking__driver__vehicle__vehicletypes__vehicle_type_name', 'booking__vehicle_type__vehicle_type_name'
+        ).order_by('-id')
+
+        
+
         if request.query_params.get('order_id'):
             shedule_obj_with_driver_order = ScheduledOrder.objects.filter(Q(booking__order_id=request.query_params.get('order_id')) & Q(booking__driver_id=request.query_params['driver_id'])).values(
                 'booking__order__user__first_name', 'booking__order__location_detail', 'booking__order_id', 'booking__total_amount', 'booking__travel_details', 'booking__ordered_time', 'booking__driver__first_name', 'booking__driver_id', 'scheduled_date_and_time', 'booking__order__user__mobile_number', 'booking__order__total_estimated_cost', 'booking__status_id', 'booking__sub_user_phone_numbers', 'booking__order__user_id', 'booking__status__status_name', 'booking__status_id', 'booking__driver__vehicle__vehicle_number', 'booking__driver__mobile_number', 'booking__driver__vehicle__vehicletypes__vehicle_type_name', 'booking__vehicle_type__vehicle_type_name'
@@ -842,7 +906,7 @@ class AllScheduledOrder(APIView):
             return Response({'data': shedule_obj_with_driver_order})
 
 
-        if request.query_params.get('driver_id'):
+        if request.query_params:
             # print("herr")
             driver_o = Driver.objects.get(user_id=request.query_params['driver_id'])
             # print(driver_o,"dddd")
@@ -943,24 +1007,7 @@ class AllScheduledOrder(APIView):
             else:
                 return Response({"message":"wait till the verification", 'data': []})
         else:
-
-            search_key = request.query_params.get('search_key')
-
-            if search_key:
-                queryset = ScheduledOrder.objects.filter(Q(booking__order__user__first_name__istartswith=search_key) | Q(booking__order__user__mobile_number__istartswith=search_key) | Q(booking__vehicle_type__vehicle_type_name__istartswith=search_key) |Q(booking__driver__first_name__istartswith=search_key) | Q(booking__status__status_name__istartswith=search_key)).order_by('-id')
-            else:
-                queryset = ScheduledOrder.objects.all().order_by('-id')
-            # Apply pagination
-            paginator = CustomPagination()
-            paginated_queryset = paginator.paginate_queryset(queryset, request)
-
-            # Serialize paginated data
-            serializer = ScheduledOrderSerializer(paginated_queryset, many=True)
-            if self.request.query_params.get('page_size') is None and self.request.query_params.get('page') is None:
-                return Response({'data': queryset.values('booking__order__user__first_name', 'booking__order__location_detail', 'booking__order_id', 'booking__total_amount', 'booking__travel_details', 'booking__ordered_time', 'booking__driver__first_name', 'booking__driver_id', 'scheduled_date_and_time', 'booking__order__user__mobile_number', 'booking__order__total_estimated_cost', 'booking__status_id', 'booking__sub_user_phone_numbers', 'booking__order__user_id', 'booking__status__status_name', 'booking__status_id', 'booking__driver__vehicle__vehicle_number', 'booking__driver__mobile_number', 'booking__driver__vehicle__vehicletypes__vehicle_type_name', 'booking__vehicle_type__vehicle_type_name'
-        )})
-            else:
-                return paginator.get_paginated_response(serializer.data)
+            return Response({"data":scheduled_order_obj})
 
             
     def post(self, request):
@@ -1042,45 +1089,13 @@ class DriverWithDistanceAPI(APIView):
         sorted_data = sorted(list(finalArr), key=lambda x: float(x["distance"].split()[0]))
 
         return Response(sorted_data)
-    
 
-@method_decorator([authorization_required], name='dispatch')
-class UsersAPIView(APIView):
-    def get(self, request):
-        queryset = CustomUser.objects.filter(role_id=2)
-
-        # Apply pagination
-        paginator = CustomPagination()
-        paginated_queryset = paginator.paginate_queryset(queryset, request)
-
-        # Serialize paginated data
-        serializer = UserSerializer(paginated_queryset, many=True)
-        if self.request.query_params.get('page_size') is None and self.request.query_params.get('page') is None:
-            return Response({'data': queryset.values()})
-        else:
-            return paginator.get_paginated_response(serializer.data)
-
-class ActivateorDeactivateUserAPIView(APIView):
-    def post(self, request):
-        if request.query_params.get('user_id'):
-            if CustomUser.objects.filter(id=request.query_params.get('user_id')).exists():
-                CustomUser.objects.filter(id=request.query_params.get('user_id')).update(
-                    user_active_status = request.data['user_active_status']
-                )
-
-                return Response({'message': 'user status updated successfully'})
-            else:
-                return Response({'error': 'user id not found'}, status=status.HTTP_404_NOT_FOUND)
-        
-
-
-# print(Driver.objects.filter(user_id=454).values('is_online'))
-# booking_obj = BookingDetail.objects.filter(driver_id=454).values('status', 'id', 'order_id', 'is_scheduled')
+# print(Driver.objects.filter(user_id=445).values('is_online'))
+# booking_obj = BookingDetail.objects.filter(driver_id=440).values('status', 'id', 'order_id', 'is_scheduled')
 # for i in booking_obj:
 # # #     OrderDetails.objects.filter(id=i['order_id']).delete()
-#     print(i)
+    # print(i)
 
 # print(Driver.objects.filter(vehicle_id=102).values())
 
-
-
+# print(Vehicle_Subscription.objects.filter(id=42).values('expiry_date'))
