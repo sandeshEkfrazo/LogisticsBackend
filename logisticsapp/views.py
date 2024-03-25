@@ -445,7 +445,7 @@ class LoginApiView(APIView):
             store_otp = CustomUser.objects.filter(id=cuser.id, role__user_role_name=user_role_name).update(reset_otp=int(otp))
             data_dict = {}
             # data_dict["OTP"] = otp  
-
+            cuser.user_active_status='Active'
             if cuser:
                                     
                 auth_token = jwt.encode(
@@ -457,6 +457,7 @@ class LoginApiView(APIView):
                     'detail': 'Login successfull',
 
                     'cuser_id':cuser.id,
+                    'user_active_status'='Active',
                     "mobile_number":mobile_number,
                     
                     'user_role_name':user_role_name,
