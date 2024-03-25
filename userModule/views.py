@@ -1048,8 +1048,7 @@ class DriverWithDistanceAPI(APIView):
 class UsersAPIView(APIView):
     def get(self, request):
         queryset = CustomUser.objects.filter(role_id=2)
-        # updated_count = queryset.update(user_active_status='Active')
-        # print('updated_count-----------',updated_count)
+
         # Apply pagination
         paginator = CustomPagination()
         paginated_queryset = paginator.paginate_queryset(queryset, request)
