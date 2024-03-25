@@ -3599,6 +3599,7 @@ class LoginApi(APIView):
         user_role_name=data['user_role_name']
         # otp = random.randint(100000, 999999)
         # request.session['otp'] = otp
+        
         if CustomUser.objects.filter(Q(mobile_number=data['mobile_number']) & Q(role__user_role_name=data['user_role_name'])).exists():
             sendMobileOTp(data['mobile_number'])
             customUser = CustomUser.objects.get(mobile_number=data['mobile_number'], role__user_role_name=data['user_role_name'])
