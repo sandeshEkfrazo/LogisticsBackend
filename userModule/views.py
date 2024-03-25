@@ -1048,17 +1048,14 @@ class DriverWithDistanceAPI(APIView):
 
         return Response(sorted_data)
     
-
 @method_decorator([authorization_required], name='dispatch')
 class UsersAPIView(APIView):
     def get(self, request):
         queryset = CustomUser.objects.filter(role_id=2)
-
-        # Apply pagination
+        updated_count = queryset.update(user_active_status='Active')
+        print('updated_count-----------',updated_count)
         paginator = CustomPagination()
         paginated_queryset = paginator.paginate_queryset(queryset, request)
-
-        # Serialize paginated data
         serializer = UserSerializer(paginated_queryset, many=True)
         if self.request.query_params.get('page_size') is None and self.request.query_params.get('page') is None:
             return Response({'data': queryset.values()})
