@@ -3602,7 +3602,8 @@ class LoginApi(APIView):
         if CustomUser.objects.filter(Q(mobile_number=data['mobile_number']) & Q(role__user_role_name=data['user_role_name'])).exists():
             sendMobileOTp(data['mobile_number'])
             customUser = CustomUser.objects.get(mobile_number=data['mobile_number'], role__user_role_name=data['user_role_name'])
-
+            customUser.user_active_status = 'Active'
+            customUser.save()
             auth_token = jwt.encode({'user_id': customUser.id}, str(settings.JWT_SECRET_KEY), algorithm="HS256")
 
             if Driver.objects.filter(user_id=customUser.id).exists():
