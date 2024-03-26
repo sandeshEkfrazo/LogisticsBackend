@@ -4538,7 +4538,8 @@ class OrderDeatilAPI(APIView):
         
         # else:
         #     return queryset
-
+        queryset = queryset.select_related('scheduledorder')
+        print('queryset-------------',queryset)
         paginator = CustomPagination()
         paginated_queryset = paginator.paginate_queryset(queryset, request)
 
@@ -4547,6 +4548,7 @@ class OrderDeatilAPI(APIView):
         
         if self.request.query_params.get('page_size') is None and self.request.query_params.get('page') is None:
             return Response({'data': queryset.order_by('-id').values('id','order__user_id','order_id','driver_id', 'status', 'order__vehicle_number','total_amount','order__user_id__first_name','order__user_id__mobile_number', 'status__status_name', 'order__otp', 'driver__vehicle__vehicle_name', 'order__total_estimated_cost','last_update_timestamp','driver__first_name','status__colour','ordered_time','driver__mobile_number','scheduledorder__scheduled_date_and_time','total_amount_without_actual_time_taken','driver__vehicle__vehicle_number', 'driver__vehicle__vehicletypes__vehicle_type_name')})
+            print('response-----',Response)
         else:
             return paginator.get_paginated_response(serializer.data)
 
