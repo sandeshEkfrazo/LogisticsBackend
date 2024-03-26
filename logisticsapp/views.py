@@ -3599,20 +3599,51 @@ class LoginApi(APIView):
         user_role_name=data['user_role_name']
         # otp = random.randint(100000, 999999)
         # request.session['otp'] = otp
-        if CustomUser.objects.filter(Q(mobile_number=data['mobile_number']) & Q(role__user_role_name=data['user_role_name'])).exists():
-            sendMobileOTp(data['mobile_number'])
-            customUser = CustomUser.objects.get(mobile_number=data['mobile_number'], role__user_role_name=data['user_role_name'])
-            customUser.user_active_status = 'Active'
-            customUser.save()
-            auth_token = jwt.encode({'user_id': customUser.id}, str(settings.JWT_SECRET_KEY), algorithm="HS256")
+        if CustomUser.objects.filter(mobile_number=data['mobile_number'], role__user_role_name=user_role_name).exists():
+            customUser = CustomUser.objects.get(mobile_number=data['mobile_number'], role__user_role_name=user_role_name)
 
-            if Driver.objects.filter(user_id=customUser.id).exists():
-                driver_obj = Driver.objects.get(user_id=customUser.id)
-                return Response({'message':'Login Successfull', 'otp': "otp", 'user_id': customUser.id, 'vehicle_id': driver_obj.vehicle_id, 'driver_status': driver_obj.driver_status, 'logged_in_time': datetime.datetime.now().timestamp()})
+            if customUser.user_active_status == 'Active':
+                sendMobileOTp(data['mobile_number'])
+                customUser.user_active_status = 'Active'  # Assuming you want to update status again (optional)
+                customUser.save()
+                auth_token = jwt.encode({'user_id': customUser.id}, str(settings.JWT_SECRET_KEY), algorithm="HS256")
 
-            return Response({'message':'Login Successfull', 'otp': "otp", 'user_id': customUser.id, 'logged_in_time': datetime.datetime.now().timestamp()})
+                if Driver.objects.filter(user_id=customUser.id).exists():
+                    driver_obj = Driver.objects.get(user_id=customUser.id)
+                    return Response({
+                        'message': 'Login Successful',
+                        'otp': "otp",  # You might want to include the actual OTP here
+                        'user_id': customUser.id,
+                        'vehicle_id': driver_obj.vehicle_id,
+                        'driver_status': driver_obj.driver_status,
+                        'logged_in_time': timezone.now().timestamp()
+                    })
+
+                return Response({
+                    'message': 'Login Successful',
+                    'otp': "otp",  # You might want to include the actual OTP here
+                    'user_id': customUser.id,
+                    'logged_in_time': timezone.now().timestamp()
+                })
+            else:
+                return Response({'message': 'User is not active. Unable to login.'}, status=status.HTTP_406_NOT_ACCEPTABLE)
         else:
-            return Response({'message':'User Does not exists'},  status=status.HTTP_406_NOT_ACCEPTABLE)
+            return Response({'message': 'User does not exist'}, status=status.HTTP_406_NOT_ACCEPTABLE)
+
+        # if CustomUser.objects.filter(Q(mobile_number=data['mobile_number']) & Q(role__user_role_name=data['user_role_name'])).exists():
+        #     sendMobileOTp(data['mobile_number'])
+        #     customUser = CustomUser.objects.get(mobile_number=data['mobile_number'], role__user_role_name=data['user_role_name'])
+        #     customUser.user_active_status = 'Active'
+        #     customUser.save()
+        #     auth_token = jwt.encode({'user_id': customUser.id}, str(settings.JWT_SECRET_KEY), algorithm="HS256")
+
+        #     if Driver.objects.filter(user_id=customUser.id).exists():
+        #         driver_obj = Driver.objects.get(user_id=customUser.id)
+        #         return Response({'message':'Login Successfull', 'otp': "otp", 'user_id': customUser.id, 'vehicle_id': driver_obj.vehicle_id, 'driver_status': driver_obj.driver_status, 'logged_in_time': datetime.datetime.now().timestamp()})
+
+        #     return Response({'message':'Login Successfull', 'otp': "otp", 'user_id': customUser.id, 'logged_in_time': datetime.datetime.now().timestamp()})
+        # else:
+        #     return Response({'message':'User Does not exists'},  status=status.HTTP_406_NOT_ACCEPTABLE)
 
         
 
