@@ -3621,18 +3621,40 @@ class UserLoginView(APIView):
     def post(self,request):
         data = request.data
         mobile_number = data.get('mobile_number')
+        if not user_role_name:
+            return Response({'message': 'Role name is required'}, status=status.HTTP_406_NOT_ACCEPTABLE)
 
-        if CustomUser.objects.filter(Q(mobile_number=mobile_number) & Q(role__user_role_name=data['user_role_name'])).exists():
-            return Response({"error":'driver already exist with this mobile number'}, status=status.HTTP_406_NOT_ACCEPTABLE)
-        if CustomUser.objects.filter(Q(mobile_number=mobile_number) & Q(role__user_role_name=data['user_role_name'])).exists():
-            return Response({"error":'user already exist with this mobile number'}, status=status.HTTP_406_NOT_ACCEPTABLE)
+        if CustomUser.objects.filter(mobile_number=mobile_number, role__user_role_name=user_role_name).exists():
+            # Check if user or driver already exists with this mobile number
+            if CustomUser.objects.filter(Q(mobile_number=mobile_number) & Q(role__user_role_name='driver')).exists():
+                return Response({"error": 'Driver already exists with this mobile number'}, status=status.HTTP_406_NOT_ACCEPTABLE)
+            elif CustomUser.objects.filter(Q(mobile_number=mobile_number) & Q(role__user_role_name='user')).exists():
+                return Response({"error": 'User already exists with this mobile number'}, status=status.HTTP_406_NOT_ACCEPTABLE)
+        else:
+            return Response({'error': 'No user or driver exists with this mobile number'}, status=status.HTTP_406_NOT_ACCEPTABLE)
+
+        # Update user_active_status to 'Active' if user exists
+        user = CustomUser.objects.filter(mobile_number=mobile_number).first()
+        if user:
+            user.user_active_status = 'Active'
+            user.save()
+
+        sendMobileOTp(mobile_number)
+        return Response({
+            "message": "OTP sent successfully to the registered mobile number",
+            'logged_in_time': datetime.datetime.now().timestamp()
+        })
+        # if CustomUser.objects.filter(Q(mobile_number=mobile_number) & Q(role__user_role_name=data['user_role_name'])).exists():
+        #     return Response({"error":'driver already exist with this mobile number'}, status=status.HTTP_406_NOT_ACCEPTABLE)
+        # if CustomUser.objects.filter(Q(mobile_number=mobile_number) & Q(role__user_role_name=data['user_role_name'])).exists():
+        #     return Response({"error":'user already exist with this mobile number'}, status=status.HTTP_406_NOT_ACCEPTABLE)
 
     
-        if data['user_role_name'] == None:
-            return Response({'message': 'role name is required'}, status=status.HTTP_406_NOT_ACCEPTABLE)
-        else:
-            sendMobileOTp(mobile_number)
-            return Response({"message": "Otp sent successfully to the registered mobile number",'logged_in_time': datetime.datetime.now().timestamp()})
+        # if data['user_role_name'] == None:
+        #     return Response({'message': 'role name is required'}, status=status.HTTP_406_NOT_ACCEPTABLE)
+        # else:
+        #     sendMobileOTp(mobile_number)
+        #     return Response({"message": "Otp sent successfully to the registered mobile number",'logged_in_time': datetime.datetime.now().timestamp()})
 
 
 class OtpVerificationApi(APIView):
