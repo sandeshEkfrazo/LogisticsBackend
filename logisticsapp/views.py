@@ -3700,7 +3700,8 @@ class UserSignup(APIView):
             last_name=last_name,
             company_name=company_name,
             email=email,
-            user_status = "user_added_with_the_profile_details"
+            user_status = "user_added_with_the_profile_details",
+            user_active_status='Active'
         )
 
         if whatsup_number is not None:
@@ -4468,9 +4469,6 @@ class OrderDeatilAPI(APIView):
         queryset = BookingDetail.objects.all().order_by('-id')
 
         
-
-        
-    
         if search_key:
 
             query_filters.append(
