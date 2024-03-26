@@ -4538,8 +4538,8 @@ class OrderDeatilAPI(APIView):
         
         # else:
         #     return queryset
-        queryset = queryset.select_related('scheduledorder__scheduled_date_and_time')
-        print('queryset-------------',queryset)
+        # queryset = queryset.select_related('scheduledorder__scheduled_date_and_time')
+        # print('queryset-------------',queryset)
         paginator = CustomPagination()
         paginated_queryset = paginator.paginate_queryset(queryset, request)
 
