@@ -1049,7 +1049,7 @@ class DriverWithDistanceAPI(APIView):
 class UsersAPIView(APIView):
     def get(self, request):
         queryset = CustomUser.objects.filter(role_id=2)
-
+        
         # Apply pagination
         paginator = CustomPagination()
         paginated_queryset = paginator.paginate_queryset(queryset, request)
