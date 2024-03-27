@@ -6756,3 +6756,16 @@ class History_of_SubscriptionplanApi(APIView):
 
 def templateView(request):
     return render(request, 'admin/customTemplate.html')
+
+class GetuseractiveStatus(APIView):
+    def get(self, request):
+        user_id = request.query_params.get('user_id')
+        if user_id:
+            user = CustomUser.objects.filter(id=user_id).first()
+            if user:
+                user_active_status = user.user_active_status
+                return Response({'user_active_status': user_active_status})
+            else:
+                return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response({'error': 'user_id parameter is required'}, status=status.HTTP_400_BAD_REQUEST)
