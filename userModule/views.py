@@ -1065,15 +1065,17 @@ class ActivateorDeactivateUserAPIView(APIView):
     def post(self, request):
         if request.query_params.get('user_id'):
             user_id = request.query_params.get('user_id')
-            if CustomUser.objects.filter(id=user_id).exists():
-                user = CustomUser.objects.get(id=user_id)
+            user = CustomUser.objects.filter(id=user_id).first()
+            if user:
                 user_name = user.name  # Assuming 'name' is the field for the user's name
                 CustomUser.objects.filter(id=user_id).update(
                     user_active_status=request.data['user_active_status']
                 )
                 return Response({'message': f'{user_name} status updated successfully'})
             else:
-                return Response({'error': 'user id not found'}, status=status.HTTP_404_NOT_FOUND)
+                return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response({'error': 'user_id query parameter is required'}, status=status.HTTP_400_BAD_REQUEST)
         # if request.query_params.get('user_id'):
         #     if CustomUser.objects.filter(id=request.query_params.get('user_id')).exists():
         #         CustomUser.objects.filter(id=request.query_params.get('user_id')).update(
