@@ -81,8 +81,6 @@ urlpatterns = [
     path('placed-order', PlacedOrderView.as_view()),
     path('placed-order/<int:pk>', PlacedOrderView.as_view()),
 
-
-
     path('in-order', InOrderView.as_view()),
     path('in-order/<int:pk>', InOrderView.as_view()),
 
