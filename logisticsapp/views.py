@@ -446,6 +446,7 @@ class LoginApiView(APIView):
             data_dict = {}
             # data_dict["OTP"] = otp  
             cuser.user_active_status='Active'
+            cuser.save()
             if cuser:
                                     
                 auth_token = jwt.encode(
@@ -3602,7 +3603,8 @@ class LoginApi(APIView):
         if CustomUser.objects.filter(Q(mobile_number=data['mobile_number']) & Q(role__user_role_name=data['user_role_name'])).exists():
             sendMobileOTp(data['mobile_number'])
             customUser = CustomUser.objects.get(mobile_number=data['mobile_number'], role__user_role_name=data['user_role_name'])
-
+            customUser.user_active_status = 'Active'
+            customUser.save()
             auth_token = jwt.encode({'user_id': customUser.id}, str(settings.JWT_SECRET_KEY), algorithm="HS256")
 
             if Driver.objects.filter(user_id=customUser.id).exists():
@@ -3698,7 +3700,8 @@ class UserSignup(APIView):
             last_name=last_name,
             company_name=company_name,
             email=email,
-            user_status = "user_added_with_the_profile_details"
+            user_status = "user_added_with_the_profile_details",
+            user_active_status="Active"
         )
 
         if whatsup_number is not None:
