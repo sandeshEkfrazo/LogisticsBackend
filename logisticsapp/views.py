@@ -993,7 +993,7 @@ class UserRoleRefView(APIView):
             selected_page_no = int(page_number)
 
         try:
-            emp_role, created = UserRoleRef.objects.get_or_create(user_role_name=user_role_name)
+            emp_role, created = UserRoleRef.objects.get_or_create(user_role_name__exact=user_role_name)
 
             if not created:
                 # user_role_name already exists in the database
