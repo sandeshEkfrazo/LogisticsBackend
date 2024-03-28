@@ -600,7 +600,7 @@ class GetOTPDetails(APIView):
         
             return Response({'data': CheckOrderOTP.objects.filter(order_id=data.order_id).values()})
 
-def verifyOTP(mobile_number, otp, logged_in_time, order_id=None, otp_json=None):
+def verifyOTP(mobile_number, otp, logged_in_time, order_id=None, otp_json=None, pickup_drop_details=None):
     looged_in_time = datetime.datetime.fromtimestamp(float(logged_in_time))
     new_time = looged_in_time + timedelta(minutes=2)
 
@@ -1048,7 +1048,7 @@ class DriverWithDistanceAPI(APIView):
 class UsersAPIView(APIView):
     def get(self, request):
         queryset = CustomUser.objects.filter(role_id=2)
-
+        
         # Apply pagination
         paginator = CustomPagination()
         paginated_queryset = paginator.paginate_queryset(queryset, request)
