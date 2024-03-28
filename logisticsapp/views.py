@@ -3600,20 +3600,16 @@ class LoginApi(APIView):
         # otp = random.randint(100000, 999999)
         # request.session['otp'] = otp
         
-        if CustomUser.objects.filter(mobile_number=data['mobile_number'], role__user_role_name=user_role_name).exists():
-            custom_user = CustomUser.objects.get(mobile_number=data['mobile_number'], role__user_role_name=user_role_name)
-
-            if custom_user.user_active_status == 'Active':
-                # Assuming you have a sendMobileOTP function
+        if data.get('user_role_name') == 'Driver':
+            # For Driver role, no additional conditions are needed
+            if CustomUser.objects.filter(mobile_number=data['mobile_number'], role__user_role_name=data['user_role_name']).exists():
+                custom_user = CustomUser.objects.get(mobile_number=data['mobile_number'], role__user_role_name=data['user_role_name'])
                 sendMobileOTp(data['mobile_number'])
-
-                # Update user's status to 'Active' (optional)
                 custom_user.user_active_status = 'Active'
                 custom_user.save()
-
                 auth_token = jwt.encode({'user_id': custom_user.id}, str(settings.JWT_SECRET_KEY), algorithm="HS256")
 
-                if user_role_name == 'Driver' and Driver.objects.filter(user_id=custom_user.id).exists():
+                if Driver.objects.filter(user_id=custom_user.id).exists():
                     driver_obj = Driver.objects.get(user_id=custom_user.id)
                     return Response({
                         'message': 'Login Successful',
@@ -3631,9 +3627,26 @@ class LoginApi(APIView):
                     'logged_in_time': timezone.now().timestamp()
                 })
             else:
+                return Response({'message': 'User does not exist'}, status=status.HTTP_406_NOT_ACCEPTABLE)
+        elif data.get('user_role_name') == 'User':
+            # For User role, check if user_active_status is Active
+            if CustomUser.objects.filter(mobile_number=data['mobile_number'], role__user_role_name=data['user_role_name'], user_active_status='Active').exists():
+                custom_user = CustomUser.objects.get(mobile_number=data['mobile_number'], role__user_role_name=data['user_role_name'], user_active_status='Active')
+                sendMobileOTp(data['mobile_number'])
+                custom_user.user_active_status = 'Active'  # Update status again (optional)
+                custom_user.save()
+                auth_token = jwt.encode({'user_id': custom_user.id}, str(settings.JWT_SECRET_KEY), algorithm="HS256")
+
+                return Response({
+                    'message': 'Login Successful',
+                    'otp': "otp",  # You might want to include the actual OTP here
+                    'user_id': custom_user.id,
+                    'logged_in_time': timezone.now().timestamp()
+                })
+            else:
                 return Response({'message': 'User is not active. Unable to login.'}, status=status.HTTP_406_NOT_ACCEPTABLE)
         else:
-            return Response({'message': 'User does not exist'}, status=status.HTTP_406_NOT_ACCEPTABLE)
+            return Response({'message': 'Invalid user role. Unable to login.'}, status=status.HTTP_406_NOT_ACCEPTABLE)
 
         # if CustomUser.objects.filter(Q(mobile_number=data['mobile_number']) & Q(role__user_role_name=data['user_role_name'])).exists():
         #     sendMobileOTp(data['mobile_number'])
