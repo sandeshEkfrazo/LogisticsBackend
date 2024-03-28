@@ -74,7 +74,8 @@ class DriverAPI(APIView):
             
 
 		return Response({'message': 'your orders are', 'data': bookingDetail})
-			
+	
+
 	def post(self, request):
 		data = request.data
 
@@ -163,6 +164,7 @@ class DriverAPI(APIView):
 			BookingDetail.objects.filter(order_id=order_id).update(status=update_status, order_accepted_time=datetime.now())
 			location_details = OrderDetails.objects.get(id=order_id)
 			return Response({'message': 'order updated successfully', 'location_details': location_details.location_detail})
+		
 		if data['otp'] is not None:
 			if OrderDetails.objects.get(id=order_id).otp == data['otp']:
 				BookingDetail.objects.filter(order_id=order_id).update(status=update_status, pickedup_time=datetime.now())
@@ -172,6 +174,8 @@ class DriverAPI(APIView):
 		else:
 			BookingDetail.objects.filter(order_id=order_id).update(status_id=update_status, canceled_time=datetime.now())
 			return Response({'message': 'order updated successfully'})
+		
+
 
 @method_decorator([authorization_required], name='dispatch')
 class UpdateDriveOnlineApi(APIView):
