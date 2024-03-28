@@ -601,7 +601,7 @@ class GetOTPDetails(APIView):
         
             return Response({'data': CheckOrderOTP.objects.filter(order_id=data.order_id).values()})
 
-def verifyOTP(mobile_number, otp, logged_in_time, order_id=None, otp_json=None):
+def verifyOTP(mobile_number, otp, logged_in_time, order_id=None, otp_json=None, pickup_drop_details=None):
     looged_in_time = datetime.datetime.fromtimestamp(float(logged_in_time))
     new_time = looged_in_time + timedelta(minutes=2)
 
