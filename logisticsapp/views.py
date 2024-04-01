@@ -446,7 +446,6 @@ class LoginApiView(APIView):
             data_dict = {}
             # data_dict["OTP"] = otp  
             cuser.user_active_status='Active'
-            cuser.save()
             if cuser:
                                     
                 auth_token = jwt.encode(
@@ -3600,6 +3599,7 @@ class LoginApi(APIView):
         user_role_name=data['user_role_name']
         # otp = random.randint(100000, 999999)
         # request.session['otp'] = otp
+        
         if data.get('user_role_name') == 'Driver':
             # For Driver role, no additional conditions are needed
             if CustomUser.objects.filter(mobile_number=data['mobile_number'], role__user_role_name=data['user_role_name']).exists():
@@ -3647,7 +3647,7 @@ class LoginApi(APIView):
                 return Response({'message': 'User is not active. Unable to login.'}, status=status.HTTP_406_NOT_ACCEPTABLE)
         else:
             return Response({'message': 'Invalid user role. Unable to login.'}, status=status.HTTP_406_NOT_ACCEPTABLE)
-            
+
         # if CustomUser.objects.filter(Q(mobile_number=data['mobile_number']) & Q(role__user_role_name=data['user_role_name'])).exists():
         #     sendMobileOTp(data['mobile_number'])
         #     customUser = CustomUser.objects.get(mobile_number=data['mobile_number'], role__user_role_name=data['user_role_name'])
@@ -3749,7 +3749,7 @@ class UserSignup(APIView):
             company_name=company_name,
             email=email,
             user_status = "user_added_with_the_profile_details",
-            user_active_status='Active'
+            user_active_status="Active"
         )
 
         if whatsup_number is not None:
@@ -4121,111 +4121,186 @@ from django.db.models import F
 class DriverSignup(APIView):
     def get(self, request):
         if request.query_params:
-            driver_obj = Driver.objects.filter(user_id=request.query_params['user_id']).values('id','vehicle_id','vehicle__vehicle_status','vehicle__vehicle_name', 'vehicle__vehicle_number', 'driver_driving_license', 'user__first_name', 'badge', 'user__adhar_card_front_side_img_path', 'user__adhar_card_back_side_img_path', 'user__role__user_role_name', 'user__mobile_number', 'vehicle__permit_front_side_img_path', 'vehicle__registration_certificate_front_side_img_path', 'vehicle__registration_certificate_back_side_img_path', 'vehicle__pollution_certificate_front_side_img_path', 'license_img_front', 'license_img_back', 'insurence_img', 'passbook_img', 'user_id', 'owner_id', 'fitness_certificate_back_side_img_path','fitness_certificate_front_side_img_path', 'license_expire_date', 'insurance_expire_date', 'fitness_certificate_expire_date', 'vehicle__permit_expire_date', 'vehicle__rc_expire_date', 'vehicle__emission_certificate_expire_date','vehicle__vehicletypes__vehicle_type_name','vehicle__vehicletypes__id','vehicle__vehicletypes__vehicle_type_image', 'user__profile_image', 'vehicle__is_active', 'driver_status')
+            user_id = request.query_params['user_id']
+            driver_obj = Driver.objects.filter(user_id=user_id).values(
+                'id', 'vehicle_id', 'vehicle__vehicle_status', 'vehicle__vehicle_name', 'vehicle__vehicle_number', 
+                'driver_driving_license', 'user__first_name', 'badge', 'user__adhar_card_front_side_img_path', 
+                'user__adhar_card_back_side_img_path', 'user__role__user_role_name', 'user__mobile_number', 
+                'vehicle__permit_front_side_img_path', 'vehicle__registration_certificate_front_side_img_path', 
+                'vehicle__registration_certificate_back_side_img_path', 'vehicle__pollution_certificate_front_side_img_path', 
+                'license_img_front', 'license_img_back', 'insurence_img', 'passbook_img', 'user_id', 'owner_id', 
+                'fitness_certificate_back_side_img_path', 'fitness_certificate_front_side_img_path', 'license_expire_date', 
+                'insurance_expire_date', 'fitness_certificate_expire_date', 'vehicle__permit_expire_date', 'vehicle__rc_expire_date', 
+                'vehicle__emission_certificate_expire_date', 'vehicle__vehicletypes__vehicle_type_name', 
+                'vehicle__vehicletypes__id', 'vehicle__vehicletypes__vehicle_type_image', 'user__profile_image', 
+                'vehicle__is_active', 'driver_status'
+            )
             
-            driver_image_obj_img = Driver.objects.get(user_id=request.query_params['user_id'])
+            driver_image_obj_img = Driver.objects.get(user_id=user_id)
             live_url = "https://logistics.thestorywallcafe.com/media"
 
-            # imagesDict = {
-            #     "license_img_front": base64.b64encode(requests.get(live_url + str(driver_image_obj_img.license_img_front)).content),
-            #     "license_img_back": base64.b64encode(requests.get(live_url + str(driver_image_obj_img.license_img_back)).content),
-            #     "passbook_img": base64.b64encode(requests.get(live_url + str(driver_image_obj_img.passbook_img)).content)
-            # }
-
-            if driver_obj[0]['owner_id'] == request.query_params['user_id']:
+            if driver_obj[0]['owner_id'] == user_id:
                 obj_with_owner_details = list(driver_obj)
                 if obj_with_owner_details[0]['user__profile_image'] == "":
                     obj_with_owner_details[0]['user__profile_image'] = None
                 obj_with_owner_details[0]['owner_details'] = None
-                vehcile_id = driver_image_obj_img.vehicle_id
 
-                if Vehicle_Subscription.objects.filter(Q(vehicle_id_id=vehcile_id)).exists():
+                # Check subscription status based on Vehicle_Subscription
+                vehicle_id = driver_image_obj_img.vehicle_id
+                is_subscribed = Vehicle_Subscription.objects.filter(
+                    vehicle_id_id=vehicle_id, expiry_date__gte=datetime.now()
+                ).exists()
 
-                    # if Vehicle_Subscription.objects.filter(Q(vehicle_id_id=vehcile_id) & Q(type_of_service='post-paid') & Q(Q(is_amount_paid=False) | Q(is_amount_paid=True)) & Q(is_expired=False)).exists():
-                    #     obj_with_owner_details[0]['is_subscribed'] = True
-                    # elif Vehicle_Subscription.objects.filter(Q(vehicle_id_id=vehcile_id) & Q(type_of_service='pre-paid') & Q(Q(is_amount_paid=True) | Q(is_amount_paid=False)) & Q(is_expired=False)).exists():
-                    #     obj_with_owner_details[0]['is_subscribed'] = True
-                    
-                    # elif Vehicle_Subscription.objects.filter(Q(vehicle_id_id=vehcile_id) & Q(Q(type_of_service='pre-paid') | Q(type_of_service='post-paid')) & Q(Q(is_amount_paid=True) | Q(is_amount_paid=False)) & Q(is_expired=True)).exists() :
-                    #     obj_with_owner_details[0]['is_subscribed'] = False
+                obj_with_owner_details[0]['is_subscribed'] = is_subscribed
 
-                    print("first print")
-                    if Vehicle_Subscription.objects.filter(Q(vehicle_id_id=vehcile_id) & Q(type_of_service='pre-paid') & Q(is_expired=True)).exists() or Vehicle_Subscription.objects.filter(Q(vehicle_id_id=vehcile_id) & Q(type_of_service='pre-paid') & Q(is_amount_paid=False)).exists():
-                        obj_with_owner_details[0]['is_subscribed'] = False
-                    elif Vehicle_Subscription.objects.filter(Q(vehicle_id_id=vehcile_id) & Q(is_expired=True) & Q(type_of_service='post-paid') & Q(Q(is_amount_paid=True) | Q(is_amount_paid=False))):
-                        obj_with_owner_details[0]['is_subscribed'] = False
-                    else:
-                        obj_with_owner_details[0]['is_subscribed'] = True
-
-                else:
-                    obj_with_owner_details[0]['is_subscribed'] = False
-
-                # final_value = {'data': obj_with_owner_details, 'base64ImageData': imagesDict}
                 final_value = {'data': obj_with_owner_details}
-
                 return Response(final_value)
             else:
-                # print("printing in else block")
-
                 obj_with_owner_details = list(driver_obj)
-                # print("obj_with_owner_details==>>>", obj_with_owner_details)
                 if obj_with_owner_details[0]['user__profile_image'] == "":
                     obj_with_owner_details[0]['user__profile_image'] = None
 
                 owner_details = CustomUser.objects.filter(id=driver_obj[0]['owner_id']).values().first()
-
-                # print("query==>", Driver.objects.filter(owner_id=driver_obj[0]['owner_id']).values('driver_driving_license'))
-
-                
                 owner_licence_number = Driver.objects.filter(owner_id=driver_obj[0]['owner_id']).values('owner_driving_licence').first()
                 owner_licence_number = owner_licence_number['owner_driving_licence'] 
                 
-
                 if owner_licence_number is not None:
                     owner_details['driver_driving_license'] = owner_licence_number
-                
 
-                vehcile_id = driver_image_obj_img.vehicle_id
+                vehicle_id = driver_image_obj_img.vehicle_id
+                is_subscribed = Vehicle_Subscription.objects.filter(
+                    vehicle_id_id=vehicle_id, expiry_date__gte=datetime.now()
+                ).exists()
 
+                obj_with_owner_details[0]['is_subscribed'] = is_subscribed
 
-                if Vehicle_Subscription.objects.filter(Q(vehicle_id_id=vehcile_id)).exists():
-                    # if Vehicle_Subscription.objects.filter(Q(vehicle_id_id=vehcile_id) & Q(type_of_service='post-paid') & Q(Q(is_amount_paid=False) | Q(is_amount_paid=True)) & Q(is_expired=True)).exists():
-                    #     obj_with_owner_details[0]['is_subscribed'] = True
-                    # elif Vehicle_Subscription.objects.filter(Q(vehicle_id_id=vehcile_id) & Q(type_of_service='pre-paid') & Q(is_amount_paid=True) | Q(is_expired=True)).exists():
-                    #     obj_with_owner_details[0]['is_subscribed'] = True
-                    # # else:
-                    # #     obj_with_owner_details[0]['is_subscribed'] = False
-                    # elif Vehicle_Subscription.objects.filter(Q(vehicle_id_id=vehcile_id) & Q(Q(type_of_service='pre-paid') | Q(type_of_service='post-paid')) & Q(Q(is_amount_paid=True) | Q(is_amount_paid=False)) & Q(is_expired=True)).exists() :
-                    #     obj_with_owner_details[0]['is_subscribed'] = False
-
-                    print("second print", vehcile_id, Vehicle_Subscription.objects.filter(Q(vehicle_id_id=vehcile_id) & Q(type_of_service='pre-paid') & Q(is_expired=True) & Q(is_amount_paid=False)).exists())
-
-                    if Vehicle_Subscription.objects.filter(Q(vehicle_id_id=vehcile_id) & Q(type_of_service='pre-paid') & Q(is_expired=True)).exists() or Vehicle_Subscription.objects.filter(Q(vehicle_id_id=vehcile_id) & Q(type_of_service='pre-paid') & Q(is_amount_paid=False)).exists():
-                        obj_with_owner_details[0]['is_subscribed'] = False
-                    elif Vehicle_Subscription.objects.filter(Q(vehicle_id_id=vehcile_id) & Q(is_expired=True) & Q(type_of_service='post-paid') & Q(Q(is_amount_paid=True) | Q(is_amount_paid=False))):
-                        obj_with_owner_details[0]['is_subscribed'] = False
-                    else:
-                        obj_with_owner_details[0]['is_subscribed'] = True
-                else:
-                    obj_with_owner_details[0]['is_subscribed'] = False
-                
-
-
-                # if Driver.objects.filter(Q(owner_id=None)):
-                #     obj_with_owner_details[0]['owner_details'] = None
-                # else:
-                if Driver.objects.get(user_id=request.query_params['user_id']).owner_id is None:
+                if Driver.objects.get(user_id=user_id).owner_id is None:
                     obj_with_owner_details[0]['owner_details'] = None
                 else:
                     obj_with_owner_details[0]['owner_details'] = [owner_details]
 
-                # final_value = {'data': obj_with_owner_details, 'base64ImageData': imagesDict}
                 final_value = {'data': obj_with_owner_details}
-
                 return Response(final_value)
         else:
-            driver_obj = Driver.objects.all().values('user_id', 'vehicle_id','vehicle__vehicle_name', 'vehicle__vehicle_number', 'driver_driving_license', 'user__first_name', 'badge', 'user__adhar_card_front_side_img_path', 'user__adhar_card_back_side_img_path', 'user__role__user_role_name', 'user__mobile_number', 'driver_driving_license', 'vehicle__permit_front_side_img_path', 'vehicle__registration_certificate_front_side_img_path', 'vehicle__vehicle_status','vehicle__registration_certificate_back_side_img_path', 'vehicle__pollution_certificate_front_side_img_path', 'license_img_front', 'license_img_back', 'insurence_img', 'passbook_img', 'license_expire_date', 'insurance_expire_date', 'fitness_certificate_expire_date', 'vehicle__permit_expire_date', 'vehicle__rc_expire_date', 'vehicle__emission_certificate_expire_date', 'vehicle__is_active', 'driver_status')
+            driver_obj = Driver.objects.all().values(
+                'user_id', 'vehicle_id', 'vehicle__vehicle_name', 'vehicle__vehicle_number', 'driver_driving_license', 
+                'user__first_name', 'badge', 'user__adhar_card_front_side_img_path', 'user__adhar_card_back_side_img_path', 
+                'user__role__user_role_name', 'user__mobile_number', 'driver_driving_license', 'vehicle__permit_front_side_img_path', 
+                'vehicle__registration_certificate_front_side_img_path', 'vehicle__vehicle_status', 'vehicle__registration_certificate_back_side_img_path', 
+                'vehicle__pollution_certificate_front_side_img_path', 'license_img_front', 'license_img_back', 'insurence_img', 
+                'passbook_img', 'license_expire_date', 'insurance_expire_date', 'fitness_certificate_expire_date', 
+                'vehicle__permit_expire_date', 'vehicle__rc_expire_date', 'vehicle__emission_certificate_expire_date', 
+                'vehicle__is_active', 'driver_status'
+            )
             return Response({'data': driver_obj})
+
+    # def get(self, request):
+    #     if request.query_params:
+    #         driver_obj = Driver.objects.filter(user_id=request.query_params['user_id']).values('id','vehicle_id','vehicle__vehicle_status','vehicle__vehicle_name', 'vehicle__vehicle_number', 'driver_driving_license', 'user__first_name', 'badge', 'user__adhar_card_front_side_img_path', 'user__adhar_card_back_side_img_path', 'user__role__user_role_name', 'user__mobile_number', 'vehicle__permit_front_side_img_path', 'vehicle__registration_certificate_front_side_img_path', 'vehicle__registration_certificate_back_side_img_path', 'vehicle__pollution_certificate_front_side_img_path', 'license_img_front', 'license_img_back', 'insurence_img', 'passbook_img', 'user_id', 'owner_id', 'fitness_certificate_back_side_img_path','fitness_certificate_front_side_img_path', 'license_expire_date', 'insurance_expire_date', 'fitness_certificate_expire_date', 'vehicle__permit_expire_date', 'vehicle__rc_expire_date', 'vehicle__emission_certificate_expire_date','vehicle__vehicletypes__vehicle_type_name','vehicle__vehicletypes__id','vehicle__vehicletypes__vehicle_type_image', 'user__profile_image', 'vehicle__is_active', 'driver_status')
+            
+    #         driver_image_obj_img = Driver.objects.get(user_id=request.query_params['user_id'])
+    #         live_url = "https://logistics.thestorywallcafe.com/media"
+
+    #         # imagesDict = {
+    #         #     "license_img_front": base64.b64encode(requests.get(live_url + str(driver_image_obj_img.license_img_front)).content),
+    #         #     "license_img_back": base64.b64encode(requests.get(live_url + str(driver_image_obj_img.license_img_back)).content),
+    #         #     "passbook_img": base64.b64encode(requests.get(live_url + str(driver_image_obj_img.passbook_img)).content)
+    #         # }
+
+    #         if driver_obj[0]['owner_id'] == request.query_params['user_id']:
+    #             obj_with_owner_details = list(driver_obj)
+    #             if obj_with_owner_details[0]['user__profile_image'] == "":
+    #                 obj_with_owner_details[0]['user__profile_image'] = None
+    #             obj_with_owner_details[0]['owner_details'] = None
+    #             vehcile_id = driver_image_obj_img.vehicle_id
+
+    #             if Vehicle_Subscription.objects.filter(Q(vehicle_id_id=vehcile_id)).exists():
+
+    #                 # if Vehicle_Subscription.objects.filter(Q(vehicle_id_id=vehcile_id) & Q(type_of_service='post-paid') & Q(Q(is_amount_paid=False) | Q(is_amount_paid=True)) & Q(is_expired=False)).exists():
+    #                 #     obj_with_owner_details[0]['is_subscribed'] = True
+    #                 # elif Vehicle_Subscription.objects.filter(Q(vehicle_id_id=vehcile_id) & Q(type_of_service='pre-paid') & Q(Q(is_amount_paid=True) | Q(is_amount_paid=False)) & Q(is_expired=False)).exists():
+    #                 #     obj_with_owner_details[0]['is_subscribed'] = True
+                    
+    #                 # elif Vehicle_Subscription.objects.filter(Q(vehicle_id_id=vehcile_id) & Q(Q(type_of_service='pre-paid') | Q(type_of_service='post-paid')) & Q(Q(is_amount_paid=True) | Q(is_amount_paid=False)) & Q(is_expired=True)).exists() :
+    #                 #     obj_with_owner_details[0]['is_subscribed'] = False
+
+    #                 print("first print")
+    #                 if Vehicle_Subscription.objects.filter(Q(vehicle_id_id=vehcile_id) & Q(type_of_service='pre-paid') & Q(is_expired=True)).exists() or Vehicle_Subscription.objects.filter(Q(vehicle_id_id=vehcile_id) & Q(type_of_service='pre-paid') & Q(is_amount_paid=False)).exists():
+    #                     obj_with_owner_details[0]['is_subscribed'] = False
+    #                 elif Vehicle_Subscription.objects.filter(Q(vehicle_id_id=vehcile_id) & Q(is_expired=True) & Q(type_of_service='post-paid') & Q(Q(is_amount_paid=True) | Q(is_amount_paid=False))):
+    #                     obj_with_owner_details[0]['is_subscribed'] = False
+    #                 else:
+    #                     obj_with_owner_details[0]['is_subscribed'] = True
+
+    #             else:
+    #                 obj_with_owner_details[0]['is_subscribed'] = False
+
+    #             # final_value = {'data': obj_with_owner_details, 'base64ImageData': imagesDict}
+    #             final_value = {'data': obj_with_owner_details}
+
+    #             return Response(final_value)
+    #         else:
+    #             # print("printing in else block")
+
+    #             obj_with_owner_details = list(driver_obj)
+    #             # print("obj_with_owner_details==>>>", obj_with_owner_details)
+    #             if obj_with_owner_details[0]['user__profile_image'] == "":
+    #                 obj_with_owner_details[0]['user__profile_image'] = None
+
+    #             owner_details = CustomUser.objects.filter(id=driver_obj[0]['owner_id']).values().first()
+
+    #             # print("query==>", Driver.objects.filter(owner_id=driver_obj[0]['owner_id']).values('driver_driving_license'))
+
+                
+    #             owner_licence_number = Driver.objects.filter(owner_id=driver_obj[0]['owner_id']).values('owner_driving_licence').first()
+    #             owner_licence_number = owner_licence_number['owner_driving_licence'] 
+                
+
+    #             if owner_licence_number is not None:
+    #                 owner_details['driver_driving_license'] = owner_licence_number
+                
+
+    #             vehcile_id = driver_image_obj_img.vehicle_id
+
+
+    #             if Vehicle_Subscription.objects.filter(Q(vehicle_id_id=vehcile_id)).exists():
+    #                 # if Vehicle_Subscription.objects.filter(Q(vehicle_id_id=vehcile_id) & Q(type_of_service='post-paid') & Q(Q(is_amount_paid=False) | Q(is_amount_paid=True)) & Q(is_expired=True)).exists():
+    #                 #     obj_with_owner_details[0]['is_subscribed'] = True
+    #                 # elif Vehicle_Subscription.objects.filter(Q(vehicle_id_id=vehcile_id) & Q(type_of_service='pre-paid') & Q(is_amount_paid=True) | Q(is_expired=True)).exists():
+    #                 #     obj_with_owner_details[0]['is_subscribed'] = True
+    #                 # # else:
+    #                 # #     obj_with_owner_details[0]['is_subscribed'] = False
+    #                 # elif Vehicle_Subscription.objects.filter(Q(vehicle_id_id=vehcile_id) & Q(Q(type_of_service='pre-paid') | Q(type_of_service='post-paid')) & Q(Q(is_amount_paid=True) | Q(is_amount_paid=False)) & Q(is_expired=True)).exists() :
+    #                 #     obj_with_owner_details[0]['is_subscribed'] = False
+
+    #                 print("second print", vehcile_id, Vehicle_Subscription.objects.filter(Q(vehicle_id_id=vehcile_id) & Q(type_of_service='pre-paid') & Q(is_expired=True) & Q(is_amount_paid=False)).exists())
+
+    #                 if Vehicle_Subscription.objects.filter(Q(vehicle_id_id=vehcile_id) & Q(type_of_service='pre-paid') & Q(is_expired=True)).exists() or Vehicle_Subscription.objects.filter(Q(vehicle_id_id=vehcile_id) & Q(type_of_service='pre-paid') & Q(is_amount_paid=False)).exists():
+    #                     obj_with_owner_details[0]['is_subscribed'] = False
+    #                 elif Vehicle_Subscription.objects.filter(Q(vehicle_id_id=vehcile_id) & Q(is_expired=True) & Q(type_of_service='post-paid') & Q(Q(is_amount_paid=True) | Q(is_amount_paid=False))):
+    #                     obj_with_owner_details[0]['is_subscribed'] = False
+    #                 else:
+    #                     obj_with_owner_details[0]['is_subscribed'] = True
+    #             else:
+    #                 obj_with_owner_details[0]['is_subscribed'] = False
+                
+
+
+    #             # if Driver.objects.filter(Q(owner_id=None)):
+    #             #     obj_with_owner_details[0]['owner_details'] = None
+    #             # else:
+    #             if Driver.objects.get(user_id=request.query_params['user_id']).owner_id is None:
+    #                 obj_with_owner_details[0]['owner_details'] = None
+    #             else:
+    #                 obj_with_owner_details[0]['owner_details'] = [owner_details]
+
+    #             # final_value = {'data': obj_with_owner_details, 'base64ImageData': imagesDict}
+    #             final_value = {'data': obj_with_owner_details}
+
+    #             return Response(final_value)
+    #     else:
+    #         driver_obj = Driver.objects.all().values('user_id', 'vehicle_id','vehicle__vehicle_name', 'vehicle__vehicle_number', 'driver_driving_license', 'user__first_name', 'badge', 'user__adhar_card_front_side_img_path', 'user__adhar_card_back_side_img_path', 'user__role__user_role_name', 'user__mobile_number', 'driver_driving_license', 'vehicle__permit_front_side_img_path', 'vehicle__registration_certificate_front_side_img_path', 'vehicle__vehicle_status','vehicle__registration_certificate_back_side_img_path', 'vehicle__pollution_certificate_front_side_img_path', 'license_img_front', 'license_img_back', 'insurence_img', 'passbook_img', 'license_expire_date', 'insurance_expire_date', 'fitness_certificate_expire_date', 'vehicle__permit_expire_date', 'vehicle__rc_expire_date', 'vehicle__emission_certificate_expire_date', 'vehicle__is_active', 'driver_status')
+    #         return Response({'data': driver_obj})
 
     def post(self,request):
         data = request.data
@@ -4517,6 +4592,9 @@ class OrderDeatilAPI(APIView):
         queryset = BookingDetail.objects.all().order_by('-id')
 
         
+
+        
+    
         if search_key:
 
             query_filters.append(
@@ -4553,7 +4631,8 @@ class OrderDeatilAPI(APIView):
         
         # else:
         #     return queryset
-
+        # queryset = queryset.select_related('scheduledorder__scheduled_date_and_time')
+        # print('queryset-------------',queryset)
         paginator = CustomPagination()
         paginated_queryset = paginator.paginate_queryset(queryset, request)
 
@@ -4562,6 +4641,7 @@ class OrderDeatilAPI(APIView):
         
         if self.request.query_params.get('page_size') is None and self.request.query_params.get('page') is None:
             return Response({'data': queryset.order_by('-id').values('id','order__user_id','order_id','driver_id', 'status', 'order__vehicle_number','total_amount','order__user_id__first_name','order__user_id__mobile_number', 'status__status_name', 'order__otp', 'driver__vehicle__vehicle_name', 'order__total_estimated_cost','last_update_timestamp','driver__first_name','status__colour','ordered_time','driver__mobile_number','scheduledorder__scheduled_date_and_time','total_amount_without_actual_time_taken','driver__vehicle__vehicle_number', 'driver__vehicle__vehicletypes__vehicle_type_name')})
+            print('response-----',Response)
         else:
             return paginator.get_paginated_response(serializer.data)
 
@@ -6779,6 +6859,8 @@ class History_of_SubscriptionplanApi(APIView):
 
 def templateView(request):
     return render(request, 'admin/customTemplate.html')
+
+
 
 class GetuseractiveStatus(APIView):
     def get(self, request):
