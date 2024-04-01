@@ -6481,9 +6481,12 @@ class VehicleSubscriptionApi(APIView):
     def get(self, request):
         if request.query_params.get('vehicle_id'):
             datas = Vehicle_Subscription.objects.filter(vehicle_id_id=request.query_params['vehicle_id']).values().last()
+            expiry_date = datas['expiry_date']
+            current_utc_time = datetime.now(timezone.utc)
+            is_expired = current_utc_time > expiry_date
+            datas['is_expired'] = is_expired
             return Response({'data': datas})
         else:
-
             if self.request.query_params.get('page_size') is None and self.request.query_params.get('page') is None:
                 data = Vehicle_Subscription.objects.all().select_related('vehicle_id', 'vehicle_id__vehicletypes').values('id', 'vehicle_id__vehicle_name', 'time_period', 'date_subscribed', 'expiry_date', 'amount', 'status', 'is_amount_paid', 'paid_through', 'type_of_service', 'vehicle_id', 'validity_days', 'is_expired', 'vehicle_id__vehicle_number', 'vehicle_id__vehicletypes__vehicle_type_name')
 
@@ -6500,20 +6503,20 @@ class VehicleSubscriptionApi(APIView):
                         item['driver_first_name'] = None
                         item['driver_mobile_number'] = None
 
+                    # Update is_expired based on expiry_date
+                    expiry_date = item['expiry_date']
+                    item['is_expired'] = datetime.now(timezone.utc) > expiry_date
+
                     result.append(item)
 
                 return Response(result)
             else:
-
                 search_key = request.query_params.get('search_key')
 
                 if search_key:
                     queryset = Vehicle_Subscription.objects.filter(Q(vehicle_id__vehicle_number__istartswith=search_key) | Q(vehicle_id__vehicletypes__vehicle_type_name__istartswith=search_key)).select_related('vehicle_id', 'vehicle_id__vehicletypes').order_by('-id')
                 else:
                     queryset = Vehicle_Subscription.objects.all().select_related('vehicle_id', 'vehicle_id__vehicletypes')
-
-
-
 
                 # Apply pagination
                 paginator = CustomPagination()
@@ -6533,7 +6536,67 @@ class VehicleSubscriptionApi(APIView):
                         item['driver_first_name'] = None
                         item['driver_mobile_number'] = None
                     
+                    # Update is_expired based on expiry_date
+                    expiry_date = item['expiry_date']
+                    item['is_expired'] = datetime.now(timezone.utc) > expiry_date
+
                 return paginator.get_paginated_response(serializer.data)
+    # def get(self, request):
+        # if request.query_params.get('vehicle_id'):
+        #     datas = Vehicle_Subscription.objects.filter(vehicle_id_id=request.query_params['vehicle_id']).values().last()
+        #     return Response({'data': datas})
+        # else:
+
+        #     if self.request.query_params.get('page_size') is None and self.request.query_params.get('page') is None:
+        #         data = Vehicle_Subscription.objects.all().select_related('vehicle_id', 'vehicle_id__vehicletypes').values('id', 'vehicle_id__vehicle_name', 'time_period', 'date_subscribed', 'expiry_date', 'amount', 'status', 'is_amount_paid', 'paid_through', 'type_of_service', 'vehicle_id', 'validity_days', 'is_expired', 'vehicle_id__vehicle_number', 'vehicle_id__vehicletypes__vehicle_type_name')
+
+        #         result = []
+        #         for item in data:
+        #             # Add driver information
+        #             driver = Driver.objects.filter(vehicle=item['vehicle_id']).first()
+        #             if driver:
+        #                 item['driver_id'] = driver.id
+        #                 item['driver_first_name'] = driver.user.first_name
+        #                 item['driver_mobile_number'] = driver.user.mobile_number
+        #             else:
+        #                 item['driver_id'] = None
+        #                 item['driver_first_name'] = None
+        #                 item['driver_mobile_number'] = None
+
+        #             result.append(item)
+
+        #         return Response(result)
+        #     else:
+
+        #         search_key = request.query_params.get('search_key')
+
+        #         if search_key:
+        #             queryset = Vehicle_Subscription.objects.filter(Q(vehicle_id__vehicle_number__istartswith=search_key) | Q(vehicle_id__vehicletypes__vehicle_type_name__istartswith=search_key)).select_related('vehicle_id', 'vehicle_id__vehicletypes').order_by('-id')
+        #         else:
+        #             queryset = Vehicle_Subscription.objects.all().select_related('vehicle_id', 'vehicle_id__vehicletypes')
+
+
+
+
+        #         # Apply pagination
+        #         paginator = CustomPagination()
+        #         paginated_queryset = paginator.paginate_queryset(queryset, request)
+
+        #         # Serialize paginated data
+        #         serializer = VehicleSubscriptionSerializer(paginated_queryset, many=True)
+
+        #         for item in serializer.data:
+        #             driver = Driver.objects.filter(vehicle=item['vehicle_id']).first()
+        #             if driver:
+        #                 item['driver_id'] = driver.id
+        #                 item['driver_first_name'] = driver.user.first_name
+        #                 item['driver_mobile_number'] = driver.user.mobile_number
+        #             else:
+        #                 item['driver_id'] = None
+        #                 item['driver_first_name'] = None
+        #                 item['driver_mobile_number'] = None
+                    
+        #         return paginator.get_paginated_response(serializer.data)
 
 
             ########################################
