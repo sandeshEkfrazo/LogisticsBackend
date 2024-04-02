@@ -6476,16 +6476,26 @@ class DriveryearApi(APIView):
 # def stopScheduler():
 
 
-@method_decorator([authorization_required], name='dispatch')
-class VehicleSubscriptionApi(APIView):
+from dateutil import parser
+# @method_decorator([authorization_required], name='dispatch')
+class VehicleSubscriptionApi(APIView): 
     def get(self, request):
-        if request.query_params.get('vehicle_id'):
-            datas = Vehicle_Subscription.objects.filter(vehicle_id_id=request.query_params['vehicle_id']).values().last()
-            expiry_date = datas['expiry_date']
-            current_utc_time = datetime.now(timezone.utc)
-            is_expired = current_utc_time > expiry_date
-            datas['is_expired'] = is_expired
-            return Response({'data': datas})
+        current_date = datetime.now(pytz.utc)  # Assuming current_date is in UTC timezone
+
+        vehicle_id = request.query_params.get('vehicle_id')
+        if vehicle_id:
+            data = Vehicle_Subscription.objects.filter(vehicle_id_id=vehicle_id).values().last()
+            # Check if data exists and add is_expired and status fields
+            if data:
+                expired_date = parser.parse(data['expiry_date']) if data['expiry_date'] else None
+                if expired_date:
+                    expired_date = expired_date.astimezone(pytz.utc)
+                    data['is_expired'] = expired_date <= current_date
+                    data['status'] = 'Expired' if data['is_expired'] else 'Active'
+                else:
+                    data['is_expired'] = False
+                    data['status'] = 'Active'
+            return Response({'data': data})
         else:
             if self.request.query_params.get('page_size') is None and self.request.query_params.get('page') is None:
                 data = Vehicle_Subscription.objects.all().select_related('vehicle_id', 'vehicle_id__vehicletypes').values('id', 'vehicle_id__vehicle_name', 'time_period', 'date_subscribed', 'expiry_date', 'amount', 'status', 'is_amount_paid', 'paid_through', 'type_of_service', 'vehicle_id', 'validity_days', 'is_expired', 'vehicle_id__vehicle_number', 'vehicle_id__vehicletypes__vehicle_type_name')
@@ -6503,9 +6513,23 @@ class VehicleSubscriptionApi(APIView):
                         item['driver_first_name'] = None
                         item['driver_mobile_number'] = None
 
-                    # Update is_expired based on expiry_date
-                    expiry_date = item['expiry_date']
-                    item['is_expired'] = datetime.now(timezone.utc) > expiry_date
+                    # Convert expiry_date string to datetime object using dateutil.parser
+                    try:
+                        expired_date = parser.parse(item['expiry_date'])
+                    except ValueError:
+                        expired_date = None
+
+                    # Ensure expired_date is in the same timezone as current_date
+                    if expired_date:
+                        expired_date = expired_date.astimezone(pytz.utc)
+
+                    # Check if expiry_date is less than or equal to the current date
+                    if expired_date and (expired_date == current_date or expired_date <= current_date):
+                        item['is_expired'] = True
+                        item['status'] = 'Expired'
+                    else:
+                        item['is_expired'] = False
+                        item['status'] = 'Active'
 
                     result.append(item)
 
@@ -6535,10 +6559,24 @@ class VehicleSubscriptionApi(APIView):
                         item['driver_id'] = None
                         item['driver_first_name'] = None
                         item['driver_mobile_number'] = None
-                    
-                    # Update is_expired based on expiry_date
-                    expiry_date = item['expiry_date']
-                    item['is_expired'] = datetime.now(timezone.utc) > expiry_date
+
+                    # Convert expiry_date string to datetime object using dateutil.parser
+                    try:
+                        expired_date = parser.parse(item['expiry_date'])
+                    except ValueError:
+                        expired_date = None
+
+                    # Ensure expired_date is in the same timezone as current_date
+                    if expired_date:
+                        expired_date = expired_date.astimezone(pytz.utc)
+
+                    # Check if expiry_date is less than or equal to the current date
+                    if expired_date and (expired_date == current_date or expired_date <= current_date):
+                        item['is_expired'] = True
+                        item['status'] = 'Expired'
+                    else:
+                        item['is_expired'] = False
+                        item['status'] = 'Active'
 
                 return paginator.get_paginated_response(serializer.data)
     # def get(self, request):
