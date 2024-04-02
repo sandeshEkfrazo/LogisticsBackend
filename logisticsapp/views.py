@@ -3599,13 +3599,13 @@ class LoginApi(APIView):
         user_role_name=data['user_role_name']
         # otp = random.randint(100000, 999999)
         # request.session['otp'] = otp
-        
         if data.get('user_role_name') == 'Driver':
             # For Driver role, no additional conditions are needed
             if CustomUser.objects.filter(mobile_number=data['mobile_number'], role__user_role_name=data['user_role_name']).exists():
                 custom_user = CustomUser.objects.get(mobile_number=data['mobile_number'], role__user_role_name=data['user_role_name'])
                 sendMobileOTp(data['mobile_number'])
                 custom_user.user_active_status = 'Active'
+                custom_user.user_online_status = True
                 custom_user.save()
                 auth_token = jwt.encode({'user_id': custom_user.id}, str(settings.JWT_SECRET_KEY), algorithm="HS256")
 
@@ -3634,6 +3634,7 @@ class LoginApi(APIView):
                 custom_user = CustomUser.objects.get(mobile_number=data['mobile_number'], role__user_role_name=data['user_role_name'], user_active_status='Active')
                 sendMobileOTp(data['mobile_number'])
                 custom_user.user_active_status = 'Active'  # Update status again (optional)
+                custom_user.user_online_status = True
                 custom_user.save()
                 auth_token = jwt.encode({'user_id': custom_user.id}, str(settings.JWT_SECRET_KEY), algorithm="HS256")
 
@@ -3647,6 +3648,7 @@ class LoginApi(APIView):
                 return Response({'message': 'User is not active. Unable to login.'}, status=status.HTTP_406_NOT_ACCEPTABLE)
         else:
             return Response({'message': 'Invalid user role. Unable to login.'}, status=status.HTTP_406_NOT_ACCEPTABLE)
+
 
         # if CustomUser.objects.filter(Q(mobile_number=data['mobile_number']) & Q(role__user_role_name=data['user_role_name'])).exists():
         #     sendMobileOTp(data['mobile_number'])
@@ -6471,21 +6473,19 @@ class DriveryearApi(APIView):
 # import time
 # from datetime import timedelta, datetime
 
-
 # from apscheduler.schedulers.background import BackgroundScheduler, BlockingScheduler
 
 # def stopScheduler():
 
 
-@method_decorator([authorization_required], name='dispatch')
-class VehicleSubscriptionApi(APIView):
+from dateutil import parser
+# @method_decorator([authorization_required], name='dispatch')
+class VehicleSubscriptionApi(APIView): 
     def get(self, request):
+        current_date = datetime.now(pytz.utc)  # Assuming current_date is in UTC timezone
+
         if request.query_params.get('vehicle_id'):
             datas = Vehicle_Subscription.objects.filter(vehicle_id_id=request.query_params['vehicle_id']).values().last()
-            expiry_date = datas['expiry_date']
-            current_utc_time = datetime.now(timezone.utc)
-            is_expired = current_utc_time > expiry_date
-            datas['is_expired'] = is_expired
             return Response({'data': datas})
         else:
             if self.request.query_params.get('page_size') is None and self.request.query_params.get('page') is None:
@@ -6504,9 +6504,23 @@ class VehicleSubscriptionApi(APIView):
                         item['driver_first_name'] = None
                         item['driver_mobile_number'] = None
 
-                    # Update is_expired based on expiry_date
-                    expiry_date = item['expiry_date']
-                    item['is_expired'] = datetime.now(timezone.utc) > expiry_date
+                    # Convert expiry_date string to datetime object using dateutil.parser
+                    try:
+                        expired_date = parser.parse(item['expiry_date'])
+                    except ValueError:
+                        expired_date = None
+
+                    # Ensure expired_date is in the same timezone as current_date
+                    if expired_date:
+                        expired_date = expired_date.astimezone(pytz.utc)
+
+                    # Check if expiry_date is less than or equal to the current date
+                    if expired_date and (expired_date == current_date or expired_date <= current_date):
+                        item['is_expired'] = True
+                        item['status'] = 'Expired'
+                    else:
+                        item['is_expired'] = False
+                        item['status'] = 'Active'
 
                     result.append(item)
 
@@ -6536,13 +6550,26 @@ class VehicleSubscriptionApi(APIView):
                         item['driver_id'] = None
                         item['driver_first_name'] = None
                         item['driver_mobile_number'] = None
-                    
-                    # Update is_expired based on expiry_date
-                    expiry_date = item['expiry_date']
-                    item['is_expired'] = datetime.now(timezone.utc) > expiry_date
+
+                    # Convert expiry_date string to datetime object using dateutil.parser
+                    try:
+                        expired_date = parser.parse(item['expiry_date'])
+                    except ValueError:
+                        expired_date = None
+
+                    # Ensure expired_date is in the same timezone as current_date
+                    if expired_date:
+                        expired_date = expired_date.astimezone(pytz.utc)
+
+                    # Check if expiry_date is less than or equal to the current date
+                    if expired_date and (expired_date == current_date or expired_date <= current_date):
+                        item['is_expired'] = True
+                        item['status'] = 'Expired'
+                    else:
+                        item['is_expired'] = False
+                        item['status'] = 'Active'
 
                 return paginator.get_paginated_response(serializer.data)
-
 
             ########################################
             # data = Vehicle_Subscription.objects.all().select_related('vehicle_id', 'vehicle_id__vehicletypes').values('id', 'vehicle_id__vehicle_name', 'time_period', 'date_subscribed', 'expiry_date', 'amount', 'status', 'is_amount_paid', 'paid_through', 'type_of_service', 'vehicle_id', 'validity_days', 'is_expired', 'vehicle_id__vehicle_number', 'vehicle_id__vehicletypes__vehicle_type_name')
