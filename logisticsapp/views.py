@@ -414,7 +414,7 @@ class SignUpPhoneNumberApiView(APIView):
 
             else:
                 sendMobileOTp(mobile_number)
-                return Response({'message': 'otp sent successfully', 'logged_in_time': datetime.datetime.now().timestamp()})
+                return Response({'message': 'otp sent successfully', 'logged_in_time': datetime.now().timestamp()})
                 
         else:
             return Response({'error':{'message':'UserRole  doesnot exists'}})
@@ -3680,14 +3680,14 @@ class UserLoginView(APIView):
             return Response({'message': 'role name is required'}, status=status.HTTP_406_NOT_ACCEPTABLE)
         else:
             sendMobileOTp(mobile_number)
-            return Response({"message": "Otp sent successfully to the registered mobile number",'logged_in_time': datetime.datetime.now().timestamp()})
+            return Response({"message": "Otp sent successfully to the registered mobile number",'logged_in_time': datetime.now().timestamp()})
 
 
 class OtpVerificationApi(APIView):
     def post(self, request):
         data = request.data
         user_role = data.get('user_role')
-        verified_otp = verifyOTP(data['moibile_number'], data['otp'], datetime.datetime.now().timestamp())
+        verified_otp = verifyOTP(data['moibile_number'], data['otp'], datetime.now().timestamp())
         return Response(verified_otp)
         # if(request.session['otp'] == data['otp']):
 
@@ -5120,7 +5120,7 @@ class Filter_OrdersApi(APIView):
         # month=data['month']
         is_days = data['is_days']
         is_month = data['is_month']
-        current_time = datetime.datetime.now()
+        current_time = datetime.now()
         # print("current_time===>", current_time.day)
 
         tempDaysorMonth = []
@@ -5742,7 +5742,7 @@ class RemarksApi(APIView):
 
 import pytz
 # import datetime
-datetime.datetime.now()
+# datetime.datetime.now()
 # from datetime import datetime, timedelta
 @method_decorator([authorization_required], name='dispatch')
 class FilterCountApi(APIView):
@@ -5752,7 +5752,7 @@ class FilterCountApi(APIView):
         status_id = request.query_params.get('status_id')
         ordered_time = request.query_params.get('ordered_time')
         year = request.query_params.get('year')
-        current_date = datetime.datetime.now().date()
+        current_date = datetime.now().date()
         last_10_days = [current_date - datetime.timedelta(days=x) for x in range(10)]
         bookings = BookingDetail.objects.all().select_related('order', 'status').values(
             'id', 'order__user_id', 'order_id', 'driver_id', 'status__id', 'status__status_name', 'ordered_time'
@@ -6630,8 +6630,9 @@ class VehicleSubscriptionApi(APIView):
             if Vehicle_Subscription.objects.filter(vehicle_id_id=vehicle_id).exists():
 
                 vehicle=Vehicle.objects.filter(id=vehicle_id)
-                now = datetime.datetime.now()
-                expirydate= now + datetime.timedelta(validity_days)
+                now = datetime.now()
+                # expirydate= now + datetime.timedelta(validity_days)
+                expirydate = now + timedelta(days=validity_days)
 
                 if data['vehicle_subscription_id'] is not None:
                     if is_amount_paid:
@@ -6660,8 +6661,9 @@ class VehicleSubscriptionApi(APIView):
                     )
                     return Response({'order_id':payment['id']})
                 else:
-                    now = datetime.datetime.now()
-                    expirydate= now + datetime.timedelta(validity_days)
+                    now = datetime.now()
+                    # expirydate= now + datetime.timedelta(validity_days)
+                    expirydate = now + timedelta(days=validity_days)
                     obj=Vehicle_Subscription.objects.filter(vehicle_id_id=vehicle_id).update(
                         time_period=time_period,
                         date_subscribed=date_subscribed,
@@ -6676,8 +6678,9 @@ class VehicleSubscriptionApi(APIView):
                     return Response({'order_id':payment['id'], 'subscription_id': vehicle_obj.id})
 
             else:
-                now = datetime.datetime.now()
-                expirydate= now + datetime.timedelta(validity_days)
+                now = datetime.now()
+                # expirydate= now + datetime.timedelta(validity_days)
+                expirydate = now + timedelta(days=validity_days)
                 obj=Vehicle_Subscription.objects.create(
                         time_period=time_period,
                         date_subscribed=date_subscribed,
