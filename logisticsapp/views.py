@@ -6484,9 +6484,20 @@ class VehicleSubscriptionApi(APIView):
     def get(self, request):
         current_date = datetime.now(pytz.utc)  # Assuming current_date is in UTC timezone
 
-        if request.query_params.get('vehicle_id'):
-            datas = Vehicle_Subscription.objects.filter(vehicle_id_id=request.query_params['vehicle_id']).values().last()
-            return Response({'data': datas})
+        vehicle_id = request.query_params.get('vehicle_id')
+        if vehicle_id:
+            data = Vehicle_Subscription.objects.filter(vehicle_id_id=vehicle_id).values().last()
+            # Check if data exists and add is_expired and status fields
+            if data:
+                expired_date = parser.parse(data['expiry_date']) if data['expiry_date'] else None
+                if expired_date:
+                    expired_date = expired_date.astimezone(pytz.utc)
+                    data['is_expired'] = expired_date <= current_date
+                    data['status'] = 'Expired' if data['is_expired'] else 'Active'
+                else:
+                    data['is_expired'] = False
+                    data['status'] = 'Active'
+            return Response({'data': data})
         else:
             if self.request.query_params.get('page_size') is None and self.request.query_params.get('page') is None:
                 data = Vehicle_Subscription.objects.all().select_related('vehicle_id', 'vehicle_id__vehicletypes').values('id', 'vehicle_id__vehicle_name', 'time_period', 'date_subscribed', 'expiry_date', 'amount', 'status', 'is_amount_paid', 'paid_through', 'type_of_service', 'vehicle_id', 'validity_days', 'is_expired', 'vehicle_id__vehicle_number', 'vehicle_id__vehicletypes__vehicle_type_name')
