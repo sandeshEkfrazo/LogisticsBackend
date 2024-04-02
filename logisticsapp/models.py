@@ -117,6 +117,8 @@ class CustomUser(models.Model):
 
     user_status = models.CharField(max_length=100, null=True, blank=True)
     user_active_status = models.CharField(max_length=100, null=True, blank=True)
+    on_going_ride=models.BooleanField(default=False)
+    user_online_status=models.BooleanField(default=False)
 
     
 
