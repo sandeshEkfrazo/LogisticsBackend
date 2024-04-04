@@ -3596,11 +3596,9 @@ class UserDestinationsView(APIView):
 class LoginApi(APIView):
     def post(self, request):
         data = request.data
-        user_role_name=data['user_role_name']
-        # otp = random.randint(100000, 999999)
-        # request.session['otp'] = otp
+        user_role_name = data['user_role_name']
+        
         if data.get('user_role_name') == 'Driver':
-            # For Driver role, no additional conditions are needed
             if CustomUser.objects.filter(mobile_number=data['mobile_number'], role__user_role_name=data['user_role_name']).exists():
                 custom_user = CustomUser.objects.get(mobile_number=data['mobile_number'], role__user_role_name=data['user_role_name'])
                 sendMobileOTp(data['mobile_number'])
@@ -3617,6 +3615,7 @@ class LoginApi(APIView):
                         'user_id': custom_user.id,
                         'vehicle_id': driver_obj.vehicle_id,
                         'driver_status': driver_obj.driver_status,
+                        'user_online_status': "Online" if custom_user.user_online_status else "Offline",
                         'logged_in_time': timezone.now().timestamp()
                     })
 
@@ -3624,12 +3623,12 @@ class LoginApi(APIView):
                     'message': 'Login Successful',
                     'otp': "otp",  # You might want to include the actual OTP here
                     'user_id': custom_user.id,
+                    'user_online_status': "Online" if custom_user.user_online_status else "Offline",
                     'logged_in_time': timezone.now().timestamp()
                 })
             else:
                 return Response({'message': 'User does not exist'}, status=status.HTTP_406_NOT_ACCEPTABLE)
         elif data.get('user_role_name') == 'User':
-            # For User role, check if user_active_status is Active
             if CustomUser.objects.filter(mobile_number=data['mobile_number'], role__user_role_name=data['user_role_name'], user_active_status='Active').exists():
                 custom_user = CustomUser.objects.get(mobile_number=data['mobile_number'], role__user_role_name=data['user_role_name'], user_active_status='Active')
                 sendMobileOTp(data['mobile_number'])
@@ -3642,6 +3641,7 @@ class LoginApi(APIView):
                     'message': 'Login Successful',
                     'otp': "otp",  # You might want to include the actual OTP here
                     'user_id': custom_user.id,
+                    'user_online_status': "Online" if custom_user.user_online_status else "Offline",
                     'logged_in_time': timezone.now().timestamp()
                 })
             else:
