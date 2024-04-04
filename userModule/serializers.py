@@ -6,6 +6,11 @@ class UserSerializer(serializers.ModelSerializer):
         model = CustomUser
         fields = '__all__'
 
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        data['online_status'] = "Online" if instance.user_online_status else "Offline"
+        return data
+
 class ScheduledOrderSerializer(serializers.ModelSerializer):
     booking__order__user__first_name = serializers.StringRelatedField(source="booking.order.user.first_name")
     booking__order__location_detail = serializers.JSONField(source="booking.order.location_detail")
