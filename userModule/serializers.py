@@ -6,6 +6,7 @@ class UserSerializer(serializers.ModelSerializer):
         model = CustomUser
         fields = '__all__'
 
+        
     def to_representation(self, instance):
         data = super().to_representation(instance)
         data['online_status'] = "Online" if instance.user_online_status else "Offline"
