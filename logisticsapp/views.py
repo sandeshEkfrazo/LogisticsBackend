@@ -4641,12 +4641,17 @@ class OrderDeatilAPI(APIView):
 
         # Serialize paginated data
         serializer = BookingDetailSerializer(paginated_queryset, many=True)
-        
-        if self.request.query_params.get('page_size') is None and self.request.query_params.get('page') is None:
-            return Response({'data': queryset.order_by('-id').values('id','order__user_id','order_id','driver_id', 'status', 'order__vehicle_number','total_amount','order__user_id__first_name','order__user_id__mobile_number', 'status__status_name', 'order__otp', 'driver__vehicle__vehicle_name', 'order__total_estimated_cost','last_update_timestamp','driver__first_name','status__colour','ordered_time','driver__mobile_number','scheduledorder__scheduled_date_and_time','total_amount_without_actual_time_taken','driver__vehicle__vehicle_number', 'driver__vehicle__vehicletypes__vehicle_type_name')})
-            print('response-----',Response)
-        else:
-            return paginator.get_paginated_response(serializer.data)
+        response_data = serializer.data
+        print('response_data-----------------',response_data)
+        for item in response_data:
+            print('ssssssssss')
+            if 'order__location_detail' in item and not isinstance(item['order__location_detail'], list):
+                item['order__location_detail'] = [item['order__location_detail']]     
+        # if self.request.query_params.get('page_size') is None and self.request.query_params.get('page') is None:
+        #     return Response({'data': queryset.order_by('-id').values('id','order__user_id','order_id','driver_id', 'status', 'order__vehicle_number','total_amount','order__user_id__first_name','order__user_id__mobile_number', 'status__status_name', 'order__otp', 'driver__vehicle__vehicle_name', 'order__total_estimated_cost','last_update_timestamp','driver__first_name','status__colour','ordered_time','driver__mobile_number','scheduledorder__scheduled_date_and_time','total_amount_without_actual_time_taken','driver__vehicle__vehicle_number', 'driver__vehicle__vehicletypes__vehicle_type_name')})
+        #     print('response-----',Response)
+        # else:
+        return paginator.get_paginated_response(serializer.data)
 
 
 
