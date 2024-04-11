@@ -2,6 +2,7 @@ from .models import *
 from  rest_framework import serializers
 
 class UserSerializer(serializers.ModelSerializer):
+    booking_status_name = serializers.SerializerMethodField()
     class Meta:
         model = CustomUser
         fields = '__all__'
@@ -10,6 +11,13 @@ class UserSerializer(serializers.ModelSerializer):
         data = super().to_representation(instance)
         data['online_status'] = "Online" if instance.user_online_status else "Offline"
         return data
+    
+    def get_booking_status_name(self, instance):
+        scheduled_orders = instance.scheduled_orders.all()
+        if scheduled_orders.exists():
+            latest_order = scheduled_orders.latest('id')
+            return latest_order.status.status_name if latest_order.status else None
+        return None
 
 class ScheduledOrderSerializer(serializers.ModelSerializer):
     booking__order__user__first_name = serializers.StringRelatedField(source="booking.order.user.first_name")
