@@ -1052,7 +1052,7 @@ class DriverWithDistanceAPI(APIView):
 @method_decorator([authorization_required], name='dispatch')
 class UsersAPIView(APIView):
     def get(self, request):
-        queryset = CustomUser.objects.filter(role_id=2)
+        queryset = CustomUser.objects.filter(role_id=2).order_by('-id')
 
         paginator = CustomPagination()
         paginated_queryset = paginator.paginate_queryset(queryset, request)
@@ -1064,13 +1064,11 @@ class UsersAPIView(APIView):
             latest_order = OrderDetails.objects.filter(user_id=user_id).order_by('-id').first()
             if latest_order:
                 user_data['last_order_id'] = latest_order.id
-                print(f"User ID: {user_id}, Last Order ID: {latest_order.id}")
 
                 # Fetch the corresponding booking detail
                 booking_detail = BookingDetail.objects.filter(order_id=latest_order.id).first()
                 if booking_detail:
                     user_data['last_ride_status'] = booking_detail.status.status_name
-                    print(f"User ID: {user_id}, Last Ride Status: {booking_detail.status.status_name}")
 
                     # Update on_going_ride based on the last ride status
                     if booking_detail.status.status_name == 'InProgress':
@@ -1080,17 +1078,64 @@ class UsersAPIView(APIView):
                 else:
                     user_data['last_ride_status'] = None
                     user_data['on_going_ride'] = 'No'  # Default to 'No' if no booking detail found
-                    print(f"User ID: {user_id}, Last Ride Status: None")
             else:
                 user_data['last_order_id'] = None
                 user_data['last_ride_status'] = None
                 user_data['on_going_ride'] = 'No'  # Default to 'No' if no order found
-                print(f"User ID: {user_id}, Last Order ID: None, Last Ride Status: None")
+
+            # Update user_online_status and online_status based on user_active_status
+            user_active_status = user_data.get('user_active_status', None)
+            if user_active_status == 'Active':
+                user_data['user_online_status'] = True
+                user_data['online_status'] = 'Online'
+            else:
+                user_data['user_online_status'] = False
+                user_data['online_status'] = 'Offline'
 
         if self.request.query_params.get('page_size') is None and self.request.query_params.get('page') is None:
             return Response({'data': queryset.values()})
         else:
             return paginator.get_paginated_response(serializer.data)
+    # def get(self, request):
+    #     queryset = CustomUser.objects.filter(role_id=2)
+
+    #     paginator = CustomPagination()
+    #     paginated_queryset = paginator.paginate_queryset(queryset, request)
+
+    #     serializer = UserSerializer(paginated_queryset, many=True)
+
+    #     for user_data in serializer.data:
+    #         user_id = user_data['id']
+    #         latest_order = OrderDetails.objects.filter(user_id=user_id).order_by('-id').first()
+    #         if latest_order:
+    #             user_data['last_order_id'] = latest_order.id
+    #             print(f"User ID: {user_id}, Last Order ID: {latest_order.id}")
+
+    #             # Fetch the corresponding booking detail
+    #             booking_detail = BookingDetail.objects.filter(order_id=latest_order.id).first()
+    #             if booking_detail:
+    #                 user_data['last_ride_status'] = booking_detail.status.status_name
+    #                 print(f"User ID: {user_id}, Last Ride Status: {booking_detail.status.status_name}")
+
+    #                 # Update on_going_ride based on the last ride status
+    #                 if booking_detail.status.status_name == 'InProgress':
+    #                     user_data['on_going_ride'] = 'Yes'
+    #                 else:
+    #                     user_data['on_going_ride'] = 'No'
+    #             else:
+    #                 user_data['last_ride_status'] = None
+    #                 user_data['on_going_ride'] = 'No'  # Default to 'No' if no booking detail found
+    #                 print(f"User ID: {user_id}, Last Ride Status: None")
+    #         else:
+    #             user_data['last_order_id'] = None
+    #             user_data['last_ride_status'] = None
+    #             user_data['on_going_ride'] = 'No'  # Default to 'No' if no order found
+    #             print(f"User ID: {user_id}, Last Order ID: None, Last Ride Status: None")
+
+    #     if self.request.query_params.get('page_size') is None and self.request.query_params.get('page') is None:
+    #         return Response({'data': queryset.values()})
+    #     else:
+    #         return paginator.get_paginated_response(serializer.data)
     # def get(self, request):
     #     queryset = CustomUser.objects.filter(role_id=2)
         
