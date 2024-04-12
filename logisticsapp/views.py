@@ -4581,27 +4581,27 @@ class OrderDeatilAPI(APIView):
     #     # print(order_details,"deeee")
     #     return Response(order_details)
 
-    def get(self,request):
+    def get(self, request):
         data = request.data
         is_scheduled = request.query_params.get('is_scheduled')
-
         user_id = request.query_params.get('user_id')
         status_id = request.query_params.get('status_id')
         start_date = request.query_params.get('start_date')
         end_date = request.query_params.get('end_date')
         search_key = request.query_params.get('search_key')
 
+        scheduled_orders = ScheduledOrder.objects.all().values('booking_id', 'scheduled_date_and_time')
+        print('scheduled_orders------------------', scheduled_orders)
+
         query_filters = []
         queryset = BookingDetail.objects.all().order_by('-id')
 
-        
-
-        
-    
         if search_key:
-
             query_filters.append(
-                Q(order__user_id__first_name__istartswith=search_key) | Q(status__status_name__istartswith=search_key) | Q(driver__vehicle__vehicletypes__vehicle_type_name__istartswith=search_key) | Q(driver__first_name__istartswith=search_key)
+                Q(order__user_id__first_name__istartswith=search_key) |
+                Q(status__status_name__istartswith=search_key) |
+                Q(driver__vehicle__vehicletypes__vehicle_type_name__istartswith=search_key) |
+                Q(driver__first_name__istartswith=search_key)
             )
         if start_date:
             query_filters.append(
@@ -4614,7 +4614,6 @@ class OrderDeatilAPI(APIView):
         if status_id:
             status_id_list = re.findall(r'\d+', status_id)
             status_id_list = [int(num) for num in status_id_list]
-
             query_filters.append(
                 Q(status_id__in=status_id_list)
             )
@@ -4624,34 +4623,35 @@ class OrderDeatilAPI(APIView):
                 Q(is_scheduled=is_scheduled)
             )
         if user_id:
-            print("9")
             query_filters.append(
                 Q(order__user_id=user_id)
             )
         if query_filters:
             combined_query = reduce(and_, query_filters)
             queryset = queryset.filter(combined_query)
-        
-        # else:
-        #     return queryset
-        # queryset = queryset.select_related('scheduledorder__scheduled_date_and_time')
-        # print('queryset-------------',queryset)
-        paginator = CustomPagination()
-        paginated_queryset = paginator.paginate_queryset(queryset, request)
+
+        # Create a dictionary to map booking_id to scheduled_date_and_time for quick lookup
+        scheduled_dates_mapping = {order['booking_id']: order['scheduled_date_and_time'] for order in scheduled_orders}
 
         # Serialize paginated data
+        paginator = CustomPagination()
+        paginated_queryset = paginator.paginate_queryset(queryset, request)
         serializer = BookingDetailSerializer(paginated_queryset, many=True)
         response_data = serializer.data
-        print('response_data-----------------',response_data)
+
+        # Update response_data to include scheduled_date_and_time
         for item in response_data:
-            print('ssssssssss')
+            booking_id = item.get('id')  # Assuming 'id' is the field representing booking_id
+            scheduled_date_and_time = scheduled_dates_mapping.get(booking_id)
+            item['scheduled_date_and_time'] = scheduled_date_and_time
+
+        print('---------responsedata--------', response_data)
+        for item in response_data:
             if 'order__location_detail' in item and not isinstance(item['order__location_detail'], list):
-                item['order__location_detail'] = [item['order__location_detail']]     
-        # if self.request.query_params.get('page_size') is None and self.request.query_params.get('page') is None:
-        #     return Response({'data': queryset.order_by('-id').values('id','order__user_id','order_id','driver_id', 'status', 'order__vehicle_number','total_amount','order__user_id__first_name','order__user_id__mobile_number', 'status__status_name', 'order__otp', 'driver__vehicle__vehicle_name', 'order__total_estimated_cost','last_update_timestamp','driver__first_name','status__colour','ordered_time','driver__mobile_number','scheduledorder__scheduled_date_and_time','total_amount_without_actual_time_taken','driver__vehicle__vehicle_number', 'driver__vehicle__vehicletypes__vehicle_type_name')})
-        #     print('response-----',Response)
-        # else:
-        return paginator.get_paginated_response(serializer.data)
+                item['order__location_detail'] = [item['order__location_detail']]
+
+        print('final queryset with scheduled_date_and_time------------------------:', queryset)
+        return paginator.get_paginated_response(response_data)
 
 
 
