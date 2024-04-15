@@ -4591,10 +4591,12 @@ class OrderDeatilAPI(APIView):
         search_key = request.query_params.get('search_key')
 
         scheduled_orders = ScheduledOrder.objects.all().values('booking_id', 'scheduled_date_and_time')
-        print('scheduled_orders------------------', scheduled_orders)
+        # print('scheduled_orders------------------', scheduled_orders)
 
         query_filters = []
         queryset = BookingDetail.objects.all().order_by('-id')
+        vehicle_type_data = BookingDetail.objects.all().values('driver__vehicle__vehicletypes__vehicle_type_name')
+        print('data---------------',vehicle_type_data)
 
         if search_key:
             query_filters.append(
@@ -4638,21 +4640,30 @@ class OrderDeatilAPI(APIView):
         paginated_queryset = paginator.paginate_queryset(queryset, request)
         serializer = BookingDetailSerializer(paginated_queryset, many=True)
         response_data = serializer.data
+        # print('response_data------------',response_data)
 
-        # Update response_data to include scheduled_date_and_time
-        for item in response_data:
-            booking_id = item.get('id')  # Assuming 'id' is the field representing booking_id
+        # Update response_data to include 
+        for item, vehicle_data in zip(response_data, vehicle_type_data):
+            booking_id = item.get('id')
             scheduled_date_and_time = scheduled_dates_mapping.get(booking_id)
             item['scheduled_date_and_time'] = scheduled_date_and_time
 
-        print('---------responsedata--------', response_data)
+            # Check if vehicle_type__vehicle_type_name is not present in the serializer data
+            if 'driver__vehicle__vehicletypes__vehicle_type_name' not in item:
+                item['driver__vehicle__vehicletypes__vehicle_type_name'] = vehicle_data.get('driver__vehicle__vehicletypes__vehicle_type_name')
+        # for item in response_data:
+        #     booking_id = item.get('id')  # Assuming 'id' is the field representing booking_id
+        #     scheduled_date_and_time = scheduled_dates_mapping.get(booking_id)
+        #     item['scheduled_date_and_time'] = scheduled_date_and_time
+            
+
+        # print('---------responsedata--------', response_data)
         for item in response_data:
             if 'order__location_detail' in item and not isinstance(item['order__location_detail'], list):
                 item['order__location_detail'] = [item['order__location_detail']]
 
-        print('final queryset with scheduled_date_and_time------------------------:', queryset)
+        # print('final queryset with scheduled_date_and_time------------------------:', queryset)
         return paginator.get_paginated_response(response_data)
-
 
 
 
