@@ -66,3 +66,11 @@ class Vehicle_Subscription(ImportExportModelAdmin):
 class Schedulehour(admin.ModelAdmin):
     list_dispaly = ['id','time']
 
+@admin.register(Schedulehour)
+class Schedulehour(admin.ModelAdmin):
+    list_dispaly = ['id','time']
+
+@admin.register(RideType)
+class RideType(admin.ModelAdmin):
+    list_dispaly = ['id','ride_type']
+

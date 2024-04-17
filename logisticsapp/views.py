@@ -6975,8 +6975,7 @@ class RidetypeAPI(APIView):
             return Response({'message': 'RideType is deleted'})
         else:
             return Response({'error':'RideType id is not found'},status=status.HTTP_404_NOT_FOUND)
-
-
+git 
 class SelectedRideTypeAPI(APIView):
     def get(self,request):
         data = request.data
