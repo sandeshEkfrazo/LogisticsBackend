@@ -6939,3 +6939,61 @@ class GetuseractiveStatus(APIView):
                 return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
         else:
             return Response({'error': 'user_id parameter is required'}, status=status.HTTP_400_BAD_REQUEST)
+        
+class RidetypeAPI(APIView):
+    def get(self,request):
+        data = request.data
+        ride_type = request.query_params.get('ride_type')
+        id = request.query_params.get('id')
+        if id:
+            msg_obj = RideType.objects.filter(id = id).values()
+            return Response({'data':msg_obj})
+        else:
+            msg_obj = RideType.objects.all().values()
+            return Response({'data':msg_obj})
+
+    def post(self,request):
+        data = request.data
+        ride_type=data['ride_type']
+        msg_obj= RideType.objects.create(ride_type=ride_type)
+        return Response({'data':'ride_type Successfully Added!!'})
+
+    def put(self,request,pk):
+        data = request.data
+        ride_type=data['ride_type']
+
+        if RideType.objects.filter(id=pk).exists():
+            RideType.objects.filter(id=pk).update(ride_type=ride_type)
+            return Response({'message': 'RideType is updated'})
+        else:
+            return Response({'error':'RideType id is not found'},status=status.HTTP_404_NOT_FOUND)
+
+    def delete(self,request,pk):
+        data = request.data
+        if RideType.objects.filter(id=pk).exists():
+            RideType.objects.filter(id=pk).delete()
+            return Response({'message': 'RideType is deleted'})
+        else:
+            return Response({'error':'RideType id is not found'},status=status.HTTP_404_NOT_FOUND)
+
+
+class SelectedRideTypeAPI(APIView):
+    def get(self,request):
+        data = request.data
+        trip_type = request.query_params.get('trip_type')
+        id = request.query_params.get('id')
+        if id:
+            msg_obj = SelectedRideType.objects.filter(id = id).values()
+            return Response({'data':msg_obj})
+        else:
+            msg_obj = SelectedRideType.objects.all().values()
+            return Response({'data':msg_obj})
+
+    def post(self,request):
+        data = request.data
+        trip_type=data['trip_type']
+        if SelectedRideType.objects.filter(trip_type=trip_type).exists():
+            return Response({'message':'trip_type already exists'})
+        else:
+            msg_obj= SelectedRideType.objects.create(trip_type=trip_type)
+            return Response({'data':'trip_type Successfully Added!!'})
