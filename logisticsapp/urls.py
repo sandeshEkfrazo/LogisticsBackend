@@ -152,5 +152,8 @@ urlpatterns = [
     path('schedulehour/<int:pk>', SchedulehourApi.as_view()),
     path('get_useractive_status/', GetuseractiveStatus.as_view()),
     path('history_of_subscriptionplan/', History_of_SubscriptionplanApi.as_view()),
+    path('ride_type/', RidetypeAPI.as_view()),
+    path('ride_type/<int:pk>', RidetypeAPI.as_view()),
+    path('selected_ride_type/', SelectedRideTypeAPI.as_view()),
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

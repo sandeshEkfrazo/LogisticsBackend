@@ -119,6 +119,7 @@ class CustomUser(models.Model):
     user_active_status = models.CharField(max_length=100, null=True, blank=True)
     on_going_ride=models.BooleanField(default=False)
     user_online_status=models.BooleanField(default=False)
+    login_status=models.BooleanField(default=False)
 
     
 
@@ -226,3 +227,9 @@ class PaymentDetails(models.Model):
 
 class Schedulehour(models.Model):
     time=models.TimeField(blank=True, null=True)
+
+class RideType(models.Model):
+    ride_type = models.CharField(max_length=200, null=True, blank=True)
+
+class SelectedRideType(models.Model):
+    trip_type = models.CharField(max_length=200, null=True, blank=True)

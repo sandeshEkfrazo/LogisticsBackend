@@ -293,9 +293,11 @@ class SubscriptionplanApi(APIView):
         amount = data['amount']
         type_of_service=data['type_of_service']
         status=data['status']
-
-        Subscriptionplan.objects.create(time_period=time_period,validity_days=validity_days,amount=amount,type_of_service=type_of_service,status=status)
-        return Response({'message': 'Query is created'})
+        if Subscriptionplan.objects.filter(time_period=time_period,validity_days=validity_days,amount=amount,type_of_service=type_of_service,status=status).exists():
+            return Response({'message':'Subscriptionplan is already exists'})
+        else:
+            data=Subscriptionplan.objects.create(time_period=time_period,validity_days=validity_days,amount=amount,type_of_service=type_of_service,status=status)
+            return Response({'message':data })
 
     def put(self,request,pk):
         data = request.data
