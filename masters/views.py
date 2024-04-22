@@ -294,23 +294,53 @@ class SubscriptionplanApi(APIView):
         type_of_service=data['type_of_service']
         status=data['status']
         if Subscriptionplan.objects.filter(time_period=time_period,validity_days=validity_days,amount=amount,type_of_service=type_of_service,status=status).exists():
-            return Response({'message':'Subscriptionplan is already exists'})
+            return Response({'error':'Subscriptionplan is already exists'},status=status.HTTP_400_BAD_REQUEST)
         else:
             data=Subscriptionplan.objects.create(time_period=time_period,validity_days=validity_days,amount=amount,type_of_service=type_of_service,status=status)
             return Response({'message':data })
 
-    def put(self,request,pk):
+    # def put(self,request,pk):
+    def put(self, request, pk):
         data = request.data
         time_period = data['time_period']
-        validity_days=data['validity_days']
+        validity_days = data['validity_days']
         amount = data['amount']
-        type_of_service=data['type_of_service']
-        status=data['status']
+        type_of_service = data['type_of_service']
+        status = data['status']
+
+        existing_plans = Subscriptionplan.objects.exclude(id=pk).filter(
+            time_period=time_period,
+            validity_days=validity_days,
+            amount=amount,
+            type_of_service=type_of_service,
+            status=status
+        )
+
+        if existing_plans.exists():
+            return Response({'error': 'Cannot update due to duplication'})
+
         if Subscriptionplan.objects.filter(id=pk).exists():
-            Subscriptionplan.objects.filter(id=pk).update(time_period=time_period,validity_days=validity_days,amount=amount,type_of_service=type_of_service,status=status)
-            return Response({'message': 'Query is updated'})
+            Subscriptionplan.objects.filter(id=pk).update(
+                time_period=time_period,
+                validity_days=validity_days,
+                amount=amount,
+                type_of_service=type_of_service,
+                status=status
+            )
+            return Response({'message': 'Subscription plan updated successfully'})
         else:
-            return Response({'error':'aboutus id not found'})
+            return Response({'error': 'Subscription plan ID not found'})
+        # data = request.data
+        # time_period = data['time_period']
+        # validity_days=data['validity_days']
+        # amount = data['amount']
+        # type_of_service=data['type_of_service']
+        # status=data['status']
+        # if Subscriptionplan.objects.filter(id=pk).exists():
+        #     Subscriptionplan.objects.filter(id=pk).update(time_period=time_period,validity_days=validity_days,amount=amount,type_of_service=type_of_service,status=status)
+        #     return Response({'message': 'Query is updated'})
+        # else:
+        #     return Response({'error':'aboutus id not found'})
 
     def delete(self,request,pk):
         data = request.data
