@@ -210,7 +210,7 @@ class Vehicle_Subscription(models.Model):
     time_period=models.CharField(max_length=100,blank=True,null=True)
     date_subscribed=models.DateTimeField(max_length=100,blank=True,null=True)
     expiry_date=models.DateTimeField(max_length=100,blank=True,null=True)
-    amount=models.CharField(max_length=100,blank=True,null=True)
+    amount=models.IntegerField(blank=True,null=True)
     status=models.CharField(max_length=100,blank=True,null=True)
     is_amount_paid=models.BooleanField(default=False)
     paid_through=models.CharField(max_length=100,blank=True,null=True)
@@ -230,6 +230,10 @@ class Schedulehour(models.Model):
 
 class RideType(models.Model):
     ride_type = models.CharField(max_length=200, null=True, blank=True)
+    class Meta:
+        db_table = 'logisticsapp_ride_type'
 
 class SelectedRideType(models.Model):
     trip_type = models.CharField(max_length=200, null=True, blank=True)
+    class Meta:
+        db_table = 'logisticsapp_selected_ride_type'

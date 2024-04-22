@@ -255,15 +255,11 @@ class BookVehicleAPI(APIView):
                         # print("finalArr=========>>>>--->>", finalArr)
                         # print("Hi==>>",BookingDetail.objects.filter((Q(driver_id=i['user_id']) & (Q(status_id=1) | Q(status_id=2) | Q(status_id=6) | Q(status_id=8) | Q(status_id=10))) & Q(is_scheduled=True)).values('driver__first_name'))
 
-                        print("sss==>>",i['user_id'])
-
                         # if i['user_id'] is not None:
                         if ScheduledOrder.objects.filter(booking__driver_id=i['user_id']).exists():
                             s = ScheduledOrder.objects.filter(booking__driver_id=i['user_id']).values('scheduled_date_and_time').last()['scheduled_date_and_time']
                                 
-                            if BookingDetail.objects.filter((Q(driver_id=i['user_id']) & (Q(status_id=1) | Q(status_id=2) | Q(status_id=6) | Q(status_id=8) | Q(status_id=10) | Q(status_id=9) | Q(status_id=5))) & Q(is_scheduled=True)).exists():
-                                
-
+                            if BookingDetail.objects.filter((Q(driver_id=i['user_id']) & (Q(status_id=1) | Q(status_id=2) | Q(status_id=6) | Q(status_id=8) | Q(status_id=10) | Q(status_id=5))) & Q(is_scheduled=True)).exists():
                                 if s.date() == datetime.datetime.today().date():
 
                                     print("dont assign", i['user_id'])
@@ -287,7 +283,7 @@ class BookVehicleAPI(APIView):
 
 
                         else:
-                            if BookingDetail.objects.filter(Q(driver_id=i['user_id']) & (Q(status_id=1) | Q(status_id=2) | Q(status_id=6) | Q(status_id=8) | Q(status_id=9) | Q(status_id=10))).exists():
+                            if BookingDetail.objects.filter(Q(driver_id=i['user_id']) & (Q(status_id=1) | Q(status_id=2) | Q(status_id=6) | Q(status_id=8) | Q(status_id=10))).exists():
 
                                 print("printing here")
 
@@ -605,7 +601,7 @@ class GetOTPDetails(APIView):
         
             return Response({'data': CheckOrderOTP.objects.filter(order_id=data.order_id).values()})
 
-def verifyOTP(mobile_number, otp, logged_in_time, order_id=None, otp_json=None, pickup_drop_details=None):
+def verifyOTP(mobile_number, otp, logged_in_time, order_id=None, otp_json=None):
     looged_in_time = datetime.datetime.fromtimestamp(float(logged_in_time))
     new_time = looged_in_time + timedelta(minutes=2)
 
@@ -798,10 +794,8 @@ class AllScheduledOrder(APIView):
     def get(self, request):
         if request.query_params.get('order_id'):
             shedule_obj_with_driver_order = ScheduledOrder.objects.filter(Q(booking__order_id=request.query_params.get('order_id')) & Q(booking__driver_id=request.query_params['driver_id'])).values(
-                'booking__order__user__first_name', 'booking__order__location_detail', 'booking__order_id', 'booking__total_amount', 'booking__travel_details', 'booking__ordered_time', 'booking__driver__first_name', 'booking__driver_id', 'scheduled_date_and_time', 'booking__order__user__mobile_number', 'booking__order__total_estimated_cost', 'booking__status_id', 'booking__sub_user_phone_numbers', 'booking__order__user_id', 'booking__status__status_name', 'booking__status_id', 'booking__driver__vehicle__vehicle_number', 'booking__driver__mobile_number', 'booking__driver__vehicle__vehicletypes__vehicle_type_name', 'booking__vehicle_type__vehicle_type_name'
+                'booking__order__user__first_name', 'booking__order__location_detail', 'booking__order_id', 'booking__total_amount', 'booking__travel_details', 'booking__ordered_time', 'booking__driver__first_name','booking__trip_option', 'booking__driver_id', 'scheduled_date_and_time', 'booking__order__user__mobile_number', 'booking__order__total_estimated_cost', 'booking__status_id', 'booking__sub_user_phone_numbers', 'booking__order__user_id', 'booking__status__status_name', 'booking__status_id', 'booking__driver__vehicle__vehicle_number', 'booking__driver__mobile_number', 'booking__driver__vehicle__vehicletypes__vehicle_type_name', 'booking__vehicle_type__vehicle_type_name'
             ).last()
-
-
 
             if type(shedule_obj_with_driver_order['booking__order__location_detail']) == dict:
             
@@ -859,7 +853,7 @@ class AllScheduledOrder(APIView):
 
             if ScheduledOrder.objects.filter(Q(booking__driver_id=request.query_params['driver_id']) & Q(booking__status_id=2)).exists():
                 booking_details = ScheduledOrder.objects.filter(Q(booking__driver_id=request.query_params['driver_id']) & Q(booking__status_id=2)).values(
-                    'booking__order__user__first_name', 'booking__order__location_detail', 'booking__order_id', 'booking__total_amount', 'booking__travel_details', 'booking__ordered_time', 'booking__driver__first_name', 'booking__driver_id', 'scheduled_date_and_time', 'booking__order__user__mobile_number', 'booking__order__total_estimated_cost', 'booking__status_id','booking__sub_user_phone_numbers', 'booking__order__user_id', 'booking__status__status_name', 'booking__status_id', 'booking__driver__vehicle__vehicle_number', 'booking__driver__mobile_number', 'booking__driver__vehicle__vehicletypes__vehicle_type_name', 'booking__vehicle_type__vehicle_type_name'
+                    'booking__order__user__first_name', 'booking__order__location_detail', 'booking__order_id','booking__trip_option', 'booking__total_amount', 'booking__travel_details', 'booking__ordered_time', 'booking__driver__first_name', 'booking__driver_id', 'scheduled_date_and_time', 'booking__order__user__mobile_number', 'booking__order__total_estimated_cost', 'booking__status_id','booking__sub_user_phone_numbers', 'booking__order__user_id', 'booking__status__status_name', 'booking__status_id', 'booking__driver__vehicle__vehicle_number', 'booking__driver__mobile_number', 'booking__driver__vehicle__vehicletypes__vehicle_type_name', 'booking__vehicle_type__vehicle_type_name'
                 ).last()
 
                 driver_obj = Driver.objects.get(user_id=request.query_params['driver_id'])
@@ -888,9 +882,9 @@ class AllScheduledOrder(APIView):
 
                     driver_obj = Driver.objects.get(user_id=request.query_params['driver_id'])
 
-                    booking_details = ScheduledOrder.objects.filter(Q(booking__vehicle_type_id=vehicle_type_id) & Q(scheduled_date_and_time__gte=datetime.datetime.now())).values('booking__order__user__first_name', 'booking__order__location_detail', 'booking__order_id', 'booking__total_amount', 'booking__travel_details', 'booking__ordered_time', 'booking__driver__first_name', 'booking__driver_id', 'scheduled_date_and_time', 'booking__order__user__mobile_number', 'booking__order__total_estimated_cost', 'booking__status_id','booking__sub_user_phone_numbers', 'booking__order__user_id', 'booking__status__status_name', 'booking__status_id', 'booking__driver__vehicle__vehicle_number', 'booking__driver__mobile_number', 'booking__driver__vehicle__vehicletypes__vehicle_type_name', 'booking__vehicle_type__vehicle_type_name').last()
+                    booking_details = ScheduledOrder.objects.filter(Q(booking__vehicle_type_id=vehicle_type_id) & Q(scheduled_date_and_time__gte=datetime.datetime.now())).values('booking__order__user__first_name', 'booking__order__location_detail', 'booking__trip_option','booking__order_id', 'booking__total_amount', 'booking__travel_details', 'booking__ordered_time', 'booking__driver__first_name', 'booking__driver_id', 'scheduled_date_and_time', 'booking__order__user__mobile_number', 'booking__order__total_estimated_cost', 'booking__status_id','booking__sub_user_phone_numbers', 'booking__order__user_id', 'booking__status__status_name', 'booking__status_id', 'booking__driver__vehicle__vehicle_number', 'booking__driver__mobile_number', 'booking__driver__vehicle__vehicletypes__vehicle_type_name', 'booking__vehicle_type__vehicle_type_name').last()
 
-                    booking_details2 = ScheduledOrder.objects.filter(Q(booking__vehicle_type_id=vehicle_type_id) & Q(scheduled_date_and_time__gte=datetime.datetime.now()) & Q(booking__status_id=2)).values('booking__order__user__first_name', 'booking__order__location_detail', 'booking__order_id', 'booking__total_amount', 'booking__travel_details', 'booking__ordered_time', 'booking__driver__first_name', 'booking__driver_id', 'scheduled_date_and_time', 'booking__order__user__mobile_number', 'booking__order__total_estimated_cost', 'booking__status_id','booking__sub_user_phone_numbers', 'booking__order__user_id', 'booking__status__status_name', 'booking__status_id', 'booking__driver__vehicle__vehicle_number', 'booking__driver__mobile_number', 'booking__driver__vehicle__vehicletypes__vehicle_type_name', 'booking__vehicle_type__vehicle_type_name')
+                    booking_details2 = ScheduledOrder.objects.filter(Q(booking__vehicle_type_id=vehicle_type_id) & Q(scheduled_date_and_time__gte=datetime.datetime.now()) & Q(booking__status_id=2)).values('booking__order__user__first_name', 'booking__order__location_detail', 'booking__trip_option','booking__order_id', 'booking__total_amount', 'booking__travel_details', 'booking__ordered_time', 'booking__driver__first_name', 'booking__driver_id', 'scheduled_date_and_time', 'booking__order__user__mobile_number', 'booking__order__total_estimated_cost', 'booking__status_id','booking__sub_user_phone_numbers', 'booking__order__user_id', 'booking__status__status_name', 'booking__status_id', 'booking__driver__vehicle__vehicle_number', 'booking__driver__mobile_number', 'booking__driver__vehicle__vehicletypes__vehicle_type_name', 'booking__vehicle_type__vehicle_type_name')
 
                     # print("booking_details2",booking_details2)
                 
@@ -920,7 +914,7 @@ class AllScheduledOrder(APIView):
         
 
                 else:
-                    shedule_orders_with_no_drivers = ScheduledOrder.objects.filter(Q(booking__driver_id=None) & Q(booking__vehicle_type=vehicle_type_id) & Q(booking__is_scheduled=True) & Q(scheduled_date_and_time__gte=datetime.datetime.now())).values('booking__order__user__first_name', 'booking__order__location_detail', 'booking__order_id', 'booking__total_amount', 'booking__travel_details', 'booking__ordered_time', 'booking__driver__first_name', 'booking__driver_id', 'scheduled_date_and_time', 'booking__order__user__mobile_number', 'booking__order__total_estimated_cost', 'booking__status_id', 'booking__sub_user_phone_numbers', 'booking__order__user_id', 'booking__status__status_name', 'booking__status_id', 'booking__driver__vehicle__vehicle_number', 'booking__driver__mobile_number', 'booking__driver__vehicle__vehicletypes__vehicle_type_name', 'booking__vehicle_type__vehicle_type_name')
+                    shedule_orders_with_no_drivers = ScheduledOrder.objects.filter(Q(booking__driver_id=None) & Q(booking__vehicle_type=vehicle_type_id) & Q(booking__is_scheduled=True) & Q(scheduled_date_and_time__gte=datetime.datetime.now())).values('booking__order__user__first_name', 'booking__order__location_detail', 'booking__order_id', 'booking__trip_option','booking__total_amount', 'booking__travel_details', 'booking__ordered_time', 'booking__driver__first_name', 'booking__driver_id', 'scheduled_date_and_time', 'booking__order__user__mobile_number', 'booking__order__total_estimated_cost', 'booking__status_id', 'booking__sub_user_phone_numbers', 'booking__order__user_id', 'booking__status__status_name', 'booking__status_id', 'booking__driver__vehicle__vehicle_number', 'booking__driver__mobile_number', 'booking__driver__vehicle__vehicletypes__vehicle_type_name', 'booking__vehicle_type__vehicle_type_name')
                     
                     return Response({'data': shedule_orders_with_no_drivers, "booking__status_id": 1})
 
@@ -963,7 +957,7 @@ class AllScheduledOrder(APIView):
             # Serialize paginated data
             serializer = ScheduledOrderSerializer(paginated_queryset, many=True)
             if self.request.query_params.get('page_size') is None and self.request.query_params.get('page') is None:
-                return Response({'data': queryset.values('booking__order__user__first_name', 'booking__order__location_detail', 'booking__order_id', 'booking__total_amount', 'booking__travel_details', 'booking__ordered_time', 'booking__driver__first_name', 'booking__driver_id', 'scheduled_date_and_time', 'booking__order__user__mobile_number', 'booking__order__total_estimated_cost', 'booking__status_id', 'booking__sub_user_phone_numbers', 'booking__order__user_id', 'booking__status__status_name', 'booking__status_id', 'booking__driver__vehicle__vehicle_number', 'booking__driver__mobile_number', 'booking__driver__vehicle__vehicletypes__vehicle_type_name', 'booking__vehicle_type__vehicle_type_name'
+                return Response({'data': queryset.values('booking__order__user__first_name', 'booking__order__location_detail', 'booking__order_id', 'booking__trip_option','booking__total_amount', 'booking__travel_details', 'booking__ordered_time', 'booking__driver__first_name', 'booking__driver_id', 'scheduled_date_and_time', 'booking__order__user__mobile_number', 'booking__order__total_estimated_cost', 'booking__status_id', 'booking__sub_user_phone_numbers', 'booking__order__user_id', 'booking__status__status_name', 'booking__status_id', 'booking__driver__vehicle__vehicle_number', 'booking__driver__mobile_number', 'booking__driver__vehicle__vehicletypes__vehicle_type_name', 'booking__vehicle_type__vehicle_type_name'
         )})
             else:
                 return paginator.get_paginated_response(serializer.data)
@@ -1049,6 +1043,7 @@ class DriverWithDistanceAPI(APIView):
 
         return Response(sorted_data)
     
+
 @method_decorator([authorization_required], name='dispatch')
 class UsersAPIView(APIView):
     def get(self, request):
@@ -1071,33 +1066,22 @@ class UsersAPIView(APIView):
                     user_data['last_ride_status'] = booking_detail.status.status_name
 
                     # Update on_going_ride based on the last ride status
-                    if booking_detail.status.status_name == 'InProgress':
-                        user_data['on_going_ride'] = 'Yes'
-                    else:
-                        user_data['on_going_ride'] = 'No'
+                    on_going_statuses = ['InProgress', 'Accepted', 'PickedUp']  # Add more statuses if needed
+                    user_data['on_going_ride'] = 'Yes' if booking_detail.status.status_name in on_going_statuses else 'No'
                 else:
                     user_data['last_ride_status'] = None
                     user_data['on_going_ride'] = 'No'  # Default to 'No' if no booking detail found
             else:
                 user_data['last_order_id'] = None
                 user_data['last_ride_status'] = None
-                user_data['on_going_ride'] = 'No'  # Default to 'No' if no order found
+                user_data['on_going_ride'] = 'No'
 
-            # Update user_online_status and online_status based on user_active_status
-            user_active_status = user_data.get('user_active_status', None)
-            if user_active_status == 'Active':
-                user_data['user_online_status'] = True
-                user_data['online_status'] = 'Online'
-            else:
-                user_data['user_online_status'] = False
-                user_data['online_status'] = 'Offline'
+            # Update user_online_status based on login_status
+            user_data['online_status'] = 'Online' if user_data['login_status'] else 'Offline'
 
-        if self.request.query_params.get('page_size') is None and self.request.query_params.get('page') is None:
-            return Response({'data': queryset.values()})
-        else:
-            return paginator.get_paginated_response(serializer.data)
+        return paginator.get_paginated_response(serializer.data)
     # def get(self, request):
-    #     queryset = CustomUser.objects.filter(role_id=2)
+    #     queryset = CustomUser.objects.filter(role_id=2).order_by('-id')
 
     #     paginator = CustomPagination()
     #     paginated_queryset = paginator.paginate_queryset(queryset, request)
@@ -1139,8 +1123,11 @@ class UsersAPIView(APIView):
     # def get(self, request):
     #     queryset = CustomUser.objects.filter(role_id=2)
         
+    #     # Apply pagination
     #     paginator = CustomPagination()
     #     paginated_queryset = paginator.paginate_queryset(queryset, request)
+
+    #     # Serialize paginated data
     #     serializer = UserSerializer(paginated_queryset, many=True)
     #     if self.request.query_params.get('page_size') is None and self.request.query_params.get('page') is None:
     #         return Response({'data': queryset.values()})
@@ -1149,15 +1136,26 @@ class UsersAPIView(APIView):
 
 class ActivateorDeactivateUserAPIView(APIView):
     def post(self, request):
-        if request.query_params.get('user_id'):
-            if CustomUser.objects.filter(id=request.query_params.get('user_id')).exists():
-                CustomUser.objects.filter(id=request.query_params.get('user_id')).update(
-                    user_active_status = request.data['user_active_status']
-                )
+        user_id = request.query_params.get('user_id')
+        user_active_status = request.data.get('user_active_status')
 
-                return Response({'message': 'user status updated successfully'})
+        if user_id:
+            custom_user = CustomUser.objects.filter(id=user_id).first()
+            if custom_user:
+                # Update user_active_status
+                custom_user.user_active_status = user_active_status
+                custom_user.save()
+
+                # Update login_status if user_active_status is Inactive
+                if user_active_status == 'Inactive':
+                    custom_user.login_status = False
+                    custom_user.save()
+
+                return Response({'message': 'User status updated successfully'})
             else:
-                return Response({'error': 'user id not found'}, status=status.HTTP_404_NOT_FOUND)
+                return Response({'error': 'User ID not found'}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response({'error': 'User ID is required'}, status=status.HTTP_400_BAD_REQUEST)
         
 
 

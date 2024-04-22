@@ -1177,7 +1177,7 @@ class CityView(APIView):
 
 import os
 import array as ar
-@method_decorator([authorization_required], name='dispatch')
+# @method_decorator([authorization_required], name='dispatch')
 class VehicleTypesView(APIView):
     def get(self,request):
         data=request.data
@@ -3603,29 +3603,34 @@ class LoginApi(APIView):
                 custom_user = CustomUser.objects.get(mobile_number=data['mobile_number'], role__user_role_name=data['user_role_name'])
                 sendMobileOTp(data['mobile_number'])
                 custom_user.user_active_status = 'Active'
-                custom_user.user_online_status = True
+                custom_user.login_status = True  # Update login status to True
                 custom_user.save()
+
                 auth_token = jwt.encode({'user_id': custom_user.id}, str(settings.JWT_SECRET_KEY), algorithm="HS256")
 
                 if Driver.objects.filter(user_id=custom_user.id).exists():
                     driver_obj = Driver.objects.get(user_id=custom_user.id)
-                    return Response({
+                    response_data = {
                         'message': 'Login Successful',
                         'otp': "otp",  # You might want to include the actual OTP here
                         'user_id': custom_user.id,
                         'vehicle_id': driver_obj.vehicle_id,
                         'driver_status': driver_obj.driver_status,
-                        'user_online_status': "Online" if custom_user.user_online_status else "Offline",
+                        'login_status': custom_user.login_status,  # Update login status in response
                         'logged_in_time': timezone.now().timestamp()
-                    })
+                    }
+                    print(f"Login Status: {custom_user.login_status}")  # Print login_status
+                    return Response(response_data)
 
-                return Response({
+                response_data = {
                     'message': 'Login Successful',
                     'otp': "otp",  # You might want to include the actual OTP here
                     'user_id': custom_user.id,
-                    'user_online_status': "Online" if custom_user.user_online_status else "Offline",
+                    'login_status': custom_user.login_status,  # Update login status in response
                     'logged_in_time': timezone.now().timestamp()
-                })
+                }
+                print(f"Login Status: {custom_user.login_status}")  # Print login_status
+                return Response(response_data)
             else:
                 return Response({'message': 'User does not exist'}, status=status.HTTP_406_NOT_ACCEPTABLE)
         elif data.get('user_role_name') == 'User':
@@ -3633,21 +3638,25 @@ class LoginApi(APIView):
                 custom_user = CustomUser.objects.get(mobile_number=data['mobile_number'], role__user_role_name=data['user_role_name'], user_active_status='Active')
                 sendMobileOTp(data['mobile_number'])
                 custom_user.user_active_status = 'Active'  # Update status again (optional)
-                custom_user.user_online_status = True
+                custom_user.login_status = True  # Update login status to True
                 custom_user.save()
+
                 auth_token = jwt.encode({'user_id': custom_user.id}, str(settings.JWT_SECRET_KEY), algorithm="HS256")
 
-                return Response({
+                response_data = {
                     'message': 'Login Successful',
                     'otp': "otp",  # You might want to include the actual OTP here
                     'user_id': custom_user.id,
-                    'user_online_status': "Online" if custom_user.user_online_status else "Offline",
+                    'login_status': custom_user.login_status,  # Update login status in response
                     'logged_in_time': timezone.now().timestamp()
-                })
+                }
+                print(f"Login Status: {custom_user.login_status}")  # Print login_status
+                return Response(response_data)
             else:
-                return Response({'message': 'User is not active. Unable to login.'}, status=status.HTTP_406_NOT_ACCEPTABLE)
+                return Response({'message': 'User is not active. Unable to login.', 'login_status': False}, status=status.HTTP_406_NOT_ACCEPTABLE)
         else:
-            return Response({'message': 'Invalid user role. Unable to login.'}, status=status.HTTP_406_NOT_ACCEPTABLE)
+            return Response({'message': 'Invalid user role. Unable to login.', 'login_status': False}, status=status.HTTP_406_NOT_ACCEPTABLE)
+
 
         # if CustomUser.objects.filter(Q(mobile_number=data['mobile_number']) & Q(role__user_role_name=data['user_role_name'])).exists():
         #     sendMobileOTp(data['mobile_number'])
@@ -3750,7 +3759,8 @@ class UserSignup(APIView):
             company_name=company_name,
             email=email,
             user_status = "user_added_with_the_profile_details",
-            user_active_status="Active"
+            user_active_status="Active",
+            login_status=True
         )
 
         if whatsup_number is not None:
@@ -4118,7 +4128,8 @@ class VehicleView(APIView):
 
 from django.db.models import F
 # from userModule.tasks import getDriverDetailsByID
-
+from datetime import timedelta
+from datetime import datetime
 class DriverSignup(APIView):
     def get(self, request):
         if request.query_params:
@@ -4194,7 +4205,6 @@ class DriverSignup(APIView):
                 'vehicle__is_active', 'driver_status'
             )
             return Response({'data': driver_obj})
-
     # def get(self, request):
     #     if request.query_params:
     #         driver_obj = Driver.objects.filter(user_id=request.query_params['user_id']).values('id','vehicle_id','vehicle__vehicle_status','vehicle__vehicle_name', 'vehicle__vehicle_number', 'driver_driving_license', 'user__first_name', 'badge', 'user__adhar_card_front_side_img_path', 'user__adhar_card_back_side_img_path', 'user__role__user_role_name', 'user__mobile_number', 'vehicle__permit_front_side_img_path', 'vehicle__registration_certificate_front_side_img_path', 'vehicle__registration_certificate_back_side_img_path', 'vehicle__pollution_certificate_front_side_img_path', 'license_img_front', 'license_img_back', 'insurence_img', 'passbook_img', 'user_id', 'owner_id', 'fitness_certificate_back_side_img_path','fitness_certificate_front_side_img_path', 'license_expire_date', 'insurance_expire_date', 'fitness_certificate_expire_date', 'vehicle__permit_expire_date', 'vehicle__rc_expire_date', 'vehicle__emission_certificate_expire_date','vehicle__vehicletypes__vehicle_type_name','vehicle__vehicletypes__id','vehicle__vehicletypes__vehicle_type_image', 'user__profile_image', 'vehicle__is_active', 'driver_status')
@@ -4578,7 +4588,6 @@ class OrderDeatilAPI(APIView):
     #     order_details = BookingDetail.objects.filter(driver_id=user_id).reverse().values('order_id__location_details','total_amount','order_id__user_id__mobile_number', 'order_id__user_id__alternate_number','status__colour','driver__mobile_number', 'driver__vehicle__vehicletypes__vehicle_type_name')
     #     # print(order_details,"deeee")
     #     return Response(order_details)
-
     def get(self, request):
         data = request.data
         is_scheduled = request.query_params.get('is_scheduled')
@@ -4594,7 +4603,7 @@ class OrderDeatilAPI(APIView):
         query_filters = []
         queryset = BookingDetail.objects.all().order_by('-id')
         vehicle_type_data = BookingDetail.objects.all().values('driver__vehicle__vehicletypes__vehicle_type_name')
-        print('data---------------',vehicle_type_data)
+        # print('data---------------',vehicle_type_data)
 
         if search_key:
             query_filters.append(
@@ -4603,14 +4612,26 @@ class OrderDeatilAPI(APIView):
                 Q(driver__vehicle__vehicletypes__vehicle_type_name__istartswith=search_key) |
                 Q(driver__first_name__istartswith=search_key)
             )
+        # if start_date:
+        #     query_filters.append(
+        #         Q(ordered_time__gte=start_date)
+        #     )
+        # if end_date:
+        #     query_filters.append(
+        #         Q(ordered_time__lte=end_date)
+        #     )
         if start_date:
+            print('start_date------------------:', start_date)
             query_filters.append(
                 Q(ordered_time__gte=start_date)
             )
+            print('ordered_time__gte:', start_date) 
         if end_date:
+            print('end_date===============:', end_date)
             query_filters.append(
                 Q(ordered_time__lte=end_date)
             )
+            print('ordered_time__lte:', start_date) 
         if status_id:
             status_id_list = re.findall(r'\d+', status_id)
             status_id_list = [int(num) for num in status_id_list]
@@ -4663,12 +4684,78 @@ class OrderDeatilAPI(APIView):
         # print('final queryset with scheduled_date_and_time------------------------:', queryset)
         return paginator.get_paginated_response(response_data)
     
+    # def get(self,request):
+    #     data = request.data
+    #     is_scheduled = request.query_params.get('is_scheduled')
+
+    #     user_id = request.query_params.get('user_id')
+    #     status_id = request.query_params.get('status_id')
+    #     start_date = request.query_params.get('start_date')
+    #     end_date = request.query_params.get('end_date')
+    #     search_key = request.query_params.get('search_key')
+
+
+    #     scheduled_orders=ScheduledOrder.objects.all().values('booking','scheduled_date_and_time')
+    #     print('scheduled_orders------------------',scheduled_orders)
+    #     query_filters = []
+    #     queryset = BookingDetail.objects.all().order_by('-id')
+     
     
-        # if self.request.query_params.get('page_size') is None and self.request.query_params.get('page') is None:
-        #     return Response({'data': queryset.order_by('-id').values('id','order__user_id','order_id','driver_id', 'status', 'order__vehicle_number','total_amount','order__user_id__first_name','order__user_id__mobile_number', 'status__status_name', 'order__otp', 'driver__vehicle__vehicle_name', 'order__total_estimated_cost','last_update_timestamp','driver__first_name','status__colour','ordered_time','driver__mobile_number','scheduledorder__scheduled_date_and_time','total_amount_without_actual_time_taken','driver__vehicle__vehicle_number', 'driver__vehicle__vehicletypes__vehicle_type_name')})
-        #     print('response-----',Response)
-        # else:
-        #     return paginator.get_paginated_response(serializer.data)
+    #     if search_key:
+
+    #         query_filters.append(
+    #             Q(order__user_id__first_name__istartswith=search_key) | Q(status__status_name__istartswith=search_key) | Q(driver__vehicle__vehicletypes__vehicle_type_name__istartswith=search_key) | Q(driver__first_name__istartswith=search_key)
+    #         )
+    #     if start_date:
+    #         query_filters.append(
+    #             Q(ordered_time__gte=start_date)
+    #         )
+    #     if end_date:
+    #         query_filters.append(
+    #             Q(ordered_time__lte=end_date)
+    #         )
+    #     if status_id:
+    #         status_id_list = re.findall(r'\d+', status_id)
+    #         status_id_list = [int(num) for num in status_id_list]
+
+    #         query_filters.append(
+    #             Q(status_id__in=status_id_list)
+    #         )
+        
+    #     if is_scheduled:
+    #         query_filters.append(
+    #             Q(is_scheduled=is_scheduled)
+    #         )
+    #     if user_id:
+    #         print("9")
+    #         query_filters.append(
+    #             Q(order__user_id=user_id)
+    #         )
+    #     if query_filters:
+    #         combined_query = reduce(and_, query_filters)
+    #         queryset = queryset.filter(combined_query)
+        
+    #     # else:
+    #     #     return queryset
+    #     # queryset = queryset.select_related('scheduledorder__scheduled_date_and_time')
+    #     # print('queryset-------------',queryset)
+    #     paginator = CustomPagination()
+    #     paginated_queryset = paginator.paginate_queryset(queryset, request)
+
+    #     # Serialize paginated data
+    #     serializer = BookingDetailSerializer(paginated_queryset, many=True)
+
+    #     response_data = serializer.data
+    #     print('response_data-----------------',response_data)
+    #     for item in response_data:
+    #         print('ssssssssss')
+    #         if 'order__location_detail' in item and not isinstance(item['order__location_detail'], list):
+    #             item['order__location_detail'] = [item['order__location_detail']]
+    #     # if self.request.query_params.get('page_size') is None and self.request.query_params.get('page') is None:
+    #     #     return Response({'data': queryset.order_by('-id').values('id','order__user_id','order_id','driver_id', 'status', 'order__vehicle_number','total_amount','order__user_id__first_name','order__user_id__mobile_number', 'status__status_name', 'order__otp', 'driver__vehicle__vehicle_name', 'order__total_estimated_cost','last_update_timestamp','driver__first_name','status__colour','ordered_time','driver__mobile_number','scheduledorder__scheduled_date_and_time','total_amount_without_actual_time_taken','driver__vehicle__vehicle_number', 'driver__vehicle__vehicletypes__vehicle_type_name')})
+    #     #     print('response-----',Response)
+    #     # else:
+    #     return paginator.get_paginated_response(serializer.data)
 
 
 
@@ -5040,7 +5127,7 @@ class ScheduledOrder_countApi(APIView):
         if is_scheduled and date:
             count=0
             matching_orders = []
-            bookings=BookingDetail.objects.filter(is_scheduled=is_scheduled).values('id','order__user_id__first_name','order__user_id__mobile_number','status__colour','status__status_name','driver__first_name','driver__mobile_number','ordered_time','last_update_timestamp','order_id','order__vehicle_number','ordered_time','total_amount_without_actual_time_taken','scheduledorder__scheduled_date_and_time','order__total_estimated_cost')
+            bookings=BookingDetail.objects.filter(is_scheduled=is_scheduled).values('id','order__user_id__first_name','trip_option','order__user_id__mobile_number','status__colour','status__status_name','driver__first_name','driver__mobile_number','ordered_time','last_update_timestamp','order_id','order__vehicle_number','ordered_time','total_amount_without_actual_time_taken','scheduledorder__scheduled_date_and_time','order__total_estimated_cost')
             for i in bookings:
                 if i['scheduledorder__scheduled_date_and_time'] and str(i['scheduledorder__scheduled_date_and_time'].date()) == date:
                     count+=1
@@ -5050,7 +5137,7 @@ class ScheduledOrder_countApi(APIView):
             bookings = BookingDetail.objects.filter(
                 is_scheduled=is_scheduled,
                 scheduledorder__scheduled_date_and_time=scheduled_date_and_time
-            ).values('id', 'order__user_id__first_name','order__user_id__mobile_number','status__colour','status__status_name','driver__first_name','driver__mobile_number','ordered_time','last_update_timestamp','order_id','order__vehicle_number','ordered_time','total_amount_without_actual_time_taken','scheduledorder__scheduled_date_and_time','order__total_estimated_cost')
+            ).values('id', 'order__user_id__first_name','trip_option','order__user_id__mobile_number','status__colour','status__status_name','driver__first_name','driver__mobile_number','ordered_time','last_update_timestamp','order_id','order__vehicle_number','ordered_time','total_amount_without_actual_time_taken','scheduledorder__scheduled_date_and_time','order__total_estimated_cost')
             count = bookings.count()
             return Response({'count': count, 'Booking_Detail': bookings})
         return Response({'message': 'Invalid parameters'})
@@ -5060,7 +5147,7 @@ class Order_dashboardApi(APIView):
     def get(self,request):
         ordered_time = request.query_params.get('ordered_time')
         
-        bookings = BookingDetail.objects.all().values('id','order__user_id__first_name','order__user_id__mobile_number','status__colour','status__status_name','driver__first_name','driver__mobile_number','ordered_time','last_update_timestamp','order_id','order__vehicle_number','ordered_time','total_amount_without_actual_time_taken','scheduledorder__scheduled_date_and_time','order__total_estimated_cost')
+        bookings = BookingDetail.objects.all().values('id','order__user_id__first_name','order__user_id__mobile_number','trip_option','status__colour','status__status_name','driver__first_name','driver__mobile_number','ordered_time','last_update_timestamp','order_id','order__vehicle_number','ordered_time','total_amount_without_actual_time_taken','scheduledorder__scheduled_date_and_time','order__total_estimated_cost')
         
         if ordered_time:
             matched_bookings = []
@@ -5650,7 +5737,7 @@ class accept_statusApi(APIView):
                 matching_orders = []
                 order_accepted_time_count = BookingDetail.objects.filter(
                     status__status_name=status_name
-                ).values('id','order__user_id__first_name','order__user_id__mobile_number','status__colour','status__status_name','driver__first_name','driver__mobile_number',
+                ).values('id','order__user_id__first_name','trip_option','order__user_id__mobile_number','status__colour','status__status_name','driver__first_name','driver__mobile_number',
                     'ordered_time','last_update_timestamp','order_id','order__vehicle_number','ordered_time','total_amount_without_actual_time_taken','scheduledorder__scheduled_date_and_time','order__total_estimated_cost','order_accepted_time')
                 for i in order_accepted_time_count:
                     if i['order_accepted_time'] and str(i['order_accepted_time'].date()) == order_accepted_time:
@@ -5660,7 +5747,7 @@ class accept_statusApi(APIView):
             else:
                 order_accepted_time_count = BookingDetail.objects.filter(
                     status__status_name=status_name
-                ).values('id','order__user_id__first_name','order__user_id__mobile_number','status__colour','status__status_name','driver__first_name','driver__mobile_number',
+                ).values('id','order__user_id__first_name','trip_option','order__user_id__mobile_number','status__colour','status__status_name','driver__first_name','driver__mobile_number',
                     'ordered_time','last_update_timestamp','order_id','order__vehicle_number','ordered_time','total_amount_without_actual_time_taken','scheduledorder__scheduled_date_and_time','order__total_estimated_cost','order_accepted_time')
                 accept_orders_count = order_accepted_time_count.count()
                 return Response({'accept_orders_count': accept_orders_count, 'matching_orders': list(order_accepted_time_count)})
@@ -5680,7 +5767,7 @@ class Decline_statusApi(APIView):
                 matching_orders = []
                 order_declined_time_count = BookingDetail.objects.filter(
                     status__status_name=status_name
-                ).values('id','order__user_id__first_name','order__user_id__mobile_number','status__colour','status__status_name','driver__first_name','driver__mobile_number',
+                ).values('id','order__user_id__first_name','trip_option','order__user_id__mobile_number','status__colour','status__status_name','driver__first_name','driver__mobile_number',
                     'ordered_time','last_update_timestamp','order_id','order__vehicle_number','ordered_time','total_amount_without_actual_time_taken','scheduledorder__scheduled_date_and_time','order__total_estimated_cost','order_accepted_time', 'declined_time')
                 for i in order_declined_time_count:
                     if 'declined_time' in i and i['declined_time'] and str(i['declined_time'].date()) == declined_time:
@@ -5690,7 +5777,7 @@ class Decline_statusApi(APIView):
             else:
                 order_declined_time_count = BookingDetail.objects.filter(
                     status__status_name=status_name
-                ).values('id','order__user_id__first_name','order__user_id__mobile_number','status__colour','status__status_name','driver__first_name','driver__mobile_number',
+                ).values('id','order__user_id__first_name','order__user_id__mobile_number','trip_option','status__colour','status__status_name','driver__first_name','driver__mobile_number',
                     'ordered_time','last_update_timestamp','order_id','order__vehicle_number','ordered_time','total_amount_without_actual_time_taken','scheduledorder__scheduled_date_and_time','order__total_estimated_cost','order_accepted_time')
                 accept_orders_count = order_declined_time_count.count()
                 return Response({'decline_orders_count': accept_orders_count, 'matching_orders': list(order_declined_time_count)})
@@ -5705,7 +5792,7 @@ class Pending_statusApi(APIView):
         if status_name and date:
             count = 0
             matching_orders = []
-            pending_order_status_count = BookingDetail.objects.filter(status__status_name=status_name).values('id','order__user_id__first_name','order__user_id__mobile_number','status__colour','status__status_name','driver__first_name','driver__mobile_number','ordered_time','last_update_timestamp','order_id','order__vehicle_number','total_amount_without_actual_time_taken','scheduledorder__scheduled_date_and_time','order__total_estimated_cost')
+            pending_order_status_count = BookingDetail.objects.filter(status__status_name=status_name).values('id','order__user_id__first_name','trip_option','order__user_id__mobile_number','status__colour','status__status_name','driver__first_name','driver__mobile_number','ordered_time','last_update_timestamp','order_id','order__vehicle_number','total_amount_without_actual_time_taken','scheduledorder__scheduled_date_and_time','order__total_estimated_cost')
             for booking_detail in pending_order_status_count:
                 if booking_detail.get('ordered_time') and str(booking_detail.get('ordered_time').date()) == date:
                     if booking_detail.get('canceled_time') is None and booking_detail.get('declined_time') is None and booking_detail.get('trip_ended_time') is None:
@@ -5713,7 +5800,7 @@ class Pending_statusApi(APIView):
                         matching_orders.append(booking_detail)
             return Response({'pending_order_status_count': count, 'matching_orders': matching_orders})
         else:
-            pending_order_status_count = BookingDetail.objects.filter(status__status_name=status_name).values('id','order__user_id__first_name','order__user_id__mobile_number','status__colour','status__status_name','driver__first_name','driver__mobile_number','ordered_time','last_update_timestamp','order_id','order__vehicle_number','total_amount_without_actual_time_taken','scheduledorder__scheduled_date_and_time','order__total_estimated_cost')
+            pending_order_status_count = BookingDetail.objects.filter(status__status_name=status_name).values('id','order__user_id__first_name','trip_option','order__user_id__mobile_number','status__colour','status__status_name','driver__first_name','driver__mobile_number','ordered_time','last_update_timestamp','order_id','order__vehicle_number','total_amount_without_actual_time_taken','scheduledorder__scheduled_date_and_time','order__total_estimated_cost')
             pending_orders_count = pending_order_status_count.count()
             return Response({'pending_orders_count': pending_orders_count})
 
@@ -5768,6 +5855,7 @@ class RemarksApi(APIView):
 import pytz
 # import datetime
 # datetime.datetime.now()
+from datetime import datetime, timedelta
 # from datetime import datetime, timedelta
 @method_decorator([authorization_required], name='dispatch')
 class FilterCountApi(APIView):
@@ -5777,8 +5865,10 @@ class FilterCountApi(APIView):
         status_id = request.query_params.get('status_id')
         ordered_time = request.query_params.get('ordered_time')
         year = request.query_params.get('year')
+        current_date = datetime.now()
         current_date = datetime.now().date()
-        last_10_days = [current_date - datetime.timedelta(days=x) for x in range(10)]
+        last_10_days = [current_date - timedelta(days=x) for x in range(10)]
+        # last_10_days = [current_date - datetime.timedelta(days=x) for x in range(10)]
         bookings = BookingDetail.objects.all().select_related('order', 'status').values(
             'id', 'order__user_id', 'order_id', 'driver_id', 'status__id', 'status__status_name', 'ordered_time'
         )
@@ -5842,8 +5932,9 @@ class FilterCountApi(APIView):
 
 
         if year and start_date and end_date:
-            start_date = datetime.datetime.strptime(start_date, '%Y-%m-%d').date()
-            end_date = datetime.datetime.strptime(end_date, '%Y-%m-%d').date()
+            # start_date = datetime.datetime.strptime(start_date, '%Y-%m-%d').date()
+            start_date = datetime.strptime(start_date, '%Y-%m-%d').date()
+            end_date = datetime.strptime(end_date, '%Y-%m-%d').date()
             response_data = []
             if status_id is not None:
                 status_id_list = re.findall(r'\d+', status_id)
@@ -5902,8 +5993,10 @@ class FilterCountApi(APIView):
                 for month in range(1, 13):
                     days_in_month = calendar.monthrange(int(year), month)[1]
                     for day in range(1, days_in_month + 1):
-                        ordered_date_str = f"{year}-{month:02}-{day:02}"
-                        ordered_date = datetime.datetime.strptime(ordered_date_str, '%Y-%m-%d').date()
+                        # ordered_date_str = f"{year}-{month:02}-{day:02}"
+                        ordered_date_str = current_date.strftime('%Y-%m-%d')
+                        # ordered_date = datetime.datetime.strptime(ordered_date_str, '%Y-%m-%d').date()
+                        ordered_date = datetime.strptime(ordered_date_str, '%Y-%m-%d').date()
                         count = 0
                         for booking in bookings.filter(status_id=status_id):
                             if booking['ordered_time'].date() == ordered_date:
@@ -6505,21 +6598,47 @@ from dateutil import parser
 # @method_decorator([authorization_required], name='dispatch')
 class VehicleSubscriptionApi(APIView): 
     def get(self, request):
-        current_date = datetime.now(pytz.utc)  # Assuming current_date is in UTC timezone
+        current_date = timezone.now()  # Get current date and time in UTC timezone
 
         vehicle_id = request.query_params.get('vehicle_id')
         if vehicle_id:
             data = Vehicle_Subscription.objects.filter(vehicle_id_id=vehicle_id).values().last()
             # Check if data exists and add is_expired and status fields
             if data:
-                expired_date = parser.parse(data['expiry_date']) if data['expiry_date'] else None
-                if expired_date:
-                    expired_date = expired_date.astimezone(pytz.utc)
-                    data['is_expired'] = expired_date <= current_date
-                    data['status'] = 'Expired' if data['is_expired'] else 'Active'
+                expired_datetime_str = data.get('expiry_date')
+                
+
+                # Extract the date part from the datetime string
+                expired_date_str = expired_datetime_str.date()
+                
+
+                # Get the current date
+                current_date = datetime.now().date()
+                
+
+                # Check if current date is less than or equal to the expired date
+                if expired_date_str <= current_date :
+                    data['is_expired'] = True
+                    
+                    
                 else:
                     data['is_expired'] = False
+                    
+                if expired_date_str:
+                    try:
+                        expired_date = parser.parse(expired_date_str)
+                        expired_date = expired_date.astimezone(utc)
+                        
+                        is_expired = expired_date <= current_date
+                        data['status'] = 'Expired' if is_expired else 'Active'
+                    except (ValueError, TypeError) as e:
+                        data['status'] = 'Active'
+                        
+                else:
                     data['status'] = 'Active'
+                    
+
+            
             return Response({'data': data})
         else:
             if self.request.query_params.get('page_size') is None and self.request.query_params.get('page') is None:
@@ -6541,23 +6660,27 @@ class VehicleSubscriptionApi(APIView):
                     # Convert expiry_date string to datetime object using dateutil.parser
                     try:
                         expired_date = parser.parse(item['expiry_date'])
+                        
                     except ValueError:
                         expired_date = None
 
                     # Ensure expired_date is in the same timezone as current_date
                     if expired_date:
-                        expired_date = expired_date.astimezone(pytz.utc)
+                        expired_date = expired_date.astimezone(timezone.utc)
+                        
 
                     # Check if expiry_date is less than or equal to the current date
                     if expired_date and (expired_date == current_date or expired_date <= current_date):
                         item['is_expired'] = True
                         item['status'] = 'Expired'
+                        
                     else:
                         item['is_expired'] = False
                         item['status'] = 'Active'
+                        
 
                     result.append(item)
-
+                
                 return Response(result)
             else:
                 search_key = request.query_params.get('search_key')
@@ -6593,73 +6716,75 @@ class VehicleSubscriptionApi(APIView):
 
                     # Ensure expired_date is in the same timezone as current_date
                     if expired_date:
-                        expired_date = expired_date.astimezone(pytz.utc)
+                        expired_date = expired_date.astimezone(timezone.utc)
 
                     # Check if expiry_date is less than or equal to the current date
                     if expired_date and (expired_date == current_date or expired_date <= current_date):
                         item['is_expired'] = True
                         item['status'] = 'Expired'
+                        # print('is_expired<<<<<><><><><><>:', data['is_expired'])
                     else:
                         item['is_expired'] = False
                         item['status'] = 'Active'
+                        # print('is_expired0000000000000000-------------9999999999000:', data['is_expired'])
 
                 return paginator.get_paginated_response(serializer.data)
     # def get(self, request):
-        # if request.query_params.get('vehicle_id'):
-        #     datas = Vehicle_Subscription.objects.filter(vehicle_id_id=request.query_params['vehicle_id']).values().last()
-        #     return Response({'data': datas})
-        # else:
+    #     if request.query_params.get('vehicle_id'):
+    #         datas = Vehicle_Subscription.objects.filter(vehicle_id_id=request.query_params['vehicle_id']).values().last()
+    #         return Response({'data': datas})
+    #     else:
 
-        #     if self.request.query_params.get('page_size') is None and self.request.query_params.get('page') is None:
-        #         data = Vehicle_Subscription.objects.all().select_related('vehicle_id', 'vehicle_id__vehicletypes').values('id', 'vehicle_id__vehicle_name', 'time_period', 'date_subscribed', 'expiry_date', 'amount', 'status', 'is_amount_paid', 'paid_through', 'type_of_service', 'vehicle_id', 'validity_days', 'is_expired', 'vehicle_id__vehicle_number', 'vehicle_id__vehicletypes__vehicle_type_name')
+    #         if self.request.query_params.get('page_size') is None and self.request.query_params.get('page') is None:
+    #             data = Vehicle_Subscription.objects.all().select_related('vehicle_id', 'vehicle_id__vehicletypes').values('id', 'vehicle_id__vehicle_name', 'time_period', 'date_subscribed', 'expiry_date', 'amount', 'status', 'is_amount_paid', 'paid_through', 'type_of_service', 'vehicle_id', 'validity_days', 'is_expired', 'vehicle_id__vehicle_number', 'vehicle_id__vehicletypes__vehicle_type_name')
 
-        #         result = []
-        #         for item in data:
-        #             # Add driver information
-        #             driver = Driver.objects.filter(vehicle=item['vehicle_id']).first()
-        #             if driver:
-        #                 item['driver_id'] = driver.id
-        #                 item['driver_first_name'] = driver.user.first_name
-        #                 item['driver_mobile_number'] = driver.user.mobile_number
-        #             else:
-        #                 item['driver_id'] = None
-        #                 item['driver_first_name'] = None
-        #                 item['driver_mobile_number'] = None
+    #             result = []
+    #             for item in data:
+    #                 # Add driver information
+    #                 driver = Driver.objects.filter(vehicle=item['vehicle_id']).first()
+    #                 if driver:
+    #                     item['driver_id'] = driver.id
+    #                     item['driver_first_name'] = driver.user.first_name
+    #                     item['driver_mobile_number'] = driver.user.mobile_number
+    #                 else:
+    #                     item['driver_id'] = None
+    #                     item['driver_first_name'] = None
+    #                     item['driver_mobile_number'] = None
 
-        #             result.append(item)
+    #                 result.append(item)
 
-        #         return Response(result)
-        #     else:
+    #             return Response(result)
+    #         else:
 
-        #         search_key = request.query_params.get('search_key')
+    #             search_key = request.query_params.get('search_key')
 
-        #         if search_key:
-        #             queryset = Vehicle_Subscription.objects.filter(Q(vehicle_id__vehicle_number__istartswith=search_key) | Q(vehicle_id__vehicletypes__vehicle_type_name__istartswith=search_key)).select_related('vehicle_id', 'vehicle_id__vehicletypes').order_by('-id')
-        #         else:
-        #             queryset = Vehicle_Subscription.objects.all().select_related('vehicle_id', 'vehicle_id__vehicletypes')
-
-
+    #             if search_key:
+    #                 queryset = Vehicle_Subscription.objects.filter(Q(vehicle_id__vehicle_number__istartswith=search_key) | Q(vehicle_id__vehicletypes__vehicle_type_name__istartswith=search_key)).select_related('vehicle_id', 'vehicle_id__vehicletypes').order_by('-id')
+    #             else:
+    #                 queryset = Vehicle_Subscription.objects.all().select_related('vehicle_id', 'vehicle_id__vehicletypes')
 
 
-        #         # Apply pagination
-        #         paginator = CustomPagination()
-        #         paginated_queryset = paginator.paginate_queryset(queryset, request)
 
-        #         # Serialize paginated data
-        #         serializer = VehicleSubscriptionSerializer(paginated_queryset, many=True)
 
-        #         for item in serializer.data:
-        #             driver = Driver.objects.filter(vehicle=item['vehicle_id']).first()
-        #             if driver:
-        #                 item['driver_id'] = driver.id
-        #                 item['driver_first_name'] = driver.user.first_name
-        #                 item['driver_mobile_number'] = driver.user.mobile_number
-        #             else:
-        #                 item['driver_id'] = None
-        #                 item['driver_first_name'] = None
-        #                 item['driver_mobile_number'] = None
+    #             # Apply pagination
+    #             paginator = CustomPagination()
+    #             paginated_queryset = paginator.paginate_queryset(queryset, request)
+
+    #             # Serialize paginated data
+    #             serializer = VehicleSubscriptionSerializer(paginated_queryset, many=True)
+
+    #             for item in serializer.data:
+    #                 driver = Driver.objects.filter(vehicle=item['vehicle_id']).first()
+    #                 if driver:
+    #                     item['driver_id'] = driver.id
+    #                     item['driver_first_name'] = driver.user.first_name
+    #                     item['driver_mobile_number'] = driver.user.mobile_number
+    #                 else:
+    #                     item['driver_id'] = None
+    #                     item['driver_first_name'] = None
+    #                     item['driver_mobile_number'] = None
                     
-        #         return paginator.get_paginated_response(serializer.data)
+    #             return paginator.get_paginated_response(serializer.data)
 
 
             ########################################
@@ -6908,8 +7033,6 @@ class History_of_SubscriptionplanApi(APIView):
             return Response(status=404, data={'message': 'Driver not found'})
 
 
-
-
 # class History_of_SubscriptionplanApi(APIView):
 #     def get(self, request):
 #         driver_id = request.query_params.get('driver_id')
@@ -7003,19 +7126,19 @@ class GetuseractiveStatus(APIView):
                 return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
         else:
             return Response({'error': 'user_id parameter is required'}, status=status.HTTP_400_BAD_REQUEST)
-        
 
 class RidetypeAPI(APIView):
-    def get(self,request):
-        data = request.data
-        ride_type = request.query_params.get('ride_type')
-        id = request.query_params.get('id')
-        if id:
-            msg_obj = RideType.objects.filter(id = id).values()
-            return Response({'data':msg_obj})
-        else:
-            msg_obj = RideType.objects.all().values()
-            return Response({'data':msg_obj})
+    def get(self, request, pk=None):
+        if pk is not None:  # Detail view
+            ride_type = RideType.objects.filter(pk=pk).first()
+            if ride_type:
+                return Response({'data': {'id': ride_type.id, 'ride_type': ride_type.ride_type}})
+            else:
+                return Response({'message': 'RideType not found'}, status=status.HTTP_404_NOT_FOUND)
+        else:  # List view
+            ride_types = RideType.objects.all()
+            data = [{'id': ride.id, 'ride_type': ride.ride_type} for ride in ride_types]
+            return Response({'data': data})
 
     def post(self,request):
         data = request.data
