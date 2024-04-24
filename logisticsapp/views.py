@@ -4666,7 +4666,7 @@ class OrderDeatilAPI(APIView):
             booking_id = item.get('id')
             scheduled_date_and_time = scheduled_dates_mapping.get(booking_id)
             item['scheduled_date_and_time'] = scheduled_date_and_time
-
+            
             # Check if vehicle_type__vehicle_type_name is not present in the serializer data
             if 'driver__vehicle__vehicletypes__vehicle_type_name' not in item:
                 item['driver__vehicle__vehicletypes__vehicle_type_name'] = vehicle_data.get('driver__vehicle__vehicletypes__vehicle_type_name')

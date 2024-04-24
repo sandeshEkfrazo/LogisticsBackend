@@ -18,7 +18,7 @@ class UserSerializer(serializers.ModelSerializer):
             latest_order = scheduled_orders.latest('id')
             return latest_order.status.status_name if latest_order.status else None
         return None
-
+    
 class ScheduledOrderSerializer(serializers.ModelSerializer):
     booking__order__user__first_name = serializers.StringRelatedField(source="booking.order.user.first_name")
     booking__order__location_detail = serializers.JSONField(source="booking.order.location_detail")

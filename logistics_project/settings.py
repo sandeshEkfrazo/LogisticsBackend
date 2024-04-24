@@ -157,8 +157,8 @@ DATABASES = {
 #         'ENGINE': 'django.db.backends.mysql',
 #         'NAME': 'logistics',
 #         'USER': 'root',    
-#         'PASSWORD': 'Ekfrazo@123#',    
-#         'HOST': '143.110.184.45',    
+#         'PASSWORD': '123456',    
+#         'HOST': '127.0.0.1',    #'143.110.184.45'
 #         'PORT': '3306',     
 #         }
 #     }

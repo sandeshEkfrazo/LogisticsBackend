@@ -1044,10 +1044,28 @@ class DriverWithDistanceAPI(APIView):
         return Response(sorted_data)
     
 
+from functools import reduce
+from operator import and_
 @method_decorator([authorization_required], name='dispatch')
 class UsersAPIView(APIView):
     def get(self, request):
+        search_key = request.query_params.get('search_key')
+
+        query_filters = []
         queryset = CustomUser.objects.filter(role_id=2).order_by('-id')
+
+        if search_key:
+            query_filters.append(
+                Q(first_name__istartswith=search_key) |
+                Q(mobile_number__istartswith=search_key) |
+                Q(last_name__istartswith=search_key) | 
+                Q(company_name__istartswith=search_key) | 
+                Q(email__istartswith=search_key)  
+
+            )
+        if query_filters:
+            combined_query = reduce(and_, query_filters)
+            queryset = queryset.filter(combined_query) 
 
         paginator = CustomPagination()
         paginated_queryset = paginator.paginate_queryset(queryset, request)
