@@ -1161,6 +1161,7 @@ class ActivateorDeactivateUserAPIView(APIView):
             custom_user = CustomUser.objects.filter(id=user_id).first()
             if custom_user:
                 # Update user_active_status
+                name = f"{custom_user.first_name} {custom_user.last_name}"
                 custom_user.user_active_status = user_active_status
                 custom_user.save()
 
@@ -1168,8 +1169,9 @@ class ActivateorDeactivateUserAPIView(APIView):
                 if user_active_status == 'Inactive':
                     custom_user.login_status = False
                     custom_user.save()
+                    return Response({'message': f'User {name} inactivated successfully'})
 
-                return Response({'message': 'User status updated successfully'})
+                return Response({'message': f'User {name} activated successfully'})
             else:
                 return Response({'error': 'User ID not found'}, status=status.HTTP_404_NOT_FOUND)
         else:

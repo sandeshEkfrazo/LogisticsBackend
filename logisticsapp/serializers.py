@@ -87,7 +87,7 @@ class BookingDetailSerializer(serializers.ModelSerializer):
     # scheduledorder__scheduled_date_and_time = serializers.StringRelatedField(source='scheduledorder.scheduled_date_and_time', read_only=True)
     driver__vehicle__vehicle_number = serializers.StringRelatedField(source='driver.vehicle.vehicle_number', read_only=True)
     driver__vehicle__vehicletypes__vehicle_type_name = serializers.StringRelatedField(source='driver.vehicle.vehicletypes.vehicle_type_name', read_only=True)
-    order__location_detail = serializers.JSONField(source='order.location_detail')
+    # order__location_detail = serializers.JSONField(source='order.location_detail')
 
     class Meta:
         model = BookingDetail

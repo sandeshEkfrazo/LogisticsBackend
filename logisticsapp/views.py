@@ -4579,7 +4579,7 @@ class BookingVehicleApi(APIView):
 from userModule.models import *
 import ast
 
-# @method_decorator([authorization_required], name='dispatch')
+@method_decorator([authorization_required], name='dispatch')
 class OrderDeatilAPI(APIView):
     # def get(self,request,user_id):
     #     print(":printin in 1")
@@ -4652,7 +4652,7 @@ class OrderDeatilAPI(APIView):
             queryset = queryset.filter(combined_query)
 
         # Create a dictionary to map booking_id to scheduled_date_and_time for quick lookup
-        scheduled_dates_mapping = {order['booking_id']: order['scheduled_date_and_time'] for order in scheduled_orders}
+        # scheduled_dates_mapping = {order['booking_id']: order['scheduled_date_and_time'] for order in scheduled_orders}
 
         # Serialize paginated data
         paginator = CustomPagination()
@@ -4664,8 +4664,11 @@ class OrderDeatilAPI(APIView):
         # Update response_data to include 
         for item, vehicle_data in zip(response_data, vehicle_type_data):
             booking_id = item.get('id')
-            scheduled_date_and_time = scheduled_dates_mapping.get(booking_id)
-            item['scheduled_date_and_time'] = scheduled_date_and_time
+            # scheduled_date_and_time = scheduled_dates_mapping.get(booking_id)
+            # item['scheduled_date_and_time'] = scheduled_date_and_time
+            scheduledOrder = ScheduledOrder.objects.filter(booking=booking_id)
+            for i in scheduledOrder:
+               item['scheduled_date_and_time'] = i.scheduled_date_and_time
 
             # Check if vehicle_type__vehicle_type_name is not present in the serializer data
             if 'driver__vehicle__vehicletypes__vehicle_type_name' not in item:
@@ -4677,9 +4680,17 @@ class OrderDeatilAPI(APIView):
             
 
         # print('---------responsedata--------', response_data)
+        # for item in response_data:
+        #     if 'order__location_detail' in item and not isinstance(item['order__location_detail'], list):
+        #         item['order__location_detail'] = [item['order__location_detail']]
+
         for item in response_data:
-            if 'order__location_detail' in item and not isinstance(item['order__location_detail'], list):
-                item['order__location_detail'] = [item['order__location_detail']]
+            order_id = item.get('order')
+            order = OrderDetails.objects.filter(id=order_id).first()
+            item['order__location_detail'] = []
+            if order:
+                location_detail = order.location_detail
+                item['order__location_detail'].append(location_detail)
 
         # print('final queryset with scheduled_date_and_time------------------------:', queryset)
         return paginator.get_paginated_response(response_data)
