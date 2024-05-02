@@ -53,11 +53,23 @@ class Aboutus(models.Model):
     email = models.CharField(max_length=100, blank=True, null=True)
 
 
+# class BookingDistance(models.Model):
+#     threshold_value = models.IntegerField()
+#     incremented_value = models.IntegerField()
+#     description = models.TextField()
+#     last_km_value = models.IntegerField(null=True,blank=2)
+
+#     def __str__(self):
+#         return self.threshold_value
+
 class BookingDistance(models.Model):
-    threshold_value = models.IntegerField()
-    incremented_value = models.IntegerField()
-    description = models.TextField()
-    last_km_value = models.IntegerField(null=True,blank=2)
+    intial_km_value = models.IntegerField(null=True, blank=True)
+    incremented_km_value = models.IntegerField(null=True, blank=True)
+    last_km_value = models.IntegerField(null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
+    intial_search_time = models.IntegerField(null=True, blank=True)
+    incremented_search_time = models.IntegerField(null=True, blank=True)
+    last_search_time = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
         return self.threshold_value
