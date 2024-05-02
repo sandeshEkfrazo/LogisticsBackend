@@ -6284,9 +6284,14 @@ class DriverDocumentExpiryvalidityApi(APIView):
     def post(self, request):
         data = request.data
         due_date = data['due_date']
-        labels = data['label']
+        # labels = data['label']
+        labels_str = data['label']
+        labels = labels_str.split(',') 
         description = data['description']
 
+        for label in labels:
+                    if DriverDocumentExpiryvalidity.objects.filter(label=label).exists():
+                        return Response({'data': f'Duplicate value: {label}'}) 
         for label in labels:
             try:
                 val_obj = DriverDocumentExpiryvalidity.objects.get(label=label)
