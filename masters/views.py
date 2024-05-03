@@ -432,7 +432,7 @@ class BookingDistanceApiView(APIView):
 
     def post(self, request):
         data = request.data
-        intial_km_value = data.get('intial_km_value')
+        intial_km_value = data.get('initial_km_value')
         incremented_km_value = data.get('incremented_km_value')
         last_km_value = data.get('last_km_value')
         description = data.get('description')
@@ -484,7 +484,7 @@ class BookingDistanceApiView(APIView):
 
         data = request.data
 
-        intial_km_value = data.get('intial_km_value')
+        intial_km_value = data.get('initial_km_value')
         incremented_km_value = data.get('incremented_km_value')
         last_km_value = data.get('last_km_value')
         description = data.get('description')
