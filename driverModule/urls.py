@@ -10,5 +10,6 @@ urlpatterns = [
     path('driver-overall-ratings/<int:pk>', DriverEarningsAndratingAPI.as_view()),
     path("notify-driver-document-expiry", NotifyDriverDocumentExpiry.as_view()),
     path("drivertotal_earning/", DriverEarningReport.as_view()),
-    path('assign-vehicle-to-new-driver', AssignVehicleToDriver.as_view())
+    path('assign-vehicle-to-new-driver', AssignVehicleToDriver.as_view()),
+    path('drivers-ride-history', DriverRideHistoryAPI.as_view())
 ]

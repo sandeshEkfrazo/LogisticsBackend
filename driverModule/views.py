@@ -615,5 +615,60 @@ class AssignVehicleToDriver(APIView):
 		return Response({'message', "vehicle assigned successfully !"})
 
 
+from functools import reduce
+from operator import and_
+from django.db.models import Q
+from logistics_project.pagination import CustomPagination
+class DriverRideHistoryAPI(APIView):
+    def get(self, request):
+        search_key = request.query_params.get('search_key') 
+        query_filters = []
+        
+        bookingDetail = BookingDetail.objects.filter(driver_id=request.query_params['driver_id']).order_by('-id').values(
+            'id','order_id', 'total_amount', 'order__user__first_name', 'order__user__last_name', 'order__user__mobile_number', 'status__status_name','status__colour','order__location_detail', 'travel_details', 'order__total_estimated_cost',
+            'ordered_time','pickedup_time','order_accepted_time','canceled_time','order_droped_time', 'driver_id', 'order__user__profile_image', 'assigned'
+        )
+
+        if search_key:
+            query_filters.append(
+                Q(order__user__first_name__istartswith=search_key) |
+                Q(order__user__last_name__istartswith=search_key) |
+                Q(order__user__mobile_number__istartswith=search_key) |
+                Q(status__status_name__istartswith=search_key) |
+                Q(order__location_detail__istartswith=search_key) |
+                Q(travel_details__istartswith=search_key)
+            )
+        
+        if query_filters:
+            print('inside if')
+            combined_query = reduce(and_, query_filters)
+            bookingDetail = bookingDetail.filter(combined_query)
+            # print('booking details',bookingDetail)
+        
+
+        paginator = CustomPagination()
+        paginated_results = paginator.paginate_queryset(bookingDetail, request)
+        print('pagination results',paginated_results)
+
+        # Serialize the paginated results
+        # serializer = BookingDetailSerializer(paginated_results, many=True)
+		
+        # print('serializer',serializer.data)
+        for i in list(bookingDetail):
+            if i['total_amount'] is not None:
+                i['total_amount'] = round(float(i['total_amount']), 1)
+
+            if UserFeedback.objects.filter(Q(driver_id=request.query_params['driver_id']) & Q(order_id=i['order_id']) & Q(rating_given_by="user")).exists():
+                user_feedback_obj = UserFeedback.objects.filter(Q(driver_id=request.query_params['driver_id']) & Q(order_id=i['order_id']) & Q(rating_given_by="user")).values()
+                for j in list(user_feedback_obj):
+                    if i['driver_id'] == j['driver_id']:
+                        i['ratings'] = j['rating']
+
+            elif i['status__status_name'] == 'Trip Ended':
+                i['ratings'] = None	
+
+        # return Response({'message': 'your orders are', 'data':bookingDetail})
+        return paginator.get_paginated_response({'message': 'your orders are', 'data':paginated_results})
+
 
 
