@@ -17,6 +17,7 @@ urlpatterns = [
 
     path('register', RegistrationApiVew.as_view()),
     path('login', LoginView.as_view()),
+    path('logout', LogoutApi.as_view(), name='logout'),
     path('forgot-password-send-otp', ForgotPasswordSendOtp.as_view()),
     path('otp-verify-forgot-pass', OtpVerificationForgotpass.as_view()),
     path('password-reset', ForgotPasswordReset.as_view()),

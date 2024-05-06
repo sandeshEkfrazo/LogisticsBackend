@@ -7201,3 +7201,31 @@ class SelectedRideTypeAPI(APIView):
         else:
             msg_obj= SelectedRideType.objects.create(trip_type=trip_type)
             return Response({'data':'trip_type Successfully Added!!'})
+
+from django.contrib.auth import logout as auth_logout  
+class LogoutApi(APIView):
+        def post(self, request,pk):
+            token = request.META.get('HTTP_AUTHORIZATION', '').split(" ")[1]
+
+            try:
+                payload = jwt.decode(token, str(settings.JWT_SECRET_KEY), algorithms=["HS256"])
+                user_id = payload.get('id')
+
+                custom_user = CustomUser.objects.get(id=user_id)
+
+                auth_logout(request)
+
+                custom_user.online_status = False
+                custom_user.login_status = False
+                custom_user.save()
+
+                return Response({'message': 'Logout successful'}, status=status.HTTP_200_OK)
+
+            except jwt.ExpiredSignatureError:
+                return Response({'message': 'Token has expired'}, status=status.HTTP_401_UNAUTHORIZED)
+            
+            except jwt.DecodeError:
+                return Response({'message': 'Invalid token'}, status=status.HTTP_401_UNAUTHORIZED)
+            
+            except CustomUser.DoesNotExist:
+                return Response({'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)        
