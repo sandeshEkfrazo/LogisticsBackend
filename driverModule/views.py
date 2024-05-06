@@ -625,7 +625,7 @@ class DriverRideHistoryAPI(APIView):
         query_filters = []
         
         bookingDetail = BookingDetail.objects.filter(driver_id=request.query_params['driver_id']).order_by('-id').values(
-            'id','order_id', 'total_amount', 'order__user__first_name', 'order__user__last_name', 'order__user__mobile_number', 'status__status_name','status__colour','order__location_detail', 'travel_details', 'order__total_estimated_cost',
+            'id','order_id', 'total_amount','trip_option', 'order__user__first_name', 'order__user__last_name', 'order__user__mobile_number', 'status__status_name','status__colour', 'travel_details', 'order__total_estimated_cost',
             'ordered_time','pickedup_time','order_accepted_time','canceled_time','order_droped_time', 'driver_id', 'order__user__profile_image', 'assigned'
         )
 
@@ -644,11 +644,7 @@ class DriverRideHistoryAPI(APIView):
             combined_query = reduce(and_, query_filters)
             bookingDetail = bookingDetail.filter(combined_query)
             # print('booking details',bookingDetail)
-        
-
-        paginator = CustomPagination()
-        paginated_results = paginator.paginate_queryset(bookingDetail, request)
-        print('pagination results',paginated_results)
+			       
 
         # Serialize the paginated results
         # serializer = BookingDetailSerializer(paginated_results, many=True)
@@ -667,8 +663,32 @@ class DriverRideHistoryAPI(APIView):
             elif i['status__status_name'] == 'Trip Ended':
                 i['ratings'] = None	
 
+            for item in bookingDetail:
+                order_id = item.get('order_id')
+                order = OrderDetails.objects.filter(id=order_id).first()
+                item['order__location_detail'] = []
+                if order:
+                    location_detail = order.location_detail
+                    item['order__location_detail'].append(location_detail)	
+
+            for item in  bookingDetail:
+                booking_id = item.get('id')	
+                scheduledOrder = ScheduledOrder.objects.filter(booking=booking_id)
+                for i in scheduledOrder:
+                    item['scheduled_date_and_time'] = i.scheduled_date_and_time	
+        
+        paginator = CustomPagination()
+        # paginated_results = paginator.paginate_queryset(bookingDetail, request)
+        # print('pagination results',paginated_results)
+
         # return Response({'message': 'your orders are', 'data':bookingDetail})
-        return paginator.get_paginated_response({'message': 'your orders are', 'data':paginated_results})
+        # return paginator.get_paginated_response({'message': 'your orders are', 'data':paginated_results})
+
+        if 'page' in request.query_params:
+            paginated_results = paginator.paginate_queryset(bookingDetail, request)
+            return paginator.get_paginated_response({'message': 'your orders are', 'data': paginated_results})
+        else:
+            return Response({'message': 'your orders are', 'data': bookingDetail})
 
 
 
