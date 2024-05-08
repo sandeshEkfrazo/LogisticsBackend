@@ -4655,10 +4655,18 @@ class OrderDeatilAPI(APIView):
         # scheduled_dates_mapping = {order['booking_id']: order['scheduled_date_and_time'] for order in scheduled_orders}
 
         # Serialize paginated data
+        # paginator = CustomPagination()
+        # paginated_queryset = paginator.paginate_queryset(queryset, request)
+        # serializer = BookingDetailSerializer(paginated_queryset, many=True)
+        # response_data = serializer.data
         paginator = CustomPagination()
-        paginated_queryset = paginator.paginate_queryset(queryset, request)
-        serializer = BookingDetailSerializer(paginated_queryset, many=True)
-        response_data = serializer.data
+        if 'page' in request.query_params:
+            paginated_queryset = paginator.paginate_queryset(queryset, request)
+            serializer = BookingDetailSerializer(paginated_queryset, many=True)
+            response_data = serializer.data
+        else:
+            serializer = BookingDetailSerializer(queryset, many=True)
+            response_data = serializer.data
         # print('response_data------------',response_data)
 
         # Update response_data to include 
@@ -4684,16 +4692,32 @@ class OrderDeatilAPI(APIView):
         #     if 'order__location_detail' in item and not isinstance(item['order__location_detail'], list):
         #         item['order__location_detail'] = [item['order__location_detail']]
 
+        # for item in response_data:
+        #     order_id = item.get('order')
+        #     order = OrderDetails.objects.filter(id=order_id).first()
+        #     item['order__location_detail'] = []
+        #     if order:
+        #         location_detail = order.location_detail
+        #         item['order__location_detail'].append(location_detail)
+
         for item in response_data:
             order_id = item.get('order')
             order = OrderDetails.objects.filter(id=order_id).first()
             item['order__location_detail'] = []
             if order:
                 location_detail = order.location_detail
-                item['order__location_detail'].append(location_detail)
+                if isinstance(location_detail, list):
+                    item['order__location_detail'].extend(location_detail)
+                else:
+                    try:
+                        location_detail = json.loads(location_detail)
+                        item['order__location_detail'].append(location_detail)
+                    except (json.JSONDecodeError, TypeError):
+                        pass
 
         # print('final queryset with scheduled_date_and_time------------------------:', queryset)
-        return paginator.get_paginated_response(response_data)
+        # return paginator.get_paginated_response(response_data)
+        return Response(response_data) 
     
     # def get(self,request):
     #     data = request.data
