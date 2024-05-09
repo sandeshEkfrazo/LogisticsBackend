@@ -651,20 +651,6 @@ class DriverRideHistoryAPI(APIView):
 		
         # print('serializer',serializer.data)
         for i in list(bookingDetail):
-            order_id = i.get('order_id')
-            order = OrderDetails.objects.filter(id=order_id).first()
-            i['order__location_detail'] = []
-            if order:
-                location_detail = order.location_detail
-                if isinstance(location_detail, list):
-                    i['order__location_detail'] = location_detail
-                else:
-                    try:
-                        location_detail = json.loads(location_detail)
-                        i['order__location_detail'] = location_detail
-                    except (json.JSONDecodeError, TypeError):
-                        pass	
-
             if i['total_amount'] is not None:
                 i['total_amount'] = round(float(i['total_amount']), 1)
 
@@ -684,7 +670,20 @@ class DriverRideHistoryAPI(APIView):
                 # if order:
                 #     location_detail = order.location_detail
                 #     item['order__location_detail'].append(location_detail)	
-        
+        for item in bookingDetail:
+            order_id = item.get('order_id')
+            order = OrderDetails.objects.filter(id=order_id).first()
+            item['order__location_detail'] = []
+            if order:
+               location_detail = order.location_detail
+            if isinstance(location_detail, list):
+                item['order__location_detail'].extend(location_detail)
+            else:
+                try:
+                    location_detail = json.loads(location_detail)
+                    item['order__location_detail'].append(location_detail)
+                except (json.JSONDecodeError, TypeError):
+                    pass			
 
         for item in  bookingDetail:
                 booking_id = item.get('id')	

@@ -4677,7 +4677,7 @@ class OrderDeatilAPI(APIView):
             scheduledOrder = ScheduledOrder.objects.filter(booking=booking_id)
             for i in scheduledOrder:
                item['scheduled_date_and_time'] = i.scheduled_date_and_time
-
+            
             # Check if vehicle_type__vehicle_type_name is not present in the serializer data
             if 'driver__vehicle__vehicletypes__vehicle_type_name' not in item:
                 item['driver__vehicle__vehicletypes__vehicle_type_name'] = vehicle_data.get('driver__vehicle__vehicletypes__vehicle_type_name')
@@ -4699,7 +4699,6 @@ class OrderDeatilAPI(APIView):
         #     if order:
         #         location_detail = order.location_detail
         #         item['order__location_detail'].append(location_detail)
-
         for item in response_data:
             order_id = item.get('order')
             order = OrderDetails.objects.filter(id=order_id).first()
@@ -4716,8 +4715,11 @@ class OrderDeatilAPI(APIView):
                         pass
 
         # print('final queryset with scheduled_date_and_time------------------------:', queryset)
-        # return paginator.get_paginated_response(response_data)
-        return Response(response_data) 
+        # return paginator.get_paginated_response(response_data)     
+        if 'page' in request.query_params:
+            return paginator.get_paginated_response(response_data)
+        else:
+            return Response(response_data) 
     
     # def get(self,request):
     #     data = request.data
