@@ -4578,7 +4578,7 @@ class BookingVehicleApi(APIView):
 
 from userModule.models import *
 import ast
-
+from datetime import datetime, timedelta
 @method_decorator([authorization_required], name='dispatch')
 class OrderDeatilAPI(APIView):
     # def get(self,request,user_id):
@@ -4628,8 +4628,10 @@ class OrderDeatilAPI(APIView):
             print('ordered_time__gte:', start_date) 
         if end_date:
             print('end_date===============:', end_date)
+            end_date_dt = datetime.strptime(end_date, '%Y-%m-%d') 
+            end_date_inclusive = end_date_dt + timedelta(days=1)
             query_filters.append(
-                Q(ordered_time__lte=end_date)
+                Q(ordered_time__lte=end_date_inclusive)
             )
             print('ordered_time__lte:', start_date) 
         if status_id:
