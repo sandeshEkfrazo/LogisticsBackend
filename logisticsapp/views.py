@@ -4708,11 +4708,12 @@ class OrderDeatilAPI(APIView):
             if order:
                 location_detail = order.location_detail
                 if isinstance(location_detail, list):
-                    item['order__location_detail'].extend(location_detail)
+                    for detail in location_detail:
+                        item['order__location_detail'].append({'location_detail': detail})
                 else:
                     try:
                         location_detail = json.loads(location_detail)
-                        item['order__location_detail'].append(location_detail)
+                        item['order__location_detail'].append({'location_detail': location_detail})
                     except (json.JSONDecodeError, TypeError):
                         pass
 
@@ -6730,10 +6731,19 @@ class VehicleSubscriptionApi(APIView):
                 search_key = request.query_params.get('search_key')
 
                 if search_key:
-                    queryset = Vehicle_Subscription.objects.filter(Q(vehicle_id__vehicle_number__istartswith=search_key) | Q(vehicle_id__vehicletypes__vehicle_type_name__istartswith=search_key)).select_related('vehicle_id', 'vehicle_id__vehicletypes').order_by('-id')
+                    queryset = Vehicle_Subscription.objects.filter(Q(vehicle_id__vehicle_number__istartswith=search_key) |
+                                                                   Q(vehicle_id__vehicle_name__istartswith=search_key)|
+                                                                   Q(type_of_service__istartswith=search_key)|
+                                                                   Q(time_period__istartswith=search_key)|
+                                                                   Q(validity_days__istartswith=search_key)|
+                                                                   Q(amount__istartswith=search_key)|
+                                                                   Q(status__istartswith=search_key)|
+                                                                    Q(vehicle_id__vehicletypes__vehicle_type_name__istartswith=search_key)|
+                                                                    Q(driver_id__user__first_name__istartswith=search_key) |
+                                                                    Q(driver_id__user__mobile_number__istartswith=search_key) 
+                                                                    ).select_related('vehicle_id', 'vehicle_id__vehicletypes','driver_id__user').order_by('-id')
                 else:
-                    queryset = Vehicle_Subscription.objects.all().select_related('vehicle_id', 'vehicle_id__vehicletypes')
-
+                    queryset = Vehicle_Subscription.objects.all().select_related('vehicle_id', 'vehicle_id__vehicletypes','driver_id__user')
                 # Apply pagination
                 paginator = CustomPagination()
                 paginated_queryset = paginator.paginate_queryset(queryset, request)

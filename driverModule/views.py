@@ -675,15 +675,16 @@ class DriverRideHistoryAPI(APIView):
             order = OrderDetails.objects.filter(id=order_id).first()
             item['order__location_detail'] = []
             if order:
-               location_detail = order.location_detail
-            if isinstance(location_detail, list):
-                item['order__location_detail'].extend(location_detail)
-            else:
-                try:
-                    location_detail = json.loads(location_detail)
-                    item['order__location_detail'].append(location_detail)
-                except (json.JSONDecodeError, TypeError):
-                    pass			
+                location_detail = order.location_detail
+                if isinstance(location_detail, list):
+                    for detail in location_detail:
+                        item['order__location_detail'].append({'location_detail': detail})
+                else:
+                    try:
+                        location_detail = json.loads(location_detail)
+                        item['order__location_detail'].append({'location_detail': location_detail})
+                    except (json.JSONDecodeError, TypeError):
+                        pass			
 
         for item in  bookingDetail:
                 booking_id = item.get('id')	

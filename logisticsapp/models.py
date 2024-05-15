@@ -218,6 +218,7 @@ class Vehicle_Subscription(models.Model):
     vehicle_id=models.ForeignKey(Vehicle, on_delete=models.CASCADE, blank=True,null=True)
     validity_days=models.IntegerField(blank=True,null=True)
     is_expired=models.BooleanField(default=False)
+    driver_id=models.ForeignKey(Driver, on_delete=models.SET_NULL, blank=True, null=True)
 
 class PaymentDetails(models.Model):
     razorpay_order_id = models.CharField(max_length=200, null=True, blank=True)
