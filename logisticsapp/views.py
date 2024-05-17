@@ -4726,7 +4726,7 @@ class OrderDeatilAPI(APIView):
         if 'page' in request.query_params:
             return paginator.get_paginated_response(response_data)
         else:
-            return Response(response_data) 
+            return Response({"result":response_data}) 
     
     # def get(self,request):
     #     data = request.data
