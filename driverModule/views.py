@@ -631,12 +631,12 @@ class DriverRideHistoryAPI(APIView):
 
         if search_key:
             query_filters.append(
+				Q(order_id__istartswith=search_key) |
                 Q(order__user__first_name__istartswith=search_key) |
-                Q(order__user__last_name__istartswith=search_key) |
                 Q(order__user__mobile_number__istartswith=search_key) |
+				Q(trip_option__istartswith=search_key) |
                 Q(status__status_name__istartswith=search_key) |
-                Q(order__location_detail__istartswith=search_key) |
-                Q(travel_details__istartswith=search_key)
+				Q(order__total_estimated_cost__istartswith=search_key) 
             )
         
         if query_filters:
@@ -663,28 +663,29 @@ class DriverRideHistoryAPI(APIView):
             elif i['status__status_name'] == 'Trip Ended':
                 i['ratings'] = None	
 
-        # for item in bookingDetail:
-                # order_id = item.get('order_id')
-                # order = OrderDetails.objects.filter(id=order_id).first()
-                # item['order__location_detail'] = []
-                # if order:
-                #     location_detail = order.location_detail
-                #     item['order__location_detail'].append(location_detail)	
         for item in bookingDetail:
-            order_id = item.get('order_id')
-            order = OrderDetails.objects.filter(id=order_id).first()
-            item['order__location_detail'] = []
-            if order:
-                location_detail = order.location_detail
-                if isinstance(location_detail, list):
-                    for detail in location_detail:
-                        item['order__location_detail'].append({'location_detail': detail})
-                else:
-                    try:
-                        location_detail = json.loads(location_detail)
-                        item['order__location_detail'].append({'location_detail': location_detail})
-                    except (json.JSONDecodeError, TypeError):
-                        pass			
+                order_id = item.get('order_id')
+                order = OrderDetails.objects.filter(id=order_id).first()
+                item['order__location_detail'] = []
+                if order:
+                    location_detail = order.location_detail
+                    item['order__location_detail'].append(location_detail)	
+    
+        # for item in bookingDetail:
+        #     order_id = item.get('order_id')
+        #     order = OrderDetails.objects.filter(id=order_id).first()
+        #     item['order__location_detail'] = []
+        #     if order:
+        #         location_detail = order.location_detail
+        #         if isinstance(location_detail, list):
+        #             for detail in location_detail:
+        #                 item['order__location_detail'].append({'location_detail': detail})
+        #         else:
+        #             try:
+        #                 location_detail = json.loads(location_detail)
+        #                 item['order__location_detail'].append({'location_detail': location_detail})
+        #             except (json.JSONDecodeError, TypeError):
+        #                 pass		
 
         for item in  bookingDetail:
                 booking_id = item.get('id')	

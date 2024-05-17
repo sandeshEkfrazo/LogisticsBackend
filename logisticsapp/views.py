@@ -4608,8 +4608,12 @@ class OrderDeatilAPI(APIView):
         if search_key:
             query_filters.append(
                 Q(order__user_id__first_name__istartswith=search_key) |
-                Q(status__status_name__istartswith=search_key) |
+                Q(order__id__istartswith=search_key) |
+                Q(order__user_id__mobile_number__istartswith=search_key) |
+                Q(order__total_estimated_cost__istartswith=search_key) |
                 Q(driver__vehicle__vehicletypes__vehicle_type_name__istartswith=search_key) |
+                Q(driver__vehicle__vehicle_number__istartswith=search_key) |
+                Q(driver__mobile_number__istartswith=search_key) |
                 Q(driver__first_name__istartswith=search_key)
             )
         # if start_date:
@@ -4694,28 +4698,28 @@ class OrderDeatilAPI(APIView):
         #     if 'order__location_detail' in item and not isinstance(item['order__location_detail'], list):
         #         item['order__location_detail'] = [item['order__location_detail']]
 
-        # for item in response_data:
-        #     order_id = item.get('order')
-        #     order = OrderDetails.objects.filter(id=order_id).first()
-        #     item['order__location_detail'] = []
-        #     if order:
-        #         location_detail = order.location_detail
-        #         item['order__location_detail'].append(location_detail)
         for item in response_data:
             order_id = item.get('order')
             order = OrderDetails.objects.filter(id=order_id).first()
             item['order__location_detail'] = []
             if order:
                 location_detail = order.location_detail
-                if isinstance(location_detail, list):
-                    for detail in location_detail:
-                        item['order__location_detail'].append({'location_detail': detail})
-                else:
-                    try:
-                        location_detail = json.loads(location_detail)
-                        item['order__location_detail'].append({'location_detail': location_detail})
-                    except (json.JSONDecodeError, TypeError):
-                        pass
+                item['order__location_detail'].append(location_detail)
+        # for item in response_data:
+        #     order_id = item.get('order')
+        #     order = OrderDetails.objects.filter(id=order_id).first()
+        #     item['order__location_detail'] = []
+        #     if order:
+        #         location_detail = order.location_detail
+        #         if isinstance(location_detail, list):
+        #             for detail in location_detail:
+        #                 item['order__location_detail'].append({'location_detail': detail})
+        #         else:
+        #             try:
+        #                 location_detail = json.loads(location_detail)
+        #                 item['order__location_detail'].append({'location_detail': location_detail})
+        #             except (json.JSONDecodeError, TypeError):
+        #                 pass
 
         # print('final queryset with scheduled_date_and_time------------------------:', queryset)
         # return paginator.get_paginated_response(response_data)     
