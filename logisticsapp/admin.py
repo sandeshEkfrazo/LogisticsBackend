@@ -20,7 +20,7 @@ class CustomUser(admin.ModelAdmin):
 
 @admin.register(VehicleTypes)
 class VehicleTypes(ImportExportModelAdmin):
-    list_display =['id','vehicle_type_name','capacity','size','details','per_km_price','per_min_price','min_charge','free_min','max_time_min','badge','vehicle_type_image','offer_price',]
+    list_display =['id','vehicle_type_name','capacity','size','details','per_km_price','per_min_price','min_charge','free_min','max_time_min','badge','vehicle_type_image','offer_price','min_km']
 
 @admin.register(Vehicle)
 class Vehicle(admin.ModelAdmin):

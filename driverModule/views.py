@@ -631,7 +631,7 @@ class DriverRideHistoryAPI(APIView):
 
         if search_key:
             query_filters.append(
-				Q(order_id__istartswith=search_key) |
+				Q(order_id=search_key) |
                 Q(order__user__first_name__istartswith=search_key) |
                 Q(order__user__mobile_number__istartswith=search_key) |
 				Q(trip_option__istartswith=search_key) |

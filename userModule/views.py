@@ -949,7 +949,7 @@ class AllScheduledOrder(APIView):
             search_key = request.query_params.get('search_key')
 
             if search_key:
-                queryset = ScheduledOrder.objects.filter(Q(booking__order__user__first_name__istartswith=search_key) | Q(booking__order__user__mobile_number__istartswith=search_key) | Q(booking__vehicle_type__vehicle_type_name__istartswith=search_key) |Q(booking__driver__first_name__istartswith=search_key) | Q(booking__status__status_name__istartswith=search_key)).order_by('-id')
+                queryset = ScheduledOrder.objects.filter(Q(booking__order__user__first_name__istartswith=search_key) | Q(booking__order__user__mobile_number__istartswith=search_key) | Q(booking__vehicle_type__vehicle_type_name__istartswith=search_key) |Q(booking__driver__first_name__istartswith=search_key) | Q(booking__status__status_name__istartswith=search_key) | Q(booking__order_id=search_key)).order_by('-id')
             else:
                 queryset = ScheduledOrder.objects.all().order_by('-id')
             # Apply pagination
@@ -958,6 +958,13 @@ class AllScheduledOrder(APIView):
 
             # Serialize paginated data
             serializer = ScheduledOrderSerializer(paginated_queryset, many=True)
+
+            for item in serializer.data:
+                item['booking__order__location_detail'] = []
+                location_details = ScheduledOrder.objects.filter(booking__order_id=item['booking__order_id'])
+                for detail in location_details:
+                    item['booking__order__location_detail'].append(detail.booking.order.location_detail)   
+
             if self.request.query_params.get('page_size') is None and self.request.query_params.get('page') is None:
                 return Response({'data': queryset.values('booking__order__user__first_name', 'booking__order__location_detail', 'booking__order_id', 'booking__trip_option','booking__total_amount', 'booking__travel_details', 'booking__ordered_time', 'booking__driver__first_name', 'booking__driver_id', 'scheduled_date_and_time', 'booking__order__user__mobile_number', 'booking__order__total_estimated_cost', 'booking__status_id', 'booking__sub_user_phone_numbers', 'booking__order__user_id', 'booking__status__status_name', 'booking__status_id', 'booking__driver__vehicle__vehicle_number', 'booking__driver__mobile_number', 'booking__driver__vehicle__vehicletypes__vehicle_type_name', 'booking__vehicle_type__vehicle_type_name'
         )})
@@ -1057,15 +1064,18 @@ class UsersAPIView(APIView):
         if search_key:
             query_filters.append(
                 Q(first_name__istartswith=search_key) |
+                Q(id__istartswith=search_key) |
                 Q(mobile_number__istartswith=search_key) |
+                Q(whatsup_number__istartswith=search_key) |
                 Q(last_name__istartswith=search_key) | 
                 Q(company_name__istartswith=search_key) | 
-                Q(email__istartswith=search_key)  
-
+                Q(email__istartswith=search_key)  |
+                Q(user_active_status__istartswith=search_key) 
+                
             )
         if query_filters:
             combined_query = reduce(and_, query_filters)
-            queryset = queryset.filter(combined_query)
+            queryset = queryset.filter(combined_query) 
 
         paginator = CustomPagination()
         paginated_queryset = paginator.paginate_queryset(queryset, request)

@@ -1245,6 +1245,7 @@ class VehicleTypesView(APIView):
         per_min_price=data.get('per_min_price')
         vehicle_type_image=data.get('vehicle_type_image')
         vehicle_description=data.get('vehicle_description')
+        min_km=data.get('min_km')
             # return Response({i})
         # converted_vehicle_type_image= vehicle_type_sub_images
         # vehicle_type_sub_images=converted_vehicle_type_image
@@ -1298,6 +1299,7 @@ class VehicleTypesView(APIView):
                                             vehicle_type_image=converted_vehicle_type_image,
                                             vehicle_type_sub_images=sub_image_list,
                                             vehicle_description=vehicle_type_discription_list,
+                                            min_km=min_km
                                             )
 
             posts = VehicleTypes.objects.all().values()
@@ -1337,6 +1339,7 @@ class VehicleTypesView(APIView):
         time=data.get('time')
         vehicle_type_image=data.get('vehicle_type_image')
         vehicle_description=data.get('vehicle_description')
+        min_km=data.get('min_km')
         # vehicle_type_sub_images=data.get('vehicle_type_sub_images')
         converted_vehicle_type_image = convertBase64(vehicle_type_image, 'vehicle_type_image', size, "vehicle_type_image")
 
@@ -1377,7 +1380,8 @@ class VehicleTypesView(APIView):
                 vehicle_type_image=converted_vehicle_type_image,
                 vehicle_type_sub_images=sub_image_list,
                 vehicle_description=vehicle_type_discription_list,
-                details = details
+                details = details,
+                min_km=min_km
                 )
 
             Driver.objects.filter(id=pk).update(
@@ -1850,7 +1854,7 @@ class DriverView(APIView):
 
             if search_key and not is_online:
                 queryset = Driver.objects.filter(Q(user__first_name__istartswith=search_key) | Q(user__mobile_number__istartswith=search_key) | Q(vehicle__vehicle_status__istartswith=search_key)).order_by('-id')
-            if is_online and search_key:
+            elif is_online and search_key:
                 queryset = Driver.objects.filter(Q(is_online=is_online) & Q(Q(user__first_name__istartswith=search_key) | Q(user__mobile_number__istartswith=search_key) | Q(vehicle__vehicle_status__istartswith=search_key))).order_by('-id')
             elif is_online and not search_key:
                 queryset = Driver.objects.filter(is_online=is_online).order_by('-id')

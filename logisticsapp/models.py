@@ -31,6 +31,7 @@ class VehicleTypes(models.Model):
     offer_price=models.CharField(max_length=100, blank=True, null=True)
     vehicle_type_sub_images=models.JSONField(null=True, blank=True)
     vehicle_description=models.JSONField(null=True,blank=True)
+    min_km=models.CharField(max_length=100, blank=True, null=True)   #newly added
     create_timestamp= models.DateTimeField(auto_now_add=True,verbose_name="create_timestamp")
     last_update_timestamp= models.DateTimeField(auto_now_add=True,verbose_name="last_update_timestamp")
 
