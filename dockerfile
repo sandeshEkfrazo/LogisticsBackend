@@ -30,13 +30,14 @@ RUN pip install --default-timeout=1000 -r requirements.txt
 COPY . /app
 
 # Make port 8000 available to the world outside this container
-EXPOSE 8000
+EXPOSE 8002
 
 # Define environment variable
 ENV PYTHONUNBUFFERED 1
 
 # Run the Django development server when the container launches
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8002"]
+  
 
 
 
