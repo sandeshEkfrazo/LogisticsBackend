@@ -1,12 +1,13 @@
 import base64
 from ctypes import addressof
 from operator import mod
-from turtle import up
+# from turtle import up
 from django.db import models
 from django.contrib.auth.models import User
 # from django.db.models.base import Model
 from .models import *
 from masters.models import *
+
 
 #!------------------    MASTER TABLE    ------------------#!
 
