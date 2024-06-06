@@ -1,4 +1,38 @@
+version: '3'
+
+services:
+  web:
+      build: .
+      command: python manage.py runserver 0.0.0.0:8002
+      ports:
+          - 8002:8002
+
+
+
+
+
 # version: '3'
+
+# services:
+#     web:
+#         build: .
+#         command: python manage.py runserver 0.0.0.0:8000
+#         volumes:
+#             - .:/app
+#         ports:
+#             - "8000:8000"
+
+#     db:
+#         image: mysql
+#         environment:
+#         MYSQL_DATABASE: 'dockerDB'
+#         MYSQL_ALLOW_EMPTY_PASSWORD: 'true'
+#         volumes:
+#         - ./datas/mysql/dbb:/var/lib/mysql
+#         container_name: mysql_db
+
+
+# # version: '3'
 
 # services:
 
