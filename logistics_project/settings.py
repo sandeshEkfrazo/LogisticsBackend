@@ -125,20 +125,22 @@ ASGI_APPLICATION = 'logistics_project.asgi.application'
 #     }
 # }
 
+
+
 DATABASES = {
         'default': 
         {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'logistic',
-        'USER': 'root',    
+        'USER': 'logistic',    
         'PASSWORD': '7ogistic@123',    
         'HOST': 'logistic.mysql.database.azure.com',   
         'PORT': '3306',
-        # 'OPTIONS': {
-        #         'ssl': {
-        #             'ca': 'FCM/DigiCertGlobalRootCA.crt.pem',
-        #             }
-        #         }         
+        'OPTIONS': {
+                'ssl': {
+                    'ca': 'DigiCertGlobalRootCA.crt.pem',
+                    }
+                }         
         }
     }
 
