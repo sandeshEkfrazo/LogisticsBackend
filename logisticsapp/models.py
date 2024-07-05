@@ -30,6 +30,7 @@ class VehicleTypes(models.Model):
     vehicle_type_image=models.ImageField(blank=True, null=True)
     offer_price=models.CharField(max_length=100, blank=True, null=True)
     vehicle_type_sub_images=models.JSONField(null=True, blank=True)
+    min_km=models.CharField(max_length=100, blank=True, null=True) 
     vehicle_description=models.JSONField(null=True,blank=True)
     create_timestamp= models.DateTimeField(auto_now_add=True,verbose_name="create_timestamp")
     last_update_timestamp= models.DateTimeField(auto_now_add=True,verbose_name="last_update_timestamp")
@@ -218,6 +219,8 @@ class Vehicle_Subscription(models.Model):
     vehicle_id=models.ForeignKey(Vehicle, on_delete=models.CASCADE, blank=True,null=True)
     validity_days=models.IntegerField(blank=True,null=True)
     is_expired=models.BooleanField(default=False)
+    driver_id=models.ForeignKey(Driver, on_delete=models.SET_NULL, blank=True, null=True)
+    # driver_id=models.ForeignKey(Driver, on_delete=models.SET_NULL, blank=True, null=True)
 
 class PaymentDetails(models.Model):
     razorpay_order_id = models.CharField(max_length=200, null=True, blank=True)
