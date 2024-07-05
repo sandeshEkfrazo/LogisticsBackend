@@ -17,6 +17,7 @@ urlpatterns = [
 
     path('register', RegistrationApiVew.as_view()),
     path('login', LoginView.as_view()),
+    path('logout/<int:pk>', LogoutApi.as_view(), name='logout'),
     path('forgot-password-send-otp', ForgotPasswordSendOtp.as_view()),
     path('otp-verify-forgot-pass', OtpVerificationForgotpass.as_view()),
     path('password-reset', ForgotPasswordReset.as_view()),
@@ -153,5 +154,7 @@ urlpatterns = [
     path('ride_type/', RidetypeAPI.as_view()),
     path('ride_type/<int:pk>', RidetypeAPI.as_view()),
     path('selected_ride_type/', SelectedRideTypeAPI.as_view()),
+    
+    path('vehicle_amount/', Vehicle_tpes_amountAPI.as_view()),
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
