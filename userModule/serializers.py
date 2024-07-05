@@ -7,17 +7,24 @@ class UserSerializer(serializers.ModelSerializer):
         model = CustomUser
         fields = '__all__'
 
+        
     def to_representation(self, instance):
         data = super().to_representation(instance)
         data['online_status'] = "Online" if instance.user_online_status else "Offline"
         return data
+    # def to_representation(self, instance):
+    #     data = super().to_representation(instance)
+    #     data['online_status'] = "Offline"
+    #     return data
     
     def get_booking_status_name(self, instance):
-        scheduled_orders = instance.scheduled_orders.all()
-        if scheduled_orders.exists():
-            latest_order = scheduled_orders.latest('id')
-            return latest_order.status.status_name if latest_order.status else None
-        return None
+        # Get the latest booking associated with the user
+        latest_booking = BookingDetail.objects.filter(driver=instance).order_by('-id').first()
+        if latest_booking and latest_booking.status:
+            return latest_booking.status.status_name
+        else:
+            return None
+    
 
 class ScheduledOrderSerializer(serializers.ModelSerializer):
     booking__order__user__first_name = serializers.StringRelatedField(source="booking.order.user.first_name")
@@ -39,6 +46,7 @@ class ScheduledOrderSerializer(serializers.ModelSerializer):
     booking__driver__mobile_number = serializers.StringRelatedField(source="booking.driver.mobile_number")
     booking__driver__vehicle__vehicletypes__vehicle_type_name = serializers.StringRelatedField(source="booking.driver.vehicle.vehicletypes.vehicle_type_name")
     booking__vehicle_type__vehicle_type_name = serializers.StringRelatedField(source="booking.vehicle_type.vehicle_type_name")
+    # scheduled_date_and_time = serializers.DateTimeField(source="scheduled_date_and_time")
     class Meta:
         model = ScheduledOrder
         fields = '__all__'
