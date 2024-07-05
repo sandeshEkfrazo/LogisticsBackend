@@ -20,5 +20,7 @@ urlpatterns = [
     path('call-b', CallAPI.as_view()),
     path("delete-tasks", DeleteTasks.as_view()),
     path('all-user', UsersAPIView.as_view()),
-    path('activate-or-deactivate-user/', ActivateorDeactivateUserAPIView.as_view())
+    path('activate-or-deactivate-user/', ActivateorDeactivateUserAPIView.as_view()),
+    path('user_cancel_ride/', UserCancelRideView.as_view(), name='user_cancel_ride'),
+    path('driver_info/', DriverInfo.as_view(), name='driver_info'),
 ]
