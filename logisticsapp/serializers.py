@@ -43,6 +43,7 @@ class VehicleSerializer(serializers.ModelSerializer):
 
 
 class VehicleTypeSerializer(serializers.ModelSerializer):
+    vehicle_number = serializers.StringRelatedField(source='vehicletypes.vehicle_number', read_only=True)
     class Meta:
         model = VehicleTypes
         fields = '__all__'
@@ -79,15 +80,16 @@ class BookingDetailSerializer(serializers.ModelSerializer):
     status__status_name = serializers.StringRelatedField(source='status.status_name', read_only=True)
     order__otp = serializers.StringRelatedField(source='order.otp', read_only=True)
     driver__vehicle__vehicle_name = serializers.StringRelatedField(source='driver.vehicle.vehicle_name', read_only=True)
-    order__total_estimated_cost = serializers.StringRelatedField(source='order.total_estimated_cost', read_only=True)
+    # order__total_estimated_cost = serializers.StringRelatedField(source='order.total_estimated_cost', read_only=True)
+    order__total_estimated_cost = serializers.IntegerField(source='order.total_estimated_cost', read_only=True)
     driver__first_name = serializers.StringRelatedField(source='driver.first_name', read_only=True)
     status__colour = serializers.StringRelatedField(source='status.colour', read_only=True)
     driver__mobile_number = serializers.StringRelatedField(source='driver.mobile_number', read_only=True)
-    scheduledorder__scheduled_date_and_time = serializers.StringRelatedField(source='scheduledorder.scheduled_date_and_time', read_only=True)
+    # scheduledorder__scheduled_date_and_time = serializers.StringRelatedField(source='scheduledorder.scheduled_date_and_time', read_only=True)
     driver__vehicle__vehicle_number = serializers.StringRelatedField(source='driver.vehicle.vehicle_number', read_only=True)
     driver__vehicle__vehicletypes__vehicle_type_name = serializers.StringRelatedField(source='driver.vehicle.vehicletypes.vehicle_type_name', read_only=True)
     order__location_detail = serializers.JSONField(source='order.location_detail')
-    
+
     class Meta:
         model = BookingDetail
         fields = '__all__'
