@@ -4784,6 +4784,9 @@ class OrderDeatilAPI(APIView):
         scheduled_orders = ScheduledOrder.objects.all().values('booking_id', 'scheduled_date_and_time')
         # print('scheduled_orders------------------', scheduled_orders)
 
+        scheduled_orders = ScheduledOrder.objects.all().values('booking_id', 'scheduled_date_and_time')
+        # print('scheduled_orders------------------', scheduled_orders)
+
         query_filters = []
         queryset = BookingDetail.objects.all().order_by('-id')
         vehicle_type_data = BookingDetail.objects.all().values('driver__vehicle__vehicletypes__vehicle_type_name')
@@ -4802,6 +4805,14 @@ class OrderDeatilAPI(APIView):
                 Q(trip_option__istartswith=search_key) |
                 Q(status__status_name__istartswith=search_key)
             )
+        # if start_date:
+        #     query_filters.append(
+        #         Q(ordered_time__gte=start_date)
+        #     )
+        # if end_date:
+        #     query_filters.append(
+        #         Q(ordered_time__lte=end_date)
+        #     )
         if start_date:
             print('start_date------------------:', start_date)
             query_filters.append(
@@ -6963,7 +6974,10 @@ class VehicleSubscriptionApi(APIView):
                         )
                     return Response({'order_id': payment['id']})
                 else:
-                    obj = Vehicle_Subscription.objects.filter(vehicle_id_id=vehicle_id).update(
+                    now = datetime.now()
+                    # expirydate= now + datetime.timedelta(validity_days)
+                    expirydate = now + timedelta(days=validity_days)
+                    obj=Vehicle_Subscription.objects.filter(vehicle_id_id=vehicle_id).update(
                         time_period=time_period,
                         date_subscribed=date_subscribed,
                         expiry_date=expirydate,
@@ -7249,7 +7263,6 @@ class History_of_SubscriptionplanApi(APIView):
         #         if booking['ordered_time'] and str(booking['ordered_time'].date()) == ordered_time:
 
 def templateView(request):
-
     return render(request, 'admin/customTemplate.html')
 
 

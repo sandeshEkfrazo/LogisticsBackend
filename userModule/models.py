@@ -14,6 +14,7 @@ class BookingDetail(models.Model):
     order = models.ForeignKey(OrderDetails,on_delete=models.CASCADE, blank=True,null=True )
     driver = models.ForeignKey(CustomUser, on_delete=models.CASCADE, blank=True,null=True)
     status = models.ForeignKey(Status,on_delete=models.CASCADE,blank=True,null=True)
+    trip_option=models.CharField(max_length=255, blank=True, null=True)
     total_amount = models.CharField(max_length=250, blank=True, null=True)
     travel_details = models.CharField(max_length=200, null=True, blank=True)
 
