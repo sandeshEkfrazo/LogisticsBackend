@@ -1,3 +1,4 @@
+
 from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -432,12 +433,15 @@ class BookingDistanceApiView(APIView):
 
     def post(self, request):
         data = request.data
-        threshold_value = data.get('threshold_value')
-        incremented_value = data.get('incremented_value')
-        description = data.get('description')
+        initial_km_value = data.get('initial_km_value')
+        incremented_km_value = data.get('incremented_km_value')
         last_km_value = data.get('last_km_value')
+        description = data.get('description')
+        intial_search_time = data.get('intial_search_time')
+        incremented_search_time = data.get('incremented_search_time')
+        last_search_time = data.get('last_search_time')
 
-        if not (threshold_value and incremented_value and description and last_km_value):
+        if not (initial_km_value and incremented_km_value and last_km_value and description  and intial_search_time and incremented_search_time and last_search_time):
             return Response({"message": "Missing required field"}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
@@ -447,10 +451,13 @@ class BookingDistanceApiView(APIView):
             # raise ValidationError("Data already exists. Use PUT request to update it.")
         except BookingDistance.DoesNotExist:
             # If a record doesn't exist, create a new one
-            distance = BookingDistance.objects.create(threshold_value=threshold_value,
-                                                      incremented_value=incremented_value,
+            distance = BookingDistance.objects.create(initial_km_value=initial_km_value,
+                                                      incremented_km_value=incremented_km_value,
+                                                      last_km_value=last_km_value,
                                                       description=description,
-                                                      last_km_value=last_km_value)
+                                                      intial_search_time=intial_search_time,
+                                                      incremented_search_time=incremented_search_time,
+                                                      last_search_time=last_search_time)
 
         serializer = BookingDistanceSerializer(distance)
         return Response({"message": "Data added successfully", "data": serializer.data}, status=status.HTTP_201_CREATED)
@@ -478,22 +485,34 @@ class BookingDistanceApiView(APIView):
 
         data = request.data
 
-        threshold_value = data.get('threshold_value')
-        incremented_value = data.get('incremented_value')
-        description = data.get('description')
+        initial_km_value = data.get('initial_km_value')
+        incremented_km_value = data.get('incremented_km_value')
         last_km_value = data.get('last_km_value')
+        description = data.get('description')
+        initial_search_time = data.get('initial_search_time')
+        incremented_search_time = data.get('incremented_search_time')
+        last_search_time = data.get('last_search_time')
 
-        if threshold_value is not None:
-            distance.threshold_value = threshold_value
+        if initial_km_value is not None:
+            distance.initial_km_value = initial_km_value
 
-        if incremented_value is not None:
-            distance.incremented_value = incremented_value
+        if incremented_km_value is not None:
+            distance.incremented_km_value = incremented_km_value
+
+        if last_km_value is not None:
+            distance.last_km_value  = last_km_value    
 
         if description is not None:
             distance.description = description
 
-        if last_km_value is not None:
-            distance.last_km_value  = last_km_value
+        if initial_search_time is not None:  
+            distance.initial_search_time = initial_search_time 
+
+        if incremented_search_time is not None:  
+            distance.incremented_search_time = incremented_search_time 
+
+        if last_search_time is not None:  
+            distance.last_search_time = last_search_time            
 
         distance.save()
 
