@@ -4784,9 +4784,6 @@ class OrderDeatilAPI(APIView):
         scheduled_orders = ScheduledOrder.objects.all().values('booking_id', 'scheduled_date_and_time')
         # print('scheduled_orders------------------', scheduled_orders)
 
-        scheduled_orders = ScheduledOrder.objects.all().values('booking_id', 'scheduled_date_and_time')
-        # print('scheduled_orders------------------', scheduled_orders)
-
         query_filters = []
         queryset = BookingDetail.objects.all().order_by('-id')
         vehicle_type_data = BookingDetail.objects.all().values('driver__vehicle__vehicletypes__vehicle_type_name')
@@ -4805,14 +4802,6 @@ class OrderDeatilAPI(APIView):
                 Q(trip_option__istartswith=search_key) |
                 Q(status__status_name__istartswith=search_key)
             )
-        # if start_date:
-        #     query_filters.append(
-        #         Q(ordered_time__gte=start_date)
-        #     )
-        # if end_date:
-        #     query_filters.append(
-        #         Q(ordered_time__lte=end_date)
-        #     )
         if start_date:
             print('start_date------------------:', start_date)
             query_filters.append(
@@ -6974,10 +6963,7 @@ class VehicleSubscriptionApi(APIView):
                         )
                     return Response({'order_id': payment['id']})
                 else:
-                    now = datetime.now()
-                    # expirydate= now + datetime.timedelta(validity_days)
-                    expirydate = now + timedelta(days=validity_days)
-                    obj=Vehicle_Subscription.objects.filter(vehicle_id_id=vehicle_id).update(
+                    obj = Vehicle_Subscription.objects.filter(vehicle_id_id=vehicle_id).update(
                         time_period=time_period,
                         date_subscribed=date_subscribed,
                         expiry_date=expirydate,
@@ -7186,83 +7172,9 @@ class History_of_SubscriptionplanApi(APIView):
             return Response(status=404, data={'message': 'Driver not found'})
 
 
-# class History_of_SubscriptionplanApi(APIView):
-#     def get(self, request):
-#         driver_id = request.query_params.get('driver_id')
-#         try:
-#             driver = Driver.objects.get(user_id=driver_id)
-#             vehicle = driver.vehicle
-#             subscriptions = Vehicle_Subscription.objects.filter(vehicle_id=vehicle.id)
-#             serialized_subscriptions = []
-#             for subscription in subscriptions:
-#                 current_date = datetime.now().date()
-#                 expiry_date = subscription.expiry_date.date()  # Convert expiry_date to datetime.date object
-#
-#                 if current_date > expiry_date:
-#                     status = 'Expired'
-#                 else:
-#                     status = 'Active'
-#
-#                 serialized_subscription = {
-#                     'time_period': subscription.time_period,
-#                     'date_subscribed': subscription.date_subscribed,
-#                     'expiry_date': subscription.expiry_date,
-#                     'amount': subscription.amount,
-#                     'status': status,
-#                     'is_amount_paid': subscription.is_amount_paid,
-#                     'paid_through': subscription.paid_through,
-#                     'type_of_service': subscription.type_of_service,
-#                     'validity_days': subscription.validity_days,
-#                     'is_expired': subscription.is_expired,
-#                     'driver_id': driver_id,
-#                     'driver_name': driver.user.first_name,
-#                     'vehicle_number': vehicle.vehicle_number,
-#                     'vehicle_name': vehicle.vehicle_name,
-#                     'mobile_number': driver.user.mobile_number,
-#                     'vehicle_type': vehicle.vehicletypes.vehicle_type_name,
-#                 }
-#                 serialized_subscriptions.append(serialized_subscription)
-#
-#             response_data = {
-#                 'subscriptions': serialized_subscriptions
-#             }
-#             return Response(response_data)
-#         except Driver.DoesNotExist:
-#             return Response(status=404, data={'message': 'Driver not found'})
-
-
-        # if year and status_id:
-        #     status_id_list = re.findall(r'\d+', status_id)
-        #     status_id_list = [int(num) for num in status_id_list]
-        #     response_data = []
-        #     for status_id in status_id_list:
-        #         status_record = Status.objects.get(id=status_id)
-        #         status_name = status_record.status_name
-        #         color = color_dict.get(status_name)
-        #         order_counts = {}
-        #         for month in range(1, 13):
-        #             days_in_month = calendar.monthrange(int(year), month)[1]
-        #             for day in range(1, days_in_month + 1):
-        #                 date = datetime.date(int(year), month, day)
-        #                 orders = bookings.filter(
-        #                     ordered_time__year=date.year,
-        #                     ordered_time__month=date.month,
-        #                     ordered_time__day=date.day,
-        #                     status_id=status_id,
-        #                 )
-        #                 count = orders.count()
-        #                 order_counts[date.strftime('%Y-%m-%d')] = count
-
-        #         response_data.append({
-        #             'status_name': status_name,
-        #             'color': color,
-        #             'order_counts': [{'date': date, 'count': order_counts.get(date, 0)} for date in order_counts.keys()]
-        #         })
-        #     return Response(response_data)
-        # return Response([])  like ths i need to filter the dates             for booking in bookings:
-        #         if booking['ordered_time'] and str(booking['ordered_time'].date()) == ordered_time:
 
 def templateView(request):
+
     return render(request, 'admin/customTemplate.html')
 
 
