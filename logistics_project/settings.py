@@ -118,14 +118,27 @@ ASGI_APPLICATION = 'logistics_project.asgi.application'
 
 
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'OPTIONS': {
+#             'read_default_file': '/logistics_dev/auth/mysql.cnf',
+#         },
+#     }
+# }
+
+
 DATABASES = {
-    'default': {
+        'default': 
+        {
         'ENGINE': 'django.db.backends.mysql',
-        'OPTIONS': {
-            'read_default_file': '/logistics_dev/auth/mysql.cnf',
-        },
+        'NAME': 'logistics',
+        'USER': 'root',    
+        'PASSWORD': '123456',    
+        'HOST': '127.0.0.1',    #'143.110.184.45'
+        'PORT': '3306',     
+        }
     }
-}
 
 
 
