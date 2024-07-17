@@ -4715,10 +4715,10 @@ class DriverSignup(APIView):
 
         else:
             if data.get('updated_by'):
-                CustomUser.objects.filter(id=driver_id).update(first_name=full_name)
+                CustomUser.objects.filter(id=driver_id).update(first_name=full_name,mobile_number=mobile_number)
                 Driver.objects.filter(user_id=driver_id).update(owner_id=None, driver_driving_license=driving_licence_number, badge=badge)
             else:
-                CustomUser.objects.filter(id=driver_id).update(first_name=full_name)
+                CustomUser.objects.filter(id=driver_id).update(first_name=full_name,mobile_number=mobile_number)
                 Driver.objects.filter(user_id=driver_id).update(owner_id=None, driver_driving_license=driving_licence_number, driver_status = "waiting for verification", badge=badge, is_online=False)
 
         
