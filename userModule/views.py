@@ -164,17 +164,40 @@ class BookVehicleAPI(APIView):
 
                     get_est_cost = views.find_vehicle_estimation_cost(data, vehicle_obj.vehicletypes_id, location_detail)
 
-                    # print("get_est_cost by vehicle number book by number ==>>", get_est_cost)
+                    #driver info and estimation cost
+                    driver = CustomUser.objects.filter(vehicle=vehicle_obj).first()
+                    if not driver:
+                        return Response({'error': 'Driver not found for the given vehicle number'}, status=status.HTTP_404_NOT_FOUND)
+                        
+                    feedbacks = UserFeedback.objects.filter(driver=driver.id)
+                    if feedbacks.exists():
+                        average_rating = feedbacks.aggregate(Avg('rating'))['rating__avg']
+                    else:
+                        average_rating = None
+                        
+                    vehicle_type_image = driver.vehicle.vehicletypes.vehicle_type_image
+                    vehicle_type_image_url = f"{settings.MEDIA_URL}{vehicle_type_image}"
+
+                    driver_info = {
+                            'driver_name': driver.first_name, 
+                            'driver_number': driver.mobile_number,   
+                            'vehicle_type': driver.vehicle.vehicletypes.vehicle_type_name,  
+                            'vehicle_registration_number': driver.vehicle.vehicle_number,
+                            'vehicle_type_image':vehicle_type_image_url,
+                            'driver_rating': average_rating,
+                            'total_estimated_cost' : get_est_cost['total_fare_amount'] 
+                    }    
+
                     order_obj = OrderDetails.objects.create(user_id=user_id, vehicle_number=vehicle_number, location_detail=location_detail, total_estimated_cost=get_est_cost.get('total_fare_amount', 0))
                     # order_obj = OrderDetails.objects.create(user_id=user_id, vehicle_number=vehicle_number, location_detail=location_detail,total_estimated_cost = get_est_cost['total_fare_amount'])
 
-                    total_amount_without_actual_time_taken = get_est_cost['final_km_charge'] + get_est_cost['base_fee']
+                    total_amount_without_actual_time_taken = int(get_est_cost['final_km_charge'] + get_est_cost['base_fee'])
 
                     driver_obj = Driver.objects.get(vehicle__vehicle_number=vehicle_number)
 
                     booking_obj = BookingDetail.objects.create(order_id=order_obj.id, driver_id=driver_obj.user_id, status_id=1, travel_details=travel_details, ordered_time=datetime.now(), sub_user_phone_numbers=sub_user_ph_number, total_amount_without_actual_time_taken=total_amount_without_actual_time_taken)
 
-                    return Response({'message': 'wait till the driver accepts your order', 'order_id':order_obj.id,'user':sub_user_ph_number, 'vehicle_type_id': vehicle_obj.vehicletypes_id})
+                    return Response({'message': 'wait till the driver accepts your order', 'order_id':order_obj.id,'user':sub_user_ph_number, 'vehicle_type_id': vehicle_obj.vehicletypes_id,'driver_info':driver_info})
                 return Response({'message': 'The driver with the vehicle number is not online right now', 'status': "NOT FOUND"}, status=status.HTTP_404_NOT_FOUND)
             else:
                 return Response({'message': 'This driver is not online', 'status': "NOT FOUND"},
@@ -203,7 +226,7 @@ class BookVehicleAPI(APIView):
 
                 get_est_cost = views.find_vehicle_estimation_cost(data, data['vehicle_type'], location_detail)
 
-                total_amount_without_actual_time_taken = get_est_cost['final_km_charge'] + get_est_cost['base_fee']
+                total_amount_without_actual_time_taken = int(get_est_cost['final_km_charge'] + get_est_cost['base_fee'])
 
                 booking_obj = BookingDetail.objects.create(order_id=order_obj.id, status_id=1, travel_details=travel_details, ordered_time=datetime.now(), sub_user_phone_numbers=sub_user_ph_number,total_amount_without_actual_time_taken=total_amount_without_actual_time_taken, is_scheduled=is_scheduled, vehicle_type_id=data['vehicle_type'])
 
@@ -320,7 +343,7 @@ class BookVehicleAPI(APIView):
                     # print("get_est_cost by vehicle number random vehicle ==>>", get_est_cost)
 
                     # total_amount_without_actual_time_taken = get_est_cost['final_km_charge'] + get_est_cost['base_fee']
-                    total_amount_without_actual_time_taken = get_est_cost.get('final_km_charge', 0) + get_est_cost.get('base_fee', 0)
+                    total_amount_without_actual_time_taken = int(get_est_cost.get('final_km_charge', 0) + get_est_cost.get('base_fee', 0))
 
                     print("randomly_assigning_driver",randomly_assigning_driver)
 
