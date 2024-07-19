@@ -986,12 +986,6 @@ class AllScheduledOrder(APIView):
             # Apply pagination
             paginator = CustomPagination()
 
-            page = request.query_params.get('page')
-            if search_key and page:
-                request.query_params._mutable = True
-                request.query_params['page'] = '1'
-                request.query_params._mutable = False
-
             paginated_queryset = paginator.paginate_queryset(queryset, request)
 
             # Serialize paginated data

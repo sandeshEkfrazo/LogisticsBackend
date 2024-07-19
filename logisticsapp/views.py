@@ -6634,7 +6634,7 @@ class VehicleSubscriptionApi(APIView):
             return JsonResponse({'data': data})
         else:
             if request.query_params.get('page_size') is None and request.query_params.get('page') is None:
-                data = Vehicle_Subscription.objects.all().select_related('vehicle_id', 'vehicle_id_vehicletypes').values('id', 'vehicle_idvehicle_name', 'time_period', 'date_subscribed', 'expiry_date', 'amount', 'status', 'is_amount_paid', 'paid_through', 'type_of_service', 'vehicle_id', 'validity_days', 'is_expired', 'vehicle_idvehicle_number', 'vehicle_idvehicletypes_vehicle_type_name')
+                data = Vehicle_Subscription.objects.all().select_related('vehicle_id', 'vehicle_id_vehicletypes').values('id', 'vehicle_id__vehicle_name', 'time_period', 'date_subscribed', 'expiry_date', 'amount', 'status', 'is_amount_paid', 'paid_through', 'type_of_service', 'vehicle_id', 'validity_days', 'is_expired', 'vehicle_id__vehicle_number', 'vehicle_id__vehicletypes__vehicle_type_name')
 
                 result = []
                 for item in data:
@@ -6665,18 +6665,22 @@ class VehicleSubscriptionApi(APIView):
                 search_key = request.query_params.get('search_key')
                 print(search_key)
                 if search_key:
+                    # Search in Driver model to get matching vehicle IDs
+                    driver_vehicle_ids = Driver.objects.filter(
+                                   Q(user__first_name__istartswith=search_key) |
+                                   Q(user__mobile_number__istartswith=search_key)
+                        ).values_list('vehicle_id', flat=True)
                     queryset = Vehicle_Subscription.objects.filter(
                                    Q(vehicle_id__vehicle_number__istartswith=search_key) | 
                                    Q(vehicle_id__vehicletypes__vehicle_type_name__istartswith=search_key) |
-                                   Q(driver_id__user__first_name__istartswith=search_key) |
-                                   Q(driver_id__user__mobile_number__istartswith=search_key) |
                                    Q(vehicle_id__vehicle_name__istartswith=search_key) |
                                    Q(type_of_service__istartswith=search_key) |
                                    Q(time_period__istartswith=search_key) |
                                    Q(validity_days__iexact=search_key) |
                                    Q(amount__iexact=search_key) |
-                                   Q(status__istartswith=search_key) 
-                                   ).select_related('vehicle_id', 'vehicle_id__vehicletypes', 'driver_id__user').order_by('-id')
+                                   Q(status__istartswith=search_key) |
+                                   Q(vehicle_id__in=driver_vehicle_ids)
+                                   ).select_related('vehicle_id', 'vehicle_id__vehicletypes').order_by('-id')
                     print(queryset)
                 else:
                     queryset = Vehicle_Subscription.objects.all().select_related('vehicle_id', 'vehicle_id__vehicletypes')
@@ -6701,15 +6705,23 @@ class VehicleSubscriptionApi(APIView):
                         expired_date = parser.parse(item['expiry_date'])
                     except ValueError:
                         expired_date = None
-                     
+                    
+                    # if expired_date:
+                    #     is_expired = expired_date <= current_datetime
+                    #     print(is_expired,"------------------------------")
+                    #     item['is_expired'] = is_expired
+                    #     item['status'] = 'Expired' if is_expired else 'Active'
 
                     if expired_date:
+                        subscription_instance = Vehicle_Subscription.objects.get(id=item['id'])
                         is_expired = expired_date <= current_datetime
                         item['is_expired'] = is_expired
                         item['status'] = 'Expired' if is_expired else 'Active'
-                  
-
+                        subscription_instance.status=item['status']
+                        subscription_instance.save()
+                        
                 return paginator.get_paginated_response(serializer.data)
+            
     # def get(self, request):
     #         current_date = timezone.now()  # Get current date and time in UTC timezone
 
