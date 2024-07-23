@@ -195,7 +195,7 @@ class BookVehicleAPI(APIView):
 
                     driver_obj = Driver.objects.get(vehicle__vehicle_number=vehicle_number)
 
-                    booking_obj = BookingDetail.objects.create(order_id=order_obj.id, driver_id=driver_obj.user_id, status_id=1, travel_details=travel_details, ordered_time=datetime.now(), sub_user_phone_numbers=sub_user_ph_number, total_amount_without_actual_time_taken=total_amount_without_actual_time_taken)
+                    booking_obj = BookingDetail.objects.create(order_id=order_obj.id, driver_id=driver_obj.user_id, status_id=1,trip_option="Book by Vehicle Numbers", travel_details=travel_details, ordered_time=datetime.now(), sub_user_phone_numbers=sub_user_ph_number, total_amount_without_actual_time_taken=total_amount_without_actual_time_taken)
 
                     return Response({'message': 'wait till the driver accepts your order', 'order_id':order_obj.id,'user':sub_user_ph_number, 'vehicle_type_id': vehicle_obj.vehicletypes_id,'driver_info':driver_info})
                 return Response({'message': 'The driver with the vehicle number is not online right now', 'status': "NOT FOUND"}, status=status.HTTP_404_NOT_FOUND)
@@ -228,7 +228,7 @@ class BookVehicleAPI(APIView):
 
                 total_amount_without_actual_time_taken = int(get_est_cost['final_km_charge'] + get_est_cost['base_fee'])
 
-                booking_obj = BookingDetail.objects.create(order_id=order_obj.id, status_id=1, travel_details=travel_details, ordered_time=datetime.now(), sub_user_phone_numbers=sub_user_ph_number,total_amount_without_actual_time_taken=total_amount_without_actual_time_taken, is_scheduled=is_scheduled, vehicle_type_id=data['vehicle_type'])
+                booking_obj = BookingDetail.objects.create(order_id=order_obj.id, status_id=1,trip_option="Book Later", travel_details=travel_details, ordered_time=datetime.now(), sub_user_phone_numbers=sub_user_ph_number,total_amount_without_actual_time_taken=total_amount_without_actual_time_taken, is_scheduled=is_scheduled, vehicle_type_id=data['vehicle_type'])
 
 
                 last_hour_date_time = dt - timedelta(hours = 1)
@@ -352,7 +352,7 @@ class BookVehicleAPI(APIView):
                     print("min_object",min_object)
 
                     # booking_obj = BookingDetail.objects.create(order_id=order_obj.id, driver_id=randomly_assigning_driver[-1]['driver_id'], status_id=1, travel_details=travel_details, ordered_time=datetime.datetime.now(), sub_user_phone_numbers=sub_user_ph_number,total_amount_without_actual_time_taken=total_amount_without_actual_time_taken, is_scheduled=is_scheduled)
-                    booking_obj = BookingDetail.objects.create(order_id=order_obj.id, driver_id=min_object['driver_id'], status_id=1, travel_details=travel_details, ordered_time=datetime.now(), sub_user_phone_numbers=sub_user_ph_number,total_amount_without_actual_time_taken=total_amount_without_actual_time_taken, is_scheduled=is_scheduled)
+                    booking_obj = BookingDetail.objects.create(order_id=order_obj.id, driver_id=min_object['driver_id'], status_id=1,trip_option="Book Now", travel_details=travel_details, ordered_time=datetime.now(), sub_user_phone_numbers=sub_user_ph_number,total_amount_without_actual_time_taken=total_amount_without_actual_time_taken, is_scheduled=is_scheduled)
 
 
                     # time_search = 1
