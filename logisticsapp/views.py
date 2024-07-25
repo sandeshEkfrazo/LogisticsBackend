@@ -1285,7 +1285,6 @@ class VehicleTypesView(APIView):
                 return paginator.get_paginated_response(serializer.data)
 
 
-
             # all_data = VehicleTypes.objects.all().values()
             # return Response({'result':{'status':'GET','data':all_data}})
 
@@ -4584,6 +4583,9 @@ class DriverSignup(APIView):
 
         if Driver.objects.filter(Q(driver_driving_license=driving_licence_number) & ~Q(user_id=driver_id)).exists():
             return Response({'Error': 'This driving licence is already exists'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        elif CustomUser.objects.filter(mobile_number=mobile_number):
+            return Response({'Error': 'This mobile number is already exists'}, status=status.HTTP_400_BAD_REQUEST)
 
         if data['profile_image']:
             if "data:image/" in data['profile_image']:
