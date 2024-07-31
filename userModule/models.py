@@ -42,7 +42,7 @@ class BookingDetail(models.Model):
     actual_time_taken_to_complete = models.CharField(max_length=200, null=True, blank=True)
 
     actual_time_taken_to_complete = models.CharField(max_length=200, null=True, blank=True)
-    pick1 = models.CharField(max_length=200, null=True, blank=True)
+    # pick1 = models.CharField(max_length=200, null=True, blank=True)
     total_amount_without_actual_time_taken = models.FloatField(null=True, blank=True)
 
     is_scheduled = models.BooleanField(default=False)
@@ -50,12 +50,12 @@ class BookingDetail(models.Model):
 
     vehicle_type = models.ForeignKey(VehicleTypes, on_delete=models.CASCADE, null=True, blank=True)
     is_all_mobile_number_verified = models.BooleanField(default=False, null=True, blank=True)
-    is_verified_otp = models.JSONField(null=True, blank=True)
+    # is_verified_otp = models.JSONField(null=True, blank=True)
     otp_json = models.JSONField(null=True, blank=True)
     pickup_drop_details = models.CharField(max_length=100, null=True, blank=True)
     # total_estimated_time = models.DurationField(default=timedelta(hours=0, minutes=6, seconds=30))
-    total_estimated_time = models.CharField(max_length=8, default='00:00:00')
-    ride_types= models.ForeignKey(RideType,on_delete=models.CASCADE, blank=True,null=True )
+    # total_estimated_time = models.CharField(max_length=8, default='00:00:00')
+    # ride_types= models.ForeignKey(RideType,on_delete=models.CASCADE, blank=True,null=True )
     assigned = models.JSONField(null=True, blank=True) # on off value for showing the pop of to driver orders after 2 min if the first driver not accepting the ride , initially on 
     
     # class Meta:

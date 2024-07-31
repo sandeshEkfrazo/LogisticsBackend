@@ -1338,15 +1338,16 @@ class DriverInfo(APIView):
             average_rating = None
         
         vehicle_type_image = driver.vehicle.vehicletypes.vehicle_type_image
-        vehicle_type_image_url = f"{settings.MEDIA_URL}{vehicle_type_image}"
+        print(vehicle_type_image,"-----------------")
+       
         driver_info = {
             'driver_name': driver.first_name, 
             'driver_number': driver.mobile_number,   
             'vehicle_type': driver.vehicle.vehicletypes.vehicle_type_name,  
             'vehicle_registration_number': driver.vehicle.vehicle_number,
-            'vehicle_type_image':vehicle_type_image_url,
+            'vehicle_type_image':vehicle_type_image.url,
             'driver_rating': average_rating 
         }
         return Response(driver_info, status=status.HTTP_200_OK)
     
-    
+    #  vehicle_type_image_url = f"{settings.MEDIA_URL}{vehicle_type_image}"

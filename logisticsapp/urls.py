@@ -156,5 +156,6 @@ urlpatterns = [
     path('selected_ride_type/', SelectedRideTypeAPI.as_view()),
     
     path('vehicle_amount/', Vehicle_tpes_amountAPI.as_view()),
+    path('vehicle_counts/', VehicleCounts.as_view()),
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -1864,7 +1864,7 @@ class PaymentDetailView(APIView):
             # all_values = EmployeeDetail.objects.filter(id=pk).delete()
             return Response({'result':{'status':'deleted'}})
 
-@method_decorator([authorization_required], name='dispatch')
+# @method_decorator([authorization_required], name='dispatch')
 class DriverView(APIView):
     # def get(self,request):
     #     # CheckAccess(request)
@@ -1940,6 +1940,8 @@ class DriverView(APIView):
 
     def get(self, request):
         id = request.query_params.get('id')
+        # date_status = False: All fields in date_fields have non-None values.
+        # date_status = True: At least one field in date_fields has a None value.
         date_fields = [
             'fitness_certificate_expire_date',
             'insurance_expire_date',
@@ -2025,9 +2027,6 @@ class DriverView(APIView):
             paginated_queryset = paginator.paginate_queryset(queryset, request)
             serializer = DriversSerializer(paginated_queryset, many=True)
 
-            # Calculate date_status for each serialized object
-            # for driver_data in serializer.data:
-            #     driver_data['date_status'] = any(not driver_data.get(field) for field in date_fields)
             for driver in serializer.data:
                 date_status = False
                 for field in date_fields:
@@ -2036,7 +2035,11 @@ class DriverView(APIView):
                         break
                 driver['date_status'] = date_status
 
-            return paginator.get_paginated_response(serializer.data)
+            if self.request.query_params.get('page_size') is None and self.request.query_params.get('page') is None:
+                return Response({'result': {'data': queryset.order_by('-id').values('id','vehicle_id','vehicle__vehicle_status','user_id','owner_id','driver_driving_license','badge','user_id','user__role__id','user__first_name','user__mobile_number','passbook_img','vehicle__vehicle_name','vehicle__vehicle_number','vehicle__permit_front_side_img_path','vehicle__pollution_certificate_front_side_img_path','vehicle__registration_certificate_back_side_img_path','vehicle__registration_certificate_front_side_img_path','license_img_back','vehicle__vehicletypes__vehicle_type_name', 'license_expire_date', 'insurance_expire_date', 'fitness_certificate_expire_date', 'vehicle__permit_expire_date', 'vehicle__rc_expire_date', 'vehicle__emission_certificate_expire_date', 'is_online', 'is_active', 'driver_status')}})
+            else:
+                return paginator.get_paginated_response(serializer.data)
+
 
 
 
@@ -4584,7 +4587,7 @@ class DriverSignup(APIView):
         if Driver.objects.filter(Q(driver_driving_license=driving_licence_number) & ~Q(user_id=driver_id)).exists():
             return Response({'Error': 'This driving licence is already exists'}, status=status.HTTP_400_BAD_REQUEST)
         
-        if CustomUser.objects.filter(mobile_number=mobile_number,role__user_role_name='Driver'):
+        if CustomUser.objects.filter(Q(mobile_number=mobile_number,role__user_role_name='Driver') & ~Q(id=driver_id)).exists():
             return Response({'Error': 'This mobile number is already exists'}, status=status.HTTP_400_BAD_REQUEST)
 
         if data['profile_image']:
@@ -4875,7 +4878,7 @@ class OrderDeatilAPI(APIView):
         if 'page' in request.query_params:
             return paginator.get_paginated_response(response_data)
         else:
-            return Response({"results":response_data}) 
+            return Response({"result":response_data}) 
 
         # paginator = CustomPagination()
         # if 'page' in request.query_params:
@@ -5431,7 +5434,7 @@ def find_vehicle_estimation_cost(data, vehicle_type_id, location_details):
                 # 'total_fare_amount': round(total_charge,0),
                 'total_fare_amount': float(min_charge) + (float(free_min) * 0) + (remaining_minues['value'] * float(per_minute_price)) + (round(final_km['final_km'], 0) * float(per_kilm_price)),
                 # 'total_fare_amount': int(total_charge),
-                'final_km_charge': final_km_charge,
+                'final_km_charge': round(final_km_charge,2),
                 'min_km':min_km,
                 'max_time_min':max_time_min,
                 'min_charge':min_charge,
@@ -5451,7 +5454,7 @@ def find_vehicle_estimation_cost(data, vehicle_type_id, location_details):
                 'total_fare_amount': round(total_charge,0),
                 'total_minutes_of_ride': final_min['final_min'],
                 'total_km_of_ride': round(final_km['final_km'], 0),
-                'final_km_charge': final_km_charge,
+                'final_km_charge': round(final_km_charge,2),
                 'min_km':min_km,
                 'max_time_min':max_time_min,
                 'min_charge':min_charge,
@@ -5527,11 +5530,11 @@ def find_vehicle_estimation_cost(data, vehicle_type_id, location_details):
                     'total_minutes_of_ride': total_final_min,
                     'total_km_of_ride': round(abs(sum(final_km)), 0),
                     'remaining_minutes': remaining_minutes_value,  # Use the variable directly
-                    'final_km_charge': final_km_charge,  # Correct the typo to final_km_charge
+                    'final_km_charge': round(final_km_charge,2),  # Correct the typo to final_km_charge
                     'min_km': min_km,
                     'max_time_min': max_time_min,
                     'min_charge': min_charge,
-                    'total_fare_amount': total_charge,
+                    'total_fare_amount': round(total_charge,2),
                 }
                 
             return final_est_cost_op
@@ -5554,12 +5557,12 @@ def find_vehicle_estimation_cost(data, vehicle_type_id, location_details):
                 'min_km':min_km,
                 'max_time_min':max_time_min,
                 'min_charge':min_charge,
-                'total_fare_amount': float(min_charge or 0) + (float(free_min or 0) * 0) + (float(remaining_minues['value'] or 0) * float(per_minute_price or 0)) + (float(round(abs(sum(final_km or [0])), 0)) * float(per_kilm_price or 0)),
+                'total_fare_amount': round(float(min_charge or 0) + (float(free_min or 0) * 0) + (float(remaining_minues['value'] or 0) * float(per_minute_price or 0)) + (float(round(abs(sum(final_km or [0])), 0)) * float(per_kilm_price or 0)),2)
                 # 'total_fare_amount': float(min_charge) + (float(free_min) * 0) + (remaining_minues['value'] * float(per_minute_price)) + (float(round(abs(sum(final_km)), 0)) * float(per_kilm_price)),
                 }
             return final_est_cost_op
 
-@method_decorator([authorization_required], name='dispatch')
+# @method_decorator([authorization_required], name='dispatch')
 class vehicle_estimation_costApi(APIView):
     def post(self, request):
         data=request.data
@@ -6685,7 +6688,7 @@ class VehicleSubscriptionApi(APIView):
                                    ).select_related('vehicle_id', 'vehicle_id__vehicletypes').order_by('-id')
                     print(queryset)
                 else:
-                    queryset = Vehicle_Subscription.objects.all().select_related('vehicle_id', 'vehicle_id__vehicletypes')
+                    queryset = Vehicle_Subscription.objects.all().select_related('vehicle_id', 'vehicle_id__vehicletypes').order_by('-id')
 
                 paginator = CustomPagination()
                 paginated_queryset = paginator.paginate_queryset(queryset, request)
@@ -7293,3 +7296,20 @@ class Vehicle_tpes_amountAPI(APIView):
         print('veh-------------',veh)
         return Response(veh)
 
+class VehicleCounts(APIView):
+    def get(self,request):
+        vehicle_type_id = request.query_params.get("vehicle_type")
+         
+        try:
+            vehicle_type=VehicleTypes.objects.get(id=vehicle_type_id)
+        except VehicleTypes.DoesNotExist:
+             return Response({'Error':'This vehicle type is not exist'},status=status.HTTP_404_NOT_FOUND)
+
+        vehicle_count = Vehicle.objects.filter(vehicletypes=vehicle_type_id).count()
+
+        results ={
+               'Vehicle_type':vehicle_type.vehicle_type_name,
+               'Vehicle_count':vehicle_count
+        }
+
+        return Response(results,status=status.HTTP_200_OK)
