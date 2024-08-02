@@ -90,6 +90,7 @@ s = parser.isoparse("2023-03-10T07:58:10.585622Z")
 from datetime import timedelta
 from django.shortcuts import render
 from django.db.models import Avg
+import copy
 
 def renderTemplate(request):
     return render(request, 'orderTemplate.html')
@@ -369,10 +370,9 @@ class BookVehicleAPI(APIView):
                     return Response({'message': 'wait till the driver accepts your order', 'data': finalArr, 'order_id':order_obj.id})
             return Response({'message': 'no vehicle found near you', 'status': "NOT FOUND"}, status=status.HTTP_404_NOT_FOUND)
             
-
-        # else:
-        #     return Response({'message': 'This vechicle is not registered', 'status': "NOT FOUND"},
-        #                     status=status.HTTP_404_NOT_FOUND)
+    
+    
+       
 
 
 @method_decorator([authorization_required], name='dispatch')
@@ -619,7 +619,7 @@ def RegisterUserAfterVerifyOTP(mobile_number, otp, logged_in_time, role):
                 return {'res': data.decode("utf-8")}
         else:
             if parsed_json['type'] == 'success':
-                customUser = CustomUser.objects.create(mobile_number=mobile_number, role_id=2, user_status="Registered with Mobile Number")
+                customUser = CustomUser.objects.create(mobile_number=mobile_number, role_id=2, user_status="Registered with Mobile Number",login_status=True,user_active_status="Active")
                 auth_token = jwt.encode({'user_id': customUser.id}, str(settings.JWT_SECRET_KEY), algorithm="HS256")
                 return {'res': data.decode("utf-8"), 'user_id': customUser.id, 'token': auth_token, 'user_status': customUser.user_status}
             if parsed_json['type'] == 'failure' or parsed_json['type'] == 'error':
@@ -649,7 +649,7 @@ class GetOTPDetails(APIView):
 def verifyOTP(mobile_number, otp, logged_in_time, order_id=None, otp_json=None, pickup_drop_details=None):
     looged_in_time = datetime.fromtimestamp(float(logged_in_time))
     new_time = looged_in_time + timedelta(minutes=2)
-
+   
     if datetime.now() > new_time:
         message = {'message': '"OTP has been expired"', 'type': 'failure'}
         json_string = json.dumps(message)
