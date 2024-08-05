@@ -441,7 +441,7 @@ class BookingDistanceApiView(APIView):
         incremented_search_time = data.get('incremented_search_time')
         last_search_time = data.get('last_search_time')
 
-        if not (initial_km_value and incremented_km_value and last_km_value and description  and intial_search_time and incremented_search_time and last_search_time):
+        if not (initial_km_value and incremented_km_value and last_km_value and intial_search_time and incremented_search_time and last_search_time):
             return Response({"message": "Missing required field"}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
