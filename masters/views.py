@@ -397,7 +397,7 @@ class AboutusApi(APIView):
         else:
             converted_logo = convertBase64(logo, 'logo', heading, "logos")
             about = Aboutus.objects.create(logo=converted_logo,heading=heading,paragraph=paragraph,phone_number=phone_number,alternate_phone_number=alternate_phone_number,email=email,text=text)
-            return Response({'message':'Successfully added Aboutus'})
+            return Response({'message':'About Us details are added.'})
 
     def put(self,request,pk):
         data = request.data
@@ -411,7 +411,7 @@ class AboutusApi(APIView):
         if Aboutus.objects.filter(id=pk).exists():
             converted_logo = convertBase64(logo, 'logo', heading, "logos")
             Aboutus.objects.filter(id=pk).update(logo=converted_logo,heading=heading,paragraph=paragraph,phone_number=phone_number,alternate_phone_number=alternate_phone_number,text=text,email=email)
-            return Response({'message':'Successfully update Aboutus'})
+            return Response({'message':'About Us details are updated.'})
         else:
             return Response({'error':'aboutus id not found'},status=status.HTTP_404_NOT_FOUND)
 
@@ -421,7 +421,7 @@ class AboutusApi(APIView):
             Aboutus.objects.filter(id=pk).delete()
             return Response({'message':'Successfully delete Aboutus'})
         else:
-            return Response({'error':'aboutus id not found!!'},status=status.HTTP_404_NOT_FOUND)
+            return Response({'error':'About Us details are deleted.'},status=status.HTTP_404_NOT_FOUND)
 
 
 class BookingDistanceApiView(APIView):
