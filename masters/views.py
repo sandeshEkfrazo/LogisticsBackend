@@ -419,9 +419,9 @@ class AboutusApi(APIView):
         data = request.data
         if Aboutus.objects.filter(id=pk).exists():
             Aboutus.objects.filter(id=pk).delete()
-            return Response({'message':'Successfully delete Aboutus'})
+            return Response({'message':'About Us details are deleted.'})
         else:
-            return Response({'error':'About Us details are deleted.'},status=status.HTTP_404_NOT_FOUND)
+            return Response({'error':'aboutus id not found!!'},status=status.HTTP_404_NOT_FOUND)
 
 
 class BookingDistanceApiView(APIView):
