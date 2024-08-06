@@ -552,6 +552,10 @@ class VerifyOtpPhoneNumberApiView(APIView):
             custom_user_obj = CustomUser.objects.get(Q(mobile_number=mobile_number) & Q(role_id=role.id))
             auth_token = jwt.encode({'user_id': custom_user_obj.id}, str(settings.JWT_SECRET_KEY), algorithm="HS256")
             res = verifyOTP(mobile_number, otp_recieved, logged_in_time)  
+            print(res,"--------")
+            if 'error' or 'failure' in res:
+                # Handle OTP verification failure
+                return Response({'error': 'Invalid or expired OTP'}, status=400)
             
             custom_user_obj.user_active_status = 'Active'
             custom_user_obj.login_status = True 
@@ -4961,6 +4965,15 @@ class DriverSignup(APIView):
         if Driver.objects.filter(Q(driver_driving_license=driving_licence_number) & ~Q(user_id=driver_id)).exists():
             return Response({'Error': 'This driving licence is already exists'}, status=status.HTTP_400_BAD_REQUEST)
         
+        
+        if data['profile_image'] is None:
+            CustomUser.objects.filter(id=driver_id).update(profile_image=None)
+            response_data = {
+                'message': 'Driver profile image is set to null',
+                'profile_image_path': None,
+            }
+            return Response(response_data)
+
         if data['profile_image']:
             if "data:image/" in data['profile_image']:
                 converted_profile_image = convertBase64(data['profile_image'], 'driver_profile_image', uuid.uuid4(), 'profile')
@@ -7492,6 +7505,9 @@ class History_of_SubscriptionplanApi(APIView):
             else:
                 driver = Driver.objects.get(user_id=driver_id)
                 vehicle = driver.vehicle
+                print("333333333------",vehicle)
+               
+                
                 queryset = Vehicle_Subscription.objects.filter(vehicle_id=vehicle.id)
 
                 # Apply search filter if search_key is provided
