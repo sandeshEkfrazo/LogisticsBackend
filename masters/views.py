@@ -293,12 +293,13 @@ class SubscriptionplanApi(APIView):
         validity_days=data['validity_days']
         amount = data['amount']
         type_of_service=data['type_of_service']
-        status=data['status']
-        if Subscriptionplan.objects.filter(time_period=time_period,validity_days=validity_days,amount=amount,type_of_service=type_of_service,status=status).exists():
+        statuss=data['status']
+        if Subscriptionplan.objects.filter(time_period=time_period,validity_days=validity_days,amount=amount,type_of_service=type_of_service,status=statuss).exists():
             return Response({'error':'Subscriptionplan is already exists'},status=status.HTTP_400_BAD_REQUEST)
         else:
-            data=Subscriptionplan.objects.create(time_period=time_period,validity_days=validity_days,amount=amount,type_of_service=type_of_service,status=status)
-            return Response({'message':data })
+            data=Subscriptionplan.objects.create(time_period=time_period,validity_days=validity_days,amount=amount,type_of_service=type_of_service,status=statuss)
+            serializer = SubscriptionSerializer(data)
+            return Response({'message':serializer.data},status=status.HTTP_201_CREATED)
 
     # def put(self,request,pk):
     def put(self, request, pk):
