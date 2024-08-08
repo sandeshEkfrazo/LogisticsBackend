@@ -552,10 +552,6 @@ class VerifyOtpPhoneNumberApiView(APIView):
             custom_user_obj = CustomUser.objects.get(Q(mobile_number=mobile_number) & Q(role_id=role.id))
             auth_token = jwt.encode({'user_id': custom_user_obj.id}, str(settings.JWT_SECRET_KEY), algorithm="HS256")
             res = verifyOTP(mobile_number, otp_recieved, logged_in_time)  
-            print(res,"--------")
-            if 'error' or 'failure' in res:
-                # Handle OTP verification failure
-                return Response({'error': 'Invalid or expired OTP'}, status=400)
             
             custom_user_obj.user_active_status = 'Active'
             custom_user_obj.login_status = True 
@@ -6615,7 +6611,7 @@ class FilterCountApi(APIView):
         #         })        
         #     return Response(month_arr)
 
-@method_decorator([authorization_required], name='dispatch')
+# @method_decorator([authorization_required], name='dispatch')
 class DriverDocumentExpiryvalidityApi(APIView):
     def get(self,request):
         data = request.data
@@ -6640,7 +6636,7 @@ class DriverDocumentExpiryvalidityApi(APIView):
 
         for label in labels:
                     if DriverDocumentExpiryvalidity.objects.filter(label=label).exists():
-                        return Response({'data': f'Duplicate value: {label}'}) 
+                        return Response({'error': f'Duplicate value: {label}'},status=status.HTTP_400_BAD_REQUEST) 
         for label in labels:
             try:
                 val_obj = DriverDocumentExpiryvalidity.objects.get(label=label)
@@ -6656,7 +6652,7 @@ class DriverDocumentExpiryvalidityApi(APIView):
                     description=description
                 )
 
-        return Response({'data': 'Validity days successfully added!!'})
+        return Response({'data': 'Validity days successfully added!!'},status=status.HTTP_201_CREATED)
 
 
     def put(self,request,pk):
@@ -7504,10 +7500,10 @@ class History_of_SubscriptionplanApi(APIView):
                 return Response(response_data)
             else:
                 driver = Driver.objects.get(user_id=driver_id)
+                if not driver.vehicle:
+                   return Response([], status=status.HTTP_200_OK)
                 vehicle = driver.vehicle
-                print("333333333------",vehicle)
                
-                
                 queryset = Vehicle_Subscription.objects.filter(vehicle_id=vehicle.id)
 
                 # Apply search filter if search_key is provided
