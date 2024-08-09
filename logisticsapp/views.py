@@ -6636,7 +6636,7 @@ class DriverDocumentExpiryvalidityApi(APIView):
 
         for label in labels:
                     if DriverDocumentExpiryvalidity.objects.filter(label=label).exists():
-                        return Response({'error': f'Duplicate value: {label}'},status=status.HTTP_400_BAD_REQUEST) 
+                        return Response({'error': f'Label \'{label}\' already exist'},status=status.HTTP_400_BAD_REQUEST) 
         for label in labels:
             try:
                 val_obj = DriverDocumentExpiryvalidity.objects.get(label=label)
